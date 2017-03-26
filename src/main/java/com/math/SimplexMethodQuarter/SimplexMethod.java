@@ -24,7 +24,7 @@ public class SimplexMethod {
     //出入基锁定的坐标
     private Integer resultCol;
     private Integer resultRow;
-    private boolean CONTINUE = true;
+    private boolean CONTINUE = true;//记录是否要继续计算的标识属性
 
     static{
         config = new ReadProperties("src/main/resources/math/SimplexMethod.properties");
@@ -192,6 +192,7 @@ public class SimplexMethod {
     }
     //计算右边栏
     public void CaculateRightCol()throws Exception{
+
 //        log("计算所得行最大Index"+resultCol);
         for(int i=0;i<EQUALITY;i++){
 //            log("计算表达式 "+Tables.get(i).getBl()+" / "+Tables.get(i).getRows().get(resultCol));
@@ -204,7 +205,7 @@ public class SimplexMethod {
         resultRow = MaxList(Os,false,true);
         if(resultRow==-1) CONTINUE=false;
 //        log("右边最小index ："+resultRow);
-        //如果是全部是非数就直接退出计算循环
+        // @ToDo 计算右边当右边有大于0的数 才继续，否则退出计算 要结合退出函数使用
 
     }
     /**

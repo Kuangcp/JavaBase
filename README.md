@@ -2,7 +2,7 @@
 - main
     - java
         - com
-            - arithmetic
+            - [arithmetic](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/arithmetic)
                 - common 
                 - found 查找算法类型
                 - kind 常用算法类型

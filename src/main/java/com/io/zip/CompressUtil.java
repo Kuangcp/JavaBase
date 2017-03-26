@@ -220,7 +220,6 @@ public class CompressUtil {
         try {
 			unzip("F:\\Myth_Notes\\Python\\Python.zip", "F:\\Myth_Notes\\Python\\test", "1236");
 		} catch (ZipException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         System.out.println("成功");

@@ -3,7 +3,6 @@ package com.arithmetic.sort;
  * 快速排序
  * 最坏的情况：当数列是一样的数据 O(n^2)
  * 理想：O(n*log n)
- * @TODO
  * @author Myth
  * @date 2016年10月29日 下午1:10:36
  */

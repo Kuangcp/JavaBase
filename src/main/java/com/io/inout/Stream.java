@@ -39,13 +39,11 @@ public class Stream {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
 		}finally{
 			try {
 				fr.close();
 				fw.close();
 			} catch (Exception e2) {
-				// TODO: handle exception
 				e2.printStackTrace();
 			}
 		}
@@ -56,7 +54,6 @@ public class Stream {
 /**字节流*/
 	//操作字节byte
 	/*public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
 		FileInputStream fis = null;
 		FileOutputStream fos = null;
@@ -78,12 +75,10 @@ public class Stream {
 			e.printStackTrace();
 		}
 		finally {
-			// TODO: handle finally clause
 			try {
 				fis.close();
 				fos.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -117,14 +112,12 @@ public class Stream {
 			System.out.println("\n成功读取并写入");
 
 		} catch (Exception e2) {
-			// TODO: handle exception
 			e2.printStackTrace();
 		}finally{
 			try {
 				br.close();
 				bw.close();
 			} catch (Exception e3) {
-				// TODO: handle exception
 				e3.printStackTrace();
 			}
 		}

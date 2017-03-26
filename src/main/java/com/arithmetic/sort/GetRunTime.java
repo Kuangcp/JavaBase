@@ -5,7 +5,6 @@ import java.util.Calendar;
  * 获取语句运行时间的类，实例化一次后，可多次使用
  * @author  Myth
  * @date 2016年9月29日 下午7:47:35
- * @TODO
  */
 public class GetRunTime {
 	private long start;
