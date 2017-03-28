@@ -7,7 +7,7 @@
                 - found 查找算法类型
                 - kind 常用算法类型
                 - sort 排序算法类型
-            - [o](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/io)
+            - [io](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/io)
                 - inout 文件输入输出
                 - zip 压缩包的处理
             - [math](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/math)
@@ -23,4 +23,4 @@
 
 ## 2017-3-26 11:47:21
 - 初始化项目，提交了相关代码
-- 
+

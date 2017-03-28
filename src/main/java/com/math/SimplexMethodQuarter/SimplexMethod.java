@@ -25,6 +25,9 @@ public class SimplexMethod {
     private Integer resultCol;
     private Integer resultRow;
     private boolean CONTINUE = true;//记录是否要继续计算的标识属性
+    private boolean SUCCESS = true;//记录是否成功计算出结果
+    private Map<String,String> Xbs= new HashMap<String,String>();
+    private Integer Round=1;
 
     static{
         config = new ReadProperties("src/main/resources/math/SimplexMethod.properties");
@@ -48,7 +51,7 @@ public class SimplexMethod {
         String maxs = config.getString("Max");
         String [] temp = maxs.split(",");
         for(String data:temp){
-            System.out.println(data);
+//            System.out.println(data);
             Max.add(new Quarter(data));
         }
         //添加约束式的数据
@@ -99,11 +102,11 @@ public class SimplexMethod {
 
     //迭代的计算直到满足条件
         while(CONTINUE){
-//            try {
-//                Thread.sleep(10);
-//            }catch (Exception e ){
-//                e.printStackTrace();
-//            }
+            try {
+                Thread.sleep(100);
+            }catch (Exception e ){
+                e.printStackTrace();
+            }
             //算完一轮
             Quarter fatherNum = Tables.get(resultRow).getRows().get(resultCol);
             List<Table> oldTables = Tables;
@@ -148,27 +151,52 @@ public class SimplexMethod {
             }
             System.out.println("******************************");
         }
-        //运算完成
-        Quarter result = new Quarter(0);
-        Quarter [] results = new Quarter[MAXPARAMS];
-        for(int i=0;i<EQUALITY;i++){
-            Table t = Tables.get(i);
-            result = result.plus(t.getCb().multi(t.getBl()));
-            results[t.getXb()-1] = t.getBl();
-        }
-        System.out.println("最优目标值是 : "+result);
-        String resultstr = "X=(";
-        for(Quarter d:results){
-            if(d!=null){
-                resultstr+=d+",";
-            }else{
-                resultstr+="0,";
-            }
-        }
-        resultstr = resultstr.substring(0,resultstr.length()-1);
-        resultstr+=")";
-        System.out.println(resultstr);
 
+        //运算完成
+        //@TODO 要进行判断是否成功计算，然后执行不同的方法
+        FinallyResult();
+    }
+
+    /**
+     * 处理最后运行结果，进行判断
+     * 1. 右列没有一个正数，最后一行也没有正数
+     * 2. Xb列死循环，即变量循环的出基入基
+     * @throws Exception
+     */
+    public void FinallyResult() throws Exception{
+        Integer RightMin = MaxList(Os,false,true,false);
+        if(RightMin==-1){
+            System.out.println("右列没有一个正数，最后一行也没有正数，原方程没有最优解");
+            SUCCESS=false;
+        }else{
+            SUCCESS=true;
+        }
+        //正确的计算出结果
+        if(SUCCESS) {
+            Quarter result = new Quarter(0);
+            Quarter[] results = new Quarter[MAXPARAMS];
+            for (int i = 0; i < EQUALITY; i++) {
+                Table t = Tables.get(i);
+                result = result.plus(t.getCb().multi(t.getBl()));
+                results[t.getXb() - 1] = t.getBl();
+            }
+            System.out.println("最优目标值是 : " + result);
+            String resultstr = "X=(";
+            for (Quarter d : results) {
+                if (d != null) {
+                    resultstr += d + ",";
+                } else {
+                    resultstr += "0,";
+                }
+            }
+            resultstr = resultstr.substring(0, resultstr.length() - 1);
+            resultstr += ")";
+            System.out.println(resultstr);
+
+        }
+        for(String key :Xbs.keySet()){
+            log(Xbs.get(key)+"轮"+key);
+        }
     }
     /**
      * 计算最后一行和最右边的一列
@@ -187,7 +215,7 @@ public class SimplexMethod {
 //            System.out.println("jieguo "+temp);
         }
         disp("最后一行",false,Zs,false);
-        resultCol = MaxList(Zs,true,true);
+        resultCol = MaxList(Zs,true,true,true);
 
     }
     //计算右边栏
@@ -202,16 +230,18 @@ public class SimplexMethod {
             Os.add(temp);
         }
         disp("右栏",false,Os,false);
-        resultRow = MaxList(Os,false,true);
+        resultRow = MaxList(Os,false,true,false);
         if(resultRow==-1) CONTINUE=false;
 //        log("右边最小index ："+resultRow);
         // @ToDo 计算右边当右边有大于0的数 才继续，否则退出计算 要结合退出函数使用
 
     }
     /**
-     * 判断最后一行是否到了最后的计算结果
+     * 1.判断最后一行是否到了最后的计算结果   即全小于0 就可以退出计算了
+     * 2.又加入一个判断机制，循环出入基的情况
+     *
      * @param list
-     * @return true就是算到了最后一步
+     * @return false就不再继续
      */
     public boolean isCONTINUES(List<Quarter> list){
         boolean flag = false;
@@ -221,7 +251,18 @@ public class SimplexMethod {
                 break;
             }
         }
+//        disp("检测",Tables);
+        String temp = "";
+        for(int i=0;i<EQUALITY;i++){
+            temp +=Tables.get(i).getXb();
+        }
+        if(!Xbs.containsKey(temp)){
+            Xbs.put(temp,Round+++"");
+        }else{
+            return false;
+        }
         return flag;
+
     }
 
     /**
@@ -229,17 +270,24 @@ public class SimplexMethod {
      * @param list
      * @param isMax
      * @param haveInfinity
+     * @param permitMinus 是否允许负数进行笔记比较
      * @return
      */
-    public Integer MaxList(List<Quarter> list,boolean isMax,boolean haveInfinity){
+    public Integer MaxList(List<Quarter> list,boolean isMax,boolean haveInfinity,boolean permitMinus){
         Integer index=null;
         //有非数的集合
         if(haveInfinity){
             Map<Integer,Quarter> tempMap = new HashMap<Integer,Quarter>();
             //去除非数
             for(int i=0;i<list.size();i++){
-                if(list.get(i).getDenominator()!=0){
+                if(permitMinus&&list.get(i).getDenominator()!=0){
                     tempMap.put(i,list.get(i));
+                }
+                //不允许负数的情况
+                if(!permitMinus){
+                    if(list.get(i).getDenominator()!=0 && list.get(i).upZero()){
+                        tempMap.put(i,list.get(i));
+                    }
                 }
             }
             if(tempMap.size()==0){
@@ -261,6 +309,20 @@ public class SimplexMethod {
             if(list.size()==0){
                 return -1;
             }
+            Quarter temp = list.get(0);
+            for(int i=0;i<list.size();i++){
+                if(list.get(i).upZero()){
+                    if(isMax && !temp.bigger(list.get(i))){
+                        index=i;
+                        temp = list.get(i);
+                    }
+                    if(!isMax && temp.bigger(list.get(i))){
+                        index=i;
+                        temp = list.get(i);
+                    }
+                }
+
+            }
 
         }
         return index;
@@ -273,6 +335,14 @@ public class SimplexMethod {
     public void disp(String title,List list){
         disp(title,true,list,true);
     }
+
+    /**
+     * 展示数据
+     * @param title
+     * @param titleTurn 标题是否换行
+     * @param list
+     * @param turn 内容是否换行
+     */
     public void disp(String title,boolean titleTurn,List list,boolean turn){
         if(titleTurn){
             System.out.println(title);
