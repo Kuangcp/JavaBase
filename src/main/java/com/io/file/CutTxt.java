@@ -67,7 +67,7 @@ public class CutTxt {
                     chapters.add(count+"");
                     rows.add(count+"");
                     titles.add("【"+test[0]+"    】    "+test[1]);
-                    //chapters.add(count+" "+test[0]+" "+test[1]);
+                    //chapters.add(count+" "+runable[0]+" "+runable[1]);
                 }
 
 //                System.out.println(count + "." + content);

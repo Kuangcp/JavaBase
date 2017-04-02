@@ -16,7 +16,7 @@ public class Force {
 	}
 	public void createKB(){
 		//输入课程
-		Mysql db = new Mysql("test","root","ad");
+		Mysql db = new Mysql("runable","root","ad");
 		List<String []>course = db.SelectReturnList("select * from course");
 		
 		//暴力随机求解

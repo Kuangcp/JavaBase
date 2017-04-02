@@ -218,13 +218,13 @@ public class CompressUtil {
     	
     	
         try {
-			unzip("F:\\Myth_Notes\\Python\\Python.zip", "F:\\Myth_Notes\\Python\\test", "1236");
+			unzip("F:\\Myth_Notes\\Python\\Python.zip", "F:\\Myth_Notes\\Python\\runable", "1236");
 		} catch (ZipException e) {
 			e.printStackTrace();
 		}
         System.out.println("成功");
 //      try {  
-//          File[] files = unzip("d:\\test\\汉字.zip", "aa");  
+//          File[] files = unzip("d:\\runable\\汉字.zip", "aa");
 //          for (int i = 0; i < files.length; i++) {  
 //              System.out.println(files[i]);  
 //          }  

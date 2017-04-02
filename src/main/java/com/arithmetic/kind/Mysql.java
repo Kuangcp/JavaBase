@@ -31,7 +31,7 @@ public class Mysql {
 	private String URL;
 
 //	public static void main(String [] a){
-//		Mysql db = new Mysql("test","root","ad");
+//		Mysql db = new Mysql("runable","root","ad");
 //		String sql = "insert into inserts values (2,'q');";//insert into inserts values (3,'w');";
 //		boolean flag = db.updSQL(sql);
 //		System.out.println("是否成功："+flag);
