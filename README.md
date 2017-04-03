@@ -24,6 +24,14 @@
                 - email 邮件的工具类
                 - file 文件的工具类   
     - groovy
+        - [learn](https://github.com/Kuangcp/JavaBase/tree/master/src/main/groovy/com/learn)
+            - 测试Groovy配置是否正确
+        - [list](https://github.com/Kuangcp/JavaBase/tree/master/src/main/groovy/com/list)
+            - 集合的相关测试
+        - [io](https://github.com/Kuangcp/JavaBase/tree/master/src/main/groovy/com/io)
+            - 文件操作
+        - math
+            
     - resources 文件资源包
 - test
 
