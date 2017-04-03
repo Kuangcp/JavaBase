@@ -13,7 +13,13 @@
             - [math](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/math)
                 - number 数值类
                 - SimplexMethod 运筹学 单纯形表计算（使用浮点数）
-                - SimplexMethod 运筹学 单纯形表计算（使用分数作为数据类型）
+                - SimplexMethodQuarter 运筹学 单纯形表计算（使用分数作为数据类型）
+            - [net](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/net)
+                - socket 通信简单测试
+                - 
+            - [questions](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/questions)
+                - 简单的应用题，算法题实现
+                - 
             - [util](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/util)
                 - email 邮件的工具类
                 - file 文件的工具类   
