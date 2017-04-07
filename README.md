@@ -1,29 +1,29 @@
 ## 项目大致目录
-- main
-    - java
-        - com
-            - [arithmetic](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/arithmetic)
-                - common 
-                - found 查找算法类型
-                - kind 常用算法类型
-                - sort 排序算法类型
-            - [io](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/io)
-                - inout 文件输入输出
-                - zip 压缩包的处理
-            - [math](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/math)
-                - number 数值类
-                - SimplexMethod 运筹学 单纯形表计算（使用浮点数）
-                - SimplexMethodQuarter 运筹学 单纯形表计算（使用分数作为数据类型）
-            - [net](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/net)
-                - socket 通信简单测试
-                - 
-            - [questions](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/questions)
-                - 简单的应用题，算法题实现
-                - 
-            - [util](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/util)
-                - email 邮件的工具类
-                - file 文件的工具类   
-    - groovy
+- **main** : 主要代码
+    - [java](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java)
+        - [arithmetic](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/arithmetic)
+            - common 
+            - found 查找算法类型
+            - kind 常用算法类型
+            - sort 排序算法类型
+        - [io](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/io)
+            - inout 文件输入输出
+            - zip 压缩包的处理
+        - [math](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/math)
+            - number 数值类
+            - SimplexMethod 运筹学 单纯形表计算（使用浮点数）
+            - SimplexMethodQuarter 运筹学 单纯形表计算（使用分数作为数据类型）
+        - [net](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/net)
+            - socket 通信简单测试
+            - 
+        - [questions](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/questions)
+            - 简单的应用题，算法题实现
+            - 
+        - [util](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java/com/util)
+            - email 邮件的工具类
+            - file 文件的工具类   
+            
+    - [groovy]([learn](https://github.com/Kuangcp/JavaBase/tree/master/src/main/groovy))
         - [learn](https://github.com/Kuangcp/JavaBase/tree/master/src/main/groovy/com/learn)
             - 测试Groovy配置是否正确
         - [list](https://github.com/Kuangcp/JavaBase/tree/master/src/main/groovy/com/list)
@@ -32,8 +32,14 @@
             - 文件操作
         - math
             
-    - resources 文件资源包
-- test
+    - [resources]((https://github.com/Kuangcp/JavaBase/tree/master/src/resources)) 
+        - 文件资源
+- **test** : 测试代码
+    - [java](https://github.com/Kuangcp/JavaBase/tree/master/src/test)
+    - [groovy](https://github.com/Kuangcp/JavaBase/tree/master/src/test)
+
+
+************
 
 ## 2017-3-26 11:47:21
 - 初始化项目，提交了相关代码
