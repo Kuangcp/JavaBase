@@ -23,9 +23,5 @@ dependencies {
     compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.4'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
 
-
-
-
-
 }
 sourceSets.main.java.srcDirs=['src/main/java','src/main/groovy']
