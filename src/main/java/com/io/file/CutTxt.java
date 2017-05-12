@@ -1,4 +1,4 @@
-package com.myth.file;
+package com.io.file;
 
 import java.io.*;
 import java.nio.charset.Charset;

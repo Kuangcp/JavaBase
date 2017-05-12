@@ -6,7 +6,7 @@ package com.learn
  * 测试Groovy的配置是否通过
  */
 class HelloWorld {
-    static void main(String[]s){
+    static void main(String[]s){  
         println "HelloWorld！"
     }
 }

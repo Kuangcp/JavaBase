@@ -16,17 +16,17 @@ public class SimplexMethod {
     private static ReadProperties config;//读取配置文件
     private static int MAXPARAMS;//最大参数个数
     private static int EQUALITY;//最大行列式数
-    private List<Equality> Rows = new ArrayList<Equality>();//约束式子系数集合
-    private List<Quarter>Max = new ArrayList<Quarter>();//原始式子系数集合
-    private List<Table> Tables = new ArrayList<Table>();//单纯形表的总体数据结构
-    private List<Quarter> Os = new ArrayList<Quarter>();//单纯形表中间计算结果右侧
-    private List<Quarter> Zs = new ArrayList<Quarter>();//单纯形表计算结果最下一行
+    private List<Equality> Rows = new ArrayList<>();//约束式子系数集合
+    private List<Quarter>Max = new ArrayList<>();//原始式子系数集合
+    private List<Table> Tables = new ArrayList<>();//单纯形表的总体数据结构
+    private List<Quarter> Os = new ArrayList<>();//单纯形表中间计算结果右侧
+    private List<Quarter> Zs = new ArrayList<>();//单纯形表计算结果最下一行
     //出入基锁定的坐标
     private Integer resultCol;
     private Integer resultRow;
     private boolean CONTINUE = true;//记录是否要继续计算的标识属性
-    private boolean SUCCESS = true;//记录是否成功计算出结果
-    private Map<String,String> Xbs= new HashMap<String,String>();
+//    private boolean SUCCESS = true;//记录是否成功计算出结果
+    private Map<String,String> Xbs= new HashMap<>();
     private Integer Round=1;
 
     static{
@@ -46,7 +46,7 @@ public class SimplexMethod {
     /**
      * 初始化整体数据
      */
-    public void init(){
+    private void init(){
         //添加求解式的数据
         String maxs = config.getString("Max");
         String [] temp = maxs.split(",");
@@ -59,8 +59,8 @@ public class SimplexMethod {
             String buffer = config.getString("E"+i);
             String[] tempList = buffer.split(",");
             Equality e = new Equality();
-            for(int j=0;j<tempList.length;j++){
-                e.getParams().add(new Quarter(tempList[j]));
+            for (String aTempList : tempList) {
+                e.getParams().add(new Quarter(aTempList));
             }
             e.setResult(new Quarter(config.getString("B"+i)));
             e.setIndex(config.getInt("I"+i));
@@ -110,7 +110,7 @@ public class SimplexMethod {
             //算完一轮
             Quarter fatherNum = Tables.get(resultRow).getRows().get(resultCol);
             List<Table> oldTables = Tables;
-            Tables = new ArrayList<Table>();
+            Tables = new ArrayList<>();
 
             //转换出基入基的参数
             List<Quarter> rowsTemps= oldTables.get(resultRow).getRows();
@@ -121,9 +121,7 @@ public class SimplexMethod {
             Tables.add(temp);
             //转换剩余的
             for(int j=0;j<EQUALITY;j++){
-                if(j==resultRow){
-                    continue;
-                }else{
+                if(j!=resultRow){
                     rowsTemps = oldTables.get(j).getRows();
                     Quarter motherNum = rowsTemps.get(resultCol);
                     Table fatherRow = Tables.get(0);
@@ -154,22 +152,21 @@ public class SimplexMethod {
 
         //运算完成
         //@TODO 要进行判断是否成功计算，然后执行不同的方法
-        FinallyResult();
+        finallyResult();
     }
 
     /**
      * 处理最后运行结果，进行判断
      * 1. 右列没有一个正数，最后一行也没有正数
      * 2. Xb列死循环，即变量循环的出基入基
-     * @throws Exception
+     * @throws Exception 异常
      */
-    public void FinallyResult() throws Exception{
+    private void finallyResult() throws Exception{
         Integer RightMin = MaxList(Os,false,true,false);
+        boolean SUCCESS = true;
         if(RightMin==-1){
             System.out.println("右列没有一个正数，最后一行也没有正数，原方程没有最优解");
-            SUCCESS=false;
-        }else{
-            SUCCESS=true;
+            SUCCESS =false;
         }
         //正确的计算出结果
         if(SUCCESS) {
@@ -181,16 +178,16 @@ public class SimplexMethod {
                 results[t.getXb() - 1] = t.getBl();
             }
             System.out.println("最优目标值是 : " + result);
-            String resultstr = "X=(";
+            StringBuilder resultstr = new StringBuilder("X=(");
             for (Quarter d : results) {
                 if (d != null) {
-                    resultstr += d + ",";
+                    resultstr.append(d).append(",");
                 } else {
-                    resultstr += "0,";
+                    resultstr.append("0,");
                 }
             }
-            resultstr = resultstr.substring(0, resultstr.length() - 1);
-            resultstr += ")";
+            resultstr = new StringBuilder(resultstr.substring(0, resultstr.length() - 1));
+            resultstr.append(")");
             System.out.println(resultstr);
 
         }
@@ -201,7 +198,7 @@ public class SimplexMethod {
     /**
      * 计算最后一行和最右边的一列
      */
-    public void CaculateLastRow()throws Exception{
+    private void CaculateLastRow()throws Exception{
         for(int i=0;i<MAXPARAMS;i++){//循环变量个数
             Quarter temp = Max.get(i);
 //            disp("目标方程系数组",Max,false);
@@ -219,7 +216,7 @@ public class SimplexMethod {
 
     }
     //计算右边栏
-    public void CaculateRightCol()throws Exception{
+    private void CaculateRightCol()throws Exception{
 
 //        log("计算所得行最大Index"+resultCol);
         for(int i=0;i<EQUALITY;i++){
@@ -240,10 +237,10 @@ public class SimplexMethod {
      * 1.判断最后一行是否到了最后的计算结果   即全小于0 就可以退出计算了
      * 2.又加入一个判断机制，循环出入基的情况
      *
-     * @param list
+     * @param list 分数数组
      * @return false就不再继续
      */
-    public boolean isCONTINUES(List<Quarter> list){
+    private boolean isCONTINUES(List<Quarter> list){
         boolean flag = false;
         for(Quarter b:list){
             if(b.upZero()){
@@ -252,12 +249,12 @@ public class SimplexMethod {
             }
         }
 //        disp("检测",Tables);
-        String temp = "";
+        StringBuilder temp = new StringBuilder();
         for(int i=0;i<EQUALITY;i++){
-            temp +=Tables.get(i).getXb();
+            temp.append(Tables.get(i).getXb());
         }
-        if(!Xbs.containsKey(temp)){
-            Xbs.put(temp,Round+++"");
+        if(!Xbs.containsKey(temp.toString())){
+            Xbs.put(temp.toString(),Round+++"");
         }else{
             return false;
         }
@@ -267,17 +264,17 @@ public class SimplexMethod {
 
     /**
      * 求解含有非数的集合的极值，异常返回-1
-     * @param list
-     * @param isMax
-     * @param haveInfinity
+     * @param list 分数数组
+     * @param isMax 是否求最大
+     * @param haveInfinity 是否有非数
      * @param permitMinus 是否允许负数进行笔记比较
-     * @return
+     * @return 最大
      */
-    public Integer MaxList(List<Quarter> list,boolean isMax,boolean haveInfinity,boolean permitMinus){
+    Integer MaxList(List<Quarter> list, boolean isMax, boolean haveInfinity, boolean permitMinus){
         Integer index=null;
         //有非数的集合
         if(haveInfinity){
-            Map<Integer,Quarter> tempMap = new HashMap<Integer,Quarter>();
+            Map<Integer,Quarter> tempMap = new HashMap<>();
             //去除非数
             for(int i=0;i<list.size();i++){
                 if(permitMinus&&list.get(i).getDenominator()!=0){
@@ -296,7 +293,6 @@ public class SimplexMethod {
             for (Integer integer :tempMap.keySet()) {
                 if(index==null){
                     index = integer;
-                    continue;
                 }else if(isMax && !tempMap.get(index).bigger(tempMap.get(integer))){
                     index = integer;
                 }else if(!isMax && tempMap.get(index).bigger(tempMap.get(integer))){
@@ -330,30 +326,30 @@ public class SimplexMethod {
 
     /**
      * 方便展示原始数据
-     * @param list
+     * @param list 数据数组
      */
-    public void disp(String title,List list){
+    private void disp(String title, List list){
         disp(title,true,list,true);
     }
 
     /**
      * 展示数据
-     * @param title
+     * @param title 标题
      * @param titleTurn 标题是否换行
-     * @param list
+     * @param list 数据
      * @param turn 内容是否换行
      */
-    public void disp(String title,boolean titleTurn,List list,boolean turn){
+    private void disp(String title, boolean titleTurn, List list, boolean turn){
         if(titleTurn){
             System.out.println(title);
         }else{
             System.out.print(title+" :    ");
         }
-        for(int i=0;i<list.size();i++){
-            if(turn){
-                System.out.println(list.get(i).toString());
-            }else{
-                System.out.print(list.get(i).toString()+"    ");
+        for (Object aList : list) {
+            if (turn) {
+                System.out.println(aList.toString());
+            } else {
+                System.out.print(aList.toString() + "    ");
             }
         }
         if(!turn) System.out.println();
@@ -362,34 +358,34 @@ public class SimplexMethod {
     /**
      * 展示整体方程式,原题的样子
      */
-    public void showRows(){
-        String MaxRows="Max(z)=";
+    private void showRows(){
+        StringBuilder MaxRows= new StringBuilder("Max(z)=");
         for(int i=0;i<MAXPARAMS;i++){
-            if(!Max.get(i).isZero())MaxRows+=Max.get(i)+" X"+(i+1)+" + ";
+            if(!Max.get(i).isZero()) MaxRows.append(Max.get(i)).append(" X").append(i + 1).append(" + ");
         }
-        MaxRows = MaxRows.substring(0,MaxRows.length()-2);
+        MaxRows = new StringBuilder(MaxRows.substring(0, MaxRows.length() - 2));
         System.out.println("Aim : "+MaxRows);
         for(int i=0;i<EQUALITY;i++){
-            String Row="";
+            StringBuilder Row= new StringBuilder();
             List<Quarter> temp = Rows.get(i).getParams();
             for(int j=0;j<temp.size();j++){
                 Quarter a = temp.get(j);
                 if(!a.isZero()){
                     if(!a.isOne()){
-                        Row+=a.toString()+"X"+(j+1)+" + ";
+                        Row.append(a.toString()).append("X").append(j + 1).append(" + ");
                     }else{
-                        Row+="X"+(j+1)+" + ";
+                        Row.append("X").append(j + 1).append(" + ");
                     }
                 }else{
-                    Row+="      ";
+                    Row.append("      ");
                 }
             }
-            Row = Row.substring(0,Row.length()-2);
-            Row+=" = "+Rows.get(i).getResult() +" |X"+Rows.get(i).getIndex()+"|";
+            Row = new StringBuilder(Row.substring(0, Row.length() - 2));
+            Row.append(" = ").append(Rows.get(i).getResult()).append(" |X").append(Rows.get(i).getIndex()).append("|");
             System.out.println("Equality : "+Row);
         }
     }
-    public void log(String s){
+    private void log(String s){
         System.out.println(s);
     }
 }
