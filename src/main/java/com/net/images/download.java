@@ -1,4 +1,4 @@
-package com.download;
+package com.net.images;
 
 import com.myth.mysql.Mysql;
 

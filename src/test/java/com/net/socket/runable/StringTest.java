@@ -4,9 +4,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 /**
  * Created by Myth on 2017/4/1
@@ -23,10 +25,10 @@ public class StringTest {
 
     }
     @Test
-    public void testInput(){
-
-        Scanner  scanner = new Scanner(System.in);
-        scanner.next();
-        logger.info(scanner.nextLine());
+    public void testInput() throws IOException {
+        // 使用 BufferedReader 而不是 Scanner
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String res = br.readLine();
+        logger.info(res);
     }
 }
