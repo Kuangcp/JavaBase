@@ -1,3 +1,6 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/15633fc25b1e40c7bcd4dc963487e0be)](https://www.codacy.com/app/Kuangcp/JavaBase?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Kuangcp/JavaBase&amp;utm_campaign=Badge_Grade)
+*****************
+
 ## 项目大致目录
 - **main** : 主要代码
     - [java](https://github.com/Kuangcp/JavaBase/tree/master/src/main/java)
