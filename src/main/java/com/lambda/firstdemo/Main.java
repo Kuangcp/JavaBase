@@ -37,7 +37,6 @@ public class Main {
         });
 
         //lambda 表达式
-
         pointArrayList.forEach((Consumer<Point>) point -> point.translate(1,1));
         // 将lambda参数列表映射为假想的方法的参数列表
         // 裁剪了匿名内部类定义的额外代码，实现lambda

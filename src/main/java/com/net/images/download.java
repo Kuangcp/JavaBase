@@ -11,7 +11,6 @@ public class download {
     private static int threadNum = 10;
     private static int counts;
 
-
     public static void main(String []s) throws Exception{
 
 //        download d = new download();
@@ -29,9 +28,9 @@ public class download {
 
     }
     public List<String[]> getData(int start,int num) throws Exception{
-        Mysql db = new Mysql("jadmin","root","mysql1104");
+        Mysql db = new Mysql("jadmin","3306","root","mysql1104");
 
-        List<String[]> list=  db.SelectReturnList("select URL,Path from t_mz_pic limit "+start+","+num);
+        List<String[]> list=  db.queryReturnList("select URL,Path from t_mz_pic limit "+start+","+num);
         return list;
 //        int count = 0;
 //        for(String []a:list){
@@ -41,8 +40,8 @@ public class download {
     }
     //返回总数
     public int getNums() throws Exception{
-        Mysql db = new Mysql("jadmin","root","mysql1104");
-        List<String[]> list=  db.SelectReturnList("select count(*) from t_mz_pic");
+        Mysql db = new Mysql("jadmin","3306","root","mysql1104");
+        List<String[]> list=  db.queryReturnList("select count(*) from t_mz_pic");
         return Integer.parseInt(list.get(0)[0]);
     }
 
