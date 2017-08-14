@@ -1,4 +1,4 @@
-package com.myth.questions;
+package com.questions;
 import java.util.*;
 /**
  * 给出一组数字，只有加减，给你一个数字判断是否能从数组中计算得到
@@ -25,12 +25,7 @@ public class ListDengShi {
         Scanner sc = new Scanner(System.in);
         System.out.println("请输入查询结果");
         String target = sc.nextLine();
-        if(results.containsKey(target)){
-            System.out.println(results.get(target));
-
-        }else{
-            System.out.println("没有该结果");
-        }
+        System.out.println(results.getOrDefault(target, "没有该结果"));
     }
 
     /**
@@ -42,8 +37,8 @@ public class ListDengShi {
         if(index<num) {
 //            System.out.println("fuhao:"+fuhao+" index:"+index);
             index++;
-            caculateFuHao(new String(fuhao)+"+",index);
-            caculateFuHao(new String(fuhao)+"-",index);
+            caculateFuHao(fuhao +"+",index);
+            caculateFuHao(fuhao +"-",index);
         }else{
             result.add(fuhao);
         }
@@ -54,27 +49,25 @@ public class ListDengShi {
      * @param dengshi
      */
     public void caculateResult(List<String> dengshi){
-        for(int i=0;i<dengshi.size();i++){
-
-                String row = dengshi.get(i);
-            if(row.length()>=num) {
+        for (String row : dengshi) {
+            if (row.length() >= num) {
                 int temp = 0;
-                String buffer = "";
+                StringBuilder buffer = new StringBuilder();
 //            System.out.println("fuhao 长度："+row.length());
                 for (int j = 0; j < row.length(); j++) {
-                    String fuhao = row.charAt(j)+"";
+                    String fuhao = row.charAt(j) + "";
                     if ("+".equals(fuhao)) {
                         temp += datas[j];
 //                        System.out.print("temp:"+temp);
                     } else {
                         temp -= datas[j];
                     }
-                    buffer+=fuhao+datas[j];
+                    buffer.append(fuhao).append(datas[j]);
 //                    System.out.print(fuhao +""+datas[j]);
                 }
-                buffer+=" = "+temp;
+                buffer.append(" = ").append(temp);
 //                System.out.println(" = " + temp);
-                results.put(temp+"",buffer);
+                results.put(temp + "", buffer.toString());
             }
         }
     }

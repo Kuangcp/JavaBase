@@ -17,7 +17,10 @@ package com.concurrents.old;
  */
 public class DeadLockShow{
     public static void main(String []s){
+        mainTest();
+    }
 
+    public static void mainTest(){
         DeadLock one = new DeadLock("one");
         DeadLock other = new DeadLock("other");
         Food fooda = new Food("a");

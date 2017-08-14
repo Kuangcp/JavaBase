@@ -120,3 +120,19 @@
     - Lock接口的实现类：ReentrantWriteLock 在需要读取很多线程而写入很少线程时，用这个性能更好
     
 #### CountDownLatch 锁存器
+- 是一种简单的同步模式，这种模式允许线程在通过同步屏障之前做少量的准备工作
+    - 构建实例时，需要提供一个数值（计数器），通过两个方法来实现这个机制
+    - countDown() await() 前者计数器减一，后者让线程在计数器到0之前一直等待， 如果已经是小于等于0 就什么都不做
+- 就是一堆线程之间的同步，为了确保有指定数量正常初始化的线程 创建成功，才能开始同步
+
+#### ConcurrentHashMap
+- ConcurrentHashMap 是 HashMap的并发版本
+- 修改HashMap，并不需要将整个结构都锁住，只要锁住即将修改的桶（就是单个元素）
+    - 好的HashMap 实现，在读取时不需要锁，写入时只要锁住要修改的单个桶 Java能达到这个标准，但是需要程序员去操作底层的细节才能实现
+- ConcurrentHashMap类 还实现了ConcurrentMap接口，有些提供了还提供了原子操作的新方法
+    - putIfAbsent() 如果还没有对应键，就把键/值添加进去
+    -   
+
+#### CopyOnWriteArrayList
+
+### Queue
