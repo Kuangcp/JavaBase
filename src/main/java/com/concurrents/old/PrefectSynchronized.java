@@ -31,7 +31,4 @@ public class PrefectSynchronized {
         Long time = arrivalTime.get(update);
         return time != null;
     }
-
-
-
 }

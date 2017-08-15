@@ -117,6 +117,11 @@
     - 如果线程得不到锁（例如已经被线程加锁），就允许该线程后退或者继续执行，或者做别的事情 tryLock()
     - 允许线程尝试锁，并可以在超过时间后放弃
     - Lock接口的实现类：ReentrantLock 本质上和用在同步块上的锁是一样的，但是稍微灵活些
+        - lock 方法：[官方API1.8 lock](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/ReentrantLock.html#lock--)
+        - 如果该锁没有被另一个线程保持，则获取该锁并立即返回，将锁的保持计数设置为 1。
+        - 如果当前线程已经保持该锁，则将保持计数加 1，并且该方法立即返回。
+        - 如果该锁被另一个线程保持，则出于线程调度的目的，禁用当前线程，并且在获得锁之前，该线程将一直处于休眠状态，此时锁保持计数被设置为 1。
+        - trylock方法 [官方API1.8 trylock](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/ReentrantLock.html#tryLock--)
     - Lock接口的实现类：ReentrantWriteLock 在需要读取很多线程而写入很少线程时，用这个性能更好
     
 #### CountDownLatch 锁存器
@@ -131,8 +136,18 @@
     - 好的HashMap 实现，在读取时不需要锁，写入时只要锁住要修改的单个桶 Java能达到这个标准，但是需要程序员去操作底层的细节才能实现
 - ConcurrentHashMap类 还实现了ConcurrentMap接口，有些提供了还提供了原子操作的新方法
     - putIfAbsent() 如果还没有对应键，就把键/值添加进去
-    -   
+    - remove() 如果键存在而且值与当前状态相等，则用原子方式移除键值对
+    - replace() API 为HashMap中原子替换的操作方法提供了两种不同的形式
+- 例如之前的完全同步类里的公共 Map实现就是HashMap，如果换成ConcurrentHashMap 那些synchronized关键字修饰的方法就可以换成普通方法了
+- 该类不仅提供了多线程的安全性，性能也很好
 
 #### CopyOnWriteArrayList
+- 标准的ArrayList的替代，通过写时复制语义来实现线程安全性，也就是说修改列表的任何操作都会创建一个列表底层数组的新副本
+    - 这就意味着所有成形的迭代器都不会遇到意料之外的修改 （脏读）
+    
+- 这一般需要很大的开销，但是当遍历操作的数量大大超过可变操作的数量时，这种方法可能比其他替代方法更 有效。在不能或不想进行同步遍历，
+- 但又需要从并发线程中排除冲突时，它也很有用。“快照”风格的迭代器方法在创建迭代器时使用了对数组状态的引用。此数组在迭代器的生存期内不会更改，
+- 因此不可能发生冲突，并且迭代器保证不会抛出 ConcurrentModificationException。创建迭代器以后，迭代器就不会反映列表的添加、移除或者更改。
+- 在迭代器上进行的元素更改操作（remove、set 和 add）不受支持。这些方法将抛出 UnsupportedOperationException。
 
 ### Queue
