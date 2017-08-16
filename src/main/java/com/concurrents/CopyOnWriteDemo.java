@@ -75,12 +75,12 @@ public class CopyOnWriteDemo{
 }
 
 class ElementList {
-    private final CopyOnWriteArrayList<Element> elements;
+    private final CopyOnWriteArrayList elements;
     private final ReentrantLock lock;
     private final String name;
-    private Iterator<Element> it;
+    private Iterator it;
 
-    public ElementList(CopyOnWriteArrayList<Element> elements, ReentrantLock lock, String name) {
+    public ElementList(CopyOnWriteArrayList elements, ReentrantLock lock, String name) {
         this.elements = elements;
         this.lock = lock;
         this.name = name;
@@ -92,7 +92,7 @@ class ElementList {
         it = elements.iterator();//设置迭代器
         // 为什么两个线程会得到同一个迭代器
         // 经过groovy中验证，多个线程调用这个得到迭代器的方法的时候会有偶尔出现 返回相同迭代器对象的情况发生
-        System.out.println("得到迭代器"+it);
+//        System.out.println("得到迭代器"+it);
     }
     public void listElement(String who){
         lock.lock(); // 进行迭代的时候进行 锁定 ，
@@ -105,9 +105,8 @@ class ElementList {
             if (it != null){
                 System.out.print(who+name + ": ");
                 while(it.hasNext()){
-                    Element element = it.next();
 //                    System.out.println(it);
-                    System.out.print(element + ", ");
+                    System.out.print(it.next() + ", ");
                 }
                 System.out.println("换行");
             }

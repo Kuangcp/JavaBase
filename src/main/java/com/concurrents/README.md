@@ -83,7 +83,7 @@
     - 线程所写的值总会在指令完成之前同步回内存中
         - 可以把围绕该域的操作看成成是一个小的同步块
         - volatile 变量不会引入线程锁，所以不可能发生死锁
-        - volatile变量是真正线程安全的，但只有写入时不依赖当前状态（读取的状态）的变量才应该声明为volatile变量
+        - volatile 变量是真正线程安全的，但只有写入时不依赖当前状态（读取的状态）的变量才应该声明为volatile变量
 
 - 不可变性：
     - 这些对象或者没有状态（属性）或者只有final域。因为他们的状态不可变，所以是安全而又活泼，不会出现不一致的情况
@@ -100,7 +100,7 @@
 > 提供适当的原子方法 避免在共享数据上出现竞争危害的方法
 
 - 常见的操作系统的支持， 他们是非阻塞的（无需线程锁）， 常见的方法是实现序列号机制（和数据库里的序列号机制类似），在AtomicInteger或AtomicLong上用原子
-    - 操作getAndIncrement()方法， 并且提供了nextId 方法得到唯一的完全增长的数值
+    - 操作`getAndIncrement()`方法， 并且提供了nextId 方法得到唯一的完全增长的数值
 - 注意： 原子类不是相似的类继承而来，所以 AtomicBoolean不能当Boolean用
 
 #### 线程锁 java.util.concurrent.locks
@@ -117,27 +117,36 @@
     - 如果线程得不到锁（例如已经被线程加锁），就允许该线程后退或者继续执行，或者做别的事情 tryLock()
     - 允许线程尝试锁，并可以在超过时间后放弃
     - Lock接口的实现类：ReentrantLock 本质上和用在同步块上的锁是一样的，但是稍微灵活些
-        - lock 方法：[官方API1.8 lock](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/ReentrantLock.html#lock--)
+        - `lock()`: [官方API1.8 lock](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/ReentrantLock.html#lock--)
         - 如果该锁没有被另一个线程保持，则获取该锁并立即返回，将锁的保持计数设置为 1。
         - 如果当前线程已经保持该锁，则将保持计数加 1，并且该方法立即返回。
         - 如果该锁被另一个线程保持，则出于线程调度的目的，禁用当前线程，并且在获得锁之前，该线程将一直处于休眠状态，此时锁保持计数被设置为 1。
-        - trylock方法 [官方API1.8 trylock](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/ReentrantLock.html#tryLock--)
+        - `trylock()`: [官方API1.8 trylock](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/ReentrantLock.html#tryLock--)
     - Lock接口的实现类：ReentrantWriteLock 在需要读取很多线程而写入很少线程时，用这个性能更好
     
 #### CountDownLatch 锁存器
 - 是一种简单的同步模式，这种模式允许线程在通过同步屏障之前做少量的准备工作
     - 构建实例时，需要提供一个数值（计数器），通过两个方法来实现这个机制
-    - countDown() await() 前者计数器减一，后者让线程在计数器到0之前一直等待， 如果已经是小于等于0 就什么都不做
-- 就是一堆线程之间的同步，为了确保有指定数量正常初始化的线程 创建成功，才能开始同步
+    - `countDown()` 作用：计数器减一
+        - 如果当前计数大于零，则将计数减少。然后什么都不做
+            - 如果减后的计数为零，出于线程调度目的，将重新启用所有的等待线程 
+        - 如果当前计数等于零，则不发生任何操作。
+        
+    - `await()` 作用：让线程在计数器到0之前一直等待，
+        - 如果大于 0 ， 休眠这语句所处的当前线程 
+            - 例如 `a.await()` 如果锁存器a的Count不为0 ，就把当前线程休眠掉
+        - 如果已经是小于等于0 就什么都不做
+        
+- 能做到： 当一堆线程之间的同步，为了确保有指定数量正常初始化的线程 创建成功，才能开始同步 
 
 #### ConcurrentHashMap
-- ConcurrentHashMap 是 HashMap的并发版本
+- `ConcurrentHashMap` 是 HashMap的并发版本
 - 修改HashMap，并不需要将整个结构都锁住，只要锁住即将修改的桶（就是单个元素）
     - 好的HashMap 实现，在读取时不需要锁，写入时只要锁住要修改的单个桶 Java能达到这个标准，但是需要程序员去操作底层的细节才能实现
-- ConcurrentHashMap类 还实现了ConcurrentMap接口，有些提供了还提供了原子操作的新方法
-    - putIfAbsent() 如果还没有对应键，就把键/值添加进去
-    - remove() 如果键存在而且值与当前状态相等，则用原子方式移除键值对
-    - replace() API 为HashMap中原子替换的操作方法提供了两种不同的形式
+- `ConcurrentHashMap`类 还实现了ConcurrentMap接口，有些提供了还提供了原子操作的新方法
+    - `putIfAbsent()` 如果还没有对应键，就把键/值添加进去
+    - `remove()` 如果键存在而且值与当前状态相等，则用原子方式移除键值对
+    - `replace()` API 为HashMap中原子替换的操作方法提供了两种不同的形式
 - 例如之前的完全同步类里的公共 Map实现就是HashMap，如果换成ConcurrentHashMap 那些synchronized关键字修饰的方法就可以换成普通方法了
 - 该类不仅提供了多线程的安全性，性能也很好
 

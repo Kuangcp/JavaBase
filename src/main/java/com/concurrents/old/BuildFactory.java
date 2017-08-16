@@ -1,20 +1,19 @@
 package com.concurrents.old;
 
-import groovy.transform.ToString;
-
 /**
  * Created by https://github.com/kuangcp on 17-8-13  下午8:05
+ * 不可变对象以及构建器
  *
  */
 interface ObjBuilder<T>{
     T build();
 }
-//@ToString
-class Update {
+
+public class BuildFactory {
     private final String name;
     private final String addr;
 
-    public Update(Builder builder) {
+    public BuildFactory(Builder builder) {
         this.name = builder.name;
         this.addr = builder.addr;
     }
@@ -28,7 +27,7 @@ class Update {
     }
 
     // 内部静态类
-    public static class Builder implements ObjBuilder<Update>{
+    public static class Builder implements ObjBuilder<BuildFactory>{
         private String name;
         private String addr;
         public Builder name(String name_){
@@ -41,8 +40,8 @@ class Update {
         }
 
         @Override
-        public Update build() {
-            return new Update(this);
+        public BuildFactory build() {
+            return new BuildFactory(this);
         }
         // 内部类是可以多级嵌套的
         public static class d{
@@ -53,11 +52,4 @@ class Update {
     }
 }
 
-public class BuildFactory{
-    public static void main(String []s){
-//        使用构建器模式来构建对象，使用了内部静态类
-        Update.Builder ub = new Update.Builder();
-        Update u = ub.name("sd").addr("12").build();
-        System.out.println(u.toString());
-    }
-}
+
