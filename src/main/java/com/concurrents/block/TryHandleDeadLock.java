@@ -1,7 +1,6 @@
-package com.concurrents;
+package com.concurrents.block;
 
 import com.concurrents.old.Food;
-import org.omg.PortableServer.THREAD_POLICY_ID;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;

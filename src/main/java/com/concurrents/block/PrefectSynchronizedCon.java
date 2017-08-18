@@ -1,4 +1,4 @@
-package com.concurrents;
+package com.concurrents.block;
 
 import java.util.HashMap;
 import java.util.Map;
