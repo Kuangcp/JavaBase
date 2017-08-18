@@ -2,7 +2,9 @@ package com.concurrents.queue
 
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingDeque
+import java.util.concurrent.LinkedTransferQueue
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.TransferQueue
 
 /**
  * Created by https://github.com/kuangcp on 17-8-18  上午10:44
@@ -26,6 +28,7 @@ class Element{
 }
 abstract  class MainThread extends Thread{
     final BlockingQueue<Element> elements
+//    final TransferQueue<Element> elements
     String text = ""
     final int pauseTime
     boolean shutdown = false
@@ -58,6 +61,7 @@ abstract  class MainThread extends Thread{
 
 // 创建固定容量的队列
 final BlockingQueue<Element> queue = new LinkedBlockingDeque<>(30)
+//final TransferQueue<Element> queue = new LinkedTransferQueue<>()
 
 MainThread proceduer = new MainThread(queue, 1000) {
     @Override
@@ -68,6 +72,7 @@ MainThread proceduer = new MainThread(queue, 1000) {
         try{
             // 添加进去，有超时控制
             handle = queue.offer(element, 100, TimeUnit.MILLISECONDS)
+//            handle = queue.tryTransfer(element, 100, TimeUnit.MILLISECONDS)
             println("    放入")
         }catch (InterruptedException ignored){
 

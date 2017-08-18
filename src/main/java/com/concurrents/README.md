@@ -199,3 +199,40 @@ public class Pro<T>{
 - BlockingQueue 不接受 null 元素。试图 add、put 或 offer 一个 null 元素时，某些实现会抛出 NullPointerException。
 - BlockingQueue 的实现主要用于生产者-使用者队列
 
+#### TransferQueue 
+- 本质上是多了一项 transfer()操作的BlockingQueue， 如果接收线程处于等待状态， 该操作会马上把工作项传给他。
+- 否则就会阻塞直到取走工作项的线程出现 即 正在处理工作项的线程在交付当前工作项之前不会开始其他工作项的处理工作，
+- 这样系统就可以调控上游线程获取新工作项的速度 用限定大小的阻塞队列也能达到同样的效果，TransferQueue 执行效率更高
+    - 但是这个只有链表的实现版本
+    - 相比于BlockingQueue 用法一致， offer() 等价于 tryTransfer() 参数也是一致的，代码基本不需要改动
+
+### 控制执行
+#### 任务建模
+> 要把目标代码做成可调用（执行者调用）的结构，而不是单独开线程运行
+> [展示代码](./src/main/java/com/concurrents/schedule/CreateModel.groovy)
+
+`Callable接口`
+- 通常是匿名内部实现类 
+
+`Future接口`
+- 用来表示异步任务，是还没有完成的任务的未来结果，主要方法：
+    - get() 用来获取结果，如果结果还没准备好就会阻塞直到它能去到结果，有一个可以设置超时的版本，这个版本永远不会阻塞
+    - cancel() 运算结束前取消
+    - isDone() 调用者用它来判断运算是否结束
+
+`FutureTask类`
+- FutureTask是Future接口的常用实现类， 并且是实现了Runnable接口。所以提供的方法是俩接口的方法
+    - 提供了两个构造器，一个是Callable为参数，另一个以Runnable为参数
+- 可以基于FutureTask的Runnable特性，把任务写成Callable然后封装进一个有执行者地调度并在必要时可以取消的FutureTask
+
+##### ScheduleThreadPoolExecutor
+> ScheduleThreadPoolExecutor  简称 STPE 线程池类中很重要的类
+
+- 线程池的大小可以预定义， 也可自适应
+- 所安排的任务可以定期执行，也可只运行一次
+- STPE扩展了ThreadPoolExecutor类，很相似但不具备定期调度能力
+    - STPE和并发包里的类结合使用是常见的模式之一
+
+
+
+### Java内存模型
