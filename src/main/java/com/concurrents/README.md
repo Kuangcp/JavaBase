@@ -1,7 +1,7 @@
 # Java并发
 > 主要知识来源 Java程序员修炼之道
 
-## 理论知识
+## 【理论知识】
 `线程模型`
 - 共享的，默认可见的可变状态
 - 抢占式线程调度
@@ -45,7 +45,7 @@
     - 内存的局部性
     - 算法设计
     
-### 块结构并发 Java5之前
+### 【块结构并发】 Java5之前
 - 同步和锁 synchronized：
     - 只能锁定对象，不能锁定原始类型
     - 被锁定的兑现给数组中的单个对象不会被锁定
@@ -97,7 +97,7 @@
 
 ********************
 
-### 现代并发 concurrent包
+### 【现代并发】 concurrent包
 
 #### 原子类 java.util.concurrent.atomic
 > 提供适当的原子方法 避免在共享数据上出现竞争危害的方法
@@ -213,7 +213,7 @@ public class Pro<T>{
 
 ************************
 
-### 控制执行
+### 【控制执行】
 #### 任务建模
 > 要把目标代码做成可调用（执行者调用）的结构，而不是单独开线程运行
 > [展示代码](./src/main/java/com/concurrents/schedule/CreateModel.groovy)
@@ -255,6 +255,9 @@ public class Pro<T>{
 - 工作窃取：
 - [一个简单的例子](./src/main/java/com/concurrents/forkjoin/ForkJoinEasyDemo.groovy)
 
+`ForkJoinTask和工作窃取`
 
 
-### Java内存模型
+### 【Java内存模型】
+
+## 【类和字节码】
