@@ -1,12 +1,14 @@
-package com.learn.process
+package com.learn.threads
 
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * Created by https://github.com/kuangcp on 17-8-15  下午5:30
+ * Groovy 关于线程的学习：
+ *
  * 多线程调用 集合的获取迭代器的方法时，会由于同步问题，运行出不是预期的结果，例如得到相同的迭代器对象
  *      加上 synchronized 就可以避免，那这样使用并发包有何意义
- * 原来是要搭配上锁存器使用
+ * 原来是要搭配上锁存器使用.就能严格控制线程的运行顺序逻辑
  *
  */
 
@@ -23,6 +25,7 @@ def threadStart(){
         print("3")
     })
     t.start()
+
 }
 
 def multiProcess(){
