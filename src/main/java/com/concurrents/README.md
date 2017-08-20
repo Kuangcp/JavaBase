@@ -255,9 +255,53 @@ public class Pro<T>{
 - 工作窃取：
 - [一个简单的例子](./src/main/java/com/concurrents/forkjoin/ForkJoinEasyDemo.groovy)
 
-`ForkJoinTask和工作窃取`
+- 由 RecursiveAction 或者 RecursiveTask 派生出来的才能作为任务单元 这俩也是派生ForkJoinTask而来
+    - RecursiveAction 要重写的方法：`protected void compute()`  
+    - RecursiveTask 要重写的的方法：`protected Object compute()`
+- ForkJoinTask里的 invoke 和 invokeAll 
+    - `public final V invoke()`
+    - invoke  执行此任务的开始，如果有必要，等待它的完成，并返回其结果，或者在底层计算完成时抛出一个(未检查的)RuntimeException或错误。
+    - `public static <T extends ForkJoinTask<?>> Collection<T> invokeAll(Collection<T> tasks)`
+    - invokeAll 方法的特点是多个执行，但是只有其中有一个是出现了异常，就会取消所有的task
 
+`ForkJoinTask和工作窃取`
+- ForkJoinTask作为RecursiveAction的超类，他是从动作中返回结果的泛型类型，所以这个类扩展了ForkJoinTask<Void> 
+    - 这使得ForkJoinTask非常适合用MapReduce方式（Google踢出的软件架构，用于大规模数据集的并行计算）返回数据集中归结出的结果
+- ForkJoinTask由ForkJoinPool调度安排，这个池是一个特殊的执行者服务。这个服务维护每个线程的任务列表，并且当某个任务完成的时候，
+    - 他能把挂在满负荷线程上的任务重新安排到空闲线程上去 这就是 `工作窃取`
+
+`并行问题`
+- 可以使用分支合并方法解决的问题：
+    - 模拟大量简单对象的运动，例如粒子效果
+    - 日志文件分析
+    - 从输入中计数的数据操作，比如mapreduce操作
+- 以下的列表检查当前问题及其子任务是一个切实有效的方法，确认是否能用分支合并来解决问题
+    - 问题的子任务是否无需与其他子任务有显式的协作或同步也可以工作？
+    - 子任务是不是不会对数据进行修改，只是经过计算得出些结果？
+    - 对于子任务来说，分而治之是不是很自然的事？子任务是不是会创建更多的子任务，而且他们要比派生出他们的任务粒度更细？
+    - 如果思考的结果是肯定的，就可以适用，如果思考结果是不确定的，用其他的同步方式更合适
 
 ### 【Java内存模型】
+> Java Memory Model   JMM
+
+- 同步动作和被称为偏序的数据结构描述JMM， 
+- JMM 的主要规则：
+    - 在监测对象上的解锁操作与后续的所操作之间存在同步约束关系
+    - 对易失性变量的写入与后续对该变量的读取之间存在同步约束关系
+    - 如果动作A受到动作B的同步约束，则A在B之前发生
+    - 如果在程序中的线程内A出现B之前，则A在B之前发生
+    - 前两个简称为先存后取 
+- 敏感行为：
+    - 构造方法要在那个对象的终结期之前完成（一个对象被终结之前必须已经构造完整）
+    - 开始一个线程的动作受到这个新线程的第一个动作的同步制约
+    - Thread.join() 受到被合并的线程的最后一个动作的同步制约
+    - 如果X在Y之前发生，并且Y在Z之前发生， 则X在Z之前发生（传递性）
+- 重要概念： `如果对象不可改变，确保改变对所有线程可见的相关问题就不会出现`
+
+- 代码块之间的 `之前发生（Happens-Before）` 和 `同步约束（Synchronizes-With）`关系
+    - 之前发生 这种关系表明一段代码在其他代码开始之前就已经全部完成了
+    - 同步约束 这意味着动作继续执行之前必须把他的对象视图与主内存同步
 
 ## 【类和字节码】
+
+### 类加载和类对象
