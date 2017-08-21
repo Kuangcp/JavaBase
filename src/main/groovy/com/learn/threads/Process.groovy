@@ -15,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 def threadStart(){
     // 开启线程的三种方式
     Thread.startDaemon {
-        // 这个是挂在后台做守护线程？
+        // 后台守护线程
         println("1")
     }
     Thread.start {
