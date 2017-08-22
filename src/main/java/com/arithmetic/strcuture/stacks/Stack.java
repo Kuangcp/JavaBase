@@ -4,17 +4,17 @@ package com.arithmetic.strcuture.stacks;
  * 数组栈，top指向栈顶后一个元素即实际长度
  */
 public class Stack implements IStack{
-	int top=-1;
+	private int top=-1;
 	static int maxsize;
-	int [] StackElem;
-	public void SqStack(int max){
+	private int [] StackElem;
+	void SqStack(int max){
 		top = 0;
 		StackElem = new int [max];
 	}
 	public void clear (){
 		top = 0;
 	}
-	public boolean isfull(){
+	private boolean isfull(){
 		return top >= maxsize;
 	}
 	public boolean isEmpty(){

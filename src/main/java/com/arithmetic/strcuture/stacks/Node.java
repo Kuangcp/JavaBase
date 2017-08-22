@@ -6,10 +6,10 @@ public class Node {
 	public Node (){
 		////this (null,null) 报错的说null不是Node类型
 	}
-	public Node(int data){
+	Node(int data){
 		this(data,null);
 	}
-	public Node(int data,Node next){
+	private Node(int data, Node next){
 		this.data = data;
 		this.next = next;
 	}
