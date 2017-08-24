@@ -6,8 +6,6 @@ import java.util.Scanner;
 
 /**
  * Created by https://github.com/kuangcp on 17-8-24  下午7:23
- */
-/*
  * 栈来实现大整数相加      已完成 无误
  */
 public class TwoBigIntPlus extends LinkStack {
