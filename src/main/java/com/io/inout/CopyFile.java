@@ -1,14 +1,3 @@
-/**
- * 关于相对路径文件的复制问题
- */
-/**
- * 读取文件  输出
- *
- * InputStream   所有输入流基类（建立流）（字节流）
- * InputStreamReader 将字节流  转换成 字符流
- * BufferedReader  从字符流输入流读取文件
- *
- */
 package com.io.inout;
 
 import java.io.BufferedReader;
@@ -20,7 +9,15 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-
+/**
+ * 关于相对路径文件的复制问题
+ * 读取文件  输出
+ *
+ * InputStream   所有输入流基类（建立流）（字节流）
+ * InputStreamReader 将字节流  转换成 字符流
+ * BufferedReader  从字符流输入流读取文件
+ *
+ */
 public class CopyFile {
 
 	public static void main(String[] args) {
