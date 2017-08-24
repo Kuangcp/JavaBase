@@ -5,7 +5,7 @@ package com.learn.base
  * 权限修饰符：默认是public
  */
 
-class Person{
+class Persons{
     def private name = "myth"
     def age = 12
     def getName(){
@@ -24,7 +24,7 @@ class AuthorityScope {
     }
     static void main(String[]s){
         def scope = new AuthorityScope()
-        def person = new Person()
+        def person = new Persons()
         println(person.age+person.getName())
 
         println(scope.getNames()+scope.age)
