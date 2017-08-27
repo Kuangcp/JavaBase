@@ -15,8 +15,10 @@ public class ShowMockito {
     @Test
     public void testNums(){
         Nums nums = mock(Nums.class);
+        System.out.println("mock: "+nums.toString());
         when(nums.plus(new Nums("2","1"))).thenReturn(new Nums("21","1"));
-        verify(nums).getBig();
+        System.out.println("mock: "+nums.toString());
+//        verify(nums).getBig();
 
     }
 }
@@ -50,5 +52,13 @@ class Nums{
 
     public void setDot(String dot) {
         this.dot = dot;
+    }
+
+    @Override
+    public String toString() {
+        return "Nums{" +
+                "big='" + big + '\'' +
+                ", dot='" + dot + '\'' +
+                '}';
     }
 }
