@@ -31,4 +31,13 @@ public class StringTest {
         String res = br.readLine();
         logger.info(res);
     }
+
+    @Test
+    public void testSplit(){
+        String test = "name: ui, age:100";
+        String []s = test.split(":|,");
+        for(String sss: s){
+            System.out.println(sss);
+        }
+    }
 }

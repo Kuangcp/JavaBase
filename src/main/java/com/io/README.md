@@ -1,8 +1,5 @@
 # IO操作的学习
-
-## 关于普通IO的文件操作
-
-## NIO
+> [笔记详情](https://github.com/Kuangcp/Notes/blob/master/Java/AdvancedLearning/Io.md)
 
 
 

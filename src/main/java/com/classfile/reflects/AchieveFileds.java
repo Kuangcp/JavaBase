@@ -2,6 +2,7 @@ package com.classfile.reflects;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Created by https://github.com/kuangcp on 17-10-24  上午9:50
@@ -12,10 +13,30 @@ public class AchieveFileds {
 
     public static void main(String[] s){
         multiConstructor();
+        Domain domain = new Domain();
+        domain.setName("dfdfdf");
+        domain.setAge(90L);
+        declareMethodList(domain);
     }
 
-    public void declareMethodList(){
+    /**
+     * 获取所有定义的方法并执行get方法得到数据
+     */
+    public static void declareMethodList(Domain object){
+        Class domain = Domain.class;
+        Method[] methods = domain.getDeclaredMethods();
+        for (Method method : methods){
+            System.out.println(method.getName());
+            if (method.getName().startsWith("get")){
+                try {
+                    Object result = method.invoke(object);
+                    System.out.println("    "+result.toString());
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
 
+        }
     }
 
     /**
