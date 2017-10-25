@@ -15,7 +15,7 @@ import java.util.Map;
  * Map String的相互转换
  */
 public class StringTest {
-    Logger logger = LoggerFactory.getLogger(StringTest.class);
+    private Logger logger = LoggerFactory.getLogger(StringTest.class);
     @Test
     public void testMap(){
         Map<String,String> map = new HashMap<String,String>();

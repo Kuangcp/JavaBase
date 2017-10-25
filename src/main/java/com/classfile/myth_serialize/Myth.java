@@ -1,4 +1,4 @@
-package com.classfile.mythserialize;
+package com.classfile.myth_serialize;
 
 /**
  * Created by https://github.com/kuangcp on 17-10-24  下午3:35
@@ -6,11 +6,20 @@ package com.classfile.mythserialize;
  * @author kuangcp
  */
 public class Myth {
-    String name;
-    String phone;
-    String a;
-    String b;
-    String c;
+    private String name;
+    private String phone;
+    private String a;
+    private String b;
+    private String c;
+    private Long test;
+
+    public Long getTest() {
+        return test;
+    }
+
+    public void setTest(Long test) {
+        this.test = test;
+    }
 
     public String getA() {
         return a;
@@ -50,5 +59,17 @@ public class Myth {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Override
+    public String toString() {
+        return "Myth{" +
+                "name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", a='" + a + '\'' +
+                ", b='" + b + '\'' +
+                ", c='" + c + '\'' +
+                ", test=" + test +
+                '}';
     }
 }

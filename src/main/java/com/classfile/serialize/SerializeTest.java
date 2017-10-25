@@ -4,7 +4,7 @@ import java.io.*;
 
 /**
  * Created by https://github.com/kuangcp on 17-10-24  下午2:27
- * 使用自带的Serializable接口序列化对象 然后反序列化对象
+ * 使用jdk自带的Serializable接口序列化对象 然后反序列化对象
  * 意义在于能够让反射更为准确，装载对象？？
  * @author kuangcp
  */

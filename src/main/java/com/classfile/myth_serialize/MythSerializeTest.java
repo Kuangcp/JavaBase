@@ -1,4 +1,4 @@
-package com.classfile.mythserialize;
+package com.classfile.myth_serialize;
 
 
 
@@ -20,9 +20,10 @@ public class MythSerializeTest {
         Myth domain = new Myth();
         domain.setName("myth");
         domain.setPhone("121212121");
-        domain.setA("s");
-        domain.setB("33");
+//        domain.setA("s");
+//        domain.setB("33");
         domain.setC("3343");
+//        domain.setTest(90909090L);
         mythSerialize.out(domain, "/home/kcp/test/person.txt");
     }
     public static void testIn(){
