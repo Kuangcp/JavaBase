@@ -40,14 +40,14 @@ class DeadLockre {
     private final String id;
     private final Lock locks = new ReentrantLock();
 
-    public DeadLockre(String id) {
+    DeadLockre(String id) {
         this.id = id;
     }
 
-    public String getId() {
+    private String getId() {
         return id;
     }
-    public void preparRun(Food food,  DeadLockre lock){
+    void preparRun(Food food, DeadLockre lock){
         locks.lock(); // 线程先锁住自己的锁
         try {
             System.out.println("准备 currentId: " + id + " resource: " + food.getName() + " prepar other: " + lock.getId()+System.currentTimeMillis());
@@ -61,7 +61,7 @@ class DeadLockre {
         }
         lock.confirmRun(food, this);
     }
-    public void confirmRun(Food food,  DeadLockre lock){
+    private void confirmRun(Food food, DeadLockre lock){
         locks.lock(); // 尝试锁住其他线程 正是这里可能出现死锁，因为这个其他线程已经加锁这里就死锁了
         try {
             System.out.println("确认 currentId: " + id + " resource: " + food.getName() + "confirm other: " + lock.getId()+System.currentTimeMillis());

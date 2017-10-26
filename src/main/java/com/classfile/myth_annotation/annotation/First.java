@@ -8,6 +8,8 @@ import java.lang.annotation.Target;
 /**
  * Created by https://github.com/kuangcp on 17-10-25  下午3:01
  * 参考博客 http://www.cnblogs.com/xd502djj/archive/2012/07/26/2610040.html
+ * 自定义注解：
+ *
  * @author kuangcp
  */
 @Retention(RetentionPolicy.RUNTIME)

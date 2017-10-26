@@ -24,7 +24,7 @@ public class Calculate extends JFrame {
     private JButton btnNull = new JButton("sqrt");
     private JButton btnFour = new JButton("4");
     private JButton btnFive = new JButton("5");
-    private  JButton btnSix = new JButton("6");
+    private JButton btnSix = new JButton("6");
     private JButton btnDecrease = new JButton("-");
     private JButton btnBegin = new JButton("C");
     private JButton btnOne = new JButton("1");
