@@ -14,7 +14,7 @@ import java.nio.charset.Charset;
  */
 public class NioServer {
     private Selector selector = null;
-    static final int PORT = 30000;
+    private static final int PORT = 30000;
     //定义实现编码，解码的字符集
     private Charset charset = Charset.forName("UTF-8");
 
@@ -22,7 +22,7 @@ public class NioServer {
         new NioServer().init();
     }
 
-    public void init()throws Exception{
+    public void init() throws Exception {
         selector = Selector.open();
         //通过OPEN方法来打开一个未绑定的ServerSocketChannel 实例
         ServerSocketChannel server = ServerSocketChannel.open();

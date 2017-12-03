@@ -23,7 +23,7 @@ public class NioClient {
         new NioClient().init();
     }
 
-    public void init()throws Exception{
+    public void init() throws Exception{
         selector = Selector.open();
         InetSocketAddress isa = new InetSocketAddress("127.0.0.1",PORT);
         sc = SocketChannel.open(isa);

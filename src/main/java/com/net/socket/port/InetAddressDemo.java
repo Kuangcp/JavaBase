@@ -21,6 +21,7 @@ public class InetAddressDemo {
 			String ip = inet3.getHostAddress();
 			System.out.println("IP:" + ip);
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
