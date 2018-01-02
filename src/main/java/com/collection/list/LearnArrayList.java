@@ -1,4 +1,4 @@
-package com.list;
+package com.collection.list;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,9 +32,9 @@ public class LearnArrayList {
         System.out.println(Arrays.toString(copy2));
 
         Integer [] target2 = new Integer[5];
-        System.out.println(target2);
+        System.out.println(Arrays.toString(target2));
         Object[] copy3 = list.toArray(target2);
-        System.out.println(copy3);
+        System.out.println(Arrays.toString(copy3));
     }
 
 }

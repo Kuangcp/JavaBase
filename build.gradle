@@ -15,17 +15,19 @@ repositories {
 }
 dependencies {
     compile(
-            libs.'common-lang',
-            libs.'zip4j',
-            libs.'logback-classic',
-            libs.'mockito-core',
-            libs.'groovy',
-            libs.'log4j',
-            libs.'mail',
-            libs.'activation',
-            libs.'httpclient',
-            libs.'httpcore',
-            libs.'myth',
+        libs.'common-lang',
+        libs.'zip4j',
+        libs.'logback-classic',
+        libs.'mockito-core',
+        libs.'groovy',
+        libs.'log4j',
+        libs.'mail',
+        libs.'activation',
+        libs.'httpclient',
+        libs.'httpcore',
+        libs.'myth',
+        compile 'org.eclipse.collections:eclipse-collections-api:9.0.0'
+        compile 'org.eclipse.collections:eclipse-collections:9.0.0'
     )
     testCompile(
             libs.'junit',
