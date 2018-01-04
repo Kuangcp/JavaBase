@@ -17,11 +17,15 @@ public class ThreadStatusTransfer {
                     e.printStackTrace();
                 }
                 System.out.println("Running");
-                try {
-//                    this.wait();
-                    Thread.sleep(90);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                synchronized (this){
+                    System.out.println("同步块");
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    setRunFlag(false);
+                    notifyAll();
                 }
             }
         }
@@ -45,9 +49,13 @@ public class ThreadStatusTransfer {
         thisThread.start();
         try {
             Thread.sleep(2000);
-            this.notify();
+            System.out.println("main");
+//            ThreadStatusTransfer.class.notify();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        System.out.println("结束？");
+        System.out.println(thisThread.isRunFlag());
+        thisThread.setRunFlag(false);
     }
 }
