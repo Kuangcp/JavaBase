@@ -48,7 +48,7 @@ public class Pair <T> {
         return list[list.length/2];
     }
 
-    
+
     /**
      * 得到最小最大值
      * @param list 值集合
