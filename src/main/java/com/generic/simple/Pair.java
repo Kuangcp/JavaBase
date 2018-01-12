@@ -38,6 +38,38 @@ public class Pair <T> {
         this.second = second;
     }
 
+    /**
+     * 简单的泛型方法 可以取代掉以往的Object的工具类的方法
+     * @param list
+     * @param <T>
+     * @return
+     */
+    public static <T> T getMiddle(T[] list){
+        return list[list.length/2];
+    }
 
+    
+    /**
+     * 得到最小最大值
+     * @param list 值集合
+     * @param <T> 类型约束
+     * @return 返回含最大最小值的对象
+     */
+    public static <T extends Comparable> Pair<T> minmax(T[]list){
+        if (list == null || list.length == 0){
+            return null;
+        }
+        T min = list[0];
+        T max = list[0];
+        for (T aList : list) {
+            if (min.compareTo(aList) > 0) {
+                min = aList;
+            }
+            if (max.compareTo(aList) < 0) {
+                max = aList;
+            }
+        }
+        return new Pair<T>(min, max);
+    }
 
 }
