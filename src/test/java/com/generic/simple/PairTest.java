@@ -111,8 +111,26 @@ public class PairTest {
 
     }
 
+    /**
+     * 通配符类型的 超类型限定的 类型变量 约束
+     * @param list 资源
+     * @param result 使用了通配符的超类型的泛型约束  该对象 不能get 只能set
+     */
     public void minMaxBonus(Student[] list, Pair<? super Student> result){
         result.setFirst(list[0]);
         result.setSecond(list[0]);
+//        Student student = result.getSecond();
+//        Human human = result.getSecond();
+    }
+
+    /**
+     * 通配符类型的 类型变量 的约束
+     * @param human 使用了通配符限定的泛型约束的 参数 该对象 不能set 只能get
+     */
+    public void printMessage(Human obj, Pair<? extends Human> human){
+        Human first = human.getFirst();
+//        human.setSecond(obj);
+        System.out.println(first);
+        //        Student second = human.getSecond(); // 正常: 限定了是Human子类
     }
 }
