@@ -39,21 +39,13 @@ public class PairTest {
         pair = pair.minmax(arrays);
         System.out.println(pair.getFirst()+"--"+pair.getSecond());
     }
-    class Human {
 
-    }
-    class Student extends Human{
-
-    }
-    class Junior extends Student{
-
-    }
 
     /**
      * 使用extends通配就不能set能get
      */
     @Test
-    public void testExtends(){
+    public void testExtends1(){
         Pair<Human> humans = new Pair<>();
 
         // 使用泛型通配符,达到类型约束的目的
@@ -102,35 +94,103 @@ public class PairTest {
 //        Human human = pair.getFirst(); 不能get 只能用Object接收,失去了泛型的作用
 //        pair.setFirst(new Human()); //编译报错
 
-
-
-
         Pair<Human> humans = new Pair<>();
-        Student[] list = {new Student(), new Student()};
-        minMaxBonus(list, humans); // 又能放父类???
+        minMaxBonus(student, humans); // 又能放父类???
 
     }
 
-    /**
-     * 通配符类型的 超类型限定的 类型变量 约束
-     * @param list 资源
-     * @param result 使用了通配符的超类型的泛型约束  该对象 不能get 只能set
-     */
-    public void minMaxBonus(Student[] list, Pair<? super Student> result){
-        result.setFirst(list[0]);
-        result.setSecond(list[0]);
-//        Student student = result.getSecond();
-//        Human human = result.getSecond();
-    }
+    //  以下说的set和get是指 泛型类上的成员属性的set和get方法
 
     /**
-     * 通配符类型的 类型变量 的约束
-     * @param human 使用了通配符限定的泛型约束的 参数 该对象 不能set 只能get
+     * 通配符类型的 类型变量 的约束 extends
+     * @param student 使用了通配符限定的泛型约束的参数
+     *    被限定的参数传参,只能是子类型放进去
+     *    被限定的参数,进行操作时 才有限制: 不能set只能get
+     *        get的反而是 自己和 父类型(这个并不是泛型的作用吧,而是多态?)
      */
-    public void printMessage(Human obj, Pair<? extends Human> human){
-        Human first = human.getFirst();
-//        human.setSecond(obj);
+    public Pair<? extends Student> printMessage(Human obj, Pair<? extends Student> student){
+        Human first = student.getFirst();
+        Student second = student.getFirst();// 只是因为多态?
+
+//        student.setSecond(obj);
         System.out.println(first);
         //        Student second = human.getSecond(); // 正常: 限定了是Human子类
+        return student;
+    }
+    /**
+     * 通配符类型的 超类型限定的 类型变量 约束 super
+     * @param student 资源
+     * @param result 使用了通配符的超类型的泛型约束的参数
+     *    被限定的参数传参,只能是子类型放进去
+     *    被限定的参数,进行操作时 才有限制: 不能get(失去了约束)只能set
+     *       set的是Student自己或子类,虽然是super关键字,但是限定的还是子类型范围
+     */
+    public Pair<? super Student> minMaxBonus(Student student, Pair<? super Student> result){
+        result.setFirst(student);
+        result.setSecond(new Junior());
+
+        Object resultSecond = result.getSecond(); // 失去了泛型约束
+//        Human human = result.getSecond();
+        return result;
+    }
+
+    // extends 只能get
+    @Test
+    public void testExtends(){
+        Pair<Junior> pair = new Pair<>();
+        Pair result = printMessage(new Human("name"), pair);
+//        Pair<Human> result = printMessage(new Human("name"), pair); // 可以用原始类型接收但是不能用 父类的类型变量约束的
+    }
+    // super 只能set
+    @Test
+    public void testSupers(){
+        Pair<Human> pair = new Pair<>();
+//        Pair<Junior> pair = new Pair<>(); // 报错限定了是泛型约束变量类型的 自己和父类 子类是不允许的
+        Pair result = minMaxBonus(new Student("how"), pair);
+//        Pair<Human> result = minMaxBonus(new Student("how"), pair); // 可以用原始类型接收但是不能用 父类的类型变量约束的
+        System.out.println(result.getFirst().toString());
+
+    }
+
+
+    class Human {
+        String name;
+        public Human(){}
+        public Human(String name) {
+            this.name = name;
+        }
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+        @Override
+        public String toString() {
+            return "Human{" +
+                    "name='" + name + '\'' +
+                    '}';
+        }
+    }
+    class Student extends Human{
+        String school;
+        public Student(){}
+        public Student(String school) {
+            this.school = school;
+        }
+        public String getSchool() {
+            return school;
+        }
+        public void setSchool(String school) {
+            this.school = school;
+        }
+        @Override
+        public String toString() {
+            return "Student{" +
+                    "school='" + school + '\'' +
+                    '}';
+        }
+    }
+    class Junior extends Student{
     }
 }
