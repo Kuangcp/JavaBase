@@ -1,17 +1,9 @@
 package com.generic.simple;
 
 import org.apache.poi.ss.formula.functions.T;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
-import java.io.File;
 import java.util.Date;
-
-import static org.mockito.Mockito.*;
 
 /**
  * Created by https://github.com/kuangcp on 18-1-11  下午5:38
@@ -42,12 +34,11 @@ public class PairTest {
 
 
     /**
-     * 使用extends通配就不能set能get
+     * 使用extends
      */
     @Test
     public void testExtends1(){
         Pair<Human> humans = new Pair<>();
-
         // 使用泛型通配符,达到类型约束的目的
         Pair<? extends Human> classmates = humans;
 //        classmates.setSecond(new Student()); //报错
@@ -62,49 +53,12 @@ public class PairTest {
         System.out.println(humans.getFirst());
     }
 
-    /**
-     * 使用super通配就不能get能set
-     */
-    @Test
-    public void testSuper(){
-        Student student = new Student();
-        Human human = student;// 子类可以赋值给父类
-
-//        Human human1 = new Human();
-//        Student student1 = human1; 父类不能赋值给子类
-
-
-        Pair<Student> students = new Pair<>();
-//        Pair<? super Student> pair = students;
-//        pair.setFirst(new Student()); // 能够set 约束类型或子类
-//        pair.setFirst(new Junior());
-
-        students.setFirst(new Junior()); // Pair<Junior> 可以转成 Pair<Student>
-//        Junior junior = students.getFirst(); get失败 只能用Student接收
-
-        Pair<Human> humanPair = new Pair<>();
-//        Pair<Student> classmates = humanPair;
-        humanPair.setFirst(new Junior());
-//        Junior junior = humanPair.getFirst(); get失败只能用Human接收
-
-
-//        pair.setFirst(new Human());
-//        pair.setFirst(new Object());// 不能set 父类
-
-//        Human human = pair.getFirst(); 不能get 只能用Object接收,失去了泛型的作用
-//        pair.setFirst(new Human()); //编译报错
-
-        Pair<Human> humans = new Pair<>();
-        minMaxBonus(student, humans); // 又能放父类???
-
-    }
-
-    //  以下说的set和get是指 泛型类上的成员属性的set和get方法
+    //  以下是关于通配符, 说的set和get是指 泛型类Pair 上的成员属性的set和get方法
 
     /**
      * 通配符类型的 类型变量 的约束 extends
      * @param student 使用了通配符限定的泛型约束的参数
-     *    被限定的参数传参,只能是子类型放进去
+     *    被限定的参数 student 被传参,只能是子类型放进去
      *    被限定的参数,进行操作时 才有限制: 不能set只能get
      *        get的反而是 自己和 父类型(这个并不是泛型的作用吧,而是多态?)
      */
@@ -121,7 +75,7 @@ public class PairTest {
      * 通配符类型的 超类型限定的 类型变量 约束 super
      * @param student 资源
      * @param result 使用了通配符的超类型的泛型约束的参数
-     *    被限定的参数传参,只能是父类型放进去
+     *    被限定的参数 result 被传参,只能是父类型放进去
      *    被限定的参数,进行操作时 才有限制: 不能get(失去了约束)只能set
      *       set的是Student自己或子类,虽然是super关键字,但是限定的还是子类型范围
      */
@@ -151,6 +105,39 @@ public class PairTest {
         System.out.println(result.getFirst().toString());
 
     }
+
+    // 无限定通配符
+    /**
+     * 判断Pair是否是空指针
+     *      通过将contains转换成泛型方法 , 可以避免使用通配符类型;
+     *      public static <T> boolean hasNull(Pair<T> p)
+     *      但是带有通配符的版本可读性更强.
+     * @param p 泛型变量约束的类, 不需要实际的类型
+     * @return boolean 判断两个属性是否有一个是空.
+     */
+    public boolean hasNull(Pair<?> p){
+        // get方法返回值只能返回给Object, set方法不能被调用, 甚至不能用Object调用
+        return p.getFirst() == null || p.getSecond() == null;
+    }
+    // 简单使用 T 来进行约束, 所以这俩方法有啥区别呢?
+    public boolean hasNulls(Pair<T> p){
+        return p.getSecond() == null || p.getFirst() == null;
+    }
+    @Test
+    public void testHasNull(){
+        Pair<Human> humanPair = new Pair<>();
+        humanPair.setSecond(new Human("fds"));
+        boolean result = hasNull(humanPair);
+        System.out.println("结果:"+result);
+    }
+    @Test
+    public void testHasNulls(){
+        Pair<Human> humanPair = new Pair<>();
+        humanPair.setSecond(new Human("fds"));
+        humanPair.setFirst(new Student("df"));
+        System.out.println(humanPair.getFirst().toString());
+    }
+
 
 
     class Human {
