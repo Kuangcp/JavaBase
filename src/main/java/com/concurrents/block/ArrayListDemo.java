@@ -87,9 +87,10 @@ class ElementArrayList {
                 }
                 System.out.println();
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }finally {
             lock.unlock();
         }
-        // try catch finally 这个结构下来，catch多行注释掉，会影响finally ？？
     }
 }
