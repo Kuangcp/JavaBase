@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.util.Properties;
 /**
  * Created by Myth on 2017/1/13 0013 - 20:51
+ * TODO 读取不到文件
  */
 public class ReadProperties {
 
@@ -12,7 +13,7 @@ public class ReadProperties {
     public ReadProperties(){}
 
     /**
-     * 输入的是从src开始的路径
+     * 输入的是从src开始的路径: src/main/resources/a.properties
      * @param file
      */
     public ReadProperties(String file){
@@ -34,7 +35,7 @@ public class ReadProperties {
         return Double.parseDouble(getString(key));
     }
     public static void main(String []a){
-        ReadProperties read = new ReadProperties("com/myth/questions/Things.properties");
+        ReadProperties read = new ReadProperties("src/main/resources/math/SimplexMethod.properties");
         String result = read.getString("78");
 //        System.out.println(result);
         try {
