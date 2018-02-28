@@ -1,6 +1,7 @@
 package com.generic.simple;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by https://github.com/kuangcp on 18-1-11  下午5:44
