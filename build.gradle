@@ -26,8 +26,8 @@ dependencies {
         libs.'httpclient',
         libs.'httpcore',
         libs.'myth',
-        compile 'org.eclipse.collections:eclipse-collections-api:9.0.0'
-        compile 'org.eclipse.collections:eclipse-collections:9.0.0'
+//        compile 'org.eclipse.collections:eclipse-collections-api:9.0.0',
+//        compile 'org.eclipse.collections:eclipse-collections:9.0.0'
     )
     testCompile(
             libs.'junit',
