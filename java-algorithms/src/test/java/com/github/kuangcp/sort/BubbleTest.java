@@ -11,9 +11,7 @@ import org.junit.Test;
 public class BubbleTest {
 
     @Test
-    public void testSort() throws Exception {
-        Bubble.sort(new int[]{0});
+    public void testSort() {
+        Bubble.sort(InitBigData.getData("bubble"));
     }
 }
-
-//Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme

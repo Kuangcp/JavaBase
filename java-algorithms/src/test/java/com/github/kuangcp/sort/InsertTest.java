@@ -12,7 +12,7 @@ public class InsertTest {
 
     @Test
     public void testSort() throws Exception {
-        Insert.sort(new int[]{0});
+        Insert.sort(InitBigData.getData("insert"));
     }
 }
 

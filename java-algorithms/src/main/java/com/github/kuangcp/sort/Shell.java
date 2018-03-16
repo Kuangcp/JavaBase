@@ -25,8 +25,7 @@ public class Shell {
 			arrs.add(arr[i]);
 		}
 		datalist.add(arrs);
-		int length = arr.length;
-		int lastd=length,d = 0;
+        int lastd= arr.length,d = 0;
 		
 		boolean flag = true;
 		while(flag){
@@ -37,17 +36,17 @@ public class Shell {
 			//将数据分组
 			for(int i=0;i<d;i++){
 				//一组的内存
-				List<Integer> dat = new ArrayList<Integer>();//分配内存
-				
-//				index=0;
-//				temp.add(dat);
-				for(int j=0;j<datalist.size();j++){
-					List<Integer> temps = datalist.get(j);
-					for(int k=i;k<temps.size();k+=d){
+				//分配内存
+				List<Integer> dat = new ArrayList<>();
+
+                for (List<Integer> temps : datalist) {
+                    for (int k = i; k < temps.size(); k += d) {
 //						System.out.println(temps.get(k));
-						if(temps.get(k)!=null)dat.add(temps.get(k));
-					}
-				}
+                        if (temps.get(k) != null){
+                            dat.add(temps.get(k));
+                        }
+                    }
+                }
 				int [] arrdat = new int[dat.size()];
 				for(int h=0;h<dat.size();h++){
 					arrdat[h] = dat.get(h);

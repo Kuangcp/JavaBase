@@ -9,10 +9,10 @@ import org.junit.Test;
  * @date 18-3-16  下午10:28
  */
 public class BoxTest {
-    Box box = new Box();
 
     @Test
-    public void testSort() throws Exception {
-        box.sort(new int[]{0});
+    public void testSort() {
+        Box box = new Box();
+        box.sort(InitBigData.getData("box"));
     }
 }

@@ -11,7 +11,7 @@ import org.junit.Test;
 public class ShellTest {
 
     @Test
-    public void testSort() throws Exception {
-        Shell.sort(new int[]{0});
+    public void testSort() {
+        Shell.sort(InitBigData.getData("shell"));
     }
 }

@@ -11,8 +11,8 @@ import org.junit.Test;
 public class SelectTest {
 
     @Test
-    public void testSort() throws Exception {
-        Select.sort(new int[]{0});
+    public void testSort() {
+        Select.sort(InitBigData.getData("select"));
     }
 }
 
