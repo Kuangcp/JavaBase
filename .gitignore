@@ -13,8 +13,9 @@ bin/
 .classpath
 .project
 Servers/
+
 # Gradle #
 .gradle
-
+build/
 
 

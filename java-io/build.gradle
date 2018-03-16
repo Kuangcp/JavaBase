@@ -1,0 +1,4 @@
+dependencies{
+    compile libs.'zip4j'
+    compile libs.'common-lang'
+}
