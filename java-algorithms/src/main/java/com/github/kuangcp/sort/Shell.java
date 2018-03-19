@@ -19,28 +19,26 @@ public class Shell {
 		//如果改变了引用的指向，是对调用者无效的，要改变该引用的内存上的数据
 //		Test.display(arr);
 	
-		List<List<Integer>> datalist  = new ArrayList<List<Integer>>();
-		List <Integer> arrs= new ArrayList<Integer>();
-		for (int i=0;i<arr.length;i++){
-			arrs.add(arr[i]);
-		}
-		datalist.add(arrs);
-        int lastd= arr.length,d = 0;
+		List<List<Integer>> dataList  = new ArrayList<>();
+		List <Integer> arrs= new ArrayList<>();
+        for (int anArr : arr) {
+            arrs.add(anArr);
+        }
+		dataList.add(arrs);
+        int last= arr.length;
+		int randomNum;
 		
 		boolean flag = true;
 		while(flag){
-			d = (int)(Math.random()*lastd-1)+1;//取得随机数.比上一次取得值要小
+			randomNum = (int)(Math.random()*last-1)+1;//取得随机数.比上一次取得值要小
 //			System.out.println("\n随机数 :  "+d);
-			List<List<Integer>> temp  = new ArrayList<List<Integer>>();
+			List<List<Integer>> temp  = new ArrayList<>();
 //			int index = 0;
 			//将数据分组
-			for(int i=0;i<d;i++){
-				//一组的内存
-				//分配内存
+			for(int i=0;i<randomNum;i++){
 				List<Integer> dat = new ArrayList<>();
-
-                for (List<Integer> temps : datalist) {
-                    for (int k = i; k < temps.size(); k += d) {
+                for (List<Integer> temps : dataList) {
+                    for (int k = i; k < temps.size(); k += randomNum) {
 //						System.out.println(temps.get(k));
                         if (temps.get(k) != null){
                             dat.add(temps.get(k));
@@ -52,10 +50,8 @@ public class Shell {
 					arrdat[h] = dat.get(h);
 				}
 				Insert.sort(arrdat);//直接插入排序
-				if(d==1){
-					for(int h=0;h<arr.length;h++){
-						arr[h] = arrdat[h];
-					}
+				if(randomNum==1){
+                    System.arraycopy(arrdat, 0, arr, 0, arr.length);
 					flag=false;
 				}
 //				TestSortTime.display(arrdat);
@@ -63,8 +59,8 @@ public class Shell {
 //				System.out.println("缓存数组内存长度:"+dat.size());
 				
 			}
-			datalist =  temp;
-			lastd = d;
+			dataList =  temp;
+			last = randomNum;
 		}
 	}
 }
