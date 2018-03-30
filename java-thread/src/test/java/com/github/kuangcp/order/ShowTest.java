@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *  在Junit中, test方法来测试多线程, 因为一个Test注解的方法看做main方法的时候, 没有阻塞的,所以直接退出了
  *  里面写的开启的线程都是隶属于他的子线程, 所以也一起跟着关闭了.
  *  思路:
- *      TODO 阻塞test方法的线程
+ *
  * @author kuangcp
  */
 public class ShowTest {

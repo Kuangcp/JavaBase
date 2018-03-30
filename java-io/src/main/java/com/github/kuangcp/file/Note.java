@@ -14,13 +14,13 @@ import java.io.FileWriter;
 public class Note extends JFrame implements ActionListener {
 
     //定义所需组件
-    private JTextArea jta = null;
+    private JTextArea jta;
 
     public static void main(String[] args) {
         Note n = new Note();
     }
 
-    private Note(){
+    private Note() {
         jta = new JTextArea();
         JMenuBar jmb = new JMenuBar();
         JMenu jm1 = new JMenu("打开");
@@ -54,14 +54,14 @@ public class Note extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent N) {
-        if (N.getActionCommand().equals("打开")){
+        if (N.getActionCommand().equals("打开")) {
             openFile();
-        }
-        else if (N.getActionCommand().equals("保存")){
+        } else if (N.getActionCommand().equals("保存")) {
             saveFile();
         }
     }
-    private void openFile(){
+
+    private void openFile() {
         System.out.println("打开");
         //推荐JFileChooser 组件
         JFileChooser jc = new JFileChooser();
@@ -78,9 +78,9 @@ public class Note extends JFrame implements ActionListener {
             br = new BufferedReader(new FileReader(filePath));
 
             //从文件读取信息显示到jta
-            String s ="";
+            String s = "";
             StringBuilder result = new StringBuilder();
-            while((s=br.readLine())!=null){
+            while ((s = br.readLine()) != null) {
 
                 result.append(s).append("\r\n");
             }
@@ -88,7 +88,7 @@ public class Note extends JFrame implements ActionListener {
             jta.setText(result.toString());
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 if (br != null) {
                     br.close();
@@ -98,7 +98,8 @@ public class Note extends JFrame implements ActionListener {
             }
         }
     }
-    private void saveFile(){
+
+    private void saveFile() {
         System.out.println("保存");
         //出现保存对话框
         JFileChooser jc = new JFileChooser();
@@ -111,20 +112,19 @@ public class Note extends JFrame implements ActionListener {
         String file = jc.getSelectedFile().getAbsolutePath();
         BufferedWriter bw = null;
         //准备写入到指定目录下
-        try{
+        try {
             bw = new BufferedWriter(new FileWriter(file));
 
             bw.write(this.jta.getText());
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             try {
                 if (bw != null) {
                     bw.close();
                 }
             } catch (Exception e2) {
-                // TODO: handle exception
             }
         }
 
