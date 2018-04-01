@@ -2,14 +2,13 @@ package com.github.kuangcp.forkjoin
 
 import java.util.concurrent.ForkJoinPool
 import java.util.concurrent.RecursiveAction
-import java.util.concurrent.RecursiveTask
 
 /**
  * Created by https://github.com/kuangcp on 17-8-18  下午9:46
  * 使用ForkJoin的简单例子，但是没看懂。
  */
 class Element implements Comparable{
-    Long id;
+    Long id
 
     Element(Long id) {
         this.id = id
@@ -20,18 +19,8 @@ class Element implements Comparable{
     }
 
     @Override
-    public String toString() {
-        return "Element{" +
-                "id=" + id +
-                '}';
-    }
-}
-
-class AnTask extends RecursiveTask{
-
-    @Override
-    protected Object compute() {
-        return null
+    String toString() {
+        return "Element{" +"id=" + id +'}'
     }
 }
 
@@ -59,7 +48,7 @@ class ElementSorter extends RecursiveAction{
         int lCt = 0
         int rCt = 0
         while (lCt < left.size() && rCt <right.size()){
-            result[i++] = (left.result[lCt].compareTo(right.result[rCt]) < 0)?
+            result[i++] = left.result[lCt] < right.result[rCt] ?
             left.result[lCt++]:right.result[rCt++]
         }
         while(lCt < left.size()){
@@ -82,7 +71,7 @@ class ElementSorter extends RecursiveAction{
             System.arraycopy(elements, start, result, 0, size())
             Arrays.sort(result, 0, size())
         }else{
-            int mid = size() / 2
+            int mid = (int) (size() / 2)
             ElementSorter left = new ElementSorter(elements, start, start+mid)
             ElementSorter right = new ElementSorter(elements, start+mid, end)
 //            执行处，将两个task执行，这两个task的任务就是递归的拆解整个数组，然后进入下面的合并排序里
@@ -97,10 +86,9 @@ class ElementSorter extends RecursiveAction{
 }
 
 // 生成数据
-lu = new ArrayList<>()
-text = ""
-for (i=0; i<12; i++){
-    element = new Element(System.currentTimeMillis())
+List lu = new ArrayList<Element>()
+for (int i=0; i<12; i++){
+    Element element = new Element(System.currentTimeMillis())
     lu.add(element)
     sleep(2)
 }
