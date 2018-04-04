@@ -19,7 +19,7 @@ public class Quarter {
 
     /**
      * 使用构造器来进行对象的复制
-     * @param quarter
+     * @param quarter 原对象
      */
     public Quarter(Quarter quarter){
         this.numerator = quarter.getNumerator();
@@ -33,7 +33,7 @@ public class Quarter {
 
     /**
      * 整数构造器 分母为1
-     * @param numerator
+     * @param numerator 整数
      */
     public Quarter(Integer numerator){
         this.numerator = numerator;
@@ -42,19 +42,19 @@ public class Quarter {
 
     /**
      * 使用字符串来构造一个分数 例如 -12.3434
-     * @param num
+     * @param num 字符串
      */
     public Quarter(String num){
-        Integer N,D,minus=1;
+        Integer N,D,minus;
         //负数
+        String [] data = num.split("\\.");
+
         if(num.startsWith("-")){
             minus = -1;
-            String [] datas = num.split("\\.");
-//            System.out.println(datas.length);
-            if(datas.length==2) {//含有小数点
-                N = Integer.parseInt(datas[0].substring(1));//整数部分
-                D = Integer.parseInt(datas[1]);
-                Double dd = Math.pow(10.0,datas[1].length());
+            if(data.length==2) {//含有小数点
+                N = Integer.parseInt(data[0].substring(1));//整数部分
+                D = Integer.parseInt(data[1]);
+                Double dd = Math.pow(10.0,data[1].length());
                 Integer temp = dd.intValue();
                 this.setNumerator(minus*N*temp+D);
                 this.setDenominator(temp);
@@ -64,11 +64,10 @@ public class Quarter {
                 this.setDenominator(1);
             }
         }else{//正数
-            String [] datas = num.split("\\.");
-            if(datas.length==2) {
-                N = Integer.parseInt(datas[0]);
-                D = Integer.parseInt(datas[1]);
-                Double dd = Math.pow(10.0,datas[1].length());
+            if(data.length==2) {
+                N = Integer.parseInt(data[0]);
+                D = Integer.parseInt(data[1]);
+                Double dd = Math.pow(10.0,data[1].length());
                 Integer temp = dd.intValue();
                 this.setNumerator(N*temp+D);
                 this.setDenominator(temp);
@@ -76,14 +75,13 @@ public class Quarter {
                 this.setNumerator(Integer.parseInt(num));
                 this.setDenominator(1);
             }
-
         }
         this.simple();
 
     }
     /**
      * 加法运算
-     * @param other
+     * @param other 加数
      * @return 分数对象
      */
     public Quarter plus(Quarter other){
@@ -97,7 +95,7 @@ public class Quarter {
         Integer other_N = other.getNumerator();
 
         //分母相同
-        if(this.getDenominator()==other.getDenominator()){
+        if(this.getDenominator().equals(other.getDenominator())){
             Integer temp = one_N+other_N;
 //                System.out.println("分子运算结果"+temp);
             result.setNumerator(temp);
@@ -113,10 +111,10 @@ public class Quarter {
     }
     /**
      * 乘法运算
-     * @param other
-     * @return
+     * @param other 乘数(分数对象)
+     * @return Quarter 分数对象
      */
-    public Quarter multi(Quarter other)throws Exception{
+    public Quarter multi(Quarter other) {
         Quarter result = new Quarter();
         //排除特殊情况
         if(this.getNumerator()==0 || other.getNumerator()==0){
@@ -130,7 +128,6 @@ public class Quarter {
             result.setDenominator(0);
             return result;
         }
-
         Integer one_D = this.getDenominator();
         Integer one_N = this.getNumerator();
         Integer other_D = other.getDenominator();
@@ -139,6 +136,12 @@ public class Quarter {
         result.setDenominator((one_D*other_D));
         return result.simple();
     }
+
+    /**
+     * 乘法运算
+     * @param other 乘数(整数)
+     * @return Quarter 分数对象
+     */
     public Quarter multi(Integer other){
         Quarter result = new Quarter();
         result.setNumerator((this.getNumerator()*other));
@@ -147,8 +150,8 @@ public class Quarter {
     }
     /**
      * 减法操作
-     * @param other
-     * @return
+     * @param other 减数
+     * @return Quarter 分数对象
      */
     public Quarter reduce(Quarter other){
         Quarter quarter = new Quarter(other);
@@ -158,11 +161,11 @@ public class Quarter {
     }
 
     /**
-     * 除法
-     * @param other
-     * @return
+     * 除法运算
+     * @param other 除数
+     * @return Quarter 分数对象
      */
-    public Quarter divide(Quarter other)throws Exception{
+    public Quarter divide(Quarter other) {
         Quarter quarter = new Quarter(other);
         if(this.getNumerator()==0){
             quarter.setNumerator(0);
@@ -184,16 +187,15 @@ public class Quarter {
     }
 
     /**
-     * 自己和另一个数比较，如果大就返回true
-     * @param other
-     * @return
+     * 是否大于另一个数
+     * @param other 比较的数
      */
     public boolean bigger(Quarter other){
         return this.reduce(other).upZero();
     }
     /**
      * 化简函数 使用辗转相除来求最小公约数进行化简
-     * @return
+     * @return Quarter 分数对象
      */
     public Quarter simple(){
         Integer D,N;
@@ -207,12 +209,9 @@ public class Quarter {
             N=D;
             D=temp;
         }
-//        System.out.println("公约数"+N);
         if(N>0){
-            Integer tempD=1,tempN=1;
+            Integer tempD=1;
             if(this.getDenominator()<0) tempD=-1;
-            if(this.getNumerator()<0) tempN=-1;
-//            System.out.println(tempD+":"+tempN+"___"+this.getDenominator()+":"+this.getNumerator());
             this.setDenominator(tempD*this.getDenominator()/N);
             this.setNumerator(tempD*this.getNumerator()/N);
         }
@@ -221,19 +220,13 @@ public class Quarter {
 
     /**
      * 判断是否大于 0
-     * @return
      */
-    public boolean upZero(){
+    public boolean upZero() {
         this.simple();
-        if(this.getDenominator()==0){
-//            System.out.println("该数是非数");
-            return false;
-        }
-        return  !this.isZero()&&this.getNumerator()>0;
+        return this.getDenominator() != 0 && !this.isZero() && this.getNumerator() > 0;
     }
     /**
      * 判断该分数是否是零
-     * @return
      */
     public boolean isZero(){
         boolean flag = false;
@@ -250,21 +243,14 @@ public class Quarter {
      * 判断是否为1
      */
     public boolean  isOne(){
-        if(this.getNumerator()==1 && this.getDenominator()==1){
-            return true;
-        }
-        return false;
+        return this.getNumerator() == 1 && this.getDenominator() == 1;
     }
 
     /**
-     * 判断是否是非数
-     * @return
+     * 判断是否为 非数
      */
     public boolean isInfinity(){
-        if(this.getDenominator()==0){
-            return true;
-        }
-        return false;
+        return this.getDenominator() == 0;
     }
 
     public Integer getNumerator() {
@@ -284,12 +270,6 @@ public class Quarter {
     }
     @Override
     public String toString() {
-
-//        if("1".equals(denominator)){
-//            return "[ "+numerator+" ]";
-//        }else {
-//            return "[ " + numerator + "/" + denominator + " ]";
-//        }
         if(1==denominator){
             return numerator+" ";
         }else if(0==denominator){
@@ -299,4 +279,3 @@ public class Quarter {
         }
     }
 }
-//不使用符号标记，重写方法，体现代码规范

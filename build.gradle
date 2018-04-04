@@ -9,6 +9,9 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        maven{
+            url "https://gitee.com/kcp1104/MavenRepos/raw/master"
+        }
     }
     dependencies{
         testCompile libs.'junit'

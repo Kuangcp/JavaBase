@@ -23,7 +23,7 @@ public class QuarterTest {
         log("复制对象构造器："+q.toString()+"-->"+p.toString());
     }
     @Test
-    public void testPlus() throws Exception{
+    public void testPlus() {
         log("测试加法：");
         Quarter a = new Quarter(2,3);
         Quarter b = new Quarter(4,3);
@@ -38,14 +38,14 @@ public class QuarterTest {
         log("结果是："+a.toString()+"-"+b.toString()+"-->"+a.reduce(b).toString());
     }
     @Test
-    public void testDivide()throws Exception{
+    public void testDivide() {
         log("测试除法：");
         Quarter a = new Quarter(25,1);
         Quarter b = new Quarter(0,3);
         log("结果是："+a.toString()+" / "+b.toString()+"-->"+a.divide(b).toString());
     }
     @Test
-    public void testMulti()throws Exception{
+    public void testMulti() {
         log("测试乘法：");
         Integer temp = 6;
         Quarter a = new Quarter(25,1);
