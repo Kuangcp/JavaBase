@@ -11,6 +11,13 @@ package com.github.kuangcp.valatile
 class RepeatRead {
     volatile boolean close
 
+    void start(String thread){
+        if(!isClose()){
+            return
+        }
+        setClose(false)
+        println("启动"+thread)
+    }
     void close(String thread){
         if(isClose()){
             return
@@ -21,15 +28,14 @@ class RepeatRead {
 }
 
 class Main{
-
-    static void main(String[]s){
-
+    static void main(String[] s){
         RepeatRead read = new RepeatRead()
         new Thread(new Runnable() {
             @Override
             void run() {
                 println('线程1')
-                sleep(1000)
+                read.start('线程1')
+                sleep(300)
                 read.close('线程1')
             }
         }).start()
@@ -37,6 +43,7 @@ class Main{
             @Override
             void run() {
                 println('线程2')
+                read.start('线程1')
                 sleep(1200)
                 read.close('线程2')
             }
@@ -45,6 +52,7 @@ class Main{
             @Override
             void run() {
                 println('线程3')
+                read.start('线程1')
                 sleep(1300)
                 read.close('线程3')
             }
