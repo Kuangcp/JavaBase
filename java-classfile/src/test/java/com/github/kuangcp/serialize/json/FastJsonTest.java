@@ -1,0 +1,29 @@
+package com.github.kuangcp.serialize.json;
+
+import com.alibaba.fastjson.JSON;
+import com.github.kuangcp.serialize.Person;
+
+import java.util.List;
+
+/**
+ * Created by https://github.com/kuangcp
+ *
+ * @author kuangcp
+ * @date 18-5-30  下午5:55
+ */
+public class FastJsonTest implements JsonTool{
+    @Override
+    public void read() {
+
+    }
+
+    @Override
+    public void write(int total, List<Person> dataList) {
+        JSON.toJSON(dataList);
+    }
+
+    @Override
+    public String getName() {
+        return "FastJson";
+    }
+}
