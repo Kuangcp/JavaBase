@@ -1,6 +1,5 @@
 dependencies{
     compile libs['httpclient']
     compile libs['httpcore']
-    compile libs['log4j']
     compile libs['logback-classic']
 }
