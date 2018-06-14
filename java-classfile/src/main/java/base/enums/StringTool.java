@@ -2,7 +2,7 @@ package base.enums;
 
 /**
  * Created by https://github.com/kuangcp
- * 枚举类实现单例模式, 适用于单例外部对象, 如果单例自身,
+ * 枚举类实现单例模式, 适用于单例外部对象, 如果单例自身 则更为简洁
  * @author kuangcp
  */
 public enum StringTool {
