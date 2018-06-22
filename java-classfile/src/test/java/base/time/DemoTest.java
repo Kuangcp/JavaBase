@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 /**
@@ -11,6 +12,7 @@ import org.junit.Test;
  *
  * @author kuangcp
  */
+@Slf4j
 public class DemoTest {
 
   @Test
@@ -31,8 +33,7 @@ public class DemoTest {
   }
 
   @Test
-  public void testLoop(){
-
+  public void testLoop() {
 
   }
 
@@ -44,19 +45,19 @@ public class DemoTest {
 
   @Test
   public void testReset() {
-    LocalDateTime receive = LocalDateTime.of(2018, 5, 10, 12, 22, 0);
+    LocalDateTime receive = LocalDateTime.of(2018, 6, 21, 3, 22, 0);
     boolean result = isNeedReset(Timestamp.valueOf(receive), QuestConstants.STEP_MONTH);
-    System.out.println(receive + " = " + result);
+    log.debug(receive + " = " + result);
 
     receive = LocalDateTime.of(2018, 6, 10, 12, 22, 0);
     result = isNeedReset(Timestamp.valueOf(receive), QuestConstants.STEP_DAY);
-    System.out.println(receive + " = " + result);
+    log.debug(receive + " = " + result);
     receive = LocalDateTime.of(2018, 6, 30, 12, 22, 0);
     result = isNeedReset(Timestamp.valueOf(receive), QuestConstants.STEP_WEEK);
-    System.out.println(receive + " = " + result);
-    receive = LocalDateTime.of(2018, 6, 30, 12, 22, 0);
+    log.debug(receive + " = " + result);
+    receive = LocalDateTime.of(2018, 6, 22, 19, 22, 0);
     result = isNeedReset(Timestamp.valueOf(receive), QuestConstants.STEP_DAY);
-    System.out.println(receive + " = " + result);
+    log.debug(receive + " = " + result);
 
   }
 
@@ -69,7 +70,11 @@ public class DemoTest {
 
     switch (step) {
       case QuestConstants.STEP_DAY:
-        cal.set(Calendar.DAY_OF_MONTH, receiveTime.toLocalDateTime().getDayOfMonth() + 1);
+        if (receiveTime.toLocalDateTime().getHour() < QuestConstants.RESET_TIME) {
+          cal.set(Calendar.DAY_OF_MONTH, receiveTime.toLocalDateTime().getDayOfMonth());
+        } else {
+          cal.set(Calendar.DAY_OF_MONTH, receiveTime.toLocalDateTime().getDayOfMonth() + 1);
+        }
         break;
       case QuestConstants.STEP_WEEK:
         int difference = 7 - receiveTime.toLocalDateTime().getDayOfWeek().getValue()
@@ -84,11 +89,14 @@ public class DemoTest {
         return false;
     }
     Timestamp end = new Timestamp(cal.getTimeInMillis());
-    System.out.println("任务重置时间 "+end);
-    return Timestamp.valueOf(LocalDateTime.now()).after(end);
+    log.debug("任务重置时间 " + end);
+    LocalDateTime virtualNow = LocalDateTime.of(2018, 6, 22, 22, 22, 0);
+    return Timestamp.valueOf(virtualNow).after(end);
+//    return Timestamp.valueOf(LocalDateTime.now()).after(end);
   }
 
   interface QuestConstants {
+
     // 任务类型
     int TYPE_MAIN = 1;
     int TYPE_DAILY = 2;
@@ -101,7 +109,7 @@ public class DemoTest {
     int STEP_WEEK = 3;
     int STEP_MONTH = 4;
 
-    int RESET_TIME = 0; // 重置时间
+    int RESET_TIME = 20; // 重置时间
     int RESET_DAY_OF_WEEK = 2;
     int RESET_DAY_OF_MONTH = 1;
   }

@@ -1,0 +1,68 @@
+import ch.qos.logback.classic.encoder.PatternLayoutEncoder
+import ch.qos.logback.classic.filter.ThresholdFilter
+
+import static ch.qos.logback.classic.Level.*
+
+def baseDir = "./logs/"
+
+appender("STDOUT", ConsoleAppender) {
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{HH:mm:ss.SSS} |-%-5level|%thread| %logger{36}:%-4L▌> %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = DEBUG
+  }
+}
+appender("DEBUG_FILE", RollingFileAppender) {
+  file = "${baseDir}debug.log"
+  append = true
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${baseDir}debug.%d{yyyy-MM-dd}.log"
+  }
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{MM-dd HH:mm:ss.SSS} |-%-5level |%thread| %logger{36}:%L - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = DEBUG
+  }
+}
+appender("WARN_FILE", RollingFileAppender) {
+  file = "${baseDir}warn.log"
+  append = true
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${baseDir}warn.%d{yyyy-MM-dd}.log"
+  }
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{MM-dd HH:mm:ss.SSS} |-%-5level %logger{36}:%L - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = WARN
+  }
+}
+appender("INFO_FILE", RollingFileAppender) {
+  file = "${baseDir}info.log"
+  append = true
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${baseDir}info.%d{yyyy-MM-dd}.log"
+  }
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{MM-dd HH:mm:ss.SSS} |-%-5level %logger{36}:%L - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = INFO
+  }
+}
+appender("ERROR_FILE", RollingFileAppender) {
+  file = "${baseDir}error.log"
+  append = true
+  rollingPolicy(TimeBasedRollingPolicy) {
+    fileNamePattern = "${baseDir}error.%d{yyyy-MM-dd}.log"
+  }
+  encoder(PatternLayoutEncoder) {
+    pattern = "%d{MM-dd HH:mm:ss.SSS} | %thread |-%-5level %logger{36}:%L - %msg%n"
+  }
+  filter(ThresholdFilter) {
+    level = ERROR
+  }
+}
+root(INFO, ["STDOUT", "DEBUG_FILE", "WARN_FILE", "INFO_FILE", "ERROR_FILE"])

@@ -1,41 +1,43 @@
 ext {
-    ver = [
-            logback   : '1.2.3',
-            httpclient: '4.3.1',
-            jedis     : '2.9.0',
-            junit     : '4.12',
-            zip4j     : '1.3.2',
-            groovy    : '2.3.6',
-            mail      : '1.4.7',
-            jackson : '2.9.5'
-    ]
-    libs = [
-            "junit"          : "junit:junit:$ver.junit",
-            "mockito-core"   : "org.mockito:mockito-core:2.7.22",
+  ver = [
+      logback   : '1.2.3',
+      httpclient: '4.3.1',
+      jedis     : '2.9.0',
+      junit     : '4.12',
+      zip4j     : '1.3.2',
+      groovy    : '2.3.6',
+      mail      : '1.4.7',
+      jackson   : '2.9.5'
+  ]
+  libs = [
+      "lombok"             : "org.projectlombok:lombok:1.18.0",
 
-            "logback-classic": "ch.qos.logback:logback-classic:$ver.logback",
+      "junit"              : "junit:junit:$ver.junit",
+      "mockito-core"       : "org.mockito:mockito-core:2.7.22",
 
-            "common-lang"    : "org.apache.commons:commons-lang3:3.4",
+      "logback-classic"    : "ch.qos.logback:logback-classic:$ver.logback",
 
-            "zip4j"          : "net.lingala.zip4j:zip4j:$ver.zip4j",
+      "common-lang"        : "org.apache.commons:commons-lang3:3.4",
 
-            "groovy"         : "org.codehaus.groovy:groovy-all:$ver.groovy",
+      "zip4j"              : "net.lingala.zip4j:zip4j:$ver.zip4j",
 
-            "mail"           : "javax.mail:mail:$ver.mail",
-            "activation"     : "javax.activation:activation:1.1.1",
+      "groovy"             : "org.codehaus.groovy:groovy-all:$ver.groovy",
 
-            "httpclient"     : "org.apache.httpcomponents:httpclient:4.5.2",
-            "httpcore"       : "org.apache.httpcomponents:httpcore:4.4.4",
+      "mail"               : "javax.mail:mail:$ver.mail",
+      "activation"         : "javax.activation:activation:1.1.1",
 
-            // JSON lib
-            "gson" : "com.google.code.gson:gson:2.8.5",
-            "fastjson" : "com.alibaba:fastjson:1.2.47",
-            "jackson_core" : "com.fasterxml.jackson.core:jackson-core:$ver.jackson",
-            "jackson_databind" : "com.fasterxml.jackson.core:jackson-databind:$ver.jackson",
-            "jackson_annotations" : "com.fasterxml.jackson.core:jackson-annotations:$ver.jackson",
+      "httpclient"         : "org.apache.httpcomponents:httpclient:4.5.2",
+      "httpcore"           : "org.apache.httpcomponents:httpcore:4.4.4",
 
-            // 自定义源中的构件
-            "JavaToolKit"    : "com.github.kuangcp:JavaToolKit:1.1.1-SNAPSHOT"
+      // JSON lib
+      "gson"               : "com.google.code.gson:gson:2.8.5",
+      "fastjson"           : "com.alibaba:fastjson:1.2.47",
+      "jackson_core"       : "com.fasterxml.jackson.core:jackson-core:$ver.jackson",
+      "jackson_databind"   : "com.fasterxml.jackson.core:jackson-databind:$ver.jackson",
+      "jackson_annotations": "com.fasterxml.jackson.core:jackson-annotations:$ver.jackson",
 
-    ]
+      // 自定义源中的构件
+      "JavaToolKit"        : "com.github.kuangcp:JavaToolKit:1.1.1-SNAPSHOT"
+
+  ]
 }
