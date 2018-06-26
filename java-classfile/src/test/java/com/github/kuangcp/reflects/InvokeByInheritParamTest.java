@@ -43,7 +43,7 @@ public class InvokeByInheritParamTest {
     }
   }
 
-  // 简单的反射
+  // 标准的反射方式
   @Test
   public void testInvoke() {
 
@@ -100,8 +100,8 @@ public class InvokeByInheritParamTest {
 //      if()
       try {
         method = Logic.class.getDeclaredMethod("isFailed", RunParam.class);
-      } catch (Exception e) {
-//        log.error("{}", "获取方法失败");
+      } catch (NoSuchMethodException e) {
+//        log.error("{}", "获取方法失败", e);
         method = Logic.class.getDeclaredMethod("isFailed", CommonParam.class);
       }
 
@@ -124,16 +124,17 @@ public class InvokeByInheritParamTest {
   @Test
   public void comparePerformance() {
 
-    // 经过测试发现 使用异常来控制逻辑, 耗时是直接反射 的 5-7倍
+    int concurrent = 1000000;
+    // 经过测试发现 使用异常来控制逻辑, 耗时是直接反射 的 4-7 倍
     GetRunTime record = new GetRunTime();
     record.startCount();
-    for (int i = 0; i < 100000; i++) {
+    for (int i = 0; i < concurrent; i++) {
       testInvokeTryTwice();
     }
     record.endCount("twice ");
 
     record.startCount();
-    for (int i = 0; i < 100000; i++) {
+    for (int i = 0; i < concurrent; i++) {
       testInvokeBySuper();
     }
     record.endCount("correct ");
