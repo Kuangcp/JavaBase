@@ -1,5 +1,4 @@
 dependencies {
-  compile libs['JavaToolKit']
   compile libs['fastjson']
   compile libs['gson']
   compile libs['jackson_core']
@@ -7,4 +6,7 @@ dependencies {
   compile libs['jackson_annotations']
   compile libs['lombok']
   compile libs['logback-classic']
+
+  // Mine
+  compile libs['JavaToolKit']
 }

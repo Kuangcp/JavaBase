@@ -4,11 +4,11 @@ apply from: 'dependency.gradle'
 allprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
-    group='com.github.kuangcp'
+    group = 'com.github.kuangcp'
     // 默认gradle构建的输出目录是build目录, out目录是idea的编译目录,两个目录看着不舒服, 注:out目录下只有production和test
-    buildDir='out/build'
-    sourceCompatibility=1.8
-    targetCompatibility=1.8
+    buildDir = 'out/build'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
     repositories {
         mavenLocal()
         mavenCentral()
