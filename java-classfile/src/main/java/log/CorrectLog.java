@@ -5,20 +5,22 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Created by https://github.com/kuangcp
  * find correct log way by use logback
+ *
  * @author kuangcp
  */
 @Slf4j
 public class CorrectLog {
 
   /**
-   * F G H L is correct, but G & L often use
+   * F G H L is correct
+   * result: L is recommend; G is improvise;
    *
-   * log.error("", e);
-   * log.error("{}", "Error : ", e);
+   * G : log.error("", e);
+   * L : log.error("{}", "Error : ", e);
    */
   public static void main(String[] a) {
     try {
-      double num = 1/0;
+      double num = 1 / 0;
       System.out.println(num);
     } catch (Exception e) {
       // compile error
@@ -60,6 +62,4 @@ public class CorrectLog {
       log.error("{}", "Error : ", e); //L
     }
   }
-
-
 }
