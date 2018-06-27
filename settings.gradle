@@ -1,4 +1,4 @@
 rootProject.name = 'JavaBase'
 include('java-io', 'java-generic', 'java-collection', 'java-classfile',
         'java-gui', 'java-socket', 'java-thread', 'java-algorithms',
-        'java-question', 'java-model', 'java-8', 'java-concurrents')
+        'java-question', 'java-model', 'java-8', 'java-concurrents', 'java-test')
