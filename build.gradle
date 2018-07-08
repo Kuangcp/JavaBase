@@ -2,22 +2,22 @@ apply from: 'dependency.gradle'
 
 // 全局项目的配置
 allprojects {
-    apply plugin: 'java'
-    apply plugin: 'idea'
-    group = 'com.github.kuangcp'
-    // 默认gradle构建的输出目录是build目录, out目录是idea的编译目录,两个目录看着不舒服, 注:out目录下只有production和test
-    buildDir = 'out/build'
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        // 自定义的仓库源
-        maven{
-            url = "https://gitee.com/kcp1104/MavenRepos/raw/master"
-        }
+  apply plugin: 'java'
+  apply plugin: 'idea'
+  group = 'com.github.kuangcp'
+  // 默认 gradle 构建的输出目录是build目录, out目录是idea的编译目录,两个目录看着不舒服, 注:out目录下只有production和test
+  buildDir = 'out/build'
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    // 自定义的仓库源
+    maven {
+      url = "https://gitee.com/gin9/MavenRepos/raw/master"
     }
-    dependencies{
-        testCompile libs['junit']
-    }
+  }
+  dependencies {
+    testCompile libs['junit']
+  }
 }
