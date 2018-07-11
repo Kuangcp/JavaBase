@@ -15,7 +15,7 @@ public class CorrectLog {
    * F G H L is correct
    * result: L is recommend; G is improvise;
    *
-   * G : log.error("", e);
+   * G : log.error("", e); F G H actually is equivalent
    * L : log.error("{}", "Error : ", e);
    */
   public static void main(String[] a) {
