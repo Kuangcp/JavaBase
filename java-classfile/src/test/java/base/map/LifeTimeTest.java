@@ -12,7 +12,7 @@ import org.junit.Test;
 public class LifeTimeTest {
 
 
-  // Map 键相同, 后者覆盖前者
+  // Map 键相同, 后者覆盖前者, idea 检测到了会直接警告
   @Test
   public void testReplace(){
     Map<String, String> cache = new HashMap<>();
