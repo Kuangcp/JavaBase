@@ -17,7 +17,7 @@ ext {
 
       "logback-classic"    : "ch.qos.logback:logback-classic:$ver.logback",
 
-      "common-lang"        : "org.apache.commons:commons-lang3:3.4",
+      "common-lang"        : "org.apache.commons:commons-lang3:3.7",
 
       "zip4j"              : "net.lingala.zip4j:zip4j:$ver.zip4j",
 
@@ -29,6 +29,9 @@ ext {
       "httpclient"         : "org.apache.httpcomponents:httpclient:4.5.2",
       "httpcore"           : "org.apache.httpcomponents:httpcore:4.4.4",
 
+      // db
+      "jedis"              : "redis.clients:jedis:2.9.0",
+      
       // JSON lib
       "gson"               : "com.google.code.gson:gson:2.8.5",
       "fastjson"           : "com.alibaba:fastjson:1.2.47",

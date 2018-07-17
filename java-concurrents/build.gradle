@@ -1,1 +1,10 @@
-apply plugin: 'groovy'
+apply {
+  'java'
+  'groovy'
+}
+dependencies{
+  compile libs['jedis']
+  compile libs['lombok']
+  compile libs['logback-classic']
+
+}
