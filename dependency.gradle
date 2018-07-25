@@ -31,7 +31,7 @@ ext {
 
       // db
       "jedis"              : "redis.clients:jedis:2.9.0",
-      
+
       // JSON lib
       "gson"               : "com.google.code.gson:gson:2.8.5",
       "fastjson"           : "com.alibaba:fastjson:1.2.47",
@@ -39,7 +39,7 @@ ext {
       "jackson_databind"   : "com.fasterxml.jackson.core:jackson-databind:$ver.jackson",
       "jackson_annotations": "com.fasterxml.jackson.core:jackson-annotations:$ver.jackson",
 
-      // 自定义源中的构件
+      // mine
       "JavaToolKit"        : "com.github.kuangcp:JavaToolKit:1.1.1-SNAPSHOT"
 
   ]

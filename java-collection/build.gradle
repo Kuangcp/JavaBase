@@ -1,0 +1,7 @@
+apply {
+  'java'
+}
+dependencies{
+  compile libs['lombok']
+  compile libs['logback-classic']
+}
