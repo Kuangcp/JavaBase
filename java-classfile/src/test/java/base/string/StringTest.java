@@ -2,6 +2,7 @@ package base.string;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
@@ -39,4 +40,12 @@ public class StringTest {
   }
 
   // TODO instanceof 会影响性能么?
+
+
+
+  @Test
+  public void testUUID(){
+    String uuid = UUID.randomUUID().toString();
+    log.debug("uuid: ={}", uuid);
+  }
 }

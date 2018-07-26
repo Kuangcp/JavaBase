@@ -6,6 +6,7 @@ dependencies {
   compile libs['jackson_annotations']
   compile libs['lombok']
   compile libs['logback-classic']
+  compile libs['common-lang']
 
   // Mine
   compile libs['JavaToolKit']
