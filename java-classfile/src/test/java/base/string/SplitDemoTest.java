@@ -16,7 +16,7 @@ public class SplitDemoTest {
     // 对比去除最后一个字符的性能, 第二个略好一些
     @Test
     public void testRemoveChar() throws Exception {
-        GetRunTime time = new GetRunTime();
+        GetRunTime time = GetRunTime.INSTANCE;
         time.startCount();
         for (int i = 0; i < 10000000; i++) {
             splitDemo.removeChar("122113.11.1.1.1.", ".");

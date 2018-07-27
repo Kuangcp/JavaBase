@@ -126,7 +126,7 @@ public class InvokeByInheritParamTest {
 
     int concurrent = 1000000;
     // 经过测试发现 使用异常来控制逻辑, 耗时是直接反射 的 4-7 倍
-    GetRunTime record = new GetRunTime();
+    GetRunTime record = GetRunTime.INSTANCE;
     record.startCount();
     for (int i = 0; i < concurrent; i++) {
       testInvokeTryTwice();

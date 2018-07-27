@@ -19,7 +19,7 @@ public class ArrayListTest {
   private List<String> one = new ArrayList<>();
   private List<String> two = new ArrayList<>();
   private int num = 100_000;
-  private GetRunTime runTime = new GetRunTime();
+  private GetRunTime runTime = GetRunTime.INSTANCE;
 
 
   @Test
@@ -52,7 +52,7 @@ public class ArrayListTest {
 
   // 交集
   @Test
-  public void testInter(){
+  public void testInter() {
     runTime.startCount();
     one.retainAll(two);
 

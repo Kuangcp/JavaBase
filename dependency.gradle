@@ -40,7 +40,7 @@ ext {
       "jackson_annotations": "com.fasterxml.jackson.core:jackson-annotations:$ver.jackson",
 
       // mine
-      "JavaToolKit"        : "com.github.kuangcp:JavaToolKit:1.1.1-SNAPSHOT"
+      "JavaToolKit"        : "com.github.kuangcp:JavaToolKit:1.1.2-SNAPSHOT"
 
   ]
 }
