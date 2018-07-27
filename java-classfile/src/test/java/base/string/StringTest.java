@@ -10,14 +10,13 @@ import org.junit.Test;
  * Created by https://github.com/kuangcp
  *
  * @author kuangcp
- * @date 18-4-4  上午11:32
  */
 @Slf4j
 public class StringTest {
 
   // Forced type conversion
   @Test
-  public void testConvert(){
+  public void testConvert() {
     List<Object> list = new ArrayList<>();
     list.add(1);
     Object name = list.get(0);
@@ -31,10 +30,10 @@ public class StringTest {
 
     log.debug("list.size {}", list.size());
 
-    if(list.get(0) instanceof String){
-      String nullToString = (String)list.get(0);
+    if (list.get(0) instanceof String) {
+      String nullToString = (String) list.get(0);
       log.debug("string: {}", nullToString);
-    }else{
+    } else {
       log.debug("not String : {}", list.get(0));
     }
   }
@@ -42,9 +41,8 @@ public class StringTest {
   // TODO instanceof 会影响性能么?
 
 
-
   @Test
-  public void testUUID(){
+  public void testUUID() {
     String uuid = UUID.randomUUID().toString();
     log.debug("uuid: ={}", uuid);
   }

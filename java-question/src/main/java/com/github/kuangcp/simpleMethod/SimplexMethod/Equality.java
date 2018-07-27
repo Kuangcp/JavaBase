@@ -8,53 +8,55 @@ import java.util.List;
  * 约束式的对象形式
  */
 public class Equality {
-    //式子的代表性参数X的下标
-    Integer index;
-    List<Double> params;
-    Double result;
 
-    public Equality(){
-        params = new ArrayList<Double>();
-    }
-    public Equality(List<Double> params,Double result){
-        this.params = params;
-        this.result = result;
-    }
+  //式子的代表性参数X的下标
+  Integer index;
+  List<Double> params;
+  Double result;
 
-    public List<Double> getParams() {
-        return params;
-    }
+  public Equality() {
+    params = new ArrayList<Double>();
+  }
 
-    public void setParams(List<Double> params) {
-        this.params = params;
-    }
+  public Equality(List<Double> params, Double result) {
+    this.params = params;
+    this.result = result;
+  }
 
-    public Double getResult() {
-        return result;
-    }
+  public List<Double> getParams() {
+    return params;
+  }
 
-    public void setResult(Double result) {
-        this.result = result;
-    }
+  public void setParams(List<Double> params) {
+    this.params = params;
+  }
 
-    public Integer getIndex() {
-        return index;
-    }
+  public Double getResult() {
+    return result;
+  }
 
-    public void setIndex(Integer index) {
-        this.index = index;
-    }
+  public void setResult(Double result) {
+    this.result = result;
+  }
 
-    @Override
-    public String toString() {
-        String sub="[";
-        for(Double b:params){
-            sub+=b+",";
-        }
-        sub+="]";
-        return "Equality{" +
-                "params=" + sub +
-                ", result=" + result +
-                '}';
+  public Integer getIndex() {
+    return index;
+  }
+
+  public void setIndex(Integer index) {
+    this.index = index;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sub = new StringBuilder("[");
+    for (Double b : params) {
+      sub.append(b).append(",");
     }
+    sub.append("]");
+    return "Equality{" +
+        "params=" + sub +
+        ", result=" + result +
+        '}';
+  }
 }

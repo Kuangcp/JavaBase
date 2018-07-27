@@ -2,7 +2,6 @@ package com.github.kuangcp.simpleMethod.SimplexMethodQuarter;
 
 
 import com.github.kuangcp.simpleMethod.number.Quarter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,60 +10,61 @@ import java.util.List;
  * 约束式的对象形式 分数数据类型
  */
 public class Equality {
-    Integer index;
-    List<Quarter> params;
-    Quarter result;
 
-    public Equality(){
-        params = new ArrayList<Quarter>();
-    }
+  Integer index;
+  List<Quarter> params;
+  Quarter result;
 
-    public Equality(List<Quarter> params, Quarter result) {
-        this.params = params;
-        this.result = result;
-    }
+  public Equality() {
+    params = new ArrayList<Quarter>();
+  }
 
-    public Equality(Integer index, List<Quarter> params, Quarter result) {
-        this.index = index;
-        this.params = params;
-        this.result = result;
-    }
+  public Equality(List<Quarter> params, Quarter result) {
+    this.params = params;
+    this.result = result;
+  }
 
-    public Integer getIndex() {
-        return index;
-    }
+  public Equality(Integer index, List<Quarter> params, Quarter result) {
+    this.index = index;
+    this.params = params;
+    this.result = result;
+  }
 
-    public void setIndex(Integer index) {
-        this.index = index;
-    }
+  public Integer getIndex() {
+    return index;
+  }
 
-    public List<Quarter> getParams() {
-        return params;
-    }
+  public void setIndex(Integer index) {
+    this.index = index;
+  }
 
-    public void setParams(List<Quarter> params) {
-        this.params = params;
-    }
+  public List<Quarter> getParams() {
+    return params;
+  }
 
-    public Quarter getResult() {
-        return result;
-    }
+  public void setParams(List<Quarter> params) {
+    this.params = params;
+  }
 
-    public void setResult(Quarter result) {
-        this.result = result;
-    }
+  public Quarter getResult() {
+    return result;
+  }
 
-    @Override
-    public String toString() {
-        String sub="[";
-        for(Quarter b:params){
-            sub+=b.toString()+",";
-        }
-        sub+="]";
-        return "Equality{" +
-                "index=" + index +
-                ", params=" + sub +
-                ", result=" + result +
-                '}';
+  public void setResult(Quarter result) {
+    this.result = result;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sub = new StringBuilder("[");
+    for (Quarter b : params) {
+      sub.append(b.toString()).append(",");
     }
+    sub.append("]");
+    return "Equality{" +
+        "index=" + index +
+        ", params=" + sub +
+        ", result=" + result +
+        '}';
+  }
 }

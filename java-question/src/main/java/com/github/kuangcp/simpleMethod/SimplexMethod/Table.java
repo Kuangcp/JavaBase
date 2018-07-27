@@ -8,77 +8,78 @@ import java.util.List;
  * 单纯形表的总体结构中的行对象
  */
 public class Table {
-    private Double Cb;
-    private Integer Xb;
-    private Double b;
-    private List<Double> rows;
-    private Double O;
 
-    public Table(){}
-    public Table(Double cb, Integer xb, Double b, List<Double> row, Double o) {
-        Cb = cb;
-        Xb = xb;
-        this.b = b;
-        O = o;
-        rows = new ArrayList<Double>();
-        for(Double temp:row){
-            rows.add(temp);
-        }
-    }
+  private Double Cb;
+  private Integer Xb;
+  private Double b;
+  private List<Double> rows;
+  private Double O;
 
-    public Double getCb() {
-        return Cb;
-    }
+  public Table() {
+  }
 
-    public void setCb(Double cb) {
-        Cb = cb;
-    }
+  public Table(Double cb, Integer xb, Double b, List<Double> row, Double o) {
+    Cb = cb;
+    Xb = xb;
+    this.b = b;
+    O = o;
+    rows = new ArrayList<>();
+    rows.addAll(row);
+  }
 
-    public Integer getXb() {
-        return Xb;
-    }
+  public Double getCb() {
+    return Cb;
+  }
 
-    public void setXb(Integer xb) {
-        Xb = xb;
-    }
+  public void setCb(Double cb) {
+    Cb = cb;
+  }
 
-    public Double getB() {
-        return b;
-    }
+  public Integer getXb() {
+    return Xb;
+  }
 
-    public void setB(Double b) {
-        this.b = b;
-    }
+  public void setXb(Integer xb) {
+    Xb = xb;
+  }
 
-    public List<Double> getRows() {
-        return rows;
-    }
+  public Double getB() {
+    return b;
+  }
 
-    public void setRows(List<Double> rows) {
-        this.rows = rows;
-    }
+  public void setB(Double b) {
+    this.b = b;
+  }
 
-    public Double getO() {
-        return O;
-    }
+  public List<Double> getRows() {
+    return rows;
+  }
 
-    public void setO(Double o) {
-        O = o;
-    }
+  public void setRows(List<Double> rows) {
+    this.rows = rows;
+  }
 
-    @Override
-    public String toString() {
-        String sub="[";
-        for(Double b:rows){
-            sub+=b+",";
-        }
-        sub+="]";
-        return "Table{" +
-                "Cb=" + Cb +
-                ", Xb=" + Xb +
-                ", b=" + b +
-                ", rows=" + sub +
-                ", O=" + O +
-                '}';
+  public Double getO() {
+    return O;
+  }
+
+  public void setO(Double o) {
+    O = o;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sub = new StringBuilder("[");
+    for (Double b : rows) {
+      sub.append(b).append(",");
     }
+    sub.append("]");
+    return "Table{" +
+        "Cb=" + Cb +
+        ", Xb=" + Xb +
+        ", b=" + b +
+        ", rows=" + sub +
+        ", O=" + O +
+        '}';
+  }
 }
