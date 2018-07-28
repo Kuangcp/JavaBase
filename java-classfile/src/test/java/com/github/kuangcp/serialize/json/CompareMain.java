@@ -1,7 +1,7 @@
 package com.github.kuangcp.serialize.json;
 
 import com.github.kuangcp.serialize.Person;
-import com.myth.time.GetRunTime;
+import com.github.kuangcp.time.GetRunTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

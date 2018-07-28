@@ -1,6 +1,6 @@
 package com.github.kuangcp.reflects;
 
-import com.myth.time.GetRunTime;
+import com.github.kuangcp.time.GetRunTime;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import lombok.Data;
@@ -59,11 +59,7 @@ public class InvokeByInheritParamTest {
       result = (boolean) method.invoke(new Logic(), runParam);
       log.debug("invoke result = {}", result);
 
-    } catch (NoSuchMethodException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
+    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
       e.printStackTrace();
     }
   }

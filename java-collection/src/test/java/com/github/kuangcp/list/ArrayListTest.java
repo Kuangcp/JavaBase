@@ -3,7 +3,7 @@ package com.github.kuangcp.list;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-import com.myth.time.GetRunTime;
+import com.github.kuangcp.time.GetRunTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;

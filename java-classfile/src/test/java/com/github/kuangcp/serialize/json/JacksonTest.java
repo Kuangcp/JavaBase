@@ -3,7 +3,6 @@ package com.github.kuangcp.serialize.json;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kuangcp.serialize.Person;
-import org.ho.yaml.wrapper.ObjectWrapper;
 
 import java.util.List;
 

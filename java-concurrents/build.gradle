@@ -1,7 +1,9 @@
-apply {
-  'java'
-  'groovy'
+plugins{
+  id 'groovy'
+  id 'maven'
+  id 'java'
 }
+
 dependencies{
   compile libs['jedis']
   compile libs['lombok']
