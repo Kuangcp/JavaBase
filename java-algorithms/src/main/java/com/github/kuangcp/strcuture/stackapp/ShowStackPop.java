@@ -23,14 +23,14 @@ public class ShowStackPop {
     public void deal(String temp){
         if(!this.status.isEmpty()){
             temp += status.pop();
-            deal(new String(temp));
+            deal(temp);
         }
         if(!this.datas.isEmpty()){
             status.push(this.datas.pop());
-            deal(new String(temp));
+            deal(temp);
         }
         if (status.isEmpty()){
-            results.add(temp.toString());
+            results.add(temp);
         }
 
     }
