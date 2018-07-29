@@ -12,23 +12,21 @@ import org.junit.Test;
  */
 @Slf4j
 public class UsuallyTest {
-
   /**
    * conclusion
    */
-  @Test
+  @Test(expected = NullPointerException.class)
   public void testNullLoop() {
     List<String> list = new ArrayList<>();
     list.add("1");
     list.add("2");
-    list.forEach(item -> {
-      log.debug("item : {}", item);
-    });
+    list.forEach(item -> log.debug("item : {}", item));
     list = null;
 
-//    list.forEach(item ->{
-//      log.debug("item : {}", item);
-//    });
+    log.debug("lambda foreach");
+    list.forEach(item -> log.debug("item : {}", item));
+
+    log.debug("foreach");
     for (String s : list) {
       log.debug("item : {}", s);
     }

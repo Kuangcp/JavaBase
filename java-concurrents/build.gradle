@@ -1,12 +1,14 @@
-plugins{
+plugins {
   id 'groovy'
   id 'maven'
   id 'java'
 }
 
-dependencies{
+dependencies {
   compile libs['jedis']
   compile libs['lombok']
   compile libs['logback-classic']
+  compile libs['groovy']
+  compile libs['zip4j']
 
 }
