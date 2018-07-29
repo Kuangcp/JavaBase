@@ -6,9 +6,6 @@ plugins {
 
 dependencies {
   compile libs['jedis']
-  compile libs['lombok']
-  compile libs['logback-classic']
   compile libs['groovy']
   compile libs['zip4j']
-
 }

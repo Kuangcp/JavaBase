@@ -27,10 +27,15 @@ allprojects {
     jcenter()
   }
 
+  // all project will add
   dependencies {
     annotationProcessor libs['lombok']
-    implementation libs['lombok']
+    compileOnly libs['lombok']
+    testAnnotationProcessor libs['lombok']
+    testCompileOnly libs['lombok']
+
     compile libs['logback-classic']
+
     testCompile libs['junit']
     testCompile libs['hamcrest']
   }

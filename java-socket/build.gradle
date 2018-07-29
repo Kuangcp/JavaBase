@@ -1,5 +1,4 @@
 dependencies{
     compile libs['httpclient']
     compile libs['httpcore']
-    compile libs['logback-classic']
 }

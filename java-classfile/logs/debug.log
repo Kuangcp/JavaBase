@@ -87,3 +87,47 @@
 07-29 10:55:41.172 |-DEBUG |Test worker| base.list.UsuallyTest:23 - item : 1
 07-29 10:55:41.173 |-DEBUG |Test worker| base.list.UsuallyTest:23 - item : 2
 07-29 10:55:41.174 |-DEBUG |Test worker| base.list.UsuallyTest:26 - lambda foreach
+07-29 12:46:01.226 |-INFO  |Test worker| c.g.kuangcp.read.ClassScannerTest:27 - size: 3
+07-29 12:46:09.069 |-DEBUG |Test worker| c.g.k.r.InvokeByInheritParamTest:57 - invoke result = false
+07-29 12:46:09.070 |-DEBUG |Test worker| c.g.k.r.InvokeByInheritParamTest:60 - invoke result = true
+07-29 12:46:09.354 |-DEBUG |Test worker| base.string.StringTest:47 - uuid: =367ba7b9-5a54-42a1-9389-1dc540c11cd9
+07-29 12:46:09.355 |-DEBUG |Test worker| base.string.StringTest:23 - name: 1
+07-29 12:46:09.356 |-DEBUG |Test worker| base.string.StringTest:24 - is null : false
+07-29 12:46:09.356 |-DEBUG |Test worker| base.string.StringTest:25 - is String : false
+07-29 12:46:09.357 |-DEBUG |Test worker| base.string.StringTest:26 - is int : true
+07-29 12:46:09.357 |-DEBUG |Test worker| base.string.StringTest:31 - list.size 3
+07-29 12:46:09.358 |-DEBUG |Test worker| base.string.StringTest:37 - not String : 1
+07-29 12:46:09.365 |-DEBUG |Test worker| base.time.DemoTest:92 - 任务重置时间 2018-07-01 20:00:00.0
+07-29 12:46:09.366 |-DEBUG |Test worker| base.time.DemoTest:50 - 2018-06-21T03:22 = false
+07-29 12:46:09.366 |-DEBUG |Test worker| base.time.DemoTest:92 - 任务重置时间 2018-07-10 20:00:00.0
+07-29 12:46:09.367 |-DEBUG |Test worker| base.time.DemoTest:54 - 2018-06-10T12:22 = false
+07-29 12:46:09.374 |-DEBUG |Test worker| base.time.DemoTest:92 - 任务重置时间 2018-08-02 20:00:00.0
+07-29 12:46:09.375 |-DEBUG |Test worker| base.time.DemoTest:57 - 2018-06-30T12:22 = false
+07-29 12:46:09.376 |-DEBUG |Test worker| base.time.DemoTest:92 - 任务重置时间 2018-07-22 20:00:00.0
+07-29 12:46:09.376 |-DEBUG |Test worker| base.time.DemoTest:60 - 2018-06-22T19:22 = false
+07-29 12:46:09.392 |-DEBUG |Test worker| base.time.OffsetTest:28 - compare: lastSignInTime=Thu Jul 26 01:01:09 CST 2018, yesterday=Sat Jul 28 00:00:09 CST 2018
+07-29 12:46:09.400 |-DEBUG |Test worker| base.list.UsuallyTest:23 - item : 1
+07-29 12:46:09.401 |-DEBUG |Test worker| base.list.UsuallyTest:23 - item : 2
+07-29 12:46:09.401 |-DEBUG |Test worker| base.list.UsuallyTest:26 - lambda foreach
+07-29 13:13:36.655 |-INFO  |Test worker| c.g.kuangcp.read.ClassScannerTest:27 - size: 3
+07-29 13:13:44.323 |-DEBUG |Test worker| c.g.k.r.InvokeByInheritParamTest:57 - invoke result = false
+07-29 13:13:44.323 |-DEBUG |Test worker| c.g.k.r.InvokeByInheritParamTest:60 - invoke result = true
+07-29 13:13:44.599 |-DEBUG |Test worker| base.string.StringTest:47 - uuid: =8485a324-0df7-4ed3-8240-4ce19484fcd8
+07-29 13:13:44.600 |-DEBUG |Test worker| base.string.StringTest:23 - name: 1
+07-29 13:13:44.601 |-DEBUG |Test worker| base.string.StringTest:24 - is null : false
+07-29 13:13:44.601 |-DEBUG |Test worker| base.string.StringTest:25 - is String : false
+07-29 13:13:44.602 |-DEBUG |Test worker| base.string.StringTest:26 - is int : true
+07-29 13:13:44.602 |-DEBUG |Test worker| base.string.StringTest:31 - list.size 3
+07-29 13:13:44.602 |-DEBUG |Test worker| base.string.StringTest:37 - not String : 1
+07-29 13:13:44.610 |-DEBUG |Test worker| base.time.DemoTest:92 - 任务重置时间 2018-07-01 20:00:00.0
+07-29 13:13:44.611 |-DEBUG |Test worker| base.time.DemoTest:50 - 2018-06-21T03:22 = false
+07-29 13:13:44.611 |-DEBUG |Test worker| base.time.DemoTest:92 - 任务重置时间 2018-07-10 20:00:00.0
+07-29 13:13:44.612 |-DEBUG |Test worker| base.time.DemoTest:54 - 2018-06-10T12:22 = false
+07-29 13:13:44.617 |-DEBUG |Test worker| base.time.DemoTest:92 - 任务重置时间 2018-08-02 20:00:00.0
+07-29 13:13:44.618 |-DEBUG |Test worker| base.time.DemoTest:57 - 2018-06-30T12:22 = false
+07-29 13:13:44.618 |-DEBUG |Test worker| base.time.DemoTest:92 - 任务重置时间 2018-07-22 20:00:00.0
+07-29 13:13:44.619 |-DEBUG |Test worker| base.time.DemoTest:60 - 2018-06-22T19:22 = false
+07-29 13:13:44.638 |-DEBUG |Test worker| base.time.OffsetTest:28 - compare: lastSignInTime=Thu Jul 26 01:01:44 CST 2018, yesterday=Sat Jul 28 00:00:44 CST 2018
+07-29 13:13:44.646 |-DEBUG |Test worker| base.list.UsuallyTest:23 - item : 1
+07-29 13:13:44.646 |-DEBUG |Test worker| base.list.UsuallyTest:23 - item : 2
+07-29 13:13:44.647 |-DEBUG |Test worker| base.list.UsuallyTest:26 - lambda foreach
