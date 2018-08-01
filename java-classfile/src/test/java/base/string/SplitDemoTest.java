@@ -1,7 +1,6 @@
 package base.string;
 
 import com.github.kuangcp.time.GetRunTime;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**

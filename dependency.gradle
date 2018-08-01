@@ -44,7 +44,7 @@ ext {
       "jackson_annotations": "com.fasterxml.jackson.core:jackson-annotations:$ver.jackson",
 
       // mine
-      "JavaToolKit"        : "com.github.kuangcp:JavaToolKit:0.0.3-SNAPSHOT"
+      "JavaToolKit"        : "com.github.kuangcp:JavaToolKit:0.0.4-SNAPSHOT"
 
   ]
 }
