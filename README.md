@@ -11,7 +11,7 @@
 ## 目录
 
 | module | comment |
-|:---|:----|:----|
+|:----|:----|
 | [![java-8](https://img.shields.io/badge/Java-8-blue.svg)](/java-8)                           | Java8学习
 | [![java-collection](https://img.shields.io/badge/java-collection-blue.svg)](/java-collection)| 算法
 | [![java-algorithms](https://img.shields.io/badge/Java-algorithms-blue.svg)](/java-algorithms)| 类字节码和
