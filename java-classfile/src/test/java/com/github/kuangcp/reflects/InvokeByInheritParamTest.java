@@ -13,7 +13,7 @@ import org.junit.Test;
  *
  * 也就是说,可以让参数具有多态性, 在反射的时候 参数的类型是一一对应的不存在多态,
  * 当拿到了方法之后, invoke的时候按需放入参数就没有问题
- *
+ * TODO 改良日志记录, 防止文件过大
  * @author kuangcp
  */
 @Slf4j
@@ -93,18 +93,17 @@ public class InvokeByInheritParamTest {
     try {
       Method method;
 
-//      if()
       try {
         method = Logic.class.getDeclaredMethod("isFailed", RunParam.class);
       } catch (NoSuchMethodException e) {
-//        log.error("{}", "获取方法失败", e);
+        log.error("{}", "获取方法失败", e);
         method = Logic.class.getDeclaredMethod("isFailed", CommonParam.class);
       }
 
       RunParam runParam = new RunParam();
       runParam.setScore(10);
       boolean result = (boolean) method.invoke(new Logic(), runParam);
-//      log.debug("invoke result = {}", result);
+      log.debug("invoke result = {}", result);
       runParam.setScore(108);
       result = (boolean) method.invoke(new Logic(), runParam);
 //      log.debug("invoke result = {}", result);
