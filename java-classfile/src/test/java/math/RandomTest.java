@@ -3,6 +3,7 @@ package math;
 import static org.junit.Assert.assertEquals;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -10,6 +11,7 @@ import org.junit.Test;
  * 概率是在宏观尺度上的准确性定理
  */
 @Slf4j
+@Ignore
 public class RandomTest {
 
   @Test

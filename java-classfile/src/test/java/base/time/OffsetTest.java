@@ -8,6 +8,7 @@ import org.junit.Test;
 
 /**
  * @author kuangcp on 18-7-26-下午4:45
+ * apache common 工具包
  */
 @Slf4j
 public class OffsetTest {

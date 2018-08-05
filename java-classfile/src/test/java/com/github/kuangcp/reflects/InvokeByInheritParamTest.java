@@ -1,11 +1,15 @@
 package com.github.kuangcp.reflects;
 
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
+
 import com.github.kuangcp.time.GetRunTime;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -13,7 +17,6 @@ import org.junit.Test;
  *
  * 也就是说,可以让参数具有多态性, 在反射的时候 参数的类型是一一对应的不存在多态,
  * 当拿到了方法之后, invoke的时候按需放入参数就没有问题
- * TODO 改良日志记录, 防止文件过大
  * @author kuangcp
  */
 @Slf4j
@@ -53,13 +56,11 @@ public class InvokeByInheritParamTest {
 
       RunParam runParam = new RunParam();
       runParam.setScore(10);
-      boolean result = (boolean) method.invoke(new Logic(), runParam);
-      log.debug("invoke result = {}", result);
-      runParam.setScore(108);
-      result = (boolean) method.invoke(new Logic(), runParam);
-      log.debug("invoke result = {}", result);
+      verifyInvoke(method, runParam, false);
 
-    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+      runParam.setScore(108);
+      verifyInvoke(method, runParam, true);
+    } catch (NoSuchMethodException e) {
       e.printStackTrace();
     }
   }
@@ -69,57 +70,37 @@ public class InvokeByInheritParamTest {
   public void testInvokeBySuper() {
     try {
       Method method = Logic.class.getDeclaredMethod("isFailed", CommonParam.class);
-
-      RunParam runParam = new RunParam();
-      runParam.setScore(10);
-      boolean result = (boolean) method.invoke(new Logic(), runParam);
-//      log.debug("invoke result = {}", result);
-      runParam.setScore(108);
-      result = (boolean) method.invoke(new Logic(), runParam);
-//      log.debug("invoke result = {}", result);
-
+      verifySuite(method);
     } catch (NoSuchMethodException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
       e.printStackTrace();
     }
   }
 
-  // 通过两次反射获取 method
+  // 通过两次反射获取 method 并执行
   @Test
   public void testInvokeTryTwice() {
     try {
       Method method;
 
+      // 反射时, 其参数不存在多态的概念
       try {
+        // 所以这里会必然报错
         method = Logic.class.getDeclaredMethod("isFailed", RunParam.class);
       } catch (NoSuchMethodException e) {
-        log.error("{}", "获取方法失败", e);
         method = Logic.class.getDeclaredMethod("isFailed", CommonParam.class);
       }
 
-      RunParam runParam = new RunParam();
-      runParam.setScore(10);
-      boolean result = (boolean) method.invoke(new Logic(), runParam);
-      log.debug("invoke result = {}", result);
-      runParam.setScore(108);
-      result = (boolean) method.invoke(new Logic(), runParam);
-//      log.debug("invoke result = {}", result);
+      verifySuite(method);
     } catch (NoSuchMethodException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
       e.printStackTrace();
     }
   }
 
   @Test
+  @Ignore
   public void comparePerformance() {
 
-    int concurrent = 1000000;
+    int concurrent = 10;
     // 经过测试发现 使用异常来控制逻辑, 耗时是直接反射 的 4-7 倍
     GetRunTime record = GetRunTime.INSTANCE;
     record.startCount();
@@ -133,5 +114,24 @@ public class InvokeByInheritParamTest {
       testInvokeBySuper();
     }
     record.endCount("correct ");
+  }
+
+  private void verifySuite(Method method) {
+    RunParam runParam = new RunParam();
+    runParam.setScore(10);
+    verifyInvoke(method, runParam, true);
+
+    runParam.setScore(108);
+    verifyInvoke(method, runParam, false);
+  }
+
+  private void verifyInvoke(Method method, CommonParam param, boolean expect) {
+    boolean result = false;
+    try {
+      result = (boolean) method.invoke(new Logic(), param);
+    } catch (IllegalAccessException | InvocationTargetException e) {
+      e.printStackTrace();
+    }
+    assertThat(result, equalTo(expect));
   }
 }

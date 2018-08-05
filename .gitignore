@@ -20,5 +20,5 @@ Servers/
 # Gradle #
 .gradle
 build/
-
+.gradletasknamecache
 
