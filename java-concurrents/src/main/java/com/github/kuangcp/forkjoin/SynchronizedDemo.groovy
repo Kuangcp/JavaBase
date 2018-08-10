@@ -23,37 +23,43 @@ package com.github.kuangcp.forkjoin
 //    }
 //}
 
-class A{
-    int size = 0
-    synchronized void increase(){
-        size++
-    }
-    int current(){
-        return size
-    }
+class A {
+
+  int size = 0
+
+  synchronized void increase() {
+    size++
+  }
+
+  int current() {
+    return size
+  }
 }
+
 A a = new A()
 a.setSize(89)
-new Thread(){
-    @Override
-    void run(){
-        for (int i = 0; i < 10; i++) {
-            sleep(200)
-            a.increase()
-        }
+new Thread() {
+
+  @Override
+  void run() {
+    for (int i = 0; i < 10; i++) {
+      sleep(200)
+      a.increase()
     }
+  }
 }.start()
 
-new Thread(){
-    @Override
-    void run(){
-        for (int i = 0; i < 10; i++) {
-            sleep(100)
-            print(a.current())
-        }
+new Thread() {
+
+  @Override
+  void run() {
+    for (int i = 0; i < 10; i++) {
+      sleep(100)
+      print(a.current())
     }
+  }
 }.start()
 
-print("<"+a.size+">")
+print("<" + a.size + ">")
 sleep(3000)
-print("|||"+a.size)
+print("|||" + a.size)

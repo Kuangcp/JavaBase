@@ -3,6 +3,8 @@ package com.github.kuangcp.block;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  * Created by https://github.com/kuangcp on 17-8-15  上午9:41
@@ -118,17 +120,9 @@ class ElementList {
     }
 }
 
+@Data
+@AllArgsConstructor
 class Element{
-    String phone;
+    private String phone;
 
-    public Element(String phone) {
-        this.phone = phone;
-    }
-
-    @Override
-    public String toString() {
-        return "Element{" +
-                "phone='" + phone + '\'' +
-                '}';
-    }
 }
