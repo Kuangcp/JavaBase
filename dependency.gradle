@@ -1,3 +1,5 @@
+// when add a new dependency, gradle not download that package
+// just when module build.gradle use this dependency, then download and build project
 ext {
   ver = [
       logback   : '1.2.3',
@@ -46,6 +48,5 @@ ext {
 
       // mine
       "JavaToolKit"        : "com.github.kuangcp:JavaToolKit:0.0.4-SNAPSHOT"
-
   ]
 }
