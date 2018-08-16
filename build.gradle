@@ -4,6 +4,7 @@ apply from: 'dependency.gradle'
 allprojects {
   apply plugin: 'java'
   apply plugin: 'idea'
+  apply plugin: 'maven'
 
   group = 'com.github.kuangcp'
 
@@ -14,7 +15,9 @@ allprojects {
   targetCompatibility = 1.8
 
   repositories {
-    def aliyun = "http://maven.aliyun.com/nexus/content/groups/public/"
+    mavenLocal()
+	
+	def aliyun = "http://maven.aliyun.com/nexus/content/groups/public/"
     def abroad = "http://central.maven.org/maven2/"
     maven {
       url = aliyun
@@ -23,8 +26,7 @@ allprojects {
     maven {
       url = "https://gitee.com/gin9/MavenRepos/raw/master"
     }
-    mavenCentral()
-    jcenter()
+  //   jcenter()
   }
 
   // all project will add

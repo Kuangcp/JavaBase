@@ -46,4 +46,5 @@ public class StringTest {
     String uuid = UUID.randomUUID().toString();
     log.debug("uuid: ={}", uuid);
   }
+
 }
