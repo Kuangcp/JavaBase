@@ -30,6 +30,7 @@ public class ArrayListTest {
     for (String temp : list) {
       log.debug("target: ={}", temp);
     }
+    int a = 1;
   }
   // TODO 集合的 交 差 并 补
 

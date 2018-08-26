@@ -23,6 +23,7 @@ import org.testng.annotations.Test;
  * make all the integer diffrent is minimized, and record moving action(conclude index)
  * like this: 7(5) -> 2(0) : 2 then array turn : 4, 4, 6, 1, 5
  *
+ * TODO should use two stack one record over num the other record less num
  * in short, minimize array data range
  * output:
  * like this: 4, 4, 4, 4, 4
@@ -38,7 +39,7 @@ public class SmoothingTheData {
 
   @Data
   @AllArgsConstructor
-  class MoveRecord {
+  private class MoveRecord {
 
     private int startIndex;
     private int targetIndex;
@@ -47,7 +48,7 @@ public class SmoothingTheData {
 
   @Data
   @AllArgsConstructor
-  class DataUnit {
+  private class DataUnit {
 
     private int index;
     private int delta;
@@ -138,12 +139,8 @@ public class SmoothingTheData {
     }
 
     List<Integer> result = normalizeByLinked(integers);
-    result.forEach(num -> {
-      log.debug("single: num={}", num);
-    });
-    movingRecord.forEach(record -> {
-      log.debug("record: start={} target={} weight={}", record.getStartIndex(),
-          record.getTargetIndex(), record.getWeight());
-    });
+    result.forEach(num -> log.debug("single: num={}", num));
+    movingRecord.forEach(record -> log.debug("record: start={} target={} weight={}",
+        record.getStartIndex(), record.getTargetIndex(), record.getWeight()));
   }
 }

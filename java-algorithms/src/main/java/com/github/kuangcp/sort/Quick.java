@@ -1,88 +1,91 @@
 package com.github.kuangcp.sort;
+
 /**
  * 快速排序
  * 最坏的情况：当数列是一样的数据 O(n^2)
  * 理想：O(n*log n)
+ *
  * @author Myth
- * @date 2016年10月29日 下午1:10:36
  */
 public class Quick {
-	public static void sort(int arr[], int low, int high) {
-		int l = low;
-		int h = high;
-		int povit = arr[low];
 
-		while (l < h) {
-			while (l < h && arr[h] >= povit) {
-                h--;
-            }
-			if (l < h) {
-				int temp = arr[h];
-				arr[h] = arr[l];
-				arr[l] = temp;
-				l++;
-			}
+  public static void sort(int arr[], int low, int high) {
+    int l = low;
+    int h = high;
+    int povit = arr[low];
 
-			while (l < h && arr[l] <= povit) {
-                l++;
-            }
-			if (l < h) {
-				int temp = arr[h];
-				arr[h] = arr[l];
-				arr[l] = temp;
-				h--;
-			}
-		}
-		if (l > low) {
-			sort(arr, low, l - 1);
-		}
-		if (h < high) {
-			sort(arr, l + 1, high);
-		}
-	}
-	public  <T extends Comparable<? super T>> T[] quickSort(T[] targetArr,
-			int start, int end) {
-		int i = start + 1, j = end;
-		T key = targetArr[start];
-		// SortUtil<T>sUtil=newSortUtil<T>();
+    while (l < h) {
+      while (l < h && arr[h] >= povit) {
+        h--;
+      }
+      if (l < h) {
+        int temp = arr[h];
+        arr[h] = arr[l];
+        arr[l] = temp;
+        l++;
+      }
 
-		if (start >= end) {
-			return (targetArr);
-		}
-		/*
-		 * 从i++和j--两个方向搜索不满足条件的值并交换
-		 * 
-		 * 条件为：i++方向小于key，j--方向大于key
-		 */
-		while (true) {
-			while (targetArr[j].compareTo(key) > 0) {
-                j--;
-            }
-			while (targetArr[i].compareTo(key) < 0 && i < j) {
-                i++;
-            }
-			if (i >= j) {
-                break;
-            }
-			if (targetArr[i] == key) {
-				j--;
-			} else {
-				i++;
-			}
-		}
+      while (l < h && arr[l] <= povit) {
+        l++;
+      }
+      if (l < h) {
+        int temp = arr[h];
+        arr[h] = arr[l];
+        arr[l] = temp;
+        h--;
+      }
+    }
+    if (l > low) {
+      sort(arr, low, l - 1);
+    }
+    if (h < high) {
+      sort(arr, l + 1, high);
+    }
+  }
 
-		/* 关键数据放到‘中间’ */
-		// sUtil.swap(targetArr,start,j);
+  public <T extends Comparable<? super T>> T[] quickSort(T[] targetArr,
+      int start, int end) {
+    int i = start + 1, j = end;
+    T key = targetArr[start];
+    // SortUtil<T>sUtil=newSortUtil<T>();
 
-		if (start < i - 1) {
-			this.quickSort(targetArr, start, i - 1);
-		}
-		if (j + 1 < end) {
-			this.quickSort(targetArr, j + 1, end);
-		}
+    if (start >= end) {
+      return (targetArr);
+    }
+    /*
+     * 从i++和j--两个方向搜索不满足条件的值并交换
+     *
+     * 条件为：i++方向小于key，j--方向大于key
+     */
+    while (true) {
+      while (targetArr[j].compareTo(key) > 0) {
+        j--;
+      }
+      while (targetArr[i].compareTo(key) < 0 && i < j) {
+        i++;
+      }
+      if (i >= j) {
+        break;
+      }
+      if (targetArr[i] == key) {
+        j--;
+      } else {
+        i++;
+      }
+    }
 
-		return targetArr;
-	}
+    /* 关键数据放到‘中间’ */
+    // sUtil.swap(targetArr,start,j);
+
+    if (start < i - 1) {
+      this.quickSort(targetArr, start, i - 1);
+    }
+    if (j + 1 < end) {
+      this.quickSort(targetArr, j + 1, end);
+    }
+
+    return targetArr;
+  }
 }
 
 // /*//////////////////////////方式二////////////////////////////////*/
@@ -134,7 +137,7 @@ public class Quick {
 
 /*
  * public class Quick { //快速排序：一堆的数组下标越界
- * 
+ *
  * void quick (int []Q,int left,int right) { int left_x=left; int right_x=right;
  * int pivot=Q[(left+right)/2]; while (left_x<=right_x) {
  * for(;Q[left_x]<pivot;left_x++);//从左边开始查找 for(;Q[right_x]>pivot &&
@@ -151,6 +154,6 @@ public class Quick {
  * scanf("%d",&data[i]); } quick(data,0,6);//指定位置进行排序
  * quick_all(data,7);//只检查一遍就够了？ for (i=0;i<7;i++) printf ("%2d\n",data[i]); }
  * //程序没错误，原理已经清楚了
- * 
+ *
  * }
  */

@@ -10,37 +10,38 @@ import java.util.List;
  * TODO 对进栈的数据  输出所有的出栈结果
  */
 public class ShowStackPop {
-    private LinkStack datas = new LinkStack();
-    private LinkStack status = new LinkStack();
-    private static List<String> results = new ArrayList<>();
 
-    public void init(){
-        for(int i=0;i<6;i++){
-            datas.push(i);
-        }
+  private LinkStack datas = new LinkStack();
+  private LinkStack status = new LinkStack();
+  private static List<String> results = new ArrayList<>();
+
+  public void init() {
+    for (int i = 0; i < 6; i++) {
+      datas.push(i);
+    }
+  }
+
+  public void deal(String temp) {
+    if (!this.status.isEmpty()) {
+      temp += status.pop();
+      deal(temp);
+    }
+    if (!this.datas.isEmpty()) {
+      status.push(this.datas.pop());
+      deal(temp);
+    }
+    if (status.isEmpty()) {
+      results.add(temp);
     }
 
-    public void deal(String temp){
-        if(!this.status.isEmpty()){
-            temp += status.pop();
-            deal(temp);
-        }
-        if(!this.datas.isEmpty()){
-            status.push(this.datas.pop());
-            deal(temp);
-        }
-        if (status.isEmpty()){
-            results.add(temp);
-        }
+  }
 
+  public static void main(String[] s) {
+    ShowStackPop pops = new ShowStackPop();
+    pops.init();
+    pops.deal("");
+    for (String line : results) {
+      System.out.println(line);
     }
-
-    public static void main(String[]s){
-        ShowStackPop pops = new ShowStackPop();
-        pops.init();
-        pops.deal("");
-        for(String line : results){
-            System.out.println(line);
-        }
-    }
+  }
 }
