@@ -24,7 +24,7 @@ public class BaseTypeSortTest {
     INSTANCE.startCount();
 
     lists.sort(Comparator.comparingInt(Integer::intValue));
-//    lists.forEach(System.out::println);
+    lists.forEach(System.out::println);
     INSTANCE.endCount("排序完成");
   }
   
