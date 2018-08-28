@@ -1,7 +1,7 @@
 package com.github.kuangcp.strcuture.stackapp;
 
-import com.github.kuangcp.strcuture.stacks.LinkStack;
-
+import com.github.kuangcp.strcuture.stack.MythBaseStack;
+import com.github.kuangcp.strcuture.stack.MythLinkedStack;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +11,9 @@ import java.util.List;
  */
 public class ShowStackPop {
 
-  private LinkStack datas = new LinkStack();
-  private LinkStack status = new LinkStack();
+  private MythBaseStack<Integer> datas = new MythLinkedStack<>();
+  private MythBaseStack<Integer> status = new MythLinkedStack<>();
+
   private static List<String> results = new ArrayList<>();
 
   public void init() {

@@ -148,8 +148,8 @@ public class Quick {
  * (right_x>left)//函数的递归调用 { quick(Q,left,right_x); } if (left_x<right)//函数的递归调用
  * { quick(Q,left_x,right); } } void quick_all(int []Q,int
  * data_size)//检查全局，再次递归调用 { quick(Q,0,data_size-1); } public void
- * sort(int[]arr){ quick(arr,0,arr.length-2); //指定位置进行排序
- * quick_all(arr,arr.length-1); //只检查一遍就够了？ } public static void main(String []
+ * sort(int[]arr){ quick(arr,0,arr.size-2); //指定位置进行排序
+ * quick_all(arr,arr.size-1); //只检查一遍就够了？ } public static void main(String []
  * args) { int data[7],i; for (i=0;i<7;i++) { printf("输入数据");
  * scanf("%d",&data[i]); } quick(data,0,6);//指定位置进行排序
  * quick_all(data,7);//只检查一遍就够了？ for (i=0;i<7;i++) printf ("%2d\n",data[i]); }

@@ -1,6 +1,7 @@
 package com.github.kuangcp.strcuture.stackapp;
 
-import com.github.kuangcp.strcuture.stacks.LinkStack;
+import com.github.kuangcp.strcuture.stack.MythBaseStack;
+import com.github.kuangcp.strcuture.stack.MythLinkedStack;
 import java.util.LinkedList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -30,30 +31,30 @@ public class MatchBracket {
     log.info("input string={}", origin);
     initBrackets();
 
-    LinkStack stack = new LinkStack();
+    MythBaseStack<Integer> stack = new MythLinkedStack<>();
 
     for (int i = 0; i < origin.length(); i++) {
       char charAt = origin.charAt(i);
 
       if (leftBrackets.contains(charAt)) {
-        stack.push(charAt);
+        stack.push((int) charAt);
         continue;
       }
       if (rightBrackets.contains(charAt)) {
         int pop = stack.pop();
         if (charAt == ')') {
           if (pop != '(') {
-            stack.push(charAt);
+            stack.push((int) charAt);
           }
         }
         if (charAt == ']') {
           if (pop != '[') {
-            stack.push(charAt);
+            stack.push((int) charAt);
           }
         }
         if (charAt == '}') {
           if (pop != '{') {
-            stack.push(charAt);
+            stack.push((int) charAt);
           }
         }
       }

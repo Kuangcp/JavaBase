@@ -1,6 +1,7 @@
 package com.github.kuangcp.strcuture.stackapp;
 
-import com.github.kuangcp.strcuture.stacks.LinkStack;
+import com.github.kuangcp.strcuture.stack.MythBaseStack;
+import com.github.kuangcp.strcuture.stack.MythLinkedStack;
 import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,11 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AddTwoBigInteger {
 
-  private LinkStack oneStack = new LinkStack();
-  private LinkStack otherStack = new LinkStack();
-  private LinkStack resultStack = new LinkStack();
+  private MythBaseStack<Integer> oneStack = new MythLinkedStack<>();
+  private MythBaseStack<Integer> otherStack = new MythLinkedStack<>();
+  private MythBaseStack<Integer> resultStack = new MythLinkedStack<>();
 
-  private boolean initBigInteger(String target, LinkStack stack) {
+  private boolean initBigInteger(String target, MythBaseStack<Integer> stack) {
     String regex = "^[0-9]+$";
     boolean oneResult = Pattern.matches(regex, target);
     if (!oneResult) {
@@ -30,17 +31,17 @@ public class AddTwoBigInteger {
         isMoreThanZero = true;
       }
       if (isMoreThanZero) {
-        stack.push(target.charAt(i));
+        stack.push((int) target.charAt(i));
       }
     }
     return true;
   }
 
-  public String add(String one, String other) {
+  public MythBaseStack<Integer> add(String one, String other) {
     boolean oneResult = initBigInteger(one, oneStack);
     boolean otherResult = initBigInteger(other, otherStack);
     if (!oneResult || !otherResult) {
-      return "";
+      return null;
     }
 
     int flag = 0;
@@ -62,10 +63,10 @@ public class AddTwoBigInteger {
     if (flag == 1) {
       resultStack.push(flag);
     }
-    return resultStack.display();
+    return resultStack;
   }
 
-  private int pushResult(int flag, LinkStack oneStack) {
+  private int pushResult(int flag, MythBaseStack<Integer> oneStack) {
     while (!oneStack.isEmpty()) {
       int t = oneStack.pop() + flag - 48;
       flag = 0;

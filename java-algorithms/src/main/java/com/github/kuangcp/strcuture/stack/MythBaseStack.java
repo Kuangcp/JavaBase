@@ -13,7 +13,7 @@ public interface MythBaseStack<T> {
 
   T peek();
 
-  int length();
+  int size();
 
   boolean isEmpty();
 

@@ -1,7 +1,7 @@
 package com.github.kuangcp.strcuture.stackapp;
 
 
-import com.github.kuangcp.strcuture.stacks.LinkStack;
+import com.github.kuangcp.strcuture.stack.MythLinkedStack;
 
 import java.util.Scanner;
 
@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class StackReplaceRecurrence {
 
   public static void main(String[] args) {
-    LinkStack Q = new LinkStack();
+    MythLinkedStack<Integer> Q = new MythLinkedStack<>();
     Q.push(1);
     Scanner sc = new Scanner(System.in);
     System.out.println("请输入函数自变量的值");
@@ -23,7 +23,7 @@ public class StackReplaceRecurrence {
 
     double sum = 1;
     //先把实例化语句写出来，再选中用Ctrl+shift+o 快速导入包，注意不能跨项目
-    while (Q.top != null) {
+    while (Q.peek() != null) {
       if (n == 0) {
         sum = sum * Q.pop();
       } else {
