@@ -12,7 +12,7 @@ import org.junit.Test;
  * Map 的常见迭代用法
  */
 @Slf4j
-public class LearnMap {
+public class IterateMapTest {
   private static Map<String, String> map = new HashMap<>();
 
   @BeforeClass
