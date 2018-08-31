@@ -8,7 +8,7 @@ import org.junit.Test;
 
 /**
  * @author kuangcp on 18-8-30-上午10:43
- * short circuit with expression : and or 
+ * short circuit with expression : and or
  */
 @Slf4j
 public class ShortCircuitTest {
