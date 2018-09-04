@@ -1,6 +1,6 @@
 package com.github.kuangcp.serialize.json;
 
-import com.github.kuangcp.serialize.Person;
+import com.github.kuangcp.serialize.binary.Person;
 import com.google.gson.Gson;
 
 import java.util.List;

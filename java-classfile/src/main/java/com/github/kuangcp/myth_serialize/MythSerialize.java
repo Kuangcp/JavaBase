@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  */
 public class MythSerialize<T> {
 
-    public Object in(Class target, String path) {
+    public Object in(Class<T> target, String path) {
         Object object = null;
         try {
             FileInputStream fileInputStream = new FileInputStream(path);

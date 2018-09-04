@@ -1,7 +1,7 @@
 package com.github.kuangcp.serialize.json;
 
 import com.alibaba.fastjson.JSON;
-import com.github.kuangcp.serialize.Person;
+import com.github.kuangcp.serialize.binary.Person;
 
 import java.util.List;
 

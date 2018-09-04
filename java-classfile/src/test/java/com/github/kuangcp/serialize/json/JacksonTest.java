@@ -2,7 +2,7 @@ package com.github.kuangcp.serialize.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.kuangcp.serialize.Person;
+import com.github.kuangcp.serialize.binary.Person;
 
 import java.util.List;
 
