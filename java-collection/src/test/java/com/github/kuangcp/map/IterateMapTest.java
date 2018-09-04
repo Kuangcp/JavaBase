@@ -54,4 +54,14 @@ public class IterateMapTest {
       log.debug("{}:{}", entry.getKey(), entry.getValue());
     }
   }
+
+  @Test
+  public void testAdd(){
+    Map<String, String> temp = new HashMap<>();
+    Map<String, String> temp2 = new HashMap<>();
+    temp.putAll(temp2);
+    log.debug(": temp.size={} temp={}", temp.size(), temp);
+    log.debug(": temp2.size={} temp2={}", temp2.size(), temp2);
+
+  }
 }

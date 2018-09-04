@@ -1,5 +1,6 @@
 package com.github.kuangcp.serialize.binary;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,6 +29,9 @@ public class SerializeTest {
     person.setName("myth");
     person.setPhone("123456654");
     try {
+      String absolutePath = new File("").getAbsolutePath();
+      System.out.println(absolutePath);
+      // TODO 相对路径, 绝对路径
       FileOutputStream fileOutputStream = new FileOutputStream("/home/kcp/test/person.md");
       ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
       out.writeObject(person);

@@ -12,9 +12,11 @@ import org.junit.Test;
 
 /**
  * @author kuangcp on 18-8-29-下午12:04
+ * from map random get a value
  */
 @Slf4j
 public class RandomGetValueTest {
+
   private Map<String, String> data = new HashMap<>();
 
   @Before
