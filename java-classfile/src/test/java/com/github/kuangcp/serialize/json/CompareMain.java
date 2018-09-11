@@ -1,7 +1,8 @@
 package com.github.kuangcp.serialize.json;
 
+import static com.github.kuangcp.time.GetRunTime.GET_RUN_TIME;
+
 import com.github.kuangcp.serialize.binary.Person;
-import com.github.kuangcp.time.GetRunTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +15,6 @@ import org.junit.Test;
  */
 public class CompareMain {
 
-  private GetRunTime run = GetRunTime.INSTANCE;
   private int writeTotal = 200000;
 
   private List<JsonTool> list = Arrays
@@ -39,9 +39,9 @@ public class CompareMain {
   @Test
   public void compareWrite() {
     for (JsonTool item : list) {
-      run.startCount();
+      GET_RUN_TIME.startCount();
       item.write(writeTotal, personList);
-      run.endCount(item.getName());
+      GET_RUN_TIME.endCount(item.getName());
 //      try {
 //        Thread.sleep(10);
 //      } catch (InterruptedException e) {

@@ -15,7 +15,7 @@ public class AchieveFields {
   public static void main(String[] s) {
     multiConstructor();
     Domain domain = new Domain();
-    domain.setName("dfdfdf");
+    domain.setName("name");
     domain.setAge(90L);
     declareMethodList(domain);
   }
@@ -24,7 +24,7 @@ public class AchieveFields {
    * 获取所有定义的方法并执行get方法得到数据
    */
   public static void declareMethodList(Domain object) {
-    Class domain = Domain.class;
+    Class<Domain> domain = Domain.class;
     Method[] methods = domain.getDeclaredMethods();
     for (Method method : methods) {
       System.out.println(method.getName());
@@ -44,10 +44,10 @@ public class AchieveFields {
    * 获取多参数的构造器
    */
   private static void multiConstructor() {
-    Class domain = Domain.class;
+    Class<Domain> domain = Domain.class;
     try {
-      Constructor constructor = domain.getConstructor(String.class, Long.class);
-      Domain domain1 = (Domain) constructor.newInstance("909090", 7878L);
+      Constructor<Domain> constructor = domain.getConstructor(String.class, Long.class);
+      Domain domain1 = constructor.newInstance("909090", 7878L);
       System.out.println(domain1.toString());
     } catch (Exception e) {
       e.printStackTrace();

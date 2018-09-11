@@ -36,9 +36,10 @@ allprojects {
     testAnnotationProcessor libs['lombok']
     testCompileOnly libs['lombok']
 
-    compile libs['logback-classic']
+    implementation libs['logback-classic']
 
-    testCompile libs['junit']
-    testCompile libs['hamcrest']
+    testImplementation libs['junit']
+    testImplementation libs['hamcrest-core']
+    testImplementation libs['hamcrest-lib']
   }
 }

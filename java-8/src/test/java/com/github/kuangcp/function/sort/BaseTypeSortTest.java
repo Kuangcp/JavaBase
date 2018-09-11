@@ -1,7 +1,7 @@
 package com.github.kuangcp.function.sort;
 
 
-import static com.github.kuangcp.time.GetRunTime.INSTANCE;
+import static com.github.kuangcp.time.GetRunTime.GET_RUN_TIME;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -21,11 +21,11 @@ public class BaseTypeSortTest {
     for (int num : array) {
       lists.add(num);
     }
-    INSTANCE.startCount();
+    GET_RUN_TIME.startCount();
 
     lists.sort(Comparator.comparingInt(Integer::intValue));
     lists.forEach(System.out::println);
-    INSTANCE.endCount("排序完成");
+    GET_RUN_TIME.endCount("排序完成");
   }
   
   @Test

@@ -15,11 +15,11 @@ public class OffsetTest {
 
   private Date lastSignInTime;
 
-  public int signIn() {
+  private void signIn() {
 
-    if(DateUtils.isSameDay(new Date(), lastSignInTime)){
+    if (DateUtils.isSameDay(new Date(), lastSignInTime)) {
       log.debug("uuuu: ={}");
-      return 1;
+      return;
     }
 
     Date yesterday = DateUtils.addDays(new Date(), -1);
@@ -34,7 +34,6 @@ public class OffsetTest {
       System.out.println("+1");
     }
 
-    return 0;
   }
 
   @Test
@@ -42,7 +41,7 @@ public class OffsetTest {
     Calendar instance = Calendar.getInstance();
     instance.set(2018, Calendar.JULY, 26, 1, 1);
 
-    System.out.println("set " + instance.getTime());
+    log.info("build from calendar,time={}", instance.getTime());
 
     lastSignInTime = instance.getTime();
     signIn();

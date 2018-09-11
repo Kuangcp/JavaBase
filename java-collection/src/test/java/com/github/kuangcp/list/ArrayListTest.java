@@ -1,9 +1,9 @@
 package com.github.kuangcp.list;
 
+import static com.github.kuangcp.time.GetRunTime.GET_RUN_TIME;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-import com.github.kuangcp.time.GetRunTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,6 @@ public class ArrayListTest {
   private List<String> one = new ArrayList<>();
   private List<String> two = new ArrayList<>();
   private int num = 100_000;
-  private GetRunTime runTime = GetRunTime.INSTANCE;
 
 
   @Test
@@ -46,9 +45,9 @@ public class ArrayListTest {
 
   @Test
   public void testUnion() {
-    runTime.startCount();
+    GET_RUN_TIME.startCount();
     one.addAll(two);
-    runTime.endCount("union ");
+    GET_RUN_TIME.endCount("union ");
 
     assertThat(one.size(), equalTo(2 * num));
   }
@@ -56,10 +55,10 @@ public class ArrayListTest {
   // 交集
   @Test
   public void testInter() {
-    runTime.startCount();
+    GET_RUN_TIME.startCount();
     one.retainAll(two);
 
-    runTime.endCount("inter ");
+    GET_RUN_TIME.endCount("inter ");
 
   }
 

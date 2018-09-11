@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-  compile libs['jedis']
-  compile libs['groovy']
-  compile libs['zip4j']
+  implementation libs['jedis']
+  implementation libs['groovy']
+  implementation libs['zip4j']
 }

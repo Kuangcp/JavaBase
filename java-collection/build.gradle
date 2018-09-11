@@ -1,6 +1,6 @@
 plugins {
   id 'java'
 }
-dependencies{
-  compile libs['JavaToolKit']
+dependencies {
+  implementation libs['JavaToolKit']
 }

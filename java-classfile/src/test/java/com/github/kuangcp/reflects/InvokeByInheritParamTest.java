@@ -1,5 +1,6 @@
 package com.github.kuangcp.reflects;
 
+import static com.github.kuangcp.time.GetRunTime.GET_RUN_TIME;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -102,18 +103,17 @@ public class InvokeByInheritParamTest {
 
     int concurrent = 10;
     // 经过测试发现 使用异常来控制逻辑, 耗时是直接反射 的 4-7 倍
-    GetRunTime record = GetRunTime.INSTANCE;
-    record.startCount();
+    GET_RUN_TIME.startCount();
     for (int i = 0; i < concurrent; i++) {
       testInvokeTryTwice();
     }
-    record.endCount("twice ");
+    GET_RUN_TIME.endCount("twice ");
 
-    record.startCount();
+    GET_RUN_TIME.startCount();
     for (int i = 0; i < concurrent; i++) {
       testInvokeBySuper();
     }
-    record.endCount("correct ");
+    GET_RUN_TIME.endCount("correct ");
   }
 
   private void verifySuite(Method method) {

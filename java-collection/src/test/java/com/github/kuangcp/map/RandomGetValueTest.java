@@ -12,7 +12,7 @@ import org.junit.Test;
 
 /**
  * @author kuangcp on 18-8-29-下午12:04
- * from map random get a value
+ * get random value from map
  */
 @Slf4j
 public class RandomGetValueTest {
@@ -24,7 +24,6 @@ public class RandomGetValueTest {
     for (int i = 0; i < 3; i++) {
       data.put("_" + i, "_" + i);
     }
-
   }
 
   @Test

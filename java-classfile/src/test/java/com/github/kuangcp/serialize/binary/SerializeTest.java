@@ -31,7 +31,9 @@ public class SerializeTest {
     try {
       String absolutePath = new File("").getAbsolutePath();
       System.out.println(absolutePath);
-      // TODO 相对路径, 绝对路径
+
+      // TODO 相对路径, 绝对路径;
+
       FileOutputStream fileOutputStream = new FileOutputStream("/home/kcp/test/person.md");
       ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
       out.writeObject(person);

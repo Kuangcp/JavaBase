@@ -1,11 +1,11 @@
 
 dependencies {
-  compile libs['fastjson']
-  compile libs['gson']
-  compile libs['jackson_core']
-  compile libs['jackson_databind']
-  compile libs['jackson_annotations']
-  compile libs['common-lang']
+  implementation libs['fastjson']
+  implementation libs['gson']
+  implementation libs['jackson_core']
+  implementation libs['jackson_databind']
+  implementation libs['jackson_annotations']
+  implementation libs['common-lang']
 
-  compile libs['JavaToolKit']
+  implementation libs['JavaToolKit']
 }
