@@ -18,7 +18,7 @@ public class OffsetTest {
   private void signIn() {
 
     if (DateUtils.isSameDay(new Date(), lastSignInTime)) {
-      log.debug("uuuu: ={}");
+      log.debug("is same day");
       return;
     }
 
