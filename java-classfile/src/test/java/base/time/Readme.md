@@ -15,7 +15,7 @@
 │   ├── ChronoZonedDateTime
 │   ├── ChronoZonedDateTimeImpl
 │   ├── Era
-│   ├── HijrahChronology
+│   ├── HijrahChronology 伊斯兰教日历
 │   ├── HijrahDate
 │   ├── HijrahEra
 │   ├── IsoChronology
@@ -27,7 +27,7 @@
 │   ├── MinguoDate
 │   ├── MinguoEra
 │   ├── Ser
-│   ├── ThaiBuddhistChronology
+│   ├── ThaiBuddhistChronology 泰国佛教日历
 │   ├── ThaiBuddhistDate
 │   └── ThaiBuddhistEra
 ├── format/
