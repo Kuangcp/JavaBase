@@ -15,7 +15,6 @@ public class ShortCircuitTest {
 
   private int flag;
 
-
   private boolean addValue() {
     flag++;
     return true;
@@ -29,20 +28,20 @@ public class ShortCircuitTest {
     }
 
     // first expression is not satisfied conditions, then second expression not invoke
-    if(flag == 2 && addValue()){
+    if (flag == 2 && addValue()) {
       assertThat(flag, equalTo(1));
     }
   }
 
   @Test
-  public void testOr(){
+  public void testOr() {
     // first expression is satisfied conditions, then second expression not invoke
     if (flag == 0 || addValue()) {
       assertThat(flag, equalTo(0));
     }
 
     // first not satisfied, invoke second
-    if(flag == 2 || addValue()){
+    if (flag == 2 || addValue()) {
       assertThat(flag, equalTo(1));
     }
   }

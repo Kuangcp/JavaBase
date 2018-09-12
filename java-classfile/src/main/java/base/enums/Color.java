@@ -3,6 +3,7 @@ package base.enums;
 /**
  * Created by https://github.com/kuangcp
  * 简单枚举定义
+ *
  * @author kuangcp
  */
 public enum Color {
