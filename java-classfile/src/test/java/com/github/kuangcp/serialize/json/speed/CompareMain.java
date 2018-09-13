@@ -1,4 +1,4 @@
-package com.github.kuangcp.serialize.json;
+package com.github.kuangcp.serialize.json.speed;
 
 import static com.github.kuangcp.time.GetRunTime.GET_RUN_TIME;
 

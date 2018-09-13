@@ -1,33 +1,28 @@
 package com.github.kuangcp.serialize.json;
 
-import com.github.kuangcp.serialize.binary.Person;
 import com.google.gson.Gson;
-
-import java.util.List;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 
 /**
- * Created by https://github.com/kuangcp
- *
- * @author kuangcp
- * @date 18-5-30  下午5:55
+ * @author kuangcp on 18-9-13-下午2:16
  */
-public class GsonTest implements JsonTool {
+@Slf4j
+public class GsonTest {
 
-    @Override
-    public void read() {
+  @Test
+  public void testRead() {
+    Gson gson = new Gson();
 
-    }
+    Code code = gson.fromJson("{\"code\":12, \"name\":\"ui\"}", Code.class);
+    log.info(": code={}", code);
+  }
 
-    @Override
-    public void write(int total, List<Person> dataList) {
-        Gson gson = new Gson();
-        gson.toJson(dataList);
-//        System.out.println(result);
+  @Data
+  class Code {
 
-    }
+    private int code;
 
-    @Override
-    public String getName() {
-        return "GSON";
-    }
+  }
 }
