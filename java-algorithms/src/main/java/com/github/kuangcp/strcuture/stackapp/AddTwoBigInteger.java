@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AddTwoBigInteger {
 
+  // TODO change to Array , dead loop ?
   private MythBaseStack<Integer> oneStack = new MythLinkedStack<>();
   private MythBaseStack<Integer> otherStack = new MythLinkedStack<>();
   private MythBaseStack<Integer> resultStack = new MythLinkedStack<>();
