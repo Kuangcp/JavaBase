@@ -17,22 +17,30 @@ public class NodeMgr implements NodeAction {
 
   private static final int SUCCESS = 0;
   private static final int FAILED = 1;
+  private static final String ERROR = "";
 
   /**
    * 存放任意多棵树
    */
   private Map<String, Node> nodes = new ConcurrentHashMap<>();
 
-
   // TODO 列出整个树
   public String tree(String parentId) {
+    Node node = getNode(parentId);
 
+    if (!Objects.isNull(node.getParent())) {
+      return ERROR;
+    }
     return "";
   }
 
   // TODO 列出子节点
   public String treeByNode(String parentId) {
     return "";
+  }
+
+  private Node getNode(String nodeId) {
+    return nodes.get(nodeId);
   }
 
   @Override
@@ -78,7 +86,7 @@ public class NodeMgr implements NodeAction {
     }
 
     removeChild(target.getId());
-    nodes.remove(target);
+    nodes.remove(target.getId());
 
     rebuildByParentId(target.getParent());
     return SUCCESS;
@@ -119,7 +127,9 @@ public class NodeMgr implements NodeAction {
   private void rebuildByParentId(String parentId) {
     Map<String, Node> childSet = getChildSet(parentId);
     if (childSet.isEmpty()) {
-
+      return;
     }
+
+    
   }
 }
