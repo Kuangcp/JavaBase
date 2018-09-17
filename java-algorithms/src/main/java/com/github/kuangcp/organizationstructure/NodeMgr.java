@@ -48,11 +48,12 @@ public class NodeMgr implements NodeAction {
     if (Objects.isNull(parent)) {
       return FAILED;
     }
-
+    String originParent = target.getParent();
     target.setParent(parent.getId());
 
-    rebuildByParentId(target.getParent());
+    rebuildByParentId(originParent);
     rebuildByParentId(parent.getId());
+
     return SUCCESS;
   }
 
@@ -130,6 +131,6 @@ public class NodeMgr implements NodeAction {
       return;
     }
 
-    
+
   }
 }
