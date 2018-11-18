@@ -1,4 +1,4 @@
-package com.github.kuangcp.myth_serialize;
+package com.github.kuangcp.customserialize;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;

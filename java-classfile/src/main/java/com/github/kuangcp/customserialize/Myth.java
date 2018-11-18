@@ -1,4 +1,4 @@
-package com.github.kuangcp.myth_serialize;
+package com.github.kuangcp.customserialize;
 
 /**
  * Created by https://github.com/kuangcp on 17-10-24  下午3:35
