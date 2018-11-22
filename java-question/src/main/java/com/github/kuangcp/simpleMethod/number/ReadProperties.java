@@ -2,6 +2,7 @@ package com.github.kuangcp.simpleMethod.number;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 /**
@@ -42,7 +43,8 @@ public class ReadProperties {
     String result = read.getString("78");
     try {
       //配置文件含中文需要转码
-      System.out.println(new String(result.getBytes("ISO-8859-1"), "UTF-8"));
+      System.out.println(new String(result.getBytes(StandardCharsets.ISO_8859_1),
+          StandardCharsets.UTF_8));
     } catch (Exception e) {
       e.printStackTrace();
     }

@@ -11,6 +11,7 @@ allprojects {
   // default build dir is build/ but idea compile dir is out/, i'm dislike this way
   // dir out/ just have production/ and test/ dir
   buildDir = 'out/build'
+  
   sourceCompatibility = 1.8
   targetCompatibility = 1.8
 
@@ -29,7 +30,7 @@ allprojects {
     jcenter()
   }
 
-  // all project will add
+  // All sub-modules add the following dependencies
   dependencies {
     annotationProcessor libs['lombok']
     compileOnly libs['lombok']

@@ -2,8 +2,7 @@ package com.github.kuangcp.forkjoin
 
 /**
  * Created by https://github.com/kuangcp
- * @author kuangcp
- * @date 18-4-1  下午2:54
+ * @author kuangcp* @date 18-4-1  下午2:54
  */
 
 //status = 10
@@ -23,20 +22,7 @@ package com.github.kuangcp.forkjoin
 //    }
 //}
 
-class A {
-
-  int size = 0
-
-  synchronized void increase() {
-    size++
-  }
-
-  int current() {
-    return size
-  }
-}
-
-A a = new A()
+Counter a = new Counter()
 a.setSize(89)
 new Thread() {
 

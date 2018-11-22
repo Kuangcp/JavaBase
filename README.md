@@ -14,8 +14,8 @@
 | [![java-8](https://img.shields.io/badge/Java-8-blue.svg)](/java-8)                           | Java8学习
 | [![java-collection](https://img.shields.io/badge/java-collection-blue.svg)](/java-collection)| 算法
 | [![java-algorithms](https://img.shields.io/badge/Java-algorithms-blue.svg)](/java-algorithms)| 类字节码和
-| [![java-classfile](https://img.shields.io/badge/java-classfile-blue.svg)](/java-classfile)| 集合相关
-| [![java-concurrents](https://img.shields.io/badge/java-concurrents-blue.svg)](/java-concurrents)| 并发相关
+| [![java-classFile](https://img.shields.io/badge/java-classfile-blue.svg)](/java-classfile)| 集合相关
+| [![java-concurrent](https://img.shields.io/badge/java-concurrents-blue.svg)](/java-concurrents)| 并发相关
 | [![java-generic](https://img.shields.io/badge/java-generic-blue.svg)](/java-generic)| 泛型相关
 | [![java-gui](https://img.shields.io/badge/java-gui-blue.svg)](/java-gui)| 图形化相关
 | [![java-io](https://img.shields.io/badge/java-io-blue.svg)](/java-io)| IO相关
