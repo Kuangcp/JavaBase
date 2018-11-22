@@ -28,7 +28,7 @@ public class HandleExceptionTest {
           throw new NullPointerException("Oops ");
         }
       });
-    }catch (Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
