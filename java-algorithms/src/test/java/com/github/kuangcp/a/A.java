@@ -1,5 +1,10 @@
 package com.github.kuangcp.a;
 
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
+
+import lombok.AllArgsConstructor;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
@@ -7,7 +12,24 @@ import org.junit.Test;
  * created by https://gitee.com/gin9
  * 70
  * @author kuangcp on 18-9-16-下午8:33
+ * https://www.jianshu.com/u/cbba9a1a8f0a
  */
+@AllArgsConstructor
+@ToString
+class Temp implements Cloneable{
+  private String name;
+  private String addr;
+
+  public void a(){
+    try {
+      Temp clone = (Temp) this.clone();
+    } catch (CloneNotSupportedException e) {
+      e.printStackTrace();
+    }
+
+  }
+}
+
 @Slf4j
 public class A {
 
@@ -17,6 +39,17 @@ public class A {
 
   // 状态转换方程
   private static int n = 6;
+
+  @Test
+  public void testSplit(){
+    int length = "a,b,c,,".split(",").length;
+    System.out.println(length);
+    assertThat(length, equalTo(3));
+
+    Temp temp = new Temp("1", "1");
+    temp.a();
+
+  }
 
   @Test
   public void testA() {

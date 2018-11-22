@@ -9,9 +9,7 @@ import org.junit.Test;
  * @author kuangcp on 18-9-16-下午9:10
  */
 public class B {
-
-
-  private static  int minCost = 0;
+  private static int minCost = 0;
 
   /**
    * 暴力
@@ -22,6 +20,7 @@ public class B {
     int[] cost = {1, 100, 1, 1, 1, 100};
 
   }
+
 
   private static void a(int step, int hp, int[] cost) {
     if (step > cost.length) {
