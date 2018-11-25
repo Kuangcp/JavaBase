@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Domain {
+public class ReflectDomain {
 
   private String name;
   private Long age;

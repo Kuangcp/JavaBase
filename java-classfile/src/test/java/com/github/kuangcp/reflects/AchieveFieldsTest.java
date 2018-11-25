@@ -20,17 +20,17 @@ public class AchieveFieldsTest {
    */
   @Test
   public void invokeAllGetMethod() {
-    Domain domain = new Domain();
+    ReflectDomain domain = new ReflectDomain();
     domain.setName("name");
     domain.setAge(90L);
 
-    Class<Domain> domainClass = Domain.class;
+    Class<ReflectDomain> domainClass = ReflectDomain.class;
     Method[] methods = domainClass.getDeclaredMethods();
     for (Method method : methods) {
       log.info("method: : methodName={}", method.getName());
 
       if (method.getName().startsWith("get")) {
-        Object result ;
+        Object result;
         try {
           result = method.invoke(domain);
           log.info("invoke getMethod: result={}", result.toString());
@@ -46,10 +46,10 @@ public class AchieveFieldsTest {
    */
   @Test
   public void invokeMultiConstructor() {
-    Class<Domain> domainClass = Domain.class;
+    Class<ReflectDomain> domainClass = ReflectDomain.class;
     try {
-      Constructor<Domain> constructor = domainClass.getConstructor(String.class, Long.class);
-      Domain domain = constructor.newInstance("909090", 7878L);
+      Constructor<ReflectDomain> constructor = domainClass.getConstructor(String.class, Long.class);
+      ReflectDomain domain = constructor.newInstance("909090", 7878L);
       log.info("use constructor:{}", domain.toString());
     } catch (Exception e) {
       e.printStackTrace();

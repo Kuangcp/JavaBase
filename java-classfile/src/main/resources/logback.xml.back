@@ -1,3 +1,4 @@
+该配置文件 会导致idea每次运行测试, 都会产生无用的 .attach_pidxxx 文件
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
   <property name="log.base" value="./logs/"/>
@@ -74,7 +75,7 @@
 
   <root level="DEBUG">
     <appender-ref ref="STDOUT"/>
-    <appender-ref ref="DEBUG_FILE"/>
+    <!--<appender-ref ref="DEBUG_FILE"/>-->
     <!--<appender-ref ref="WARN_FILE"/>-->
     <!--<appender-ref ref="INFO_FILE"/>-->
     <!--<appender-ref ref="ERROR_FILE"/>-->

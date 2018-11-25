@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author kuangcp
  */
 @Slf4j
-public class InvokeByInheritParamTest {
+public class InvokeWithInheritParamTest {
 
   @Data
   class CommonParam {
