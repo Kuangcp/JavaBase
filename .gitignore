@@ -1,5 +1,6 @@
 # projcet #
 *.log
+logs/
 
 # maven #
 target/
