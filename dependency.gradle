@@ -18,6 +18,7 @@ ext {
       "lombok"             : "org.projectlombok:lombok:1.18.2",
       "common-lang"        : "org.apache.commons:commons-lang3:3.7",
       "groovy"             : "org.codehaus.groovy:groovy-all:$ver.groovy",
+      "cglib"              : "cglib:cglib:3.2.9",
 
       // mine tool
       "JavaToolKit"        : "com.github.kuangcp:JavaToolKit:$ver.javaToolKit",
@@ -46,7 +47,7 @@ ext {
       // db
       "jedis"              : "redis.clients:jedis:2.9.0",
 
-      // JSON lib
+      // JSON dependency
       "gson"               : "com.google.code.gson:gson:2.8.5",
       "fastjson"           : "com.alibaba:fastjson:1.2.47",
       "jackson_core"       : "com.fasterxml.jackson.core:jackson-core:$ver.jackson",

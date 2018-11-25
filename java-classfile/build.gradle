@@ -8,7 +8,9 @@ dependencies {
   implementation libs['jackson_core']
   implementation libs['jackson_databind']
   implementation libs['jackson_annotations']
+  
   implementation libs['common-lang']
+  implementation libs['cglib']
 
   implementation libs['JavaToolKit']
 }
