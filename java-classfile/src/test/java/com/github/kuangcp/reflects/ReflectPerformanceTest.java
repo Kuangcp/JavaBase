@@ -10,13 +10,14 @@ import org.junit.Test;
 
 /**
  * 反射的性能问题 http://www.cnblogs.com/zhishan/p/3195771.html
+ * cglib 耗时 50%-70% 于缓存, 10% 于 原始方式
  *
  * @author kuangcp
  */
 @Slf4j
 public class ReflectPerformanceTest {
 
-  private static final int LOOP_SIZE = 500_000;
+  private static final int LOOP_SIZE = 5000_000;
 
   @Data
   class TestClass {
@@ -24,6 +25,7 @@ public class ReflectPerformanceTest {
     private int num;
   }
 
+  // primitive method invoke
   @Test
   public void testGetSet() {
     long sum = 0;
@@ -34,8 +36,8 @@ public class ReflectPerformanceTest {
       testClass.setNum(i);
       sum += testClass.getNum();
     }
-    GetRunTime.GET_RUN_TIME.endCount("invoke get-set method ");
-    log.info("LOOP_SIZE {} 和是 {} ", LOOP_SIZE, sum);
+    GetRunTime.GET_RUN_TIME.endCountOneLine("invoke get-set method ");
+//    log.info("LOOP_SIZE {} 和是 {} ", LOOP_SIZE, sum);
   }
 
   @Test
@@ -50,8 +52,8 @@ public class ReflectPerformanceTest {
       sum += testClass.getNum();
     }
 
-    GetRunTime.GET_RUN_TIME.endCount("simple reflect ");
-    log.info("LOOP_SIZE {} 和是 {} ", LOOP_SIZE, sum);
+    GetRunTime.GET_RUN_TIME.endCountOneLine("simple reflect ");
+//    log.info("LOOP_SIZE {} 和是 {} ", LOOP_SIZE, sum);
   }
 
   @Test
@@ -67,8 +69,8 @@ public class ReflectPerformanceTest {
       sum += num;
     }
 
-    GetRunTime.GET_RUN_TIME.endCount("simple reflect with cache");
-    log.info("LOOP_SIZE {} 和是 {} ", LOOP_SIZE, sum);
+    GetRunTime.GET_RUN_TIME.endCountOneLine("simple reflect with cache");
+//    log.info("LOOP_SIZE {} 和是 {} ", LOOP_SIZE, sum);
   }
 
   @Test
@@ -87,8 +89,8 @@ public class ReflectPerformanceTest {
       sum += testClass.getNum();
     }
 
-    GetRunTime.GET_RUN_TIME.endCount("use cglib ");
-    log.info("LOOP_SIZE {} 和是 {} ", LOOP_SIZE, sum);
+    GetRunTime.GET_RUN_TIME.endCountOneLine("use cglib ");
+//    log.info("LOOP_SIZE {} 和是 {} ", LOOP_SIZE, sum);
   }
 
 }
