@@ -6,8 +6,9 @@ package com.github.kuangcp.util;
  * @author kuangcp
  */
 public class Entity implements BaseInterface {
-    @Override
-    public String getName() {
-        return "human";
-    }
+
+  @Override
+  public String getName() {
+    return "human";
+  }
 }

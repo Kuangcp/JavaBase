@@ -6,5 +6,6 @@ package com.github.kuangcp.util;
  * @author kuangcp
  */
 public interface BaseInterface {
-    String getName();
+
+  String getName();
 }

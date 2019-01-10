@@ -9,13 +9,13 @@ import java.util.List;
  */
 public class ImportUtil {
 
-    public static <T extends BaseInterface> List<T> getList(Class<T> target){
+  public static <T extends BaseInterface> List<T> getList(Class<T> target) {
 
+    return null;
+  }
 
-        return null;
-    }
-    public static void main(String[]s){
-        List<Entity> list =  getList(Entity.class);
-        String name = list.get(0).getName();
-    }
+  public static void main(String[] s) {
+    List<Entity> list = getList(Entity.class);
+    String name = list.get(0).getName();
+  }
 }
