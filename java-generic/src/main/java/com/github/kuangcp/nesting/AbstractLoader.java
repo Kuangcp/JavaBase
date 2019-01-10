@@ -3,11 +3,11 @@ package com.github.kuangcp.nesting;
 import java.util.Map;
 
 /**
- * TODO: B能不能自动根据T获取到
+ * 泛型里面的类自身具有泛型约束, 这样声明才能正确的将类型都约束到
  *
  * @author kuangcp on 19-1-10-下午2:31
  */
-public abstract class AbstractLoader<T extends JsonVO, B> {
+public abstract class AbstractLoader<R, T extends JsonVO<R>> {
 
-  abstract Map<B, T> getMap();
+  abstract Map<R, T> getMap();
 }

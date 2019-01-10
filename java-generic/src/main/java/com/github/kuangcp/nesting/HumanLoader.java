@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author kuangcp on 19-1-10-下午2:30
  */
-public class HumanLoader extends AbstractLoader<HumanVO, String> {
+public class HumanLoader extends AbstractLoader<String, HumanVO> {
 
   private Map<String, HumanVO> map = new HashMap<>();
 
@@ -14,4 +14,5 @@ public class HumanLoader extends AbstractLoader<HumanVO, String> {
   Map<String, HumanVO> getMap() {
     return map;
   }
+
 }
