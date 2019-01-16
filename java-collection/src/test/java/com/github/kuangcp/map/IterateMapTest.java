@@ -13,6 +13,7 @@ import org.junit.Test;
  */
 @Slf4j
 public class IterateMapTest {
+
   private static Map<String, String> map = new HashMap<>();
 
   @BeforeClass
@@ -53,15 +54,5 @@ public class IterateMapTest {
       Map.Entry<String, String> entry = iterator.next();
       log.debug("{}:{}", entry.getKey(), entry.getValue());
     }
-  }
-
-  @Test
-  public void testAdd(){
-    Map<String, String> temp = new HashMap<>();
-    Map<String, String> temp2 = new HashMap<>();
-    temp.putAll(temp2);
-    log.debug(": temp.size={} temp={}", temp.size(), temp);
-    log.debug(": temp2.size={} temp2={}", temp2.size(), temp2);
-
   }
 }
