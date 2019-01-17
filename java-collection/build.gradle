@@ -3,5 +3,5 @@ plugins {
 }
 dependencies {
   implementation libs['JavaToolKit']
-  implementation libs['testng']
+//  implementation libs['testng']
 }
