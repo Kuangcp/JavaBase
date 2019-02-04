@@ -11,6 +11,6 @@ include(
     'java-question',
     'java-pattern',
     'java-8',
-    'java-concurrents',
+    'java-concurrency',
     'java-test'
 )
