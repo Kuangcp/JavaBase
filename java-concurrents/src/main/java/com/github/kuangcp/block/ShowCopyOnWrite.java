@@ -28,38 +28,34 @@ public class ShowCopyOnWrite {
         ElementList list = new ElementList(elements, lock, "list1 > ");
         ElementList list2 = new ElementList(elements, lock, "list2 > ");
 
-        Thread thread1 = new Thread(){
-            public void run(){
-                System.out.println("进入 线程 1");
-                elements.add(builder.name("dyn 1").addr("89").build());
-                list.prep();
-                // 将计数器减一，也就是减成了0
-                firstLatch.countDown();
+        Thread thread1 = new Thread(() -> {
+            System.out.println("进入 线程 1");
+            elements.add(builder.name("dyn 1").addr("89").build());
+            list.prep();
+            // 将计数器减一，也就是减成了0
+            firstLatch.countDown();
 //                System.out.println(firstLatch.toString());
-                try{
-                    secondLatch.await();
-                }catch (InterruptedException e){
-                    System.out.println("first inter error");
-                }
-                list.listElement("first ");
+            try{
+                secondLatch.await();
+            }catch (InterruptedException e){
+                System.out.println("first inter error");
             }
-        };
-        Thread thread2 = new Thread(){
-            public void run(){
-                System.out.println("进入 线程 2");
-                try{
-                    Thread.sleep(2000);
-                    firstLatch.await();
-                    elements.add(builder.name("dyn 2").addr("00").build());
-                    list2.prep();
-                    // 唤醒 线程1
-                    secondLatch.countDown();
-                }catch (InterruptedException e){
-                    System.out.println("second inter error");
-                }
-                list2.listElement("second");
+            list.listElement("first ");
+        });
+        Thread thread2 = new Thread(() -> {
+            System.out.println("进入 线程 2");
+            try{
+                Thread.sleep(2000);
+                firstLatch.await();
+                elements.add(builder.name("dyn 2").addr("00").build());
+                list2.prep();
+                // 唤醒 线程1
+                secondLatch.countDown();
+            }catch (InterruptedException e){
+                System.out.println("second inter error");
             }
-        };
+            list2.listElement("second");
+        });
 
         thread1.start();
         thread2.start();

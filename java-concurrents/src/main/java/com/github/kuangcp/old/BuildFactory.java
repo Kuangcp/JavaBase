@@ -8,7 +8,7 @@ public class BuildFactory {
   private final String name;
   private final String addr;
 
-  public BuildFactory(Builder builder) {
+  private BuildFactory(Builder builder) {
     this.name = builder.name;
     this.addr = builder.addr;
   }
@@ -19,8 +19,8 @@ public class BuildFactory {
     private String name;
     private String addr;
 
-    public Builder name(String name_) {
-      name = name_;
+    public Builder name(String name) {
+      this.name = name;
       return this;
     }
 
@@ -34,13 +34,6 @@ public class BuildFactory {
       return new BuildFactory(this);
     }
 
-    // 内部类是可以多级嵌套的
-    public static class d {
-
-      public class g {
-
-      }
-    }
   }
 }
 

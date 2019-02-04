@@ -13,6 +13,15 @@ import org.junit.Test;
 @Slf4j
 public class CurrentModificationTest {
 
+
+  @Test
+  public void testLoop() {
+    // 如何 判断 5个数中有四个数一样
+//    int size = Stream.of(1, 3, 4, 4, 4).collect(Collectors.groupingBy(Integer::intValue), count());
+//    System.out.println(size);
+//    assert size != 2;
+  }
+
   // 使用HashMap 并发地发生修改(新增,删除)和读操作就会引发 ConcurrentModificationException
   // 使用 ConcurrentHashMap 就不会
   // TODO 为什么

@@ -21,6 +21,9 @@ class Temp implements Cloneable{
   private String addr;
 
   public void a(){
+    int a = 9;
+    Integer b = 4;
+    Long num = Long.valueOf(b);
     try {
       Temp clone = (Temp) this.clone();
     } catch (CloneNotSupportedException e) {

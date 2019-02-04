@@ -52,27 +52,20 @@ public class CopyOnWriteDemo {
     ElementList list = new ElementList(elements, lock, "list > ");
 
     // 两个独立的线程分别加锁并得到了副本，所以运行得到的结果是不同的
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        list.addElement(new Element("1"));
-        list.addElement(new Element("2"));
-        list.addElement(new Element("3"));
-        list.addElement(new Element("4"));
-        list.prep();
-        list.listElement("th1 : ");
-      }
+    new Thread(() -> {
+      list.addElement(new Element("1"));
+      list.addElement(new Element("2"));
+      list.addElement(new Element("3"));
+      list.addElement(new Element("4"));
+      list.prep();
+      list.listElement("th1 : ");
     }).start();
 
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        list.addElement(new Element("5"));
-        list.prep();
-        list.listElement("th2 : ");
-      }
+    new Thread(() -> {
+      list.addElement(new Element("5"));
+      list.prep();
+      list.listElement("th2 : ");
     }).start();
-//        list.addElement(new Element("99"));
 
   }
 }
@@ -84,24 +77,24 @@ class ElementList {
   private final String name;
   private Iterator it;
 
-  public ElementList(CopyOnWriteArrayList elements, ReentrantLock lock, String name) {
+  ElementList(CopyOnWriteArrayList elements, ReentrantLock lock, String name) {
     this.elements = elements;
     this.lock = lock;
     this.name = name;
   }
 
-  public void addElement(Element ele) {
+  void addElement(Element ele) {
     elements.add(ele);
   }
 
-  public void prep() {
+  void prep() {
     it = elements.iterator();//设置迭代器
     // 为什么两个线程会得到同一个迭代器
     // 经过groovy中验证，多个线程调用这个得到迭代器的方法的时候会有偶尔出现 返回相同迭代器对象的情况发生
 //        System.out.println("得到迭代器"+it);
   }
 
-  public void listElement(String who) {
+  void listElement(String who) {
     lock.lock(); // 进行迭代的时候进行 锁定 ，
     System.out.println(who + lock.isLocked() + "遍历 " + it);
     try {
