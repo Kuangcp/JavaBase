@@ -123,5 +123,4 @@ class ElementList {
 class Element {
 
   private String phone;
-
 }

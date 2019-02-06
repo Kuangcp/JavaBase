@@ -45,7 +45,7 @@ ext {
       "httpcore"           : "org.apache.httpcomponents:httpcore:4.4.4",
 
       // db
-      "jedis"              : "redis.clients:jedis:2.9.0",
+      "jedis"              : "redis.clients:jedis:3.0.1",
 
       // JSON dependency
       "gson"               : "com.google.code.gson:gson:2.8.5",

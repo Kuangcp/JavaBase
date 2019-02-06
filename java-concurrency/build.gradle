@@ -8,4 +8,5 @@ dependencies {
   implementation libs['jedis']
   implementation libs['groovy']
   implementation libs['zip4j']
+  implementation libs['common-lang']
 }
