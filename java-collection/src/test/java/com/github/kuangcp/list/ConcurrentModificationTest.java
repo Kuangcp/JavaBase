@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author kuangcp on 19-1-16-上午9:07
  */
 @Slf4j
-public class CurrentModificationTest {
+public class ConcurrentModificationTest {
 
 
 }

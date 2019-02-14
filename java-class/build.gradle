@@ -12,5 +12,5 @@ dependencies {
   implementation libs['common-lang']
   implementation libs['cglib']
 
-  implementation libs['JavaToolKit']
+  implementation libs['kcp-tool']
 }

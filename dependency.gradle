@@ -11,7 +11,7 @@ ext {
       mail       : '1.4.7',
       jackson    : '2.9.5',
       hamcrest   : '1.3',
-      javaToolKit: '0.0.7-SNAPSHOT',
+      kcp_tool: '1.0.0',
   ]
   libs = [
       // tool
@@ -21,7 +21,7 @@ ext {
       "cglib"              : "cglib:cglib:3.2.9",
 
       // mine tool
-      "JavaToolKit"        : "com.github.kuangcp:JavaToolKit:$ver.javaToolKit",
+      "kcp-tool"        : "com.github.kuangcp:kcp-tool:$ver.kcp_tool",
 
       // test, junit has removed hamcrest since 4.11
       "hamcrest-core"      : "org.hamcrest:hamcrest-core:$ver.hamcrest",
