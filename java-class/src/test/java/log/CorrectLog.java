@@ -1,6 +1,7 @@
 package log;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 
 /**
  * Created by https://github.com/kuangcp
@@ -18,7 +19,8 @@ public class CorrectLog {
    * G : log.error("", e); F G H actually is equivalent
    * L : log.error("{}", "Error : ", e);
    */
-  public static void main(String[] a) {
+  @Test
+  public void testCorrectLog() {
     try {
       double num = 1 / 0;
       System.out.println(num);
