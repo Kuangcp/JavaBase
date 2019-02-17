@@ -9,10 +9,8 @@ import org.junit.Test;
  */
 public class MainTest {
 
-
   @Test
   public void testTransferAllKey() {
-
     RedisPoolProperty origin = new RedisPoolProperty();
     origin.setHost("127.0.0.1");
     origin.setPort(6666);
@@ -23,8 +21,7 @@ public class MainTest {
     target.setPort(6666);
     target.setTimeout(100);
 
-    Main main = new Main(origin, target, 3, 4);
-
+    Main main = new Main(origin, target, 2, 4);
     main.transferAllKey();
   }
 }

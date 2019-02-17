@@ -1,5 +1,7 @@
 package redis.migration;
 
+import static java.util.stream.Collectors.groupingBy;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +27,7 @@ public class Main {
   private Integer originDatabase;
   private Integer targetDatabase;
 
-  public Main(RedisPoolProperty originProperty, RedisPoolProperty targetProperty,
+  Main(RedisPoolProperty originProperty, RedisPoolProperty targetProperty,
       Integer originDatabase, Integer targetDatabase) {
     this.originProperty = originProperty;
     this.targetProperty = targetProperty;
@@ -33,10 +35,7 @@ public class Main {
     this.targetDatabase = targetDatabase;
   }
 
-  /**
-   *
-   */
-  public void transferAllKey() {
+  void transferAllKey() {
     boolean init = init();
     if (!init) {
       return;
@@ -46,9 +45,36 @@ public class Main {
       log.error("conn has invalid ");
       return;
     }
+    Optional<Jedis> originOpt = origin.getJedis();
+    Optional<Jedis> targetOpt = target.getJedis();
 
-    getKeys(origin, originProperty, originDatabase)
-        .forEach(this::transfer);
+    if (!originOpt.isPresent() || !targetOpt.isPresent()) {
+      log.warn("connect failed: ");
+      return;
+    }
+    Jedis originJedis = originOpt.get();
+    Jedis targetJedis = targetOpt.get();
+    originJedis.select(originDatabase);
+    targetJedis.select(targetDatabase);
+
+    Set<String> keys = getKeys(origin, originProperty, originDatabase);
+
+//    keys.parallelStream().forEach(k -> System.out.println(System.currentTimeMillis() + " "+k));
+
+    // TODO 如果使用  parallelStream 就会 WRONGTYPE Operation against a key holding the wrong kind of value
+    //  不使用则不会
+
+
+    // 手动多线程
+    Map<Integer, List<String>> collect = keys.stream().collect(groupingBy(String::length));
+    for (List<String> value : collect.values()) {
+      new Thread(() -> value.forEach(k -> transferOneKey(k, originJedis, targetJedis))).start();
+    }
+
+//    GetRunTime getRunTime = GetRunTime.GET_RUN_TIME;
+//    getRunTime.startCount();
+//    keys.forEach(key -> transferOneKey(key, originJedis, targetJedis));
+//    getRunTime.endCount("all");
   }
 
   private boolean init() {
@@ -63,22 +89,12 @@ public class Main {
     return true;
   }
 
-  private void transfer(String key) {
-    Optional<Jedis> originOpt = origin.getJedis();
-    Optional<Jedis> targetOpt = target.getJedis();
-
-    if (!originOpt.isPresent() || !targetOpt.isPresent()) {
-      log.warn("connect failed: ");
-      return;
-    }
-    Jedis originJedis = originOpt.get();
-    Jedis targetJedis = targetOpt.get();
-    originJedis.select(originDatabase);
-    targetJedis.select(targetDatabase);
-
+  private void transferOneKey(String key, Jedis originJedis, Jedis targetJedis) {
     String type = originJedis.type(key);
-
     Optional<RedisDataType> dataType = RedisDataType.of(type);
+
+    log.info("prepared : key={} type={}", key, type);
+
     if (!dataType.isPresent()) {
       log.warn("unsupported data type: type={}", type);
       return;
@@ -101,10 +117,7 @@ public class Main {
         targetJedis.set(key, originJedis.get(key));
         break;
     }
-    log.info("transfer : key={}", key);
-
-//    log.warn("transfer failed: key={} type={}", key, type);
-
+    log.info("transferOneKey : key={} stamp={}", key, System.currentTimeMillis());
   }
 
   private void transferZSet(String key, Jedis originJedis, Jedis targetJedis) {
