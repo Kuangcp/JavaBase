@@ -18,13 +18,16 @@ public class FinallyWithReturn {
 
   @Test
   public void testFinallyWithReturn() {
-    int value = doSomething();
+    int value = doSomethingWithCoverException();
+    log.info("actual value: value={}", value);
+
+    value = doSomething();
     log.info("actual value: value={}", value);
   }
 
   // 1. finally block will override try block return value
   // 2. may cover Exception, if not catch corresponding exception
-  private int doSomething() {
+  private int doSomethingWithCoverException() {
     try {
       return alwaysZero();
     } finally {
@@ -32,6 +35,18 @@ public class FinallyWithReturn {
       // if use return, even the compile-time exception will ignored
       return 1;
     }
+  }
+
+  // correct way
+  private int doSomething() {
+    try {
+      return alwaysZero();
+    } catch (IOException e) {
+      log.warn("catch exception ", e);
+    } finally {
+      log.info("finally block");
+    }
+    return 1;
   }
 
   private int alwaysZero() throws IOException {

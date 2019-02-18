@@ -1,16 +1,18 @@
 rootProject.name = 'JavaBase'
 include(
-    'java-io',
-    'java-generic',
-    'java-collection',
-    'java-class',
-    'java-gui',
-    'java-socket',
-    'java-thread',
-    'java-algorithms',
-    'java-question',
-    'java-pattern',
-    'java-8',
-    'java-concurrency',
-    'java-test'
+    'java-io'
+    , 'java-generic'
+    , 'java-collection'
+    , 'java-class'
+    , 'java-gui'
+    , 'java-socket'
+    , 'java-thread'
+    , 'java-algorithms'
+    , 'java-question'
+    , 'java-pattern'
+    , 'java-8'
+    , 'java-concurrency'
+    , 'java-test'
+    , 'java-guava'
+    , 'java-netty'
 )
