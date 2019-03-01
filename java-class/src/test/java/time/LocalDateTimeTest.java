@@ -1,4 +1,4 @@
-package base.time;
+package time;
 
 
 import static org.hamcrest.Matchers.lessThan;

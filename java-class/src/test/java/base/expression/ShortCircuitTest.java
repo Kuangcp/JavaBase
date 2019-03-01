@@ -45,4 +45,6 @@ public class ShortCircuitTest {
       assertThat(flag, equalTo(1));
     }
   }
+
+  // TODO 位运算
 }

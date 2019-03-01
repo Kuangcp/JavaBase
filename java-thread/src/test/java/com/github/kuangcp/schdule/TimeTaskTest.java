@@ -1,8 +1,5 @@
 package com.github.kuangcp.schdule;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
-
 import java.util.Timer;
 import java.util.TimerTask;
 import lombok.extern.slf4j.Slf4j;
@@ -14,37 +11,23 @@ import org.testng.annotations.Test;
 @Slf4j
 public class TimeTaskTest {
 
+  // timer thread run, ignore main thread status
+  public static void main(String[] args) throws InterruptedException {
+    new TimeTaskTest().testTask();
+  }
+
+  // timer thread will exit after main thread
   @Test
   public void testTask() throws InterruptedException {
     Timer timer = new Timer();
     timer.schedule(new TimerTask() {
       @Override
       public void run() {
-        System.out.println("2");
+        log.info("run");
       }
-    }, 1000);
+    }, 100, 1000);
 
     Thread.sleep(4000);
+    log.info("main");
   }
-
-  @Test
-  public void testLoop() {
-    double i;
-    int count = 0;
-    for (i = 0; i != 10; i += 0.1) {
-      count++;
-      if (count > 1000) {
-        break;
-      }
-      System.out.printf(" %.1f \n", i);
-    }
-    log.debug("result: i={}, count={}", i, count);
-    assertThat(i, equalTo(10));
-  }
-
-  @Test
-  public void testEqual() {
-    assertThat(3.0 - 0.1222, equalTo(2.8778));
-  }
-
 }
