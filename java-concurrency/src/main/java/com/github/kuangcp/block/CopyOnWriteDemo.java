@@ -49,7 +49,7 @@ public class CopyOnWriteDemo {
   public static void main(String[] s) {
     CopyOnWriteArrayList<Element> elements = new CopyOnWriteArrayList<>();
     ReentrantLock lock = new ReentrantLock();
-    ElementList list = new ElementList(elements, lock, "list > ");
+    ElementList<Element> list = new ElementList<>(elements, lock, "list > ");
 
     // 两个独立的线程分别加锁并得到了副本，所以运行得到的结果是不同的
     new Thread(() -> {
@@ -70,20 +70,20 @@ public class CopyOnWriteDemo {
   }
 }
 
-class ElementList {
+class ElementList<T> {
 
-  private final CopyOnWriteArrayList elements;
+  private final CopyOnWriteArrayList<T> elements;
   private final ReentrantLock lock;
   private final String name;
   private Iterator it;
 
-  ElementList(CopyOnWriteArrayList elements, ReentrantLock lock, String name) {
+  ElementList(CopyOnWriteArrayList<T> elements, ReentrantLock lock, String name) {
     this.elements = elements;
     this.lock = lock;
     this.name = name;
   }
 
-  void addElement(Element ele) {
+  void addElement(T ele) {
     elements.add(ele);
   }
 
