@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 客户端的业务代码 继承自 ChannelHandlerAdapter
+ * 客户端 业务代码
  */
 @Slf4j
 public class TimeClientHandler extends ChannelHandlerAdapter {
@@ -35,7 +35,11 @@ public class TimeClientHandler extends ChannelHandlerAdapter {
     byte[] req = new byte[buf.readableBytes()];
     buf.readBytes(req);
     String body = new String(req, StandardCharsets.UTF_8);
+
     log.info("client receive msg: {}", body);
+
+    // 收到消息就关闭连接
+    ctx.close();
   }
 
   /**

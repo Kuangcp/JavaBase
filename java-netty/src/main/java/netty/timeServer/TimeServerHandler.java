@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -13,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class TimeServerHandler extends ChannelHandlerAdapter {
+
+  private static AtomicInteger counter = new AtomicInteger();
 
   /**
    * 成功建立连接后, 读取服务端的消息
@@ -24,7 +27,7 @@ public class TimeServerHandler extends ChannelHandlerAdapter {
     buf.readBytes(req);
     String body = new String(req, StandardCharsets.UTF_8);
 
-    log.info("server receive msg: {}", body);
+    log.info("server receive msg: body={} count={}", body, counter.incrementAndGet());
 
     String currentTime = "QUERY TIME ORDER".equalsIgnoreCase(body) ?
         LocalDateTime.now().toString() : "BAD ORDER";
