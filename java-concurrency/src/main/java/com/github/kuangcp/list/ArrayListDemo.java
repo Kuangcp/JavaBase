@@ -1,4 +1,4 @@
-package com.github.kuangcp.block;
+package com.github.kuangcp.list;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,64 +33,22 @@ public class ArrayListDemo {
         ElementArrayList list = new ElementArrayList(elements, lock, name);
 
         // 两个独立的线程分别加锁并得到了副本，所以运行得到的结果是不同的
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                list.addElement(new Element("1"));
-                list.addElement(new Element("2"));
-                list.addElement(new Element("3"));
-                list.prep();
-                list.listElement();
-            }
+        new Thread(() -> {
+            list.addElement(new Element("1"));
+            list.addElement(new Element("2"));
+            list.addElement(new Element("3"));
+            list.prep();
+            list.listElement();
         }).start();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                list.addElement(new Element("5"));
-                list.addElement(new Element("6"));
+        new Thread(() -> {
+            list.addElement(new Element("5"));
+            list.addElement(new Element("6"));
 
-                list.prep();
-                list.listElement();
-            }
+            list.prep();
+            list.listElement();
         }).start();
 
     }
 }
 
-class ElementArrayList {
-    private final ArrayList<Element> elements;
-    private final ReentrantLock lock;
-    private final String name;
-    private Iterator<Element> it;
-
-    public ElementArrayList(ArrayList<Element> elements, ReentrantLock lock, String name) {
-        this.elements = elements;
-        this.lock = lock;
-        this.name = name;
-    }
-    public void addElement(Element ele){
-        elements.add(ele);
-    }
-    public void prep(){
-        it = elements.iterator();//设置迭代器
-    }
-    public void listElement(){
-        lock.lock(); // 进行迭代的时候进行 锁定 ，
-        try{
-//            Thread.sleep(10);
-            if (it != null){
-                System.out.print(name + ": ");
-                while(it.hasNext()){
-                    Element element = it.next();
-                    System.out.print(element + ", ");
-                }
-                System.out.println();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            lock.unlock();
-        }
-    }
-}

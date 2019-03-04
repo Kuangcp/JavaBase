@@ -1,5 +1,6 @@
-package com.github.kuangcp.block;
+package com.github.kuangcp.list;
 
+import com.github.kuangcp.list.ElementList;
 import com.github.kuangcp.old.BuildFactory;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
