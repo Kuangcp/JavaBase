@@ -8,7 +8,7 @@ import java.io.Serializable;
  *
  * @author kuangcp
  */
-public class SimpleMethod {
+class SimpleMethod {
 
   /**
    * 简单的泛型方法 可以取代掉以往的Object的工具类的方法

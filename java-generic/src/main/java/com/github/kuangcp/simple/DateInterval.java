@@ -13,7 +13,7 @@ import java.util.Date;
  *
  * @author kuangcp
  */
-public class DateInterval extends Pair<Date> {
+class DateInterval extends Pair<Date> {
 
   // 设定时间区间,并确保后面时间大于等于前面时间,保证时间区间合理性
   public void setSecond(Date date) {

@@ -7,7 +7,12 @@ import java.util.Map;
  *
  * @author kuangcp on 19-1-10-下午2:31
  */
-public abstract class AbstractLoader<R, T extends JsonVO<R>> {
+abstract class AbstractLoader<R, T extends JsonVO<R>> {
 
   abstract Map<R, T> getMap();
+
+  void load(String configPath){
+    Map<R, T> map = getMap();
+    // deserialize data from path by gson or jackson, put data into map
+  }
 }

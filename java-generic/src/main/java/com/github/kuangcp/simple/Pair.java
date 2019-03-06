@@ -11,7 +11,7 @@ import lombok.Data;
  * @author kuangcp
  */
 @Data
-public class Pair<T> {
+class Pair<T> {
 
   private T first;
   private T second;
