@@ -9,7 +9,7 @@ class ReSortDemo {
   volatile static boolean stop
 
   static void main(String[] s) {
-//        demo1()
+    demo1()
     demo2()
   }
 
@@ -28,6 +28,7 @@ class ReSortDemo {
         }
       }
     }.start()
+
     new Thread() {
 
       @Override

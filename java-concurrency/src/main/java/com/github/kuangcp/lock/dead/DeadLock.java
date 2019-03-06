@@ -1,4 +1,4 @@
-package com.github.kuangcp.dead;
+package com.github.kuangcp.lock.dead;
 
 import com.github.kuangcp.old.Food;
 import java.util.concurrent.TimeUnit;
@@ -12,12 +12,12 @@ import lombok.extern.slf4j.Slf4j;
  * @author kuangcp on 3/4/19-7:52 AM
  */
 @Slf4j
-class DeadLocks {
+class DeadLock {
 
   private final String id;
   private final Lock locks = new ReentrantLock();
 
-  DeadLocks(String id) {
+  DeadLock(String id) {
     this.id = id;
   }
 
@@ -25,7 +25,7 @@ class DeadLocks {
     return id;
   }
 
-  void prepareRun(Food food, DeadLocks lock) {
+  void prepareRun(Food food, DeadLock lock) {
     boolean required = false;
     while (!required) {
       try {
@@ -50,7 +50,7 @@ class DeadLocks {
     }
   }
 
-  void confirmRun(Food food, DeadLocks lock) {
+  void confirmRun(Food food, DeadLock lock) {
     locks.lock(); // 尝试锁住其他线程 正是这里可能出现死锁，因为这个其他线程已经加锁这里就死锁了
     try {
       log.info("run: currentId={} resource={} lock={} time={}",

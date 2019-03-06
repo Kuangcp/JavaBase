@@ -1,4 +1,4 @@
-package com.github.kuangcp.dead;
+package com.github.kuangcp.lock.dead;
 
 import com.github.kuangcp.old.Food;
 import java.util.concurrent.TimeUnit;
@@ -10,12 +10,12 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * @author kuangcp on 3/4/19-8:03 AM
  */
-class DeadLockHandle {
+class DeadLockHandler {
 
   private final String id;
   private final Lock locks = new ReentrantLock();
 
-  public DeadLockHandle(String id) {
+  public DeadLockHandler(String id) {
     this.id = id;
   }
 
@@ -23,7 +23,7 @@ class DeadLockHandle {
     return id;
   }
 
-  public void preparRun(Food food, DeadLockHandle lock) {
+  public void preparRun(Food food, DeadLockHandler lock) {
     boolean required = false;
     boolean done = false;
 
@@ -55,7 +55,7 @@ class DeadLockHandle {
     }
   }
 
-  public boolean confirmRun(Food food, DeadLockHandle lock) {
+  public boolean confirmRun(Food food, DeadLockHandler lock) {
     boolean required = false;
     try {
       int wait = (int) (Math.random() * 10);

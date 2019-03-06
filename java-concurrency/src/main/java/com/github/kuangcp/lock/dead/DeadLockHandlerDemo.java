@@ -1,4 +1,4 @@
-package com.github.kuangcp.dead;
+package com.github.kuangcp.lock.dead;
 
 import com.github.kuangcp.old.Food;
 
@@ -9,12 +9,12 @@ import com.github.kuangcp.old.Food;
  * 但是还是会有问题，并不是书上说的那么美好，如果遇到锁就释放，然后等待，两个线程都是这样的情况，
  * 然后就不停的释放，等待，加锁，死锁在了各自的第一个方法上，控制台就不停的刷准备方法的内容
  */
-public class HandleDeadLock {
+public class DeadLockHandlerDemo {
 
   public static void main(String[] s) {
 
-    DeadLockHandle one = new DeadLockHandle("one");
-    DeadLockHandle other = new DeadLockHandle("other");
+    DeadLockHandler one = new DeadLockHandler("one");
+    DeadLockHandler other = new DeadLockHandler("other");
     Food fooda = new Food("a");
     Food foodb = new Food("b");
 

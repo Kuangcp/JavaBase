@@ -2,7 +2,7 @@ package com.github.kuangcp.valatile
 
 class RepeatReadDemo {
 
-  // 输出没有 1 2 3 
+  // 输出没有 1 2 3
   static void main(String[] s) {
     RepeatRead read = new RepeatRead()
     new Thread(new Runnable() {

@@ -16,7 +16,7 @@
 | [![java-algorithms](https://img.shields.io/badge/Java-algorithms-blue.svg)](/java-algorithms)| 算法
 | [![java-classFile](https://img.shields.io/badge/java-classfile-blue.svg)](/java-classfile)| 类以及字节码
 | [![java-thread](https://img.shields.io/badge/java-thread-blue.svg)](/java-thread)| 多线程相关
-| [![java-concurrent](https://img.shields.io/badge/java-concurrents-blue.svg)](/java-concurrents)| 并发相关
+| [![java-concurrency](https://img.shields.io/badge/java-concurrents-blue.svg)](/java-concurrents)| 并发相关
 | [![java-generic](https://img.shields.io/badge/java-generic-blue.svg)](/java-generic)| 泛型相关
 | [![java-gui](https://img.shields.io/badge/java-gui-blue.svg)](/java-gui)| 图形化相关
 | [![java-io](https://img.shields.io/badge/java-io-blue.svg)](/java-io)| IO相关
@@ -24,3 +24,8 @@
 | [![java-question](https://img.shields.io/badge/java-question-blue.svg)](/java-question)| 实际问题
 | [![java-socket](https://img.shields.io/badge/java-socket-blue.svg)](/java-socket)| 网络相关
 | [![java-test](https://img.shields.io/badge/java-test-blue.svg)](/java-test)| 测试相关
+
+| module | comment |
+|:----|:----|
+| [![java-netty](https://img.shields.io/badge/java-test-blue.svg)](/java-netty)| netty相关
+| [![java-guava](https://img.shields.io/badge/java-test-blue.svg)](/java-guava)| guava相关

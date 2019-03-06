@@ -1,4 +1,4 @@
-package com.github.kuangcp.dead;
+package com.github.kuangcp.lock.dead;
 
 import com.github.kuangcp.old.Food;
 
@@ -11,8 +11,8 @@ public class DeadLockDemo {
 
   public static void main(String[] s) {
 
-    DeadLocks one = new DeadLocks("one");
-    DeadLocks other = new DeadLocks("other");
+    DeadLock one = new DeadLock("one");
+    DeadLock other = new DeadLock("other");
     Food fooda = new Food("a");
     Food foodb = new Food("b");
 
