@@ -1,5 +1,7 @@
 package com.github.kuangcp.inherit;
 
+import com.github.kuangcp.common.Human;
+import com.github.kuangcp.common.Student;
 import org.junit.Test;
 
 /**

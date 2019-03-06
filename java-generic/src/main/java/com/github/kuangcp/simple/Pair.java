@@ -16,7 +16,6 @@ class Pair<T> {
   private T first;
   private T second;
 
-
   public Pair() {
     first = null;
     second = null;
@@ -34,7 +33,6 @@ class Pair<T> {
     return list[list.length / 2];
   }
 
-
   /**
    * 得到最小最大值
    *
@@ -42,7 +40,7 @@ class Pair<T> {
    * @param <T> 类型约束
    * @return 返回含最大最小值的对象
    */
-  public static <T extends Comparable> Pair<T> minmax(T[] list) {
+  public static <T extends Comparable<T>> Pair<T> minAndMax(T[] list) {
     if (list == null || list.length == 0) {
       return null;
     }
@@ -58,5 +56,4 @@ class Pair<T> {
     }
     return new Pair<T>(min, max);
   }
-
 }

@@ -1,57 +1,69 @@
 package com.github.kuangcp.simple;
 
+import com.github.kuangcp.common.Human;
+import com.github.kuangcp.common.Student;
 import java.util.Date;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.junit.Test;
 
 /**
  * Created by https://github.com/kuangcp on 18-1-11  下午5:38
  * 这个泛型类的使用就有点像集合的泛型使用了
- * 理解为模板类?
+ *
+ * TODO 整理, 删除无用注释
  *
  * @author kuangcp
  */
 public class PairTest {
 
+  private class Junior extends Student {
+
+  }
+
   @Test
-  public void testsimple() {
+  public void testSimple() {
     Pair<Date> pair = new Pair<>();
     pair.setFirst(new Date());
     System.out.println(pair.getFirst());
 
-    // 因为实例化这个类的时候就已经声明了类型为Date,所以里面的所有的T都会替换成Date
-    // 下面再用别的参数的话就会编译报错,所以用来约束类型很方便
-//        pair.setSecond(new Integer(3));
-
+    // 编译期 泛型类型检查, Pair的泛型类型已经声明为Date, 所以以下编译通不过
+//  x  pair.setSecond(new Integer(3));
   }
 
   @Test
   public void testMinMax() {
     Float[] arrays = {2.1f, 4.2f, 3.5f};
     Pair<Float> pair;
-    pair = Pair.minmax(arrays);
+    pair = Pair.minAndMax(arrays);
     System.out.println(pair.getFirst() + "--" + pair.getSecond());
   }
-
 
   /**
    * 使用extends
    */
   @Test
-  public void testExtends1() {
+  public void testExtendsWithSet() {
     Pair<Human> humans = new Pair<>();
-    // 使用泛型通配符,达到类型约束的目的
+    humans.setFirst(new Human());
+    humans.setSecond(new Student());
+
+//  x  humans.setSecond(new Object());
+
     Pair<? extends Human> classmates = humans;
-//        classmates.setSecond(new Student()); //报错
-//        classmates.setSecond(new Object()); //不能set
-    Human human = classmates.getSecond();
+
+    // TODO not compile ?
+//    classmates.setFirst(new Human());
+//    classmates.setSecond(new Student());
+//    classmates.setSecond(new Object());
 
     // 原始类型的坑
-    ((Pair) humans).setFirst(new String("fdsfds"));
+    ((Pair) classmates).setFirst("str");
+    System.out.println(classmates.getFirst());
+
+    ((Pair<Human>) classmates).setFirst(new Human("name"));
+
     // 虽然通过了编译,也运行正常,但是该泛型程序没有实现其需要的目的(类型约束)
     // 原本应该是Human对象才能set,但是变成原始类型即多态后就能set任意对象了
-    System.out.println(humans.getFirst());
+    System.out.println(classmates.getFirst());
   }
 
   //  以下是关于通配符, 说的set和get是指 泛型类Pair 上的成员属性的set和get方法
@@ -97,12 +109,12 @@ public class PairTest {
   public void testExtends() {
     Pair<Junior> pair = new Pair<>();
     Pair result = printMessage(new Human("name"), pair);
-//        Pair<Human> result = printMessage(new Human("name"), pair); // 可以用原始类型接收但是不能用 父类的类型变量约束的
+//    Pair<Human> result = printMessage(new Human("name"), pair); // 可以用原始类型接收但是不能用 父类的类型变量约束的
   }
 
   // super 只能set
   @Test
-  public void testSupers() {
+  public void testSuper() {
     Pair<Human> pair = new Pair<>();
 //        Pair<Junior> pair = new Pair<>(); // 报错限定了是泛型约束变量类型的 自己和父类 子类是不允许的
     Pair result = minMaxBonus(new Student("how"), pair);
@@ -146,40 +158,5 @@ public class PairTest {
     humanPair.setSecond(new Human("fds"));
     humanPair.setFirst(new Student("df"));
     System.out.println(humanPair.getFirst().toString());
-  }
-
-
-  @Data
-  @EqualsAndHashCode(callSuper=false)
-  class Human {
-
-    private String name;
-
-    public Human() {
-    }
-
-    public Human(String name) {
-      this.name = name;
-    }
-
-  }
-
-  @Data
-  @EqualsAndHashCode(callSuper=false)
-  class Student extends Human {
-
-    private String school;
-
-    public Student() {
-    }
-
-    public Student(String school) {
-      this.school = school;
-    }
-
-  }
-
-  class Junior extends Student {
-
   }
 }
