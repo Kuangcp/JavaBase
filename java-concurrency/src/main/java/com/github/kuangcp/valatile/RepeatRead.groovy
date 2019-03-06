@@ -18,6 +18,7 @@ class RepeatRead {
         setClose(false)
         println("启动"+thread)
     }
+
     void close(String thread){
         if(isClose()){
             return

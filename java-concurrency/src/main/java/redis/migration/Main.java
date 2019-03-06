@@ -52,10 +52,10 @@ public class Main {
       log.warn("connect failed: ");
       return;
     }
-    Jedis originJedis = originOpt.get();
-    Jedis targetJedis = targetOpt.get();
-    originJedis.select(originDatabase);
-    targetJedis.select(targetDatabase);
+    Jedis originRedis = originOpt.get();
+    Jedis targetRedis = targetOpt.get();
+    originRedis.select(originDatabase);
+    targetRedis.select(targetDatabase);
 
     Set<String> keys = getKeys(origin, originProperty, originDatabase);
 
@@ -68,12 +68,12 @@ public class Main {
     // 手动多线程
     Map<Integer, List<String>> collect = keys.stream().collect(groupingBy(String::length));
     for (List<String> value : collect.values()) {
-      new Thread(() -> value.forEach(k -> transferOneKey(k, originJedis, targetJedis))).start();
+      new Thread(() -> value.forEach(k -> transferOneKey(k, originRedis, targetRedis))).start();
     }
 
 //    GetRunTime getRunTime = GetRunTime.GET_RUN_TIME;
 //    getRunTime.startCount();
-//    keys.forEach(key -> transferOneKey(key, originJedis, targetJedis));
+//    keys.forEach(key -> transferOneKey(key, originRedis, targetRedis));
 //    getRunTime.endCount("all");
   }
 
