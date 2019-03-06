@@ -27,5 +27,5 @@
 
 | module | comment |
 |:----|:----|
-| [![java-netty](https://img.shields.io/badge/java-test-blue.svg)](/java-netty)| netty相关
-| [![java-guava](https://img.shields.io/badge/java-test-blue.svg)](/java-guava)| guava相关
+| [![java-netty](https://img.shields.io/badge/java-netty-success.svg)](/java-netty)| netty相关
+| [![java-guava](https://img.shields.io/badge/java-guava-success.svg)](/java-guava)| guava相关
