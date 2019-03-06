@@ -11,21 +11,21 @@
 
 | module | comment |
 |:----|:----|
-| [![java-8](https://img.shields.io/badge/Java-8-blue.svg)](/java-8)                           | Java8学习
-| [![java-collection](https://img.shields.io/badge/java-collection-blue.svg)](/java-collection)| 集合
-| [![java-algorithms](https://img.shields.io/badge/Java-algorithms-blue.svg)](/java-algorithms)| 算法
-| [![java-classFile](https://img.shields.io/badge/java-classfile-blue.svg)](/java-classfile)| 类以及字节码
-| [![java-thread](https://img.shields.io/badge/java-thread-blue.svg)](/java-thread)| 多线程相关
-| [![java-concurrency](https://img.shields.io/badge/java-concurrents-blue.svg)](/java-concurrents)| 并发相关
-| [![java-generic](https://img.shields.io/badge/java-generic-blue.svg)](/java-generic)| 泛型相关
-| [![java-gui](https://img.shields.io/badge/java-gui-blue.svg)](/java-gui)| 图形化相关
-| [![java-io](https://img.shields.io/badge/java-io-blue.svg)](/java-io)| IO相关
-| [![java-model](https://img.shields.io/badge/java-model-blue.svg)](/java-model)| 设计模式相关
-| [![java-question](https://img.shields.io/badge/java-question-blue.svg)](/java-question)| 实际问题
-| [![java-socket](https://img.shields.io/badge/java-socket-blue.svg)](/java-socket)| 网络相关
-| [![java-test](https://img.shields.io/badge/java-test-blue.svg)](/java-test)| 测试相关
+| [![java-8](https://img.shields.io/badge/8-blue.svg)](/java-8)                           | Java8学习
+| [![java-collection](https://img.shields.io/badge/collection-blue.svg)](/java-collection)| 集合
+| [![java-algorithms](https://img.shields.io/badge/algorithms-blue.svg)](/java-algorithms)| 算法
+| [![java-classFile](https://img.shields.io/badge/classfile-blue.svg)](/java-classfile)| 类以及字节码
+| [![java-thread](https://img.shields.io/badge/thread-blue.svg)](/java-thread)| 多线程相关
+| [![java-concurrency](https://img.shields.io/badge/-concurrents-blue.svg)](/java-concurrents)| 并发相关
+| [![java-generic](https://img.shields.io/badge/-generic-blue.svg)](/java-generic)| 泛型相关
+| [![java-gui](https://img.shields.io/badge/-gui-blue.svg)](/java-gui)| 图形化相关
+| [![java-io](https://img.shields.io/badge/-io-blue.svg)](/java-io)| IO相关
+| [![java-model](https://img.shields.io/badge/-model-blue.svg)](/java-model)| 设计模式相关
+| [![java-question](https://img.shields.io/badge/-question-blue.svg)](/java-question)| 实际问题
+| [![java-socket](https://img.shields.io/badge/-socket-blue.svg)](/java-socket)| 网络相关
+| [![java-test](https://img.shields.io/badge/-test-blue.svg)](/java-test)| 测试相关
 
 | module | comment |
 |:----|:----|
-| [![java-netty](https://img.shields.io/badge/java-netty-success.svg)](/java-netty)| netty相关
-| [![java-guava](https://img.shields.io/badge/java-guava-success.svg)](/java-guava)| guava相关
+| [![java-netty](https://img.shields.io/badge/-netty-success.svg)](/java-netty)| netty相关
+| [![java-guava](https://img.shields.io/badge/-guava-success.svg)](/java-guava)| guava相关
