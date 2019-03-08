@@ -13,7 +13,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReflectDomain {
+class ReflectDomain {
+
+  private static final String uid = "static final";
+  private final String id = "final";
 
   private String name;
   private Long age;
