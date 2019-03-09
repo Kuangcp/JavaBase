@@ -19,7 +19,7 @@ public class HandleExceptionTest {
     }
   }
 
-  @Test
+  @Test(expected = NullPointerException.class)
   public void testException() {
     try {
       data.forEach(s -> {

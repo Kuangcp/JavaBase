@@ -6,18 +6,24 @@ import lombok.NoArgsConstructor;
 
 /**
  * Created by https://github.com/kuangcp on 17-10-24  上午9:48
- * 反射操作的对象
  *
  * @author kuangcp
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-class ReflectDomain {
+class ReflectTargetObject {
 
-  private static final String uid = "static final";
-  private final String id = "final";
+  public static final String uid = "staticFinal";
+  public final String id = "final";
+  public final int no = 1;
+
+  public static String type = "type";
 
   private String name;
-  private Long age;
+  private int num = 2;
+
+  public ReflectTargetObject(String name) {
+    this.name = name;
+  }
 }

@@ -47,9 +47,7 @@ public class MainTest {
         point.translate(1, 1);
         System.out.println("AnonymousInnerClass " + point);
       }
-
     });
-
   }
 
   // 4. lambda 表达式
