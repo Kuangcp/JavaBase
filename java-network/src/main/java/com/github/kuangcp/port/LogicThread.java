@@ -1,5 +1,7 @@
 package com.github.kuangcp.port;
 
+import com.github.kuangcp.util.ResourcesUtil;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -35,21 +37,11 @@ public class LogicThread extends Thread {
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
-      close();
-    }
-  }
-
-  /**
-   * 关闭流和连接
-   */
-  private void close() {
-    try {
-      //关闭流和连接
-      os.close();
-      is.close();
-      socket.close();
-    } catch (Exception e) {
-      e.printStackTrace();
+      try {
+        ResourcesUtil.close(os, is, socket);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
   }
 
