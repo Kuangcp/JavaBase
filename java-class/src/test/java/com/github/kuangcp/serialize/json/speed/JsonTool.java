@@ -1,6 +1,5 @@
 package com.github.kuangcp.serialize.json.speed;
 
-import com.github.kuangcp.serialize.binary.Person;
 import java.util.List;
 
 /**
@@ -8,12 +7,11 @@ import java.util.List;
  *
  * @author kuangcp
  */
-public interface JsonTool {
+public interface JsonTool<T> {
 
   void read();
 
-  void write(int total, List<Person> dataList);
+  void write(List<T> dataList);
 
   String getName();
-
 }

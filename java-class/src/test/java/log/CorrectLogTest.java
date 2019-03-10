@@ -10,7 +10,7 @@ import org.junit.Test;
  * @author kuangcp
  */
 @Slf4j
-public class CorrectLog {
+public class CorrectLogTest {
 
   /**
    * F G H L is correct

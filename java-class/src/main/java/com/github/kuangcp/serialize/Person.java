@@ -1,4 +1,4 @@
-package com.github.kuangcp.serialize.binary;
+package com.github.kuangcp.serialize;
 
 import java.io.Serializable;
 import lombok.Data;
@@ -14,6 +14,10 @@ public class Person implements Serializable {
   private String name;
   private String address;
   private String phone;
+
+  public Person(String name) {
+    this.name = name;
+  }
 
   @Override
   public String toString() {

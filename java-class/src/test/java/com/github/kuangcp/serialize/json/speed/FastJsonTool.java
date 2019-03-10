@@ -1,7 +1,7 @@
 package com.github.kuangcp.serialize.json.speed;
 
 import com.alibaba.fastjson.JSON;
-import com.github.kuangcp.serialize.binary.Person;
+import com.github.kuangcp.serialize.Person;
 import java.util.List;
 
 /**
@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author kuangcp
  */
-public class FastJsonTest implements JsonTool {
+public class FastJsonTool implements JsonTool<Person> {
 
   @Override
   public void read() {
@@ -17,7 +17,7 @@ public class FastJsonTest implements JsonTool {
   }
 
   @Override
-  public void write(int total, List<Person> dataList) {
+  public void write(List<Person> dataList) {
     JSON.toJSON(dataList);
   }
 

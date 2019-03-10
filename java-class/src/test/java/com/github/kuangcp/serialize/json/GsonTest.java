@@ -41,7 +41,7 @@ public class GsonTest {
   }
 
   @Data
-  class Code {
+  private class Code {
 
     private int code;
 

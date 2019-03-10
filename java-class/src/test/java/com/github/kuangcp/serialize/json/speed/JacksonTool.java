@@ -2,7 +2,7 @@ package com.github.kuangcp.serialize.json.speed;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.kuangcp.serialize.binary.Person;
+import com.github.kuangcp.serialize.Person;
 import java.util.List;
 
 /**
@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author kuangcp
  */
-public class JacksonTest implements JsonTool {
+public class JacksonTool implements JsonTool<Person> {
 
   @Override
   public void read() {
@@ -18,7 +18,7 @@ public class JacksonTest implements JsonTool {
   }
 
   @Override
-  public void write(int total, List<Person> dataList) {
+  public void write(List<Person> dataList) {
     ObjectMapper mapper = new ObjectMapper();
     try {
       mapper.writeValueAsString(dataList);

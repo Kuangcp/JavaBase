@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Data
 @Slf4j
-class TargetObject implements Serializable, Cloneable {
+public class TargetObject implements Serializable, Cloneable {
 
   private String name;
 

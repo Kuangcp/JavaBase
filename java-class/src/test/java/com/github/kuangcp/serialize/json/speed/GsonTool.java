@@ -1,6 +1,6 @@
 package com.github.kuangcp.serialize.json.speed;
 
-import com.github.kuangcp.serialize.binary.Person;
+import com.github.kuangcp.serialize.Person;
 import com.google.gson.Gson;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author kuangcp
  */
 @Slf4j
-public class GsonTest implements JsonTool {
+public class GsonTool implements JsonTool<Person> {
 
   @Override
   public void read() {
@@ -19,10 +19,9 @@ public class GsonTest implements JsonTool {
   }
 
   @Override
-  public void write(int total, List<Person> dataList) {
+  public void write(List<Person> dataList) {
     Gson gson = new Gson();
     gson.toJson(dataList);
-
   }
 
   @Override
