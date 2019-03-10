@@ -15,22 +15,11 @@ public class DeadLockHandlerDemo {
 
     DeadLockHandler one = new DeadLockHandler("one");
     DeadLockHandler other = new DeadLockHandler("other");
-    Food fooda = new Food("a");
-    Food foodb = new Food("b");
+    Food foodA = new Food("a");
+    Food foodB = new Food("b");
 
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        one.preparRun(fooda, other);
-      }
-    }).start();
-
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        other.preparRun(foodb, one);
-      }
-    }).start();
+    new Thread(() -> one.preparRun(foodA, other)).start();
+    new Thread(() -> other.preparRun(foodB, one)).start();
   }
 }
 

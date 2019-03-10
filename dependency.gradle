@@ -44,8 +44,7 @@ ext {
       "activation"         : "javax.activation:activation:1.1.1",
 
       // http
-      "httpclient"         : "org.apache.httpcomponents:httpclient:4.5.2",
-      "httpcore"           : "org.apache.httpcomponents:httpcore:4.4.4",
+      "ok-http"            : "com.squareup.okhttp3:okhttp:3.13.1",
 
       // db
       "jedis"              : "redis.clients:jedis:3.0.1",

@@ -1,4 +1,0 @@
-dependencies{
-    compile libs['httpclient']
-    compile libs['httpcore']
-}

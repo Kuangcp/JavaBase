@@ -14,12 +14,11 @@ public class DeadLockRewriteDemo {
 
     DeadLockRewrite one = new DeadLockRewrite("one");
     DeadLockRewrite other = new DeadLockRewrite("other");
-    Food fooda = new Food("a");
-    Food foodb = new Food("b");
+    Food foodA = new Food("a");
+    Food foodB = new Food("b");
 
-    new Thread(() -> one.prepareRun(fooda, other)).start();
-
-    new Thread(() -> other.prepareRun(foodb, one)).start();
+    new Thread(() -> one.prepareRun(foodA, other)).start();
+    new Thread(() -> other.prepareRun(foodB, one)).start();
   }
 }
 

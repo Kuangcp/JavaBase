@@ -21,7 +21,7 @@ class DeadLock {
     this.id = id;
   }
 
-  String getId() {
+  private String getId() {
     return id;
   }
 
@@ -50,7 +50,7 @@ class DeadLock {
     }
   }
 
-  void confirmRun(Food food, DeadLock lock) {
+  private void confirmRun(Food food, DeadLock lock) {
     locks.lock(); // 尝试锁住其他线程 正是这里可能出现死锁，因为这个其他线程已经加锁这里就死锁了
     try {
       log.info("run: currentId={} resource={} lock={} time={}",

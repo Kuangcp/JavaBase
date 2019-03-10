@@ -5,7 +5,7 @@ include(
     , 'java-collection'
     , 'java-class'
     , 'java-gui'
-    , 'java-socket'
+    , 'java-network'
     , 'java-thread'
     , 'java-algorithms'
     , 'java-question'
