@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author kcp RedisPool 的必要的非必要的所有连接属性
  */
 @Data
-public class RedisPoolProperty {
+class RedisPoolProperty {
 
   //最大连接数
   private Integer maxActive;
@@ -31,7 +31,7 @@ public class RedisPoolProperty {
 
 
   // host and port is effective
-  public boolean isAbleToInit() {
+  boolean isAbleToInit() {
     return StringUtils.isNoneBlank(host) && port > 0 && port < 65535 && timeout > 0;
   }
 }

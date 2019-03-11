@@ -65,7 +65,7 @@ public class OutMiGong {
         for (int k = 0; k <= top; k++) {
           System.out.printf("(%d,%d)  ", Stack[k].row, Stack[k].col);
           if ((k + 1) % 8 == 0) {
-            System.out.printf("\n");    //每8个换行
+            System.out.println();    //每8个换行
           }
         }
         System.out.println("\n");
@@ -136,7 +136,7 @@ public class OutMiGong {
         System.out.println();
       }
       System.out.println();
-      System.out.printf("\n最短路径如图：\n");
+      System.out.print("\n最短路径如图：\n");
       for (int z = 0; z < maxRow + 2; z++) {
         for (int x = 0; x < maxCol + 2; x++) {
           System.out.printf(" %c", print[z][x]);
@@ -144,7 +144,7 @@ public class OutMiGong {
         System.out.println();
       }
     } else {
-      System.out.printf("这个迷宫不能到达出口");
+      System.out.print("这个迷宫不能到达出口");
     }
   }
 }
