@@ -2,6 +2,8 @@ package com.github.kuangcp.inherit;
 
 import com.github.kuangcp.common.Human;
 import com.github.kuangcp.common.Student;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Test;
 
 /**
@@ -34,5 +36,13 @@ public class InheritTest {
     Container<Human> temp = b;
     System.out.println(b.get(0));
     System.out.println(temp.get(0));
+  }
+
+  @Test
+  public void testArray(){
+    List<Object> objectList = Arrays.asList("1", "2");
+
+    List<String> strings = Arrays.asList("1", "2");
+//  x  List<Object> objects = strings;
   }
 }
