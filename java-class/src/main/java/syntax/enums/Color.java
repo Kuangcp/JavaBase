@@ -1,4 +1,4 @@
-package base.enums;
+package syntax.enums;
 
 /**
  * Created by https://github.com/kuangcp

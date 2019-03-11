@@ -1,4 +1,4 @@
-package base.innerclass;
+package syntax.innerclass;
 
 import lombok.Data;
 

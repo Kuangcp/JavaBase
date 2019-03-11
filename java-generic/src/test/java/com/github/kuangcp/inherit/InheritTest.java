@@ -40,9 +40,18 @@ public class InheritTest {
 
   @Test
   public void testArray(){
+    // asList 方法签名上的 T 在这里是不唯一的, 可以为String 也可以为Object 都能说的通, 所以看起来这个方法返回值就有很多种
+    // 但是当代码已经显式确认 T 的类型时, 后面就是严格按照 泛型的语法 约束了
+    // public static <T> List<T> asList(T... a) {
+
     List<Object> objectList = Arrays.asList("1", "2");
 
     List<String> strings = Arrays.asList("1", "2");
+
 //  x  List<Object> objects = strings;
+
+    // 可以放任意值 返回值为原始类型, 但是没有警告??
+    List data = Arrays.asList(1, "2", 'd', 1.0, new Human());
+
   }
 }

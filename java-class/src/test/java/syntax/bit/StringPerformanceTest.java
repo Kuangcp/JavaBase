@@ -1,4 +1,4 @@
-package base.bit;
+package syntax.bit;
 
 import static com.github.kuangcp.time.GetRunTime.GET_RUN_TIME;
 

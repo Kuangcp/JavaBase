@@ -1,4 +1,4 @@
-package base.enums;
+package syntax.enums;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,4 +1,4 @@
-package base.string;
+package syntax.string;
 
 import static com.github.kuangcp.time.GetRunTime.GET_RUN_TIME;
 

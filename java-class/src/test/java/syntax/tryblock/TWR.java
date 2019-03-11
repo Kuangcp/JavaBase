@@ -1,4 +1,4 @@
-package base.tryblock;
+package syntax.tryblock;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
