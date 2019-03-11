@@ -1,4 +1,4 @@
-## JavaBase
+# JavaBase
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/23134c0d2348845fecec/maintainability)](https://codeclimate.com/github/Kuangcp/JavaBase/maintainability)
 [![codebeat badge](https://codebeat.co/badges/9145f9a8-a1aa-4c67-bb2b-f9dd12e924d4)](https://codebeat.co/projects/github-com-kuangcp-javabase-master)
@@ -14,7 +14,7 @@
 | [泛型](/java-generic)| [测试](/java-test)|
 | [IO](/java-io)|
 
-> 其他模块: [图形化](/java-gui) | [实际问题](/java-question)
+[图形化](/java-gui) | [实际问题](/java-question)
 
 **************
 
