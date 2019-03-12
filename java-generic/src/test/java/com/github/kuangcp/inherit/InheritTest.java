@@ -11,6 +11,21 @@ import org.junit.Test;
  */
 public class InheritTest {
 
+  // test Arrays.asList() method
+  @Test
+  public void testArray() {
+    // Type T on method signature is not unique, both String and Object satisfy generic rule
+    // generic rule is only exist at compile time
+    // but when generics are explicitly specified, the T will be identified
+
+    List<Object> objectList = Arrays.asList("1", "2");
+    List<String> strings = Arrays.asList("1", "2");
+//  x  List<Object> objects = strings;
+
+    // 可以放任意值 返回值为原始类型, 但是没有警告??
+    List<Object> data = Arrays.asList(1, "2", 'd', 1.0, new Human());
+  }
+
   @Test
   public void testAdd() {
     Container<Human> humanContainer = new Container<>();
@@ -36,22 +51,5 @@ public class InheritTest {
     Container<Human> temp = b;
     System.out.println(b.get(0));
     System.out.println(temp.get(0));
-  }
-
-  @Test
-  public void testArray(){
-    // asList 方法签名上的 T 在这里是不唯一的, 可以为String 也可以为Object 都能说的通, 所以看起来这个方法返回值就有很多种
-    // 但是当代码已经显式确认 T 的类型时, 后面就是严格按照 泛型的语法 约束了
-    // public static <T> List<T> asList(T... a) {
-
-    List<Object> objectList = Arrays.asList("1", "2");
-
-    List<String> strings = Arrays.asList("1", "2");
-
-//  x  List<Object> objects = strings;
-
-    // 可以放任意值 返回值为原始类型, 但是没有警告??
-    List data = Arrays.asList(1, "2", 'd', 1.0, new Human());
-
   }
 }
