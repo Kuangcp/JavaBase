@@ -19,6 +19,7 @@ public class HandleExceptionTest {
     }
   }
 
+  // NPE in stream
   @Test(expected = NullPointerException.class)
   public void testException() {
     try {
