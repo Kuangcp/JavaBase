@@ -1,26 +1,24 @@
 package com.github.kuangcp.simple;
 
 import com.github.kuangcp.common.Human;
+import com.github.kuangcp.common.Junior;
 import com.github.kuangcp.common.Student;
 import java.util.Date;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 /**
  * Created by https://github.com/kuangcp on 18-1-11  下午5:38
- * 这个泛型类的使用就有点像集合的泛型使用了
- *
- * TODO 整理, 删除无用注释
+ * 这个泛型类的使用 和 集合的泛型使用 用法一致
  *
  * @author kuangcp
  */
+@Slf4j
 public class PairTest {
 
-  private class Junior extends Student {
-
-  }
-
+  // Junior -> Student -> Human
   @Test
-  public void testSimple() {
+  public void testBasicGeneric() {
     Pair<Date> pair = new Pair<>();
     pair.setFirst(new Date());
     System.out.println(pair.getFirst());
@@ -30,133 +28,142 @@ public class PairTest {
   }
 
   @Test
-  public void testMinMax() {
-    Float[] arrays = {2.1f, 4.2f, 3.5f};
-    Pair<Float> pair;
-    pair = Pair.minAndMax(arrays);
-    System.out.println(pair.getFirst() + "--" + pair.getSecond());
+  public void testUsePair() {
+    Float[] arrays = {2.1f, 4.2f, 3.5f, 5.5f, 2.11f};
+    Pair<Float> pair = Pair.minAndMax(arrays);
+    log.info("min={} max={}", pair.getFirst(), pair.getSecond());
+
+    String[] data = {"ddd", "d", "aa"};
+    log.info("result={}", Pair.minAndMax(data));
+    log.info("result={}", Pair.middle(data));
   }
 
   /**
-   * 使用extends
+   * 使用 ? extends XXX 声明的泛型容器 只能get 不能set(编译通不过)
+   * 且 适用于 方法的参数, 不适用于返回值
+   *
+   * 因此如果你想从一个数据结构里获取数据，使用 ? extends 通配符 限定通配符总是包括自己
    */
   @Test
-  public void testExtendsWithSet() {
+  public void testExtends() {
     Pair<Human> humans = new Pair<>();
+    // Human 自身 以及 他的子类都能放入
+    humans.setFirst(new Junior());
     humans.setFirst(new Human());
     humans.setSecond(new Student());
-
 //  x  humans.setSecond(new Object());
+    paramWithSuper(humans);
 
-    Pair<? extends Human> classmates = humans;
+    // Student 自身 以及 他的子类都能放入
+    Pair<? extends Student> classmates = new Pair<>();
+    paramWithExtends(classmates);
 
-    // TODO not compile ?
-//    classmates.setFirst(new Human());
-//    classmates.setSecond(new Student());
-//    classmates.setSecond(new Object());
+    Pair<? extends Student> result = returnWithExtends();
+    log.info("result={}", result);
+  }
 
-    // 原始类型的坑
+  /**
+   * @param student ? extends Human的子类 都是能放入的
+   */
+  private void paramWithExtends(Pair<? extends Student> student) {
+//    student.setFirst(new Human());
+//    student.setSecond(new Student());
+//    student.setFirst(new Junior());
+//    student.setSecond(new Object());
+    log.info("first={} second={}", student.getFirst(), student.getSecond());
+  }
+
+  private Pair<? extends Student> returnWithExtends() {
+    Pair<Student> studentPair = new Pair<>();
+    studentPair.setFirst(new Student());
+    studentPair.setSecond(new Junior());
+
+//    Pair<Human> humanPair = new Pair<>();
+//    return humanPair;
+    return studentPair;
+  }
+
+  /**
+   * ? super xxx 只能set, 不能get(丢失了泛型)
+   * 因此如果你想把对象写入一个数据结构里，使用 ? super 通配符。限定通配符总是包括自己
+   */
+  @Test
+  public void testSuper() {
+    Pair<Human> human = new Pair<>();
+    human.setFirst(new Human());
+    human.setSecond(new Junior());
+    paramWithSuper(human);
+
+    Pair<Junior> juniorPair = new Pair<>();
+//    paramWithSuper(juniorPair);
+
+    Pair<? super Student> result = returnWithSuper();
+    // 因为 result 是约束为能放入Student以及他的超类,但是又是不明确的超类, 所以这个result能放入 Student子类, 因为多态
+    // 但是不能放入 Human 因为不明确result约束的超类到底是哪个, 即使Human是Student超类, 不能放入
+    result.setSecond(new Junior());
+//    result.setSecond(new Human());
+
+    log.info("result={}", result);
+  }
+
+  private void paramWithSuper(Pair<? super Student> student) {
+    student.setFirst(new Junior());
+//    student.setFirst(new Human());
+//    student.setFirst(new Object());
+
+    log.info("{}", student);
+  }
+
+  private Pair<? super Student> returnWithSuper() {
+    Pair<Human> humanPair = new Pair<>();
+    humanPair.setFirst(new Human());
+
+    Pair<Junior> juniorPair = new Pair<>();
+    juniorPair.setFirst(new Junior());
+//    return juniorPair;
+    return humanPair;
+  }
+
+  /**
+   * 原始类型的坑
+   */
+  @Test
+  public void testPrimitiveType() {
+    Pair<? extends Human> classmates = new Pair<>();
     ((Pair) classmates).setFirst("str");
-    System.out.println(classmates.getFirst());
+    log.info("{}", classmates.getFirst());
 
     ((Pair<Human>) classmates).setFirst(new Human("name"));
 
     // 虽然通过了编译,也运行正常,但是该泛型程序没有实现其需要的目的(类型约束)
     // 原本应该是Human对象才能set,但是变成原始类型即多态后就能set任意对象了
-    System.out.println(classmates.getFirst());
-  }
-
-  //  以下是关于通配符, 说的set和get是指 泛型类Pair 上的成员属性的set和get方法
-
-  /**
-   * 通配符类型的 类型变量 的约束 extends
-   *
-   * @param student 使用了通配符限定的泛型约束的参数
-   * 被限定的参数 student 被传参,只能是子类型放进去
-   * 被限定的参数,进行操作时 才有限制: 不能set只能get
-   * get的反而是 自己和 父类型(这个并不是泛型的作用吧,而是多态?)
-   */
-  public Pair<? extends Student> printMessage(Human obj, Pair<? extends Student> student) {
-    Human first = student.getFirst();
-    Student second = student.getFirst();// 只是因为多态?
-
-//        student.setSecond(obj);
-    System.out.println(first);
-    //        Student second = human.getSecond(); // 正常: 限定了是Human子类
-    return student;
-  }
-
-  /**
-   * 通配符类型的 超类型限定的 类型变量 约束 super
-   *
-   * @param student 资源
-   * @param result 使用了通配符的超类型的泛型约束的参数
-   * 被限定的参数 result 被传参,只能是父类型放进去
-   * 被限定的参数,进行操作时 才有限制: 不能get(失去了约束)只能set
-   * set的是Student自己或子类,虽然是super关键字,但是限定的还是子类型范围
-   */
-  public Pair<? super Student> minMaxBonus(Student student, Pair<? super Student> result) {
-    result.setFirst(student);
-    result.setSecond(new Junior());
-
-    Object resultSecond = result.getSecond(); // 失去了泛型约束
-//        Human human = result.getSecond();
-    return result;
-  }
-
-  // extends 只能get
-  @Test
-  public void testExtends() {
-    Pair<Junior> pair = new Pair<>();
-    Pair result = printMessage(new Human("name"), pair);
-//    Pair<Human> result = printMessage(new Human("name"), pair); // 可以用原始类型接收但是不能用 父类的类型变量约束的
-  }
-
-  // super 只能set
-  @Test
-  public void testSuper() {
-    Pair<Human> pair = new Pair<>();
-//        Pair<Junior> pair = new Pair<>(); // 报错限定了是泛型约束变量类型的 自己和父类 子类是不允许的
-    Pair result = minMaxBonus(new Student("how"), pair);
-//        Pair<Human> result = minMaxBonus(new Student("how"), pair); // 可以用原始类型接收但是不能用 父类的类型变量约束的
-    System.out.println(result.getFirst().toString());
-
+    log.info("{}", classmates.getFirst());
   }
 
   // 无限定通配符
-
-  /**
-   * 判断Pair是否是空指针
-   * 通过将contains转换成泛型方法 , 可以避免使用通配符类型;
-   * public static <T> boolean hasNull(Pair<T> p)
-   * 但是带有通配符的版本可读性更强.
-   *
-   * @param p 泛型变量约束的类, 不需要实际的类型
-   * @return boolean 判断两个属性是否有一个是空.
-   */
-  public boolean hasNull(Pair<?> p) {
-    // get方法返回值只能返回给Object, set方法不能被调用, 甚至不能用Object调用
-    return p.getFirst() == null || p.getSecond() == null;
-  }
-
-  // 简单使用 T 来进行约束, 所以这俩方法有啥区别呢?
-  // 作为通配符不能使用T
-//    public boolean hasNulls(Pair<T> p){
-//        return p.getSecond() == null || p.getFirst() == null;
-//    }
   @Test
   public void testHasNull() {
     Pair<Human> humanPair = new Pair<>();
     humanPair.setSecond(new Human("fds"));
-    boolean result = hasNull(humanPair);
-    System.out.println("结果:" + result);
+
+    log.info("result={}", hasNull(humanPair));
+    log.info("result={}", hasNulls(humanPair));
   }
 
-  @Test
-  public void testHasNulls() {
-    Pair<Human> humanPair = new Pair<>();
-    humanPair.setSecond(new Human("fds"));
-    humanPair.setFirst(new Student("df"));
-    System.out.println(humanPair.getFirst().toString());
+  /**
+   * 判断 Pair 是否有属性为null
+   *
+   * @param p 泛型变量约束的类, 不需要实际的类型
+   */
+  private boolean hasNull(Pair<?> p) {
+    // get方法返回值只能返回给Object, set方法不能被调用, 甚至不能用Object调用
+    return p.getFirst() == null || p.getSecond() == null;
+  }
+
+  /**
+   * 在这个场景下 T 和 ? 使用效果是一致的, 但是 ? 不能使用 set, T 可以
+   */
+  private <T> boolean hasNulls(Pair<T> p) {
+    return p.getSecond() == null || p.getFirst() == null;
   }
 }

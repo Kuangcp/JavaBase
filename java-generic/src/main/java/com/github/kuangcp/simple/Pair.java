@@ -29,7 +29,7 @@ class Pair<T> {
   /**
    * 简单的泛型方法 可以取代掉以往的Object的工具类的方法
    */
-  public static <T> T getMiddle(T[] list) {
+  public static <T> T middle(T[] list) {
     return list[list.length / 2];
   }
 
@@ -38,22 +38,26 @@ class Pair<T> {
    *
    * @param list 值集合
    * @param <T> 类型约束
-   * @return 返回含最大最小值的对象
+   * @return first 最小 second 最大
    */
   public static <T extends Comparable<T>> Pair<T> minAndMax(T[] list) {
     if (list == null || list.length == 0) {
       return null;
     }
-    T min = list[0];
-    T max = list[0];
-    for (T aList : list) {
-      if (min.compareTo(aList) > 0) {
-        min = aList;
+
+    Pair<T> result = new Pair<>(list[0], list[0]);
+    if (list.length == 1) {
+      return result;
+    }
+
+    for (T element : list) {
+      if (result.getFirst().compareTo(element) > 0) {
+        result.setFirst(element);
       }
-      if (max.compareTo(aList) < 0) {
-        max = aList;
+      if (result.getSecond().compareTo(element) < 0) {
+        result.setSecond(element);
       }
     }
-    return new Pair<T>(min, max);
+    return result;
   }
 }

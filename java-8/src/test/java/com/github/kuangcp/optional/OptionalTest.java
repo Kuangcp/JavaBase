@@ -28,6 +28,6 @@ public class OptionalTest {
 
   @Test(expected = NullPointerException.class)
   public void testFlatMapWithNull() {
-    Optional<Object> result = getId().flatMap(null);
+    Optional<Object> result = getId().flatMap(s -> null);
   }
 }
