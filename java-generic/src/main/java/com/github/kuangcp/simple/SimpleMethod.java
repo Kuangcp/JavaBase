@@ -28,7 +28,7 @@ class SimpleMethod {
    * @param <T> 泛型约束  并且带有子类型约束,约束了一定要实现两个接口的类型才能正常使用这个方法
    * @return 返回最大值
    */
-  public static <T extends Comparable & Serializable> T getMax(T[] list) {
+  public static <T extends Comparable<T> & Serializable> T getMax(T[] list) {
     T target = list[list.length - 1];
     for (int i = list.length - 2; i > -1; i--) { // 这种写法就不会频繁的去获取list的长度
       if (target.compareTo(list[i]) < 0) {

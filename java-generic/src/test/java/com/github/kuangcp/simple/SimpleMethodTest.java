@@ -26,12 +26,12 @@ public class SimpleMethodTest {
    */
   @Test
   public void testGetMax() {
-    Score[] stus = {
+    Score[] scores = {
         new Score(80f, 50f),
         new Score(70f, 80f),
         new Score(100f, 70f)
     };
-    Score result = SimpleMethod.getMax(stus);
+    Score result = SimpleMethod.getMax(scores);
     assert result.getNormal() == 100;
   }
 }
