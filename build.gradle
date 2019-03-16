@@ -37,6 +37,7 @@ allprojects {
     testCompileOnly libs['lombok']
 
     implementation libs['logback-classic']
+    implementation libs['kcp-tool']
 
     testImplementation libs['junit']
     testImplementation libs['hamcrest-core']

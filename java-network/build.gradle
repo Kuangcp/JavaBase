@@ -1,3 +1,3 @@
 dependencies {
-  compile libs['ok-http']
+  implementation libs['ok-http']
 }
