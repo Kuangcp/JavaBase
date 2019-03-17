@@ -1,6 +1,6 @@
 package com.github.kuangcp.port;
 
-import com.github.kuangcp.util.ResourcesUtil;
+import com.github.kuangcp.io.ResourceTool;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -38,7 +38,7 @@ public class LogicThread extends Thread {
       e.printStackTrace();
     } finally {
       try {
-        ResourcesUtil.close(os, is, socket);
+        ResourceTool.close(os, is, socket);
       } catch (IOException e) {
         e.printStackTrace();
       }

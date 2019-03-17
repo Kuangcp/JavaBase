@@ -1,9 +1,9 @@
 package com.github.kuangcp.reflects;
 
-import static com.github.kuangcp.time.GetRunTime.GET_RUN_TIME;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
+import com.github.kuangcp.time.GetRunTime;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import lombok.Data;
@@ -102,17 +102,18 @@ public class InvokeWithInheritParamTest {
 
     int concurrent = 10;
 
-    GET_RUN_TIME.startCount();
+    GetRunTime getRunTime = new GetRunTime().startCount();
+
     for (int i = 0; i < concurrent; i++) {
       testInvokeTryTwice();
     }
-    GET_RUN_TIME.endCount("twice ");
+    getRunTime.endCount("twice ");
 
-    GET_RUN_TIME.startCount();
+    getRunTime.startCount();
     for (int i = 0; i < concurrent; i++) {
       testInvokeBySuper();
     }
-    GET_RUN_TIME.endCount("correct ");
+    getRunTime.endCount("correct ");
   }
 
   private void verifySuite(Method method) {

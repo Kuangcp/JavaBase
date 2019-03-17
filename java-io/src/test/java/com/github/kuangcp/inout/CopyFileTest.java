@@ -36,6 +36,30 @@ public class CopyFileTest {
     validate();
   }
 
+  @Test
+  public void testCopyByChar() throws IOException {
+    file.copyFileByChar(from, dest);
+    validate();
+  }
+
+  @Test
+  public void testCopyByByte() throws IOException {
+    file.copyFileByByte(from, dest);
+    validate();
+  }
+
+  @Test
+  public void testCopyByCharBuffer() throws IOException {
+    file.copyFileByCharBuffer(from, dest);
+    validate();
+  }
+
+  @Test
+  public void testCopyByFiles() throws IOException {
+    file.copyByFiles(fromPath, destPath);
+    validate();
+  }
+
   @Before
   public void createFile() throws IOException {
     Files.createFile(fromPath);

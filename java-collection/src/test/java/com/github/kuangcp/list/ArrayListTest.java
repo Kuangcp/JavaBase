@@ -1,9 +1,9 @@
 package com.github.kuangcp.list;
 
-import static com.github.kuangcp.time.GetRunTime.GET_RUN_TIME;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
+import com.github.kuangcp.time.GetRunTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +13,7 @@ import org.junit.Test;
 
 /**
  * 交 差 并 补
+ *
  * @author kuangcp on 18-7-25-上午10:42
  */
 @Ignore
@@ -36,32 +37,32 @@ public class ArrayListTest {
   // 并集 A + B - A 交 B
   @Test
   public void testUnion() {
-    GET_RUN_TIME.startCount();
+    GetRunTime getRunTime = new GetRunTime().startCount();
 
     one.removeAll(two);
     assertThat(one.size(), equalTo(start));
-    
+
     one.addAll(two);
     assertThat(one.size(), equalTo(num + start));
 
-    GET_RUN_TIME.endCount("union ");
+    getRunTime.endCount("union ");
   }
 
   // 交集
   @Test
   public void testInter() {
-    GET_RUN_TIME.startCount();
+    GetRunTime getRunTime = new GetRunTime().startCount();
 
     one.retainAll(two);
     assertThat(one.size(), equalTo(num - start));
 
-    GET_RUN_TIME.endCount("inter ");
+    getRunTime.endCount("inter ");
   }
 
   // 差集 (A 并 B) - (A交B)
   @Test
   public void testDifference() {
-    GET_RUN_TIME.startCount();
+    GetRunTime getRunTime = new GetRunTime().startCount();
 
     one.retainAll(two);
     assertThat(one.size(), equalTo(num - start));
@@ -69,14 +70,14 @@ public class ArrayListTest {
     one.addAll(two);
     assertThat(two.size(), equalTo(num));
 
-    GET_RUN_TIME.endCount("Difference");
+    getRunTime.endCount("Difference");
   }
 
 
   // 补集 A 是 S 的子集, S - A 就是A的补集
   @Test
-  public void testComplement(){
-   GET_RUN_TIME.startCount();
+  public void testComplement() {
+    GetRunTime getRunTime = new GetRunTime().startCount();
 
     ArrayList<String> three = new ArrayList<>(one);
     three.removeAll(two);
@@ -89,6 +90,6 @@ public class ArrayListTest {
     // two 是上面的 one 在 原来 two 的补集
     assertThat(two.size(), equalTo(start));
 
-    GET_RUN_TIME.endCount("Complement");
+    getRunTime.endCount("Complement");
   }
 }

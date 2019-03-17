@@ -1,5 +1,6 @@
 package com.github.kuangcp.runable;
 
+import com.github.kuangcp.time.GetRunTime;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Optional;
@@ -36,6 +37,7 @@ public class TuLingRobotTest {
 
   @Test
   public void testGet() throws IOException {
+    GetRunTime getRunTime = new GetRunTime().startCount();
     String baseURL = "http://www.tuling123.com/openapi/api?key=c8d9f9fd7a4f46609686020354745f25&info=";
     String input = "翻译 appropriate 详情";
     String INFO = URLEncoder.encode(input, "utf-8");
@@ -44,5 +46,6 @@ public class TuLingRobotTest {
     assert result.isPresent();
 
     System.out.println(result.get());
+    getRunTime.endCountOneLine("");
   }
 }

@@ -1,8 +1,7 @@
 package com.github.kuangcp.serialize.json.speed;
 
-import static com.github.kuangcp.time.GetRunTime.GET_RUN_TIME;
-
 import com.github.kuangcp.serialize.Person;
+import com.github.kuangcp.time.GetRunTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,11 +29,11 @@ public class SpeedTest {
   @Test
   public void compareWrite() {
     for (JsonTool<Person> tool : list) {
-      GET_RUN_TIME.startCount();
+      GetRunTime getRunTime = new GetRunTime().startCount();
 
       tool.write(personList);
 
-      GET_RUN_TIME.endCount(tool.getName());
+      getRunTime.endCount(tool.getName());
     }
   }
 }

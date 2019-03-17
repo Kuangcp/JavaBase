@@ -1,6 +1,6 @@
 package com.github.kuangcp.bio.onechatone;
 
-import com.github.kuangcp.util.ResourcesUtil;
+import com.github.kuangcp.io.ResourceTool;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,7 +19,7 @@ public class Client {
   private BufferedReader brServer;
   private BufferedReader keyIn;
 
-  public static void main(String s[]) {
+  public static void main(String[] args) {
     Client client = new Client();
     client.init();
     client.readAndSend();
@@ -64,7 +64,7 @@ public class Client {
   //定义一个读取键盘输出，向网络发送的方法
   private void readAndSend() {
     try {
-      String line = null;
+      String line;
       while ((line = keyIn.readLine()) != null) {
         //如果消息中含 ： 并且是//用户名 开头，则是判断为私聊
         if (line.indexOf(":") > 0 && line.startsWith("//")) {
@@ -85,7 +85,8 @@ public class Client {
   //关闭所有资源
   private void closeAllResources() {
     try {
-      ResourcesUtil.close(keyIn, brServer, ps, socket);
+
+      ResourceTool.close(keyIn, brServer, ps, socket);
     } catch (Exception e) {
       e.printStackTrace();
     }

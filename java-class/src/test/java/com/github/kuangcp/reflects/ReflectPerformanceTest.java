@@ -18,7 +18,7 @@ import org.junit.Test;
 public class ReflectPerformanceTest {
 
   private static final int LOOP_SIZE = 50_000_000;
-  private static final GetRunTime time = GetRunTime.GET_RUN_TIME;
+  private static final GetRunTime time = new GetRunTime();
 
   @Data
   class TargetObject {

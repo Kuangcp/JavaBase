@@ -1,6 +1,6 @@
 package com.github.kuangcp.port;
 
-import com.github.kuangcp.util.ResourcesUtil;
+import com.github.kuangcp.io.ResourceTool;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
@@ -41,8 +41,7 @@ public class MulSocketServer {
       log.error(e.getMessage(), e);
     } finally {
       try {
-        // 关闭流和连接
-        ResourcesUtil.close(os, is, socket, serverSocket);
+        ResourceTool.close(os, is, socket, serverSocket);
       } catch (Exception e) {
         log.error(e.getMessage(), e);
       }

@@ -10,7 +10,7 @@ public class LogicThreadTest {
     ServerSocket serverSocket;
     Socket socket;
     try {
-      serverSocket = new ServerSocket(1000);
+      serverSocket = new ServerSocket(10000);
       socket = serverSocket.accept();
       LogicThread t = new LogicThread(socket);
       t.start();

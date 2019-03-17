@@ -1,7 +1,6 @@
 package syntax.string;
 
-import static com.github.kuangcp.time.GetRunTime.GET_RUN_TIME;
-
+import com.github.kuangcp.time.GetRunTime;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -35,18 +34,18 @@ public class SplitDemoTest {
   // 对比去除最后一个字符的性能, 第二个略好一些
   @Test
   public void testRemoveChar() {
-    GET_RUN_TIME.startCount();
+    GetRunTime getRunTime = new GetRunTime().startCount();
     String origin = "122113.11.1.1.1.";
     for (int i = 0; i < 10; i++) {
       origin = removeChar(origin, ".");
       log.info("temp: origin={}", origin);
     }
-    GET_RUN_TIME.endCount("索引去除");
+    getRunTime.endCount("索引去除");
 
-    GET_RUN_TIME.startCount();
+    getRunTime.startCount();
     for (int i = 0; i < 100; i++) {
       removeLast("122113.11.1.1.1.");
     }
-    GET_RUN_TIME.endCount("去除最后一个字符");
+    getRunTime.endCount("去除最后一个字符");
   }
 }

@@ -1,8 +1,8 @@
 package com.github.kuangcp.function.sort;
 
 
-import static com.github.kuangcp.time.GetRunTime.GET_RUN_TIME;
 
+import com.github.kuangcp.time.GetRunTime;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -25,9 +25,9 @@ public class BaseTypeSortTest {
         .map(i -> ThreadLocalRandom.current().nextInt(10000)).boxed()
         .collect(Collectors.toList());
 
-    GET_RUN_TIME.startCount();
+    GetRunTime getRunTime = new GetRunTime().startCount();
     lists.sort(Comparator.comparingInt(Integer::intValue));
-    GET_RUN_TIME.endCount("排序完成");
+    getRunTime.endCount("排序完成");
   }
 
   // TODO 一起执行时 为什么这个后执行的方法要快, 单独执行就不会有这样的情况
@@ -37,8 +37,8 @@ public class BaseTypeSortTest {
         .mapToLong(i -> ThreadLocalRandom.current().nextLong(10000)).boxed()
         .collect(Collectors.toList());
 
-    GET_RUN_TIME.startCount();
+    GetRunTime getRunTime = new GetRunTime().startCount();
     lists.sort(Comparator.comparingLong(Long::longValue));
-    GET_RUN_TIME.endCount("排序完成");
+    getRunTime.endCount("排序完成");
   }
 }

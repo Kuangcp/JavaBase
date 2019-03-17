@@ -1,7 +1,6 @@
 package syntax.bit;
 
-import static com.github.kuangcp.time.GetRunTime.GET_RUN_TIME;
-
+import com.github.kuangcp.time.GetRunTime;
 import org.junit.Test;
 
 /**
@@ -16,20 +15,20 @@ public class StringPerformanceTest {
 
   @Test
   public void testReadString() {
-    GET_RUN_TIME.startCount();
+    GetRunTime getRunTime = new GetRunTime().startCount();
     for (int i = 0; i < repeat; i++) {
       readString();
     }
-    GET_RUN_TIME.endCount("string");
+    getRunTime.endCount("string");
   }
 
   @Test
   public void testReadBit() {
-    GET_RUN_TIME.startCount();
+    GetRunTime getRunTime = new GetRunTime().startCount();
     for (int i = 0; i < repeat; i++) {
       readBit();
     }
-    GET_RUN_TIME.endCount("bit");
+    getRunTime.endCount("bit");
   }
 
   private void readBit() {
