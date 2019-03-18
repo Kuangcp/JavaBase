@@ -1,4 +1,4 @@
-package com.github.kuangcp.caculate;
+package com.github.kuangcp.caculator;
 
 
 import java.awt.Dimension;
@@ -18,7 +18,7 @@ import javax.swing.WindowConstants;
  * 搜到的一个计算器实现代码
  * TODO 思考如何重构
  */
-public class Calculate extends JFrame {
+public class Calculator extends JFrame {
 
   private String front = "", behind = ""; //分别用于记录加减乘除运算符之前,之后输入的内容
   private String op; //用于记录运算符
@@ -50,7 +50,7 @@ public class Calculate extends JFrame {
   private JButton btnEight = new JButton("8");
   private JButton btnNine = new JButton("9");
 
-  private Calculate() {
+  private Calculator() {
     try {
       setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
       initButton();
@@ -228,13 +228,15 @@ public class Calculate extends JFrame {
   }
 
   void btnEqual_actionPerformed() {
-    if (!flag3)//未曾按下等于运算符
-    {
+    if (!flag3) { //未曾按下等于运算符
       behind = txtResult.getText();
     } else {
       front = re;
     }
     try {
+      if (Objects.isNull(front) || front.isEmpty() || Objects.isNull(behind) || behind.isEmpty()) {
+        return;
+      }
       double a1 = Double.parseDouble(front);
       double b1 = Double.parseDouble(behind);
       double result;
@@ -303,100 +305,10 @@ public class Calculate extends JFrame {
   }
 
   public static void main(String[] args) {
-    Calculate fc = new Calculate();
+    Calculator fc = new Calculator();
     fc.setSize(400, 310);
     fc.setLocation(200, 150);
     fc.setVisible(true);
   }
 }
 
-class Calculate_btnCancel_actionAdapter implements ActionListener {
-
-  private Calculate adapter;
-
-  Calculate_btnCancel_actionAdapter(Calculate adapter) {
-    this.adapter = adapter;
-  }
-
-  public void actionPerformed(ActionEvent e) {
-    adapter.btnCancel_actionPerformed();
-  }
-}
-
-class Calculate_btnMinus_actionAdapter implements ActionListener {
-
-  private Calculate adapter;
-
-  Calculate_btnMinus_actionAdapter(Calculate adapter) {
-    this.adapter = adapter;
-  }
-
-  public void actionPerformed(ActionEvent e) {
-    adapter.btnMinus_actionPerformed();
-  }
-}
-
-class Calculate_btnBegin_actionAdapter implements ActionListener {
-
-  private Calculate adapter;
-
-  Calculate_btnBegin_actionAdapter(Calculate adapter) {
-    this.adapter = adapter;
-  }
-
-  public void actionPerformed(ActionEvent e) {
-    adapter.btnBegin_actionPerformed();
-  }
-}
-
-class Calculate_btnPoint_actionAdapter implements ActionListener {
-
-  private Calculate adapter;
-
-  Calculate_btnPoint_actionAdapter(Calculate adapter) {
-    this.adapter = adapter;
-  }
-
-  public void actionPerformed(ActionEvent e) {
-    adapter.btnPoint_actionPerformed(e);
-  }
-}
-
-class Calculate_btnEqual_actionAdapter implements ActionListener {
-
-  private Calculate adapter;
-
-  Calculate_btnEqual_actionAdapter(Calculate adapter) {
-    this.adapter = adapter;
-  }
-
-  public void actionPerformed(ActionEvent e) {
-    adapter.btnEqual_actionPerformed();
-  }
-}
-
-class Calculate_btnIncrease_actionAdapter implements ActionListener {
-
-  private Calculate adapter;
-
-  Calculate_btnIncrease_actionAdapter(Calculate adapter) {
-    this.adapter = adapter;
-  }
-
-  public void actionPerformed(ActionEvent e) {
-    adapter.btnIncrease_actionPerformed(e);
-  }
-}
-
-class Calculate_btnZero_actionAdapter implements ActionListener {
-
-  private Calculate adapter;
-
-  Calculate_btnZero_actionAdapter(Calculate adapter) {
-    this.adapter = adapter;
-  }
-
-  public void actionPerformed(ActionEvent e) {
-    adapter.btnZero_actionPerformed(e);
-  }
-}
