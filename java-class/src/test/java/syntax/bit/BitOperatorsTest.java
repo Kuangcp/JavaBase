@@ -3,6 +3,8 @@ package syntax.bit;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
+import com.github.kuangcp.time.GetRunTime;
+import java.util.stream.IntStream;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
@@ -51,27 +53,8 @@ public class BitOperatorsTest {
     // 101111 | 1011
     num |= num >>> 2;
     assertThat(num, equalTo(0b101111));
-
-    // TODO 
-    for (int i = 0; i < 17; i++) {
-      int temp = i;
-      log.info("origin: temp={}", temp);
-      temp |= temp >>> 1;
-//      log.info("1: temp={}", temp);
-
-      temp |= temp >>> 2;
-//      log.info("2: temp={}", temp);
-
-      temp |= temp >>> 3; // 无效
-//      log.info("3: temp={}", temp);
-
-      temp |= temp >>> 4;
-//      log.info("4: temp={}", temp);
-
-      System.out.println(temp);
-
-    }
   }
+
 
   @Test
   public void testRight() {
@@ -99,24 +82,60 @@ public class BitOperatorsTest {
 
   @Test
   public void testLeft() {
-    int i = -7;
+    assertThat(0b11_0110 << 2, equalTo(0b1101_1000));
 
-    show(i << 1);
-    show(i << 2);
+    assertThat(0b1<<31, equalTo(0b1000_0000_0000_0000_0000_0000_0000_0000));
+    show(0b1000_0000_0000_0000_0000_0000_0000_0000);
+
+    // 溢出了32位...
+    assertThat(0b1<<35, equalTo(0b1000));
+    show(0b1<<35);
   }
 
-  static void show(int result) {
-    log.info("{} {}", result, Integer.toBinaryString(result));
+  private static void show(int result) {
+    log.info("{} {}", Integer.toBinaryString(result), result);
   }
 
-  static void tableSizeFor(int cap) {
-    int n = cap - 1;
-    n |= n >>> 1;
-    n |= n >>> 2;
-    n |= n >>> 4;
-    n |= n >>> 8;
-    n |= n >>> 16;
-    int result = (n < 0) ? 1 : (n >= 100) ? 200 : n + 1;
-    log.info("re: result={}", result);
+  @Test
+  public void testIdempotentOperation() {
+    for (int i = 1; i < 45; i++) {
+      int value = idempotentOperations(i);
+      assertThat(value, equalTo((int) Math.pow(2, Math.floor(Math.log(i) / Math.log(2)) + 1)));
+      System.out.println(i + " => " + value);
+    }
+
+    assertThat(idempotentOperations(0b1011_0000_0001_1111), equalTo(0b1_0000_0000_0000_0000));
+    assertThat(idempotentOperations(0b10011_0000_0001_1111), equalTo(0b10_0000_0000_0000_0000));
+  }
+
+  @Test
+  public void testCompareSpeed() {
+    GetRunTime runTime = new GetRunTime().startCount();
+    IntStream.rangeClosed(1, 10000).forEach(BitOperatorsTest::idempotentOperations);
+    runTime.endCount("bit ");
+
+    runTime.startCount();
+    IntStream.rangeClosed(1, 10000)
+        .forEach(i -> Math.pow(2, Math.floor(Math.log(i) / Math.log(2)) + 1));
+    runTime.endCount("log and pow");
+
+    // 后者性能优于前者, 因为虽然前者是位运算, 但是有太多多余操作
+  }
+
+  /**
+   * 等价于 num => (int)Math.pow(2, Math.floor(Math.log(i) / Math.log(2)) + 1))
+   * 最大使得形成 16位1 + 1
+   */
+  private static int idempotentOperations(int num) {
+    int n = num;
+    // 最高位肯定是1 右移一位,并做或操作然后最高位是两个1
+    // 然后右移2位 最高位4个1,
+    // 然后右移4位 ... 直到所有的位都是1. 所以中间的右移 3 5 6 7 都是多余的
+
+    n |= n >>> 1; // 11xxx
+    n |= n >>> 2; // 1111xxx
+    n |= n >>> 4; // 11111111xx
+    n |= n >>> 8; // 1111111111111111xx
+    return n + 1;
   }
 }

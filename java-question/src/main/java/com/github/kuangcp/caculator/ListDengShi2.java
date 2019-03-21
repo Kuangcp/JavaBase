@@ -1,4 +1,4 @@
-package com.github.kuangcp.caculate;
+package com.github.kuangcp.caculator;
 
 /**
  * Created by https://github.com/kuangcp on 17-8-14  上午8:25

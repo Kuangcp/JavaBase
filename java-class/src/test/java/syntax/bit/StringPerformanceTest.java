@@ -1,16 +1,18 @@
 package syntax.bit;
 
 import com.github.kuangcp.time.GetRunTime;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 /**
  * @author kuangcp on 3/11/19-10:21 AM
  */
+@Slf4j
 public class StringPerformanceTest {
 
-  private int length = 6;
-  private int repeat = Integer.MAX_VALUE;
+  private int repeat = 10000;
   private String strData = "1100101010100111110101001011";
+  private int length = strData.length();
   private int intData = 212499787;
 
   @Test
@@ -56,5 +58,6 @@ public class StringPerformanceTest {
   }
 
   private void logic(boolean result) {
+//    log.info("result {}", result);
   }
 }

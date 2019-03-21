@@ -1,4 +1,4 @@
-package com.github.kuangcp.caculate;
+package com.github.kuangcp.caculator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
