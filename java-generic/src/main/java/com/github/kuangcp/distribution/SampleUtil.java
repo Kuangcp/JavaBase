@@ -40,7 +40,7 @@ public class SampleUtil {
     return Optional.ofNullable(sampleToSize(distribution, 1).get(0));
   }
 
-  public static <T> List<T> sampleToSize(List<? extends SampleAble> list, int count,
+  public static <T extends SampleAble> List<T> sampleToSize(List<T> list, int count,
       Class<T> type) {
     return sampleResult(list, count, SampleUtil::sampleToSize, type);
   }
@@ -57,14 +57,14 @@ public class SampleUtil {
     return result;
   }
 
-  public static <T> List<T> sampleToSizeRepeatable(List<? extends SampleAble> list, int count,
-      Class<T> type) {
+  public static <T extends SampleAble> List<T> sampleToSizeRepeatable(List<T> list, int count,
+      Class<T > type) {
     return sampleResult(list, count, SampleUtil::sampleToSizeRepeatable, type);
   }
 
   // TODO remove this warning
   @SuppressWarnings("unchecked")
-  private static <T> List<T> sampleResult(List<? extends SampleAble> list, int count
+  private static <T extends SampleAble> List<T> sampleResult(List<T> list, int count
       , BiFunction<EnumeratedIntegerDistribution, Integer, List<Integer>> function, Class<T> type) {
     if (Objects.isNull(list) || list.isEmpty()) {
       return new ArrayList<>();
