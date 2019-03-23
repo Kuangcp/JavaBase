@@ -21,6 +21,7 @@ ext {
       "common-lang"        : "org.apache.commons:commons-lang3:3.7",
       "groovy"             : "org.codehaus.groovy:groovy-all:$ver.groovy",
       "cglib"              : "cglib:cglib:3.2.9",
+      "common-math" :"org.apache.commons:commons-math3:3.6.1",
 
       // mine tool
       "kcp-tool"           : "com.github.kuangcp:kcp-tool:$ver.kcp_tool",
