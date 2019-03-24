@@ -1,23 +1,25 @@
 package com.github.kuangcp.simpleMethod.SimplexMethodQuarter;
 
 
-import com.github.kuangcp.simpleMethod.number.Quarter;
+import com.github.kuangcp.math.number.Fraction;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
 
 /**
  * Created by Myth on 2017/3/22
  * 使用分数作为基本数据类型来计算
  */
+@Data
 public class Table {
 
-  private Quarter cb;
+  private Fraction cb;
   private Integer xb;
-  private Quarter bl;
-  private List<Quarter> rows;
-  private Quarter o;
+  private Fraction bl;
+  private List<Fraction> rows;
+  private Fraction o;
 
-  public Table(Quarter cb, Integer xb, Quarter bl, List<Quarter> rows, Quarter o) {
+  public Table(Fraction cb, Integer xb, Fraction bl, List<Fraction> rows, Fraction o) {
     this.cb = cb;
     this.xb = xb;
     this.bl = bl;
@@ -26,50 +28,10 @@ public class Table {
     this.rows.addAll(rows);
   }
 
-  public Quarter getCb() {
-    return cb;
-  }
-
-  public void setCb(Quarter cb) {
-    this.cb = cb;
-  }
-
-  public Integer getXb() {
-    return xb;
-  }
-
-  public void setXb(Integer xb) {
-    this.xb = xb;
-  }
-
-  public Quarter getBl() {
-    return bl;
-  }
-
-  public void setBl(Quarter bl) {
-    this.bl = bl;
-  }
-
-  public List<Quarter> getRows() {
-    return rows;
-  }
-
-  public void setRows(List<Quarter> rows) {
-    this.rows = rows;
-  }
-
-  public Quarter getO() {
-    return o;
-  }
-
-  public void setO(Quarter o) {
-    this.o = o;
-  }
-
   @Override
   public String toString() {
     StringBuilder sub = new StringBuilder("[");
-    for (Quarter b : rows) {
+    for (Fraction b : rows) {
       sub.append(b.toString()).append(",");
     }
     sub.append("]");

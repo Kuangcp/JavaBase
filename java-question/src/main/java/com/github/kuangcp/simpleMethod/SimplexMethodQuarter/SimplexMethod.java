@@ -1,6 +1,6 @@
 package com.github.kuangcp.simpleMethod.SimplexMethodQuarter;
 
-import com.github.kuangcp.simpleMethod.number.Quarter;
+import com.github.kuangcp.math.number.Fraction;
 import com.github.kuangcp.simpleMethod.number.ReadProperties;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,10 +16,10 @@ public class SimplexMethod {
   private static int MAX_PARAMS;//最大参数个数
   private static int EQUALITY;//最大行列式数
   private List<Equality> Rows = new ArrayList<>();//约束式子系数集合
-  private List<Quarter> Max = new ArrayList<>();//原始式子系数集合
+  private List<Fraction> Max = new ArrayList<>();//原始式子系数集合
   private List<Table> Tables = new ArrayList<>();//单纯形表的总体数据结构
-  private List<Quarter> Os = new ArrayList<>();//单纯形表中间计算结果右侧
-  private List<Quarter> Zs = new ArrayList<>();//单纯形表计算结果最下一行
+  private List<Fraction> Os = new ArrayList<>();//单纯形表中间计算结果右侧
+  private List<Fraction> Zs = new ArrayList<>();//单纯形表计算结果最下一行
   //出入基锁定的坐标
   private Integer resultCol;
   private Integer resultRow;
@@ -52,7 +52,7 @@ public class SimplexMethod {
     String[] temp = maxs.split(",");
     for (String data : temp) {
 //            System.out.println(data);
-      Max.add(new Quarter(data));
+      Max.add(Fraction.valueOf(data));
     }
     //添加约束式的数据
     for (int i = 1; i <= EQUALITY; i++) {
@@ -60,9 +60,9 @@ public class SimplexMethod {
       String[] tempList = buffer.split(",");
       Equality e = new Equality();
       for (String aTempList : tempList) {
-        e.getParams().add(new Quarter(aTempList));
+        e.getParams().add(Fraction.valueOf(aTempList));
       }
-      e.setResult(new Quarter(config.getString("B" + i)));
+      e.setResult(Fraction.valueOf(config.getString("B" + i)));
       e.setIndex(config.getInt("I" + i));
       Rows.add(e);
 
@@ -109,12 +109,12 @@ public class SimplexMethod {
         e.printStackTrace();
       }
       //算完一轮
-      Quarter fatherNum = Tables.get(resultRow).getRows().get(resultCol);
+      Fraction fatherNum = Tables.get(resultRow).getRows().get(resultCol);
       List<Table> oldTables = Tables;
       Tables = new ArrayList<>();
 
       //转换出基入基的参数
-      List<Quarter> rowsTemps = oldTables.get(resultRow).getRows();
+      List<Fraction> rowsTemps = oldTables.get(resultRow).getRows();
       for (int k = 0; k < rowsTemps.size(); k++) {
         rowsTemps.set(k, rowsTemps.get(k).divide(fatherNum));
       }
@@ -125,14 +125,15 @@ public class SimplexMethod {
       for (int j = 0; j < EQUALITY; j++) {
         if (j != resultRow) {
           rowsTemps = oldTables.get(j).getRows();
-          Quarter motherNum = rowsTemps.get(resultCol);
+          Fraction motherNum = rowsTemps.get(resultCol);
           Table fatherRow = Tables.get(0);
           for (int k = 0; k < rowsTemps.size(); k++) {
-            rowsTemps.set(k, rowsTemps.get(k).reduce(motherNum.multi(fatherRow.getRows().get(k))));
+            rowsTemps.set(k, rowsTemps.get(k).subtract(motherNum.multiply(fatherRow.getRows().get(k))));
           }
           Integer tempXb = oldTables.get(j).getXb();
+          Fraction multiply = motherNum.multiply(fatherRow.getBl());
           Table otherTemp = new Table(Max.get(tempXb - 1), tempXb,
-              oldTables.get(j).getBl().reduce(motherNum.multi(fatherRow.getBl())), rowsTemps, null);
+              oldTables.get(j).getBl().subtract(multiply), rowsTemps, null);
           Tables.add(otherTemp);
         }
 
@@ -173,16 +174,16 @@ public class SimplexMethod {
     }
     //正确的计算出结果
     if (SUCCESS) {
-      Quarter result = new Quarter(0);
-      Quarter[] results = new Quarter[MAX_PARAMS];
+      Fraction result = new Fraction(0);
+      Fraction[] results = new Fraction[MAX_PARAMS];
       for (int i = 0; i < EQUALITY; i++) {
         Table t = Tables.get(i);
-        result = result.plus(t.getCb().multi(t.getBl()));
+        result = result.add(t.getCb().multiply(t.getBl()));
         results[t.getXb() - 1] = t.getBl();
       }
       System.out.println("最优目标值是 : " + result);
       StringBuilder resultstr = new StringBuilder("X=(");
-      for (Quarter d : results) {
+      for (Fraction d : results) {
         if (d != null) {
           resultstr.append(d).append(",");
         } else {
@@ -204,12 +205,12 @@ public class SimplexMethod {
    */
   private void CaculateLastRow() throws Exception {
     for (int i = 0; i < MAX_PARAMS; i++) {//循环变量个数
-      Quarter temp = Max.get(i);
+      Fraction temp = Max.get(i);
 //            disp("目标方程系数组",Max,false);
 //            System.out.println("Max中取到的temp"+temp);
       for (int j = 0; j < EQUALITY; j++) {//循环层数
-//                System.out.println("乘积 "+Tables.get(j).getCb()+"*"+Tables.get(j).getRows().get(i)+" = "+Tables.get(j).getCb().multi(Tables.get(j).getRows().get(i)));
-        temp = temp.reduce(Tables.get(j).getCb().multi(Tables.get(j).getRows().get(i)));
+//                System.out.println("乘积 "+Tables.get(j).getCb()+"*"+Tables.get(j).getRows().get(i)+" = "+Tables.get(j).getCb().multiply(Tables.get(j).getRows().get(i)));
+        temp = temp.subtract(Tables.get(j).getCb().multiply(Tables.get(j).getRows().get(i)));
 //                System.out.println("temp:"+temp+"Cb:"+Tables.get(j).getCb()+"*"+Tables.get(j).getRows().get(i));
       }
       Zs.add(temp);
@@ -226,7 +227,7 @@ public class SimplexMethod {
 //        log("计算所得行最大Index"+resultCol);
     for (int i = 0; i < EQUALITY; i++) {
 //            log("计算表达式 "+Tables.get(i).getBl()+" / "+Tables.get(i).getRows().get(resultCol));
-      Quarter temp = Tables.get(i).getBl().divide(Tables.get(i).getRows().get(resultCol));
+      Fraction temp = Tables.get(i).getBl().divide(Tables.get(i).getRows().get(resultCol));
 //            log("结果"+temp);
       Tables.get(i).setO(temp);
       Os.add(temp);
@@ -248,10 +249,10 @@ public class SimplexMethod {
    * @param list 分数数组
    * @return false就不再继续
    */
-  private boolean isCONTINUES(List<Quarter> list) {
+  private boolean isCONTINUES(List<Fraction> list) {
     boolean flag = false;
-    for (Quarter b : list) {
-      if (b.upZero()) {
+    for (Fraction b : list) {
+      if (b.isPositive()) {
         flag = true;
         break;
       }
@@ -279,11 +280,11 @@ public class SimplexMethod {
    * @param permitMinus 是否允许负数进行笔记比较
    * @return 最大
    */
-  Integer MaxList(List<Quarter> list, boolean isMax, boolean haveInfinity, boolean permitMinus) {
+  Integer MaxList(List<Fraction> list, boolean isMax, boolean haveInfinity, boolean permitMinus) {
     Integer index = null;
     //有非数的集合
     if (haveInfinity) {
-      Map<Integer, Quarter> tempMap = new HashMap<>();
+      Map<Integer, Fraction> tempMap = new HashMap<>();
       //去除非数
       for (int i = 0; i < list.size(); i++) {
         if (permitMinus && list.get(i).getDenominator() != 0) {
@@ -291,7 +292,7 @@ public class SimplexMethod {
         }
         //不允许负数的情况
         if (!permitMinus) {
-          if (list.get(i).getDenominator() != 0 && list.get(i).upZero()) {
+          if (list.get(i).getDenominator() != 0 && list.get(i).isPositive()) {
             tempMap.put(i, list.get(i));
           }
         }
@@ -302,9 +303,9 @@ public class SimplexMethod {
       for (Integer integer : tempMap.keySet()) {
         if (index == null) {
           index = integer;
-        } else if (isMax && !tempMap.get(index).bigger(tempMap.get(integer))) {
+        } else if (isMax && !tempMap.get(index).isGreaterThan(tempMap.get(integer))) {
           index = integer;
-        } else if (!isMax && tempMap.get(index).bigger(tempMap.get(integer))) {
+        } else if (!isMax && tempMap.get(index).isGreaterThan(tempMap.get(integer))) {
           index = integer;
         }
       }
@@ -314,14 +315,14 @@ public class SimplexMethod {
       if (list.size() == 0) {
         return -1;
       }
-      Quarter temp = list.get(0);
+      Fraction temp = list.get(0);
       for (int i = 0; i < list.size(); i++) {
-        if (list.get(i).upZero()) {
-          if (isMax && !temp.bigger(list.get(i))) {
+        if (list.get(i).isPositive()) {
+          if (isMax && !temp.isGreaterThan(list.get(i))) {
             index = i;
             temp = list.get(i);
           }
-          if (!isMax && temp.bigger(list.get(i))) {
+          if (!isMax && temp.isGreaterThan(list.get(i))) {
             index = i;
             temp = list.get(i);
           }
@@ -382,9 +383,9 @@ public class SimplexMethod {
     System.out.println("Aim : " + MaxRows);
     for (int i = 0; i < EQUALITY; i++) {
       StringBuilder Row = new StringBuilder();
-      List<Quarter> temp = Rows.get(i).getParams();
+      List<Fraction> temp = Rows.get(i).getParams();
       for (int j = 0; j < temp.size(); j++) {
-        Quarter a = temp.get(j);
+        Fraction a = temp.get(j);
         if (!a.isZero()) {
           if (!a.isOne()) {
             Row.append(a.toString()).append("X").append(j + 1).append(" + ");
