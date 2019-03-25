@@ -5,8 +5,8 @@ plugins {
 }
 
 dependencies {
-  implementation libs['jedis']
-  implementation libs['groovy']
-  implementation libs['zip4j']
-  implementation libs['common-lang']
+  implementation rootProject.libs['jedis']
+  implementation rootProject.libs['groovy']
+  implementation rootProject.libs['zip4j']
+  implementation rootProject.libs['common-lang']
 }

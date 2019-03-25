@@ -2,6 +2,6 @@ plugins {
   id 'java'
 }
 dependencies {
-  implementation libs['kcp-tool']
-//  implementation libs['testng']
+  implementation rootProject.libs['kcp-tool']
+//  implementation rootProject.libs['testng']
 }

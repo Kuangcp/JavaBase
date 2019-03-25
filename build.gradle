@@ -1,5 +1,7 @@
 apply from: 'dependency.gradle'
 
+libs = rootProject.ext.libs
+
 // parent and child project all use this config
 allprojects {
   apply plugin: 'java'
@@ -7,10 +9,11 @@ allprojects {
 
   group = 'com.github.kuangcp'
 
+
   // default build dir is build/ but idea compile dir is out/, i'm dislike this way
   // dir out/ just have production/ and test/ dir
   buildDir = 'out/build'
-  
+
   sourceCompatibility = 1.8
   targetCompatibility = 1.8
 
@@ -28,19 +31,20 @@ allprojects {
     }
     jcenter()
   }
-
+  
   // All sub-modules add the following dependencies
   dependencies {
-    annotationProcessor libs['lombok']
-    compileOnly libs['lombok']
-    testAnnotationProcessor libs['lombok']
-    testCompileOnly libs['lombok']
+    
+    annotationProcessor rootProject.libs['lombok']
+    compileOnly rootProject.libs['lombok']
+    testAnnotationProcessor rootProject.libs['lombok']
+    testCompileOnly rootProject.libs['lombok']
 
-    implementation libs['logback-classic']
-    implementation libs['kcp-tool']
+    implementation rootProject.libs['logback-classic']
+    implementation rootProject.libs['kcp-tool']
 
-    testImplementation libs['junit']
-    testImplementation libs['hamcrest-core']
-    testImplementation libs['hamcrest-lib']
+    testImplementation rootProject.libs['junit']
+    testImplementation rootProject.libs['hamcrest-core']
+    testImplementation rootProject.libs['hamcrest-lib']
   }
 }
