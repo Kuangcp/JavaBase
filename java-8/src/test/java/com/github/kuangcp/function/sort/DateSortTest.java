@@ -1,8 +1,11 @@
 package com.github.kuangcp.function.sort;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.junit.Test;
 
 /**
@@ -17,6 +20,7 @@ public class DateSortTest {
       LocalDateTime days = LocalDateTime.now().plusDays(i);
       datetimeList.add(days);
     }
+
     datetimeList.sort((a, b) -> {
       if (a.equals(b)) {
         return 0;
@@ -29,5 +33,23 @@ public class DateSortTest {
     });
 
     datetimeList.forEach(System.out::println);
+  }
+
+  @Test
+  public void testSimple() {
+    IntStream.rangeClosed(1, 10)
+        .mapToObj(i -> LocalDateTime.now().plusDays(i)).sorted((a, b) -> a.compareTo(b) * -1)
+        .forEach(System.out::println);
+
+    List<LocalDateTime> data = IntStream.rangeClosed(1, 10)
+        .mapToObj(i -> LocalDateTime.now().plusDays(i)).collect(Collectors.toList());
+    data.sort((a, b) -> a.compareTo(b) * -1);
+    data.forEach(System.out::println);
+  }
+
+  @Test
+  public void testReversed() {
+    IntStream.rangeClosed(1, 10).mapToObj(i -> LocalDateTime.now().plusDays(i))
+        .sorted(Comparator.reverseOrder()).forEach(System.out::println);
   }
 }
