@@ -1,4 +1,3 @@
 dependencies{
-    compile rootProject.libs['zip4j']
     compile rootProject.libs['common-lang']
 }

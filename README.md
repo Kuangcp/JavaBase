@@ -21,3 +21,6 @@
 
 > 使用了Gradle作为构建工具, 将知识点分为了多个子项目, 然后将所有的依赖项放在了 `dependency.gradle`中  
 > 其他的子项目引用全局定义的依赖, 实现了依赖的统一管理
+
+# 学习
+> [tutorials](https://github.com/eugenp/tutorials)

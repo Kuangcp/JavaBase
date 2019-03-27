@@ -20,7 +20,6 @@ public class NioClient {
 
   private boolean stop = false;
 
-
   public static void main(String[] s) throws Exception {
     new NioClient().init();
   }
