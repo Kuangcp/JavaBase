@@ -26,8 +26,10 @@ public class OptionalTest {
     assert !result.isPresent();
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void testFlatMapWithNull() {
     Optional<Object> result = getId().flatMap(s -> null);
+    System.out.println(result);
+    assert !result.isPresent();
   }
 }

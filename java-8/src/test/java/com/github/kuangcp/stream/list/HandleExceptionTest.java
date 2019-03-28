@@ -22,15 +22,11 @@ public class HandleExceptionTest {
   // NPE in stream
   @Test(expected = NullPointerException.class)
   public void testException() {
-    try {
-      data.forEach(s -> {
-        System.out.println(s);
-        if (s > 7) {
-          throw new NullPointerException("Oops ");
-        }
-      });
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    data.forEach(s -> {
+      System.out.println(s);
+      if (s > 7) {
+        throw new NullPointerException("Oops ");
+      }
+    });
   }
 }
