@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<bean id="logger" class="com.github.kuangcp.aop.xml.salary.Logger"></bean>
+	
+	<bean id="privilege" class="com.github.kuangcp.aop.xml.salary.Privilege"></bean>
+	
+	<bean id="security" class="com.github.kuangcp.aop.xml.salary.Security"></bean>
+	
+	<bean id="salaryManager" class="com.github.kuangcp.aop.xml.salary.SalaryManager"></bean>
+	<!-- 
+		一个切入点表达式可以配置很多个切面
+		还可以配置很多个切入点表达式
+	 -->
+	<aop:config>
+		<aop:pointcut expression="execution(* com.github.kuangcp.aop.xml.salary.SalaryManager.*(..))" id="perform"/>
+		<aop:aspect ref="logger">
+			<aop:before method="logging" pointcut-ref="perform"/>
+		</aop:aspect>
+		<aop:aspect ref="security">
+			<aop:before method="security" pointcut-ref="perform"/>
+		</aop:aspect>
+		<aop:aspect ref="privilege">
+			<aop:before method="privilege" pointcut-ref="perform"/>
+		</aop:aspect>
+	</aop:config>
+</beans>

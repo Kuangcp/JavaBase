@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+  <bean id="personAction" class="com.github.kuangcp.mvc.PersonAction">
+    <property name="personService">
+      <ref bean="personSerivce"/>
+    </property>
+  </bean>
+
+  <bean id="personSerivce" class="com.github.kuangcp.mvc.PersonServiceImpl">
+    <property name="personDao">
+      <ref bean="personDao"/>
+    </property>
+  </bean>
+
+  <bean id="personDao" class="com.github.kuangcp.mvc.PersonDaoImpl">
+  </bean>
+</beans>

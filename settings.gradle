@@ -15,4 +15,5 @@ include(
     , 'java-test'
     , 'java-guava'
     , 'java-netty'
+    , 'java-spring'
 )

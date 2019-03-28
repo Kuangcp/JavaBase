@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+  <bean id="person" class="com.github.kuangcp.di.di.xml.constructor.Person">
+    <!--
+      构造函数的参数
+        index  第几个参数，下标从0开始
+        type   参数的类型
+        ref    如果类型是引用类型，赋值
+        value  如果类型是基本类型，赋值
+       说明：
+          只能指定一个构造函数
+     -->
+    <constructor-arg index="0" type="java.lang.String" value="干露露"></constructor-arg>
+    <constructor-arg index="1" ref="student"></constructor-arg>
+  </bean>
+
+  <bean id="student" class="com.github.kuangcp.di.di.xml.constructor.Student"></bean>
+</beans>

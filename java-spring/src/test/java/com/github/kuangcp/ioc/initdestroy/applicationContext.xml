@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+  <!--
+      init-method
+        * 该方法是由spring容器执行
+        * 在构造函数之后执行
+        * 如果在构造函数之后，在调用方法之前要做一些工作，可以在init方法中完成
+      destroy-method
+        * 如果该bean是单例，则在spring容器关闭或者销毁的时候，执行该方法
+        * 如果该bean是多例，则spring容器不负责销毁
+      说明：要想让spring容器控制bean的生命周期，那么该bean必须是单例
+                 如果该bean是多例，该bean中还有资源，关闭资源的操作由程序员完成
+   -->
+  <bean id="helloWorld" class="com.github.kuangcp.ioc.initdestroy.HelloWorld" scope="prototype"
+    init-method="init" destroy-method="destroy"></bean>
+</beans>

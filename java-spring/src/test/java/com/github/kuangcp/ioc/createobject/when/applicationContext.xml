@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+  <!--
+      在启动spring容器的时候，spring容器配置文件中的类就已经创建完成对象了
+     lazy-init
+        default  false
+        true  在context.getBean的时候才要创建对象
+           *  优点
+                         如果该bean中有大数据存在，则什么时候context.getBean,什么时候创建对象
+                         可以防止数据过早的停留在内存中，做到了懒加载
+           *  缺点
+                          如果spring配置文件中，该bean的配置有错误，那么在tomcat容器启动的时候，发现不了
+        false 在启动spring容器的时候创建对象
+           *  优点
+                          如果在启动tomcat时要启动spring容器，
+                          那么如果spring容器会错误，这个时候tomcat容器不会正常启动
+           *  缺点
+                           如果存在大量的数据，会过早的停留在内存中
+   -->
+  <bean id="helloWorld" class="com.github.kuangcp.ioc.createobject.when.HelloWorld"
+    lazy-init="true"></bean>
+  <bean id="person" class="com.github.kuangcp.ioc.createobject.when.Person" lazy-init="true"></bean>
+</beans>

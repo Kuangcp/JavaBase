@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+  <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="locations">
+      <value>classpath:com/github/kuangcp/jdbc/jdbc.properties</value>
+    </property>
+  </bean>
+
+
+  <bean id="dataSource2" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
+    <property name="driverClassName" value="${jdbc.driverClassName}"/>
+    <property name="url" value="${jdbc.url}"/>
+    <property name="username" value="${jdbc.username}"/>
+    <property name="password" value="${jdbc.password}"/>
+  </bean>
+
+
+  <!--
+        配置dbcp的数据库连接池
+   -->
+  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+    <property name="url" value="jdbc:mysql://localhost:3306/test"/>
+    <property name="username" value="root"/>
+    <property name="password" value="123456"/>
+  </bean>
+
+  <bean id="personDao" class="com.github.kuangcp.jdbc.jdbc.PersonDaoImpl">
+    <property name="dataSource">
+      <ref bean="dataSource2"/>
+    </property>
+  </bean>
+
+  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    <property name="dataSource">
+      <ref bean="dataSource2"/>
+    </property>
+  </bean>
+
+  <bean id="personDao2" class="com.github.kuangcp.jdbc.jdbc.PersonDaoImpl2">
+    <property name="jdbcTemplate">
+      <ref bean="jdbcTemplate"/>
+    </property>
+  </bean>
+
+  <bean id="personDao3" class="com.github.kuangcp.jdbc.jdbc.PersonDaoImpl3">
+    <constructor-arg index="0" ref="dataSource"></constructor-arg>
+  </bean>
+</beans>

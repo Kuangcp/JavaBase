@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+           	http://www.springframework.org/schema/tx
+           	http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+  <!-- 产生dataSource -->
+  <bean
+    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="locations">
+      <value>classpath:com/github/kuangcp/jdbc/jdbc.properties</value>
+    </property>
+  </bean>
+  <bean id="dataSource" destroy-method="close"
+    class="org.apache.commons.dbcp.BasicDataSource">
+    <property name="driverClassName" value="${jdbc.driverClassName}"/>
+    <property name="url" value="${jdbc.url}"/>
+    <property name="username" value="${jdbc.username}"/>
+    <property name="password" value="${jdbc.password}"/>
+  </bean>
+  <!-- 声明事务通知 id事务标识 transaction-manager -->
+  <!-- 事务管理器 -->
+  <bean id="transactionManager"
+    class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource">
+      <ref bean="dataSource"/>
+    </property>
+  </bean>
+  <!-- 声明目标方法中哪些方法需要事务，哪些不需要事务 -->
+  <tx:advice id="tx" transaction-manager="transactionManager">
+    <tx:attributes>
+      <!-- name 限定方法的名称 isolation 隔离机制 propagation 传播机制 ready-only 只读 -->
+      <tx:method name="save*" isolation="DEFAULT" propagation="REQUIRED"
+        read-only="false"/>
+    </tx:attributes>
+  </tx:advice>
+  <!-- spring容器做的事情 -->
+  <aop:config>
+    <aop:pointcut
+      expression="execution(* com.github.kuangcp.jdbc.*.transaction.PersonServiceImpl.*(..))"
+      id="perform"/>
+    <aop:advisor advice-ref="tx" pointcut-ref="perform"/>
+  </aop:config>
+  <!-- 程序员做的事情 -->
+  <bean id="personDao" class="com.github.kuangcp.jdbc.jdbc.transaction.PersonDaoImpl">
+    <property name="dataSource">
+      <ref bean="dataSource"/>
+    </property>
+  </bean>
+  <bean id="personService" class="com.github.kuangcp.jdbc.jdbc.transaction.PersonServiceImpl">
+    <property name="personDao">
+      <ref bean="personDao"/>
+    </property>
+  </bean>
+
+  <bean id="personDao2" class="com.github.kuangcp.jdbc.transaction.PersonDaoImpl">
+    <property name="dataSource">
+      <ref bean="dataSource"/>
+    </property>
+  </bean>
+
+  <bean id="personService2" class="com.github.kuangcp.jdbc.transaction.PersonServiceImpl">
+    <property name="personDao">
+      <ref bean="personDao2"/>
+    </property>
+  </bean>
+</beans>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+  <!--
+    1、引入AOP的命名空间
+    2、目标类
+    3、切面
+    4、拦截器  由spring内部实现
+    5、aop的配置
+   -->
+  <bean id="personDao" class="com.github.kuangcp.proxy.salary.aop.xml.PersonDaoImpl"></bean>
+  <bean id="transaction" class="com.github.kuangcp.proxy.salary.aop.xml.Transaction"></bean>
+  <!--
+    aop的配置
+   -->
+  <aop:config>
+    <!--
+      切入点表达式
+        expression
+             确定哪个类可以生成代理对象
+        id  唯一标识
+     -->
+    <aop:pointcut
+      expression="execution(* com.github.kuangcp.proxy.salary.aop.xml.PersonDaoImpl.*(..))"
+      id="perform"/>
+    <!--
+      切面
+     -->
+    <aop:aspect ref="transaction">
+      <!--
+        前置通知
+          *  在目标方法执行之前
+          *
+       -->
+      <!--
+     <aop:before method="beginTransaction" pointcut-ref="perform"/>
+      -->
+      <!--
+        后置通知
+          *  在目标方法执行之后
+          *  可以根据returning获取目标方法的返回值
+          *  如果目标方法遇到异常，该通知不执行
+       -->
+      <!--
+     <aop:after-returning method="commit" pointcut-ref="perform" returning="val"/>
+      -->
+      <!--
+        前置通知和后置通知只能在目标方法文中添加内容，但是控制不了目标方法的执行
+       -->
+      <!--
+        最终通知
+           *  在目标方法执行之后
+           *  无论目标方法是否遇到异常，都执行
+           *  经常做一些关闭资源
+       -->
+      <!--
+     <aop:after method="finallyMethod" pointcut-ref="perform"/>
+      -->
+      <!--
+        异常通知
+           目的就是为了获取目标方法抛出的异常
+       -->
+      <aop:after-throwing method="exceptionMethod" throwing="ex" pointcut-ref="perform"/>
+      <!--
+        环绕通知
+           能控制目标方法的执行
+       -->
+      <aop:around method="aroundMethod" pointcut-ref="perform"/>
+    </aop:aspect>
+  </aop:config>
+</beans>

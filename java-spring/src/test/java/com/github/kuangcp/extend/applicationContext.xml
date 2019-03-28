@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+  <!--
+    abstract 为 true时
+      spring容器不会为该类创建对象
+   -->
+  <bean id="person" class="com.github.kuangcp.extend.Person" abstract="true">
+    <property name="name" value="王二麻子的哥"></property>
+  </bean>
+  <!--
+    parent 指定后
+      让子类拥有父类的属性的值 前提是子类没有对该同名属性进行配置
+   -->
+  <bean id="student" class="com.github.kuangcp.extend.Student" parent="person">
+    <!-- <property name="name" value="aaaaa"></property> -->
+  </bean>
+</beans>

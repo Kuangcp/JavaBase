@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           	http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+  <!--
+    1、导入命名空间
+      xmlns:context="http://www.springframework.org/schema/context"
+      http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context-2.5.xsd
+    2、启动类扫描的注解解析器
+    3、启动依赖注入的注解解析器
+  -->
+
+  <!--
+    component就是bean
+    base-package
+       会在base-package的值所在的包及子包下扫描所有的类
+   -->
+  <context:component-scan base-package="com.github.kuangcp.di.scan"></context:component-scan>
+</beans>

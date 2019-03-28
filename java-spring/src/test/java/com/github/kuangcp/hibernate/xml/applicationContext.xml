@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+
+
+           	http://www.springframework.org/schema/tx 
+           	http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+  <!--
+    sessionFactory
+       *  具备sessionFactoryImpl的功能
+       *  具备spring的DI的功能
+    实现sessionFactory有两中方法
+       *  <bean id="mySessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+       <property name="dataSource" ref="myDataSource"/>
+       <property name="mappingResources">
+         <list>
+           <value>product.hbm.xml</value>
+         </list>
+       </property>
+       <property name="hibernateProperties">
+         <value>
+           hibernate.dialect=org.hibernate.dialect.HSQLDialect
+         </value>
+       </property>
+     </bean>
+      *  可以把hibernate.cfg.xml配置文件直接导入进来
+   -->
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+    <property name="configLocation">
+      <value>classpath:com/github/kuangcp/hibernate/hibernate.cfg.xml</value>
+    </property>
+  </bean>
+  <!--
+    程序员做的事情
+   -->
+  <bean id="personDao" class="com.github.kuangcp.hibernate.xml.PersonDaoImpl">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+  </bean>
+
+  <bean id="personService" class="com.github.kuangcp.hibernate.xml.PersonServiceImpl">
+    <property name="personDao">
+      <ref bean="personDao"/>
+    </property>
+  </bean>
+  <!--
+    spring容器做的事情
+   -->
+  <aop:config>
+    <aop:pointcut
+      expression="execution(* com.github.kuangcp.hibernate.xml.PersonServiceImpl.*(..))"
+      id="perform"/>
+    <aop:advisor advice-ref="tx" pointcut-ref="perform"/>
+  </aop:config>
+  <!--
+    事务管理器
+   -->
+  <bean id="transactionmanager"
+    class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory"/>
+    </property>
+  </bean>
+  <tx:advice transaction-manager="transactionmanager" id="tx">
+    <tx:attributes>
+      <tx:method name="save*" read-only="false"/>
+    </tx:attributes>
+  </tx:advice>
+</beans>
