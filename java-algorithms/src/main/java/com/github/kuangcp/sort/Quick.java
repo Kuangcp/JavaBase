@@ -9,7 +9,7 @@ package com.github.kuangcp.sort;
  */
 public class Quick {
 
-  public static void sort(int arr[], int low, int high) {
+  public void sort(int arr[], int low, int high) {
     int l = low;
     int h = high;
     int povit = arr[low];

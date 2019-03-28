@@ -25,7 +25,7 @@ public class BinarySearchTest {
       dat[i] = (int) (Math.random() * dataRange + dataBaseValue);
     }
 
-    Insert.sort(dat);
+    Insert.INSTANCE.sort(dat);
 
     for (int i = 0; i < dat.length; i++) {  //将数组遍历一下
       System.out.print(dat[i] + " ");

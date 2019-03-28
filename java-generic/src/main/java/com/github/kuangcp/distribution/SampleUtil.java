@@ -16,6 +16,7 @@ import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
 
 /**
  * @author kuangcp on 3/21/19-5:51 PM
+ * TODO 自定义 收集器 接口, 与流结合使用
  */
 @Slf4j
 public class SampleUtil {
@@ -58,7 +59,7 @@ public class SampleUtil {
   }
 
   public static <T extends SampleAble> List<T> sampleToSizeRepeatable(List<T> list, int count,
-      Class<T > type) {
+      Class<T> type) {
     return sampleResult(list, count, SampleUtil::sampleToSizeRepeatable, type);
   }
 

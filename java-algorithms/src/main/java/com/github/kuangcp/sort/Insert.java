@@ -8,9 +8,11 @@ package com.github.kuangcp.sort;
  * 直至到最后一个
  * 思想是，指针位置之前的数都是有序的
  */
-public class Insert {
+public enum Insert implements SortAlgorithm {
 
-  public static void sort(int[] arr) {
+  INSTANCE;
+
+  public void sort(int[] arr) {
     int i, j;
     int data;
     for (i = 1; i < arr.length; i++) {

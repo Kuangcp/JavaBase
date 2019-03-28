@@ -5,9 +5,10 @@ package com.github.kuangcp.sort;
  *
  * @author Myth
  */
-public class Box {
+public enum  Box implements SortAlgorithm {
 
-  public static void sort(int[] arr) {
+  INSTANCE;
+  public void sort(int[] arr) {
     //盒子个数
     for (int i = 0; i < 1000; i++) {
       for (int anArr : arr) {

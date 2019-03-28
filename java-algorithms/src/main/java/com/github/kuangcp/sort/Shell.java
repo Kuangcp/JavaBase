@@ -14,9 +14,11 @@ import java.util.List;
  *
  * @author Myth
  */
-public class Shell {
+public enum Shell implements SortAlgorithm {
 
-  public static void sort(int[] arr) {
+  INSTANCE;
+
+  public void sort(int[] arr) {
     //如果改变了引用的指向，是对调用者无效的，要改变该引用的内存上的数据
 //		Test.display(arr);
 
@@ -50,7 +52,7 @@ public class Shell {
         for (int h = 0; h < dat.size(); h++) {
           arrdat[h] = dat.get(h);
         }
-        Insert.sort(arrdat);//直接插入排序
+        Insert.INSTANCE.sort(arrdat);//直接插入排序
         if (randomNum == 1) {
           System.arraycopy(arrdat, 0, arr, 0, arr.length);
           flag = false;
