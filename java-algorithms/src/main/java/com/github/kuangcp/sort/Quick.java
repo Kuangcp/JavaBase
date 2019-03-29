@@ -7,39 +7,79 @@ package com.github.kuangcp.sort;
  *
  * @author Myth
  */
-public class Quick {
+public enum Quick implements SortAlgorithm {
 
-  public void sort(int arr[], int low, int high) {
-    int l = low;
-    int h = high;
-    int povit = arr[low];
+  INSTANCE;
 
-    while (l < h) {
-      while (l < h && arr[h] >= povit) {
-        h--;
+  @Override
+  public void sort(int[] data) {
+    sortData(data, 0, data.length - 1);
+  }
+
+  /**
+   * 高效的写法
+   */
+  public void sortData(int[] data, int low, int high) {
+    if (low >= high) {
+      return;
+    }
+
+    int lowIndex = low;
+    int highIndex = high;
+
+    int value = data[low];
+    while (lowIndex < highIndex) {
+      // 找出右边小于低位所在的标识值
+      while (lowIndex < highIndex && data[highIndex] >= value) {
+        highIndex -= 1;
       }
-      if (l < h) {
-        int temp = arr[h];
-        arr[h] = arr[l];
-        arr[l] = temp;
-        l++;
+      data[lowIndex] = data[highIndex];
+
+      // 找出左边大于标识值
+      while (lowIndex < highIndex && data[lowIndex] <= value) {
+        lowIndex += 1;
+      }
+      data[highIndex] = data[lowIndex];
+    }
+
+    data[lowIndex] = value;
+
+    sortData(data, low, lowIndex - 1);
+    sortData(data, highIndex + 1, high);
+  }
+
+  public void sortData2(int[] data, int low, int high) {
+    int lowIndex = low;
+    int highIndex = high;
+    int index = data[low];
+
+    while (lowIndex < highIndex) {
+      while (lowIndex < highIndex && data[highIndex] >= index) {
+        highIndex--;
+      }
+      if (lowIndex < highIndex) {
+        int temp = data[highIndex];
+        data[highIndex] = data[lowIndex];
+        data[lowIndex] = temp;
+        lowIndex++;
       }
 
-      while (l < h && arr[l] <= povit) {
-        l++;
+      while (lowIndex < highIndex && data[lowIndex] <= index) {
+        lowIndex++;
       }
-      if (l < h) {
-        int temp = arr[h];
-        arr[h] = arr[l];
-        arr[l] = temp;
-        h--;
+      if (lowIndex < highIndex) {
+        int temp = data[highIndex];
+        data[highIndex] = data[lowIndex];
+        data[lowIndex] = temp;
+        highIndex--;
       }
     }
-    if (l > low) {
-      sort(arr, low, l - 1);
+
+    if (lowIndex > low) {
+      sortData2(data, low, lowIndex - 1);
     }
-    if (h < high) {
-      sort(arr, l + 1, high);
+    if (highIndex < high) {
+      sortData2(data, lowIndex + 1, high);
     }
   }
 
@@ -87,73 +127,3 @@ public class Quick {
     return targetArr;
   }
 }
-
-// /*//////////////////////////方式二////////////////////////////////*/
-
-/* //////////////方式三：减少交换次数，提高效率///////////////////// */
-// private<T extends Comparable<? super T>>
-// void quickSort(T[]targetArr,intstart,intend)
-// {
-// int i=start,j=end;
-// Tkey=targetArr[start];
-//
-// while(i<j)
-// {
-// /*按j--方向遍历目标数组，直到比key小的值为止*/
-// while(j>i&&targetArr[j].compareTo(key)>=0)
-// {
-// j--;
-// }
-// if(i<j)
-// {
-// /*targetArr[i]已经保存在key中，可将后面的数填入*/
-// targetArr[i]=targetArr[j];
-// i++;
-// }
-// /*按i++方向遍历目标数组，直到比key大的值为止*/
-// while(i<j&&targetArr[i].compareTo(key)<=0)
-// /*此处一定要小于等于零，假设数组之内有一亿个1，0交替出现的话，而key的值又恰巧是1的话，那么这个小于等于的作用就会使下面的if语句少执行一亿次。*/
-// {
-// i++;
-// }
-// if(i<j)
-// {
-// /*targetArr[j]已保存在targetArr[i]中，可将前面的值填入*/
-// targetArr[j]=targetArr[i];
-// j--;
-// }
-// }
-// /*此时i==j*/
-// targetArr[i]=key;
-//
-// /*递归调用，把key前面的完成排序*/
-// this.quickSort(targetArr,start,i-1);
-//
-//
-// /*递归调用，把key后面的完成排序*/
-// this.quickSort(targetArr,j+1,end);
-//
-// }
-
-/*
- * public class Quick { //快速排序：一堆的数组下标越界
- *
- * void quick (int []Q,int left,int right) { int left_x=left; int right_x=right;
- * int pivot=Q[(left+right)/2]; while (left_x<=right_x) {
- * for(;Q[left_x]<pivot;left_x++);//从左边开始查找 for(;Q[right_x]>pivot &&
- * right_x>0;right_x--);//从右边开始查找 if (left_x<=right_x)//执行交换 { if
- * (left_x!=right_x) {int temp =
- * Q[left_x];Q[right_x]=Q[left_x];Q[right_x]=temp;}
- * //SWAP(Q[left_x],Q[right_x]);//怎么实现交换 left_x++;right_x--; } } if
- * (right_x>left)//函数的递归调用 { quick(Q,left,right_x); } if (left_x<right)//函数的递归调用
- * { quick(Q,left_x,right); } } void quick_all(int []Q,int
- * data_size)//检查全局，再次递归调用 { quick(Q,0,data_size-1); } public void
- * sort(int[]arr){ quick(arr,0,arr.size-2); //指定位置进行排序
- * quick_all(arr,arr.size-1); //只检查一遍就够了？ } public static void main(String []
- * args) { int data[7],i; for (i=0;i<7;i++) { printf("输入数据");
- * scanf("%d",&data[i]); } quick(data,0,6);//指定位置进行排序
- * quick_all(data,7);//只检查一遍就够了？ for (i=0;i<7;i++) printf ("%2d\n",data[i]); }
- * //程序没错误，原理已经清楚了
- *
- * }
- */

@@ -92,7 +92,7 @@ public class CutTxt {
         BufferedWriter bw = null;
         OutputStream out = null;
         OutputStreamWriter os = null;
-//        for(String e:datas){
+//        for(String e:dataStack){
 //            System.out.println(e);
 //        }
         if(datas.size()>1) {

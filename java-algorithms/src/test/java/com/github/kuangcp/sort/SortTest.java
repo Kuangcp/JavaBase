@@ -14,27 +14,42 @@ public class SortTest {
 
   @Test
   public void testSortCorrect() {
-
-  }
-
-  @Test
-  public void testSortPerformance() {
-    SortHelper.AMOUNT = 30000;
+    SortHelper.AMOUNT = 17;
+    SortHelper.SCOPE = 999;
+    SortHelper.show = true;
 
     SortHelper.init();
 
     SortHelper.algorithms.forEach((k, v) -> {
       log.info("sort: name={}", k.getName());
-      System.out.println();
 
       int[] data = SortHelper.data.get(v);
+
       SortHelper.showData(data);
+      k.sort(data);
+      SortHelper.showData(data);
+
+      SortHelper.validate(data);
+      System.out.println();
+    });
+  }
+
+  @Test
+  public void testSortPerformance() {
+    SortHelper.AMOUNT = 8000;
+    SortHelper.SCOPE = 1000000;
+
+    SortHelper.init();
+
+    SortHelper.algorithms.forEach((k, v) -> {
+      int[] data = SortHelper.data.get(v);
 
       GetRunTime runTime = new GetRunTime().startCount();
       k.sort(data);
-      runTime.endCount(k.getName());
+      runTime.endCountOneLine(k.getName());
 
-      SortHelper.showData(data);
+      SortHelper.validate(data);
+      System.out.println();
     });
   }
 }

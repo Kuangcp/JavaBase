@@ -11,9 +11,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author kuangcp on 18-8-27-上午12:27
  */
 @Slf4j
-public class AddTwoBigInteger {
-
-  // TODO change to Array , dead loop ?
+class AddTwoBigInteger {
 
   private MythBaseStack<Integer> oneStack = new MythLinkedStack<>();
   private MythBaseStack<Integer> otherStack = new MythLinkedStack<>();
@@ -39,7 +37,7 @@ public class AddTwoBigInteger {
     return true;
   }
 
-  public MythBaseStack<Integer> add(String one, String other) {
+  MythBaseStack<Integer> add(String one, String other) {
     boolean oneResult = initBigInteger(one, oneStack);
     boolean otherResult = initBigInteger(other, otherStack);
     if (!oneResult || !otherResult) {
@@ -81,7 +79,7 @@ public class AddTwoBigInteger {
     return flag;
   }
 
-  public void clear() {
+  void clear() {
     oneStack.clear();
     otherStack.clear();
     resultStack.clear();

@@ -25,14 +25,14 @@ public class AddTwoBigIntegerTest {
 
     addTwoBigInteger.clear();
     result = addTwoBigInteger.add("5367868436215345", "743558532109789079793128");
+    actual = stackToString(result);
     log.info(": actual={}", actual);
-
     assertThat(actual, equalTo("743558537477657516008473"));
 
     addTwoBigInteger.clear();
     result = addTwoBigInteger.add("0000001", "1");
+    actual = stackToString(result);
     log.info(": actual={}", actual);
-
     assertThat(actual, equalTo("2"));
   }
 

@@ -11,8 +11,8 @@ public enum Bubble implements SortAlgorithm {
   INSTANCE;
 
   public void sort(int[] arr) {
-    //冒泡循环次数
-    for (int i = 1; i < arr.length - 1; i++) {
+
+    for (int i = 1; i < arr.length; i++) {
       //用来冒泡的语句，0到已排序的部分
       for (int j = 0; j < arr.length - i; j++) {
         //大就交换，把最大的沉入最后
