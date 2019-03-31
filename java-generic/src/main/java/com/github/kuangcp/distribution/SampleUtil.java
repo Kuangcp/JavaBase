@@ -1,7 +1,6 @@
 package com.github.kuangcp.distribution;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -63,25 +62,24 @@ public class SampleUtil {
     return sampleResult(list, count, SampleUtil::sampleToSizeRepeatable, type);
   }
 
-  // TODO remove this warning
-  @SuppressWarnings("unchecked")
   private static <T extends SampleAble> List<T> sampleResult(List<T> list, int count
       , BiFunction<EnumeratedIntegerDistribution, Integer, List<Integer>> function, Class<T> type) {
     if (Objects.isNull(list) || list.isEmpty()) {
       return new ArrayList<>();
     }
 
-    Map<Integer, SampleAble> tempMap = new HashMap<>();
-    IntStream.range(0, list.size()).forEach(i -> tempMap.put(i, list.get(i)));
+    Map<Integer, T> data = IntStream.range(0, list.size()).boxed()
+        .collect(Collectors.toMap(i -> i, list::get));
 
-    EnumeratedIntegerDistribution distribution = generateEnumerated(list, tempMap);
+    EnumeratedIntegerDistribution distribution = generateEnumerated(list, data);
 
     List<Integer> indexes = function.apply(distribution, count);
-    return indexes.stream().map(tempMap::get).map(v -> (T) v).collect(Collectors.toList());
+    return indexes.stream().map(data::get).collect(Collectors.toList());
   }
 
-  private static EnumeratedIntegerDistribution generateEnumerated(List<? extends SampleAble> list,
-      Map<Integer, SampleAble> tempMap) {
+  private static <T extends SampleAble> EnumeratedIntegerDistribution generateEnumerated(
+      List<T> list, Map<Integer, T> tempMap) {
+
     double sum = list.stream().mapToInt(SampleAble::getWeight).sum();
 
     List<Double> probList = list.stream().map(SampleAble::getWeight).map(value -> value / sum)
