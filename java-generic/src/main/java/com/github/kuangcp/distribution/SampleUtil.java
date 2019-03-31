@@ -23,7 +23,39 @@ public class SampleUtil {
   /**
    * 不重复的sample
    */
-  public static List<Integer> sampleToSize(EnumeratedIntegerDistribution distribution, int size) {
+  public static <T extends SampleAble> List<T> sampleToSize(List<T> list, int count,
+      Class<T> type) {
+    return sampleResult(list, count, SampleUtil::sampleToSize, type);
+  }
+
+  /**
+   * 允许重复
+   */
+  public static <T extends SampleAble> List<T> sampleToSizeRepeatable(List<T> list, int count,
+      Class<T> type) {
+    return sampleResult(list, count, SampleUtil::sampleToSizeRepeatable, type);
+  }
+
+  private static <T extends SampleAble> List<T> sampleResult(List<T> list, int count
+      , BiFunction<EnumeratedIntegerDistribution, Integer, List<Integer>> function, Class<T> type) {
+    if (Objects.isNull(list) || list.isEmpty()) {
+      return new ArrayList<>();
+    }
+    if(list.size() < count){
+      log.warn("data less than count: data size={} count={}", list.size(), count);
+      return new ArrayList<>();
+    }
+
+    Map<Integer, T> data = IntStream.range(0, list.size()).boxed()
+        .collect(Collectors.toMap(i -> i, list::get));
+
+    EnumeratedIntegerDistribution distribution = generateEnumerated(list, data);
+
+    List<Integer> indexes = function.apply(distribution, count);
+    return indexes.stream().map(data::get).collect(Collectors.toList());
+  }
+
+  private static List<Integer> sampleToSize(EnumeratedIntegerDistribution distribution, int size) {
     if (Objects.isNull(distribution) || size <= 0) {
       return new ArrayList<>();
     }
@@ -36,45 +68,13 @@ public class SampleUtil {
     return new ArrayList<>(unique);
   }
 
-  public static Optional<Integer> sampleToSize(EnumeratedIntegerDistribution distribution) {
-    return Optional.ofNullable(sampleToSize(distribution, 1).get(0));
-  }
-
-  public static <T extends SampleAble> List<T> sampleToSize(List<T> list, int count,
-      Class<T> type) {
-    return sampleResult(list, count, SampleUtil::sampleToSize, type);
-  }
-
-  /**
-   * 允许重复
-   */
-  public static List<Integer> sampleToSizeRepeatable(EnumeratedIntegerDistribution distribution,
+  private static List<Integer> sampleToSizeRepeatable(EnumeratedIntegerDistribution distribution,
       int size) {
     List<Integer> result = new ArrayList<>();
     for (int i = 0; i < size; i++) {
       result.add(distribution.sample());
     }
     return result;
-  }
-
-  public static <T extends SampleAble> List<T> sampleToSizeRepeatable(List<T> list, int count,
-      Class<T> type) {
-    return sampleResult(list, count, SampleUtil::sampleToSizeRepeatable, type);
-  }
-
-  private static <T extends SampleAble> List<T> sampleResult(List<T> list, int count
-      , BiFunction<EnumeratedIntegerDistribution, Integer, List<Integer>> function, Class<T> type) {
-    if (Objects.isNull(list) || list.isEmpty()) {
-      return new ArrayList<>();
-    }
-
-    Map<Integer, T> data = IntStream.range(0, list.size()).boxed()
-        .collect(Collectors.toMap(i -> i, list::get));
-
-    EnumeratedIntegerDistribution distribution = generateEnumerated(list, data);
-
-    List<Integer> indexes = function.apply(distribution, count);
-    return indexes.stream().map(data::get).collect(Collectors.toList());
   }
 
   private static <T extends SampleAble> EnumeratedIntegerDistribution generateEnumerated(
