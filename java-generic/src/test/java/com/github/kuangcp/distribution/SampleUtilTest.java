@@ -6,8 +6,11 @@ import static org.hamcrest.Matchers.lessThan;
 
 import com.github.kuangcp.time.GetRunTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -16,6 +19,18 @@ import org.junit.Test;
  * 对应于randsample(X,N,0)，对于N<0.05 * lenght(X)的情况与有放回抽样的结果相比无太大差别
  */
 public class SampleUtilTest {
+
+  private GetRunTime run = new GetRunTime();
+
+  @Before
+  public void before() {
+    run.startCount();
+  }
+
+  @After
+  public void after() {
+    run.endCount();
+  }
 
   @Test
   public void testSample() {
@@ -31,13 +46,47 @@ public class SampleUtilTest {
     assertThat(result.size(), equalTo(2));
   }
 
+
   @Test
-  public void testCorrect() {
+  public void testBugSample() {
+    List<DogRef> list = IntStream.rangeClosed(1, 2).mapToObj(i -> new DogRef(i + "", i))
+        .collect(Collectors.toList());
+    list.add(new DogRef("big", 1800120122));
+
+    List<DogRef> result = SampleUtil.sampleToSize(list, 2);
+
+    result.forEach(System.out::println);
+  }
+
+  @Test
+  public void testCorrectSample() {
+    List<DogRef> list = IntStream.rangeClosed(1, 2).mapToObj(i -> new DogRef(i + "", (i + 1) * 10))
+        .collect(Collectors.toList());
+    list.add(new DogRef("big", 1800120122));
+
+    List<DogRef> result = SampleUtil.sampleToSizeWithNoReturn(list, 2);
+    result.forEach(System.out::println);
+  }
+
+  @Test
+  public void testSimple() {
+    Map<DogRef, Integer> map = IntStream.rangeClosed(1, 2)
+        .mapToObj(i -> new DogRef(i + "", (i + 1) * 10))
+        .collect(Collectors.toMap(d -> d, DogRef::getWeight));
+
+    map.put(new DogRef("big", 1800120122), 1800120122);
+
+    List<DogRef> result = SampleUtil.getRandom(map, 2);
+    result.forEach(System.out::println);
+  }
+
+  @Test
+  public void testCompare() {
     List<DogRef> list = IntStream.rangeClosed(1, 9)
         .mapToObj(i -> new DogRef(i + "", 10 * (i / 9 + 1))).collect(Collectors.toList());
 
 //    list.forEach(System.out::println);
-    int sum = 100000;
+    int sum = 1000;
     int count = 0;
 
     GetRunTime run = new GetRunTime().startCount();
@@ -66,11 +115,5 @@ public class SampleUtilTest {
     }
     run.endCountOneLine();
     System.out.println(count);
-
-  }
-
-  @Test
-  public void testCollector() {
-    IntStream.rangeClosed(1, 10).boxed().collect(Collectors.toList());
   }
 }

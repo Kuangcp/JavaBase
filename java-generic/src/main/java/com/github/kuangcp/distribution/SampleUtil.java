@@ -44,7 +44,6 @@ public class SampleUtil {
     return sampleResult(list, count, SampleUtil::sampleToSizeRepeatable);
   }
 
-
   /**
    * 权重（value）总和为10000的随机结果（key）
    */
@@ -117,8 +116,8 @@ public class SampleUtil {
   }
 
   // 放回式 随机取样
-  private static <T extends SampleAble> List<T> sampleResult(List<T> list, int count
-      , BiFunction<EnumeratedIntegerDistribution, Integer, List<Integer>> function) {
+  private static <T extends SampleAble> List<T> sampleResult(List<T> list, int count,
+      BiFunction<EnumeratedIntegerDistribution, Integer, List<Integer>> function) {
     if (Objects.isNull(list) || list.isEmpty()) {
       return new ArrayList<>();
     }
@@ -168,10 +167,13 @@ public class SampleUtil {
     }
 
     Set<Integer> unique = new HashSet<>(size);
+    int count = 0;
     while (unique.size() < size) {
       unique.add(distribution.sample());
+      count++;
     }
 
+    log.debug("loop: count={}", count);
     return new ArrayList<>(unique);
   }
 
