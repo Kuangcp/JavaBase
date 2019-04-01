@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
 
+import com.github.kuangcp.time.GetRunTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -11,6 +12,8 @@ import org.junit.Test;
 
 /**
  * @author kuangcp on 3/23/19-4:09 PM
+ * 简单随机抽样原则上应是有放回的抽样，使用randsample(X,N,1)但大多数时候，人们常采用无放回的抽样，
+ * 对应于randsample(X,N,0)，对于N<0.05 * lenght(X)的情况与有放回抽样的结果相比无太大差别
  */
 public class SampleUtilTest {
 
@@ -19,7 +22,7 @@ public class SampleUtilTest {
     List<DogRef> list = IntStream.rangeClosed(1, 10).mapToObj(i -> new DogRef(i + "", i))
         .collect(Collectors.toList());
 
-    List<DogRef> result = SampleUtil.sampleToSize(list, 2, DogRef.class);
+    List<DogRef> result = SampleUtil.sampleToSize(list, 2);
     result.forEach(r -> {
       System.out.println(r);
       assertThat(r.getWeight(), lessThan(11));
@@ -29,7 +32,45 @@ public class SampleUtilTest {
   }
 
   @Test
-  public void testCollector(){
+  public void testCorrect() {
+    List<DogRef> list = IntStream.rangeClosed(1, 9)
+        .mapToObj(i -> new DogRef(i + "", 10 * (i / 9 + 1))).collect(Collectors.toList());
+
+//    list.forEach(System.out::println);
+    int sum = 100000;
+    int count = 0;
+
+    GetRunTime run = new GetRunTime().startCount();
+    for (int i = 0; i < sum; i++) {
+      List<DogRef> dogRefs = SampleUtil.sampleToSize(list, 4);
+      boolean has = dogRefs.stream().anyMatch(dogRef -> dogRef.getWeight() == 20);
+      if (has) {
+        count++;
+      }
+    }
+    run.endCountOneLine();
+
+    System.out.println(count);
+
+    count = 0;
+    run.startCount();
+    for (int i = 0; i < sum; i++) {
+      list = IntStream.rangeClosed(1, 9)
+          .mapToObj(j -> new DogRef(j + "", 10 * (j / 9 + 1))).collect(Collectors.toList());
+
+      boolean has = SampleUtil.sampleToSizeWithNoReturn(list, 4).stream()
+          .anyMatch(dogRef -> dogRef.getWeight() == 20);
+      if (has) {
+        count++;
+      }
+    }
+    run.endCountOneLine();
+    System.out.println(count);
+
+  }
+
+  @Test
+  public void testCollector() {
     IntStream.rangeClosed(1, 10).boxed().collect(Collectors.toList());
   }
 }
