@@ -32,7 +32,7 @@ public class FibonacciTest {
 
   @Test
   public void testRecursiveOne() throws Exception {
-    general(Fibonacci::recursiveOne, 10);
+    general(Fibonacci::recursiveOne, 100);
   }
 
   @Test

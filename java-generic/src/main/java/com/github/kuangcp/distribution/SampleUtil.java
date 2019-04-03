@@ -23,25 +23,26 @@ public class SampleUtil {
 
   /**
    * 不重复的sample
-   * 放回式取样 概率相差很大时可能循环很多次
+   * 放回式取样 概率相差很大时可能循环很多次 这是有缺陷的
    */
-  public static <T extends SampleAble> List<T> sampleToSize(List<T> list, int count) {
-    return sampleResult(list, count, SampleUtil::sampleToSize);
+  public static <T extends SampleAble> List<T> sampleWithNoRepeatedAndPutBack(List<T> list,
+      int count) {
+    return sampleResult(list, count, SampleUtil::sampleWithNoRepeated);
   }
 
   /**
    * 不重复的sample
    * 不放回 随机取样
    */
-  public static <T extends SampleAble> List<T> sampleToSizeWithNoReturn(List<T> list, int count) {
+  public static <T extends SampleAble> List<T> sampleWithNoRepeated(List<T> list, int count) {
     return sampleResultWithNoReturn(list, count);
   }
 
   /**
    * 允许重复
    */
-  public static <T extends SampleAble> List<T> sampleToSizeRepeatable(List<T> list, int count) {
-    return sampleResult(list, count, SampleUtil::sampleToSizeRepeatable);
+  public static <T extends SampleAble> List<T> sampleWithRepeated(List<T> list, int count) {
+    return sampleResult(list, count, SampleUtil::sampleWithRepeated);
   }
 
   /**
@@ -67,8 +68,9 @@ public class SampleUtil {
 
   /**
    * 按权重不放回随机取出多个
+   * 按数值分段式实现
    */
-  public static <T> List<T> getRandom(Map<T, Integer> rateMap, int count) {
+  public static <T> List<T> sampleWithNoRepeated(Map<T, Integer> rateMap, int count) {
     List<T> result = new ArrayList<>();
     for (int i = 0; i < count; i++) {
       int total = 0;
@@ -96,7 +98,7 @@ public class SampleUtil {
   /**
    * 按权重放回随机取出多个
    */
-  public static <T> List<T> getRandomOfPutBack(Map<T, Integer> rateMap, int count) {
+  public static <T> List<T> sampleWithNoRepeatedWithPutBack(Map<T, Integer> rateMap, int count) {
     List<T> result = new ArrayList<>();
     int total = 0;
     for (Entry<T, Integer> entry : rateMap.entrySet()) {
@@ -115,7 +117,6 @@ public class SampleUtil {
     return result;
   }
 
-  // 放回式 随机取样
   private static <T extends SampleAble> List<T> sampleResult(List<T> list, int count,
       BiFunction<EnumeratedIntegerDistribution, Integer, List<Integer>> function) {
     if (Objects.isNull(list) || list.isEmpty()) {
@@ -161,7 +162,8 @@ public class SampleUtil {
     return t;
   }
 
-  private static List<Integer> sampleToSize(EnumeratedIntegerDistribution distribution, int size) {
+  private static List<Integer> sampleWithNoRepeated(EnumeratedIntegerDistribution distribution,
+      int size) {
     if (Objects.isNull(distribution) || size <= 0) {
       return new ArrayList<>();
     }
@@ -177,7 +179,7 @@ public class SampleUtil {
     return new ArrayList<>(unique);
   }
 
-  private static List<Integer> sampleToSizeRepeatable(EnumeratedIntegerDistribution distribution,
+  private static List<Integer> sampleWithRepeated(EnumeratedIntegerDistribution distribution,
       int size) {
     List<Integer> result = new ArrayList<>();
     for (int i = 0; i < size; i++) {

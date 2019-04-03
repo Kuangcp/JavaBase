@@ -37,7 +37,7 @@ public class SampleUtilTest {
     List<DogRef> list = IntStream.rangeClosed(1, 10).mapToObj(i -> new DogRef(i + "", i))
         .collect(Collectors.toList());
 
-    List<DogRef> result = SampleUtil.sampleToSize(list, 2);
+    List<DogRef> result = SampleUtil.sampleWithNoRepeated(list, 2);
     result.forEach(r -> {
       System.out.println(r);
       assertThat(r.getWeight(), lessThan(11));
@@ -46,14 +46,13 @@ public class SampleUtilTest {
     assertThat(result.size(), equalTo(2));
   }
 
-
   @Test
   public void testBugSample() {
     List<DogRef> list = IntStream.rangeClosed(1, 2).mapToObj(i -> new DogRef(i + "", i))
         .collect(Collectors.toList());
     list.add(new DogRef("big", 1800120122));
 
-    List<DogRef> result = SampleUtil.sampleToSize(list, 2);
+    List<DogRef> result = SampleUtil.sampleWithNoRepeated(list, 2);
 
     result.forEach(System.out::println);
   }
@@ -64,7 +63,7 @@ public class SampleUtilTest {
         .collect(Collectors.toList());
     list.add(new DogRef("big", 1800120122));
 
-    List<DogRef> result = SampleUtil.sampleToSizeWithNoReturn(list, 2);
+    List<DogRef> result = SampleUtil.sampleWithNoRepeated(list, 2);
     result.forEach(System.out::println);
   }
 
@@ -76,7 +75,7 @@ public class SampleUtilTest {
 
     map.put(new DogRef("big", 1800120122), 1800120122);
 
-    List<DogRef> result = SampleUtil.getRandom(map, 2);
+    List<DogRef> result = SampleUtil.sampleWithNoRepeated(map, 2);
     result.forEach(System.out::println);
   }
 
@@ -91,7 +90,7 @@ public class SampleUtilTest {
 
     GetRunTime run = new GetRunTime().startCount();
     for (int i = 0; i < sum; i++) {
-      List<DogRef> dogRefs = SampleUtil.sampleToSize(list, 4);
+      List<DogRef> dogRefs = SampleUtil.sampleWithNoRepeated(list, 4);
       boolean has = dogRefs.stream().anyMatch(dogRef -> dogRef.getWeight() == 20);
       if (has) {
         count++;
@@ -107,7 +106,7 @@ public class SampleUtilTest {
       list = IntStream.rangeClosed(1, 9)
           .mapToObj(j -> new DogRef(j + "", 10 * (j / 9 + 1))).collect(Collectors.toList());
 
-      boolean has = SampleUtil.sampleToSizeWithNoReturn(list, 4).stream()
+      boolean has = SampleUtil.sampleWithNoRepeated(list, 4).stream()
           .anyMatch(dogRef -> dogRef.getWeight() == 20);
       if (has) {
         count++;
