@@ -16,6 +16,7 @@ import org.junit.Test;
  * Created by https://github.com/kuangcp on 17-10-24  上午9:50
  * 使用反射得到对象的 成员属性
  * https://stackoverflow.com/questions/3301635/change-private-static-final-field-using-java-reflection
+ * http://www.cnblogs.com/noKing/p/9038234.html
  *
  * @author kuangcp
  */
@@ -23,160 +24,14 @@ import org.junit.Test;
 public class ReflectTargetObjectTest {
 
   @Test
-  public void testModifyFinalPrimitive() throws ReflectiveOperationException {
-    ReflectTargetObject target = new ReflectTargetObject();
-    int targetValue = 6;
-
-    Field field = ReflectTargetObject.class.getDeclaredField("finalInt");
-    field.setAccessible(true);
-
-    field.set(target, targetValue);
-    // TODO 仍然是旧值
-    System.out.println(target.getFinalInt());
-
-    assertThat(field.get(target), equalTo(targetValue));
-  }
-
-  @Test
-  public void testModifyPrimitive() throws ReflectiveOperationException {
-    ReflectTargetObject target = new ReflectTargetObject();
-    int targetValue = 6;
-    Field field = ReflectTargetObject.class.getDeclaredField("num");
-    field.setAccessible(true);
-
-    Object value = field.get(target);
-    log.info("value={}", value);
-
-    field.set(target, targetValue);
-    value = field.get(target);
-    log.info(": value={} {}", value, target.getNum());
-    assertThat(value, equalTo(targetValue));
-    assertThat(target.getNum(), equalTo(targetValue));
-  }
-
-  @Test
-  public void testModifyStatic() throws ReflectiveOperationException {
-    String targetValue = "modifyFinalValue";
-    Field field = ReflectTargetObject.class.getDeclaredField("type");
-    field.setAccessible(true);
-
-    log.info("static field: value={}", field.get(ReflectTargetObject.class));
-
-    field.set(ReflectTargetObject.class, targetValue);
-
-    assertThat(field.get(ReflectTargetObject.class), equalTo(targetValue));
-    assertThat(ReflectTargetObject.type, equalTo(targetValue));
-  }
-
-  @Test
   public void testGetFinal() throws ReflectiveOperationException {
     Field field = ReflectTargetObject.class.getDeclaredField("finalString");
+
+    // 可有可无, 原本就是具有该属性的访问权限
     field.setAccessible(true);
+
     Object value = field.get(new ReflectTargetObject());
     log.info("value={}", value);
-  }
-
-  /**
-   * 修改 final String 属性 失败
-   */
-  @Test
-  @Ignore
-  public void testModifyFinalString() throws ReflectiveOperationException {
-    String targetValue = "modifyFinalValue";
-    ReflectTargetObject target = new ReflectTargetObject();
-
-    Field field = ReflectTargetObject.class.getDeclaredField("finalString");
-    field.setAccessible(true);
-
-    log.info("before={} {}", field.get(target), target);
-    field.set(target, targetValue);
-    log.info("modify success: value={}", field.get(target));
-
-    // TODO  改的是 field 的值, 原对象没有修改?
-    //  但是 Debug窗口中看到的对象的属性的确改了 .finalString 是改了, .getFinalString() 则是没改 ???
-
-    // 初步理解, final修饰后 无法更改引用的值(也就是地址值), String 又是不可变的, 有运行时常量池的存在, 所以原对象上的String类型属性是改不动的
-    // 那么问题来了, field 能改动? Idea 中 Debug 取到的值也是改动后的
-
-    log.info("domain={}", target);
-    System.out.println(target.getFinalString().equals(targetValue));
-
-    System.out.println(target.finalString);
-
-    assertThat(target.finalString, equalTo(targetValue));
-  }
-
-  @Test
-  public void testModifyFinalInteger() throws ReflectiveOperationException {
-    int targetValue = 12;
-    ReflectTargetObject target = new ReflectTargetObject();
-
-    Field field = ReflectTargetObject.class.getDeclaredField("finalInteger");
-    field.setAccessible(true);
-
-    log.info("before={}", field.get(target));
-    field.set(target, targetValue);
-    assertThat(field.get(target), equalTo(targetValue));
-
-    log.info("after={}", target.getFinalInteger());
-    assertThat(target.getFinalInteger(), equalTo(targetValue));
-  }
-
-  /**
-   * 修改 static final 属性
-   */
-  @Test
-  @Ignore
-  public void testModifyStaticFinal() throws ReflectiveOperationException {
-    Field field = ReflectTargetObject.class.getDeclaredField("staticFinalString");
-    field.setAccessible(true);
-
-    Object value = field.get(ReflectTargetObject.class);
-    log.info("value={}", value);
-
-    //TODO error: IllegalAccessException
-    field.set(ReflectTargetObject.class, "modify");
-
-    value = field.get(ReflectTargetObject.class);
-    log.info("value={}", value);
-  }
-
-  @Test
-  @Ignore
-  public void testModifyStaticFinalTwo() throws Exception {
-    Field field = ReflectTargetObject.class.getDeclaredField("staticFinalString");
-
-    field.setAccessible(true);
-    Object value = field.get(ReflectTargetObject.class);
-    log.info("value={}", value);
-
-    // TODO ERROR 不能像修改Boolean一样的修改
-    removeFinalModifier(field, "modifySuccess");
-
-    value = field.get(ReflectTargetObject.class);
-    log.info("value={}", value);
-  }
-
-  @Test
-  public void testModifyStaticFinalBoolean() throws Exception {
-    removeFinalModifier(Boolean.class.getField("FALSE"), true);
-
-    log.info("Everything is true? {}", false);
-    assertThat(false, equalTo(true));
-  }
-
-  /**
-   * 移除 static final 修饰的属性上的 final 修饰符
-   */
-  private static void removeFinalModifier(Field field, Object newValue) throws Exception {
-    field.setAccessible(true);
-
-    Field modifiersField = Field.class.getDeclaredField("modifiers");
-    modifiersField.setAccessible(true);
-    modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-    // static 传入 null
-    field.set(null, newValue);
   }
 
   /**
@@ -218,5 +73,151 @@ public class ReflectTargetObjectTest {
     log.info("use constructor:{}", domain.toString());
 
     assertThat(domain.getName(), equalTo(name));
+  }
+
+  @Test
+  public void testModifyPrimitive() throws ReflectiveOperationException {
+    ReflectTargetObject target = new ReflectTargetObject();
+    int targetValue = 6;
+    Field field = ReflectTargetObject.class.getDeclaredField("num");
+    field.setAccessible(true);
+
+    Object value = field.get(target);
+    log.info("before={}", value);
+
+    field.set(target, targetValue);
+    value = field.get(target);
+    log.info("after: {} {}", value, target.getNum());
+
+    assertThat(value, equalTo(targetValue));
+    assertThat(target.getNum(), equalTo(targetValue));
+  }
+
+  // 编译后字节码文件中的 字面量 会将所有引用常量的地方全替换成字面量, 基本类型和String都是一样的场景
+  @Test
+  public void testModifyFinalPrimitive() throws ReflectiveOperationException {
+    ReflectTargetObject target = new ReflectTargetObject();
+    int targetValue = 6;
+
+    Field field = ReflectTargetObject.class.getDeclaredField("finalInt");
+    field.setAccessible(true);
+    field.set(target, targetValue);
+
+    assertThat(field.get(target), equalTo(targetValue));
+    // 如果在这里断点就会发现 field 和 target 对象里的值都已经被修改了, 但是这里的断言却能通过
+    // 因为编译做了优化, 反编译字节码能看到:
+    // assertThat(target.getFinalInt(), equalTo(1));
+    // 并且 getFinalInt() 方法也是写死的返回 1 所以对象上的属性改了也没有用, 调用该属性的地方全被写死了
+    assertThat(target.getFinalInt(), equalTo(target.finalInt));
+  }
+
+  /**
+   * 修改 final String 属性
+   */
+  @Test
+  @Ignore
+  public void testModifyFinalString() throws ReflectiveOperationException {
+    String targetValue = "modifyFinalValue";
+    ReflectTargetObject target = new ReflectTargetObject();
+
+    Field field = ReflectTargetObject.class.getDeclaredField("finalString");
+    field.setAccessible(true);
+
+    log.info("before={} {}", field.get(target), target);
+    field.set(target, targetValue);
+    log.info("modify success: value={}", field.get(target));
+
+    // 初步理解, final修饰后 无法更改引用的值(也就是地址值), String 又是不可变的, 有运行时常量池的存在, 所以原对象上的String类型属性是改不动的
+    // 那么问题来了, field 能改动? Idea 中 Debug 取到的值也是改动后的
+
+    assertThat(target.finalString, equalTo(target.getFinalString()));
+    assertThat(field.get(target), equalTo(targetValue));
+  }
+
+  @Test
+  public void testModifyFinalInteger() throws ReflectiveOperationException {
+    int targetValue = 12;
+    ReflectTargetObject target = new ReflectTargetObject();
+
+    Field field = ReflectTargetObject.class.getDeclaredField("finalInteger");
+    field.setAccessible(true);
+
+    log.info("before={}", field.get(target));
+    field.set(target, targetValue);
+    assertThat(field.get(target), equalTo(targetValue));
+
+    log.info("after={}", target.getFinalInteger());
+    assertThat(target.getFinalInteger(), equalTo(targetValue));
+  }
+
+  // 修改 static final 属性
+
+  @Test
+  @Ignore
+  public void testModifyStaticFinalInteger() throws Exception {
+    int targetValue = 10;
+    Field field = ReflectTargetObject.class.getDeclaredField("staticFinalInteger");
+    field.setAccessible(true);
+
+    log.info("before={}", field.get(ReflectTargetObject.class));
+
+    //TODO error: IllegalAccessException
+    removeFinalModifier(field, targetValue);
+
+    log.info("after={}", field.get(ReflectTargetObject.class));
+  }
+
+  @Test
+  @Ignore
+  public void testModifyStaticFinalString() throws ReflectiveOperationException {
+    Field field = ReflectTargetObject.class.getDeclaredField("staticFinalString");
+    field.setAccessible(true);
+
+    Object value = field.get(ReflectTargetObject.class);
+    log.info("value={}", value);
+
+    //TODO error: IllegalAccessException
+    field.set(ReflectTargetObject.class, "modify");
+
+    value = field.get(ReflectTargetObject.class);
+    log.info("value={}", value);
+  }
+
+  @Test
+  @Ignore
+  public void testModifyStaticFinalStringTwo() throws Exception {
+    Field field = ReflectTargetObject.class.getDeclaredField("staticFinalString");
+
+    field.setAccessible(true);
+    Object value = field.get(ReflectTargetObject.class);
+    log.info("value={}", value);
+
+    // TODO ERROR 不能像修改Boolean一样的修改
+    removeFinalModifier(field, "modifySuccess");
+
+    value = field.get(ReflectTargetObject.class);
+    log.info("value={}", value);
+  }
+
+  @Test
+  public void testModifyStaticFinalBoolean() throws Exception {
+    removeFinalModifier(Boolean.class.getField("FALSE"), true);
+
+    log.info("Everything is true? {}", false);
+    assertThat(false, equalTo(true));
+  }
+
+  /**
+   * 移除 static final 修饰的属性上的 final 修饰符
+   */
+  private static void removeFinalModifier(Field field, Object newValue) throws Exception {
+    field.setAccessible(true);
+
+    Field modifiersField = Field.class.getDeclaredField("modifiers");
+    modifiersField.setAccessible(true);
+    modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+    // static 传入 null
+    field.set(null, newValue);
   }
 }
