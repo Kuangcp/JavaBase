@@ -115,7 +115,6 @@ public class ReflectTargetObjectTest {
    * 修改 final String 属性
    */
   @Test
-  @Ignore
   public void testModifyFinalString() throws ReflectiveOperationException {
     String targetValue = "modifyFinalValue";
     ReflectTargetObject target = new ReflectTargetObject();

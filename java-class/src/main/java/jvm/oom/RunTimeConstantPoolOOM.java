@@ -8,7 +8,9 @@ import java.util.List;
  *
  * Java8: -XX:MetaspaceSize=10m  -XX:MaxMetaspaceSize=10m
  *
+ * TODO 元空间的参数限制没有起作用
  * 同样的在Docker中运行, 同样的被Killed
+ *
  * @author kuangcp on 4/4/19-12:20 AM
  */
 public class RunTimeConstantPoolOOM {
