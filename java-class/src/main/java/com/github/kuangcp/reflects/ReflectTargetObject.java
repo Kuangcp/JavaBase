@@ -14,9 +14,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 class ReflectTargetObject {
 
-  public static final String uid = "staticFinal";
-  public final String id = "final";
-  public final int no = 1;
+  public static final String staticFinalString = "staticFinal";
+
+  // 改不动
+  public final String finalString = "final";
+  // 能改动
+  public final int finalInt = 1;
+  public final Integer finalInteger = 2;
 
   public static String type = "type";
 
