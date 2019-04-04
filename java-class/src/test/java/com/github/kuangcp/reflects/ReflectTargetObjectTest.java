@@ -127,9 +127,6 @@ public class ReflectTargetObjectTest {
     field.set(target, targetValue);
     log.info("modify success: value={}", field.get(target));
 
-    // 初步理解, final修饰后 无法更改引用的值(也就是地址值), String 又是不可变的, 有运行时常量池的存在, 所以原对象上的String类型属性是改不动的
-    // 那么问题来了, field 能改动? Idea 中 Debug 取到的值也是改动后的
-
     assertThat(target.finalString, equalTo(target.getFinalString()));
     assertThat(field.get(target), equalTo(targetValue));
   }
