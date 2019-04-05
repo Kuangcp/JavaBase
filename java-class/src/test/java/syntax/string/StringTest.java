@@ -1,9 +1,13 @@
 package syntax.string;
 
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -45,7 +49,7 @@ public class StringTest {
   }
 
   @Test
-  public void testFinalPool() {
+  public void testConstantPool() {
     assert new String("1") != new String("1");
     assert "1" != new String("1");
     assert "11" != new String("1") + new String("1");
@@ -72,5 +76,21 @@ public class StringTest {
     assert a != b;
     assert b == c;
     assert a != c;
+  }
+
+  @Test
+  public void testIntern() {
+    // 如果在 1.6上运行第一个断言就会通不过
+    // intern() 会把首次遇到的字符串复制到常量池中, 并返回常量池中该字符串的引用
+
+    // 在 1.7及以上: 不会复制实例只是在常量池中记录首次出现的实例的引用,
+    // 所以intern() 返回的引用和StringBuilder创建的实例是一样的
+    String a = new StringBuilder("Ja").append("va").toString();
+    assertThat(a.intern(), equalTo(a));
+
+    // 这个断言通过是因为, Java字符串已经不是首次出现了, intern() 返回的是常量池里的引用, 和 StringBuilder实例不一致
+    // https://www.zhihu.com/question/51102308 java字符串也是一致的结果
+    String b = new StringBuilder("Ja").append("va").toString();
+    Assert.assertFalse(b.intern() == b);
   }
 }

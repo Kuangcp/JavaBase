@@ -12,3 +12,5 @@ docker run --name jdk8 -it --rm --memory 100M frolvlad/alpine-java:jdk8.202.08-s
 javac A.java
 
 java A
+
+疑问: 好几种情况并没有出现OOM而是直接被Killed了, 要思考Docker内存限制的实现方式了

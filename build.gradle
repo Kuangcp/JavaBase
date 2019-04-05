@@ -1,7 +1,5 @@
 apply from: 'dependency.gradle'
 
-libs = rootProject.ext.libs
-
 // parent and child project all use this config
 allprojects {
   apply plugin: 'java'

@@ -17,7 +17,7 @@ class ReflectTargetObject {
   public static final String staticFinalString = "staticFinal";
   public static final Integer staticFinalInteger = 1;
 
-  // String 以及基本类型都是改不了的, 反编译下这个类生成的字节码就知道了
+  // String 以及基本类型都是改不了的, 编译后被优化成了字面量, 反编译下这个类生成的字节码就知道了
   //  public String getFinalString() {
   //    this.getClass();
   //    return "final";
@@ -39,7 +39,7 @@ class ReflectTargetObject {
   private String name;
   private int num = 1;
 
-  public ReflectTargetObject(String name) {
+  ReflectTargetObject(String name) {
     this.name = name;
   }
 }

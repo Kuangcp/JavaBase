@@ -12,7 +12,7 @@
 | [算法](/java-algorithms)| [设计模式](/java-pattern)|
 | [字节码](/java-class)| [网络](/java-network)|
 | [泛型](/java-generic)| [测试](/java-test)|
-| [IO](/java-io)|
+| [IO](/java-io)| [Spring](/java-spring) |
 
 [图形化](/java-gui) | [实际问题](/java-question)
 
@@ -22,5 +22,5 @@
 > 使用了Gradle作为构建工具, 将知识点分为了多个子项目, 然后将所有的依赖项放在了 `dependency.gradle`中  
 > 其他的子项目引用全局定义的依赖, 实现了依赖的统一管理
 
-# 学习
+# 同类仓库
 > [tutorials](https://github.com/eugenp/tutorials)
