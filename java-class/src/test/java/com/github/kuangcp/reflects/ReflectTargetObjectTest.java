@@ -169,14 +169,57 @@ public class ReflectTargetObjectTest {
     Field field = ReflectTargetObject.class.getDeclaredField("staticFinalString");
     field.setAccessible(true);
 
-    Object value = field.get(ReflectTargetObject.class);
-    log.info("value={}", value);
+    log.info("value={}", field.get(ReflectTargetObject.class));
+
+    Field modifiersField = Field.class.getDeclaredField("modifiers");
+    modifiersField.setAccessible(true);
+    modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
 
     //TODO error: IllegalAccessException
+//    field.set(ReflectTargetObject.class, "modify");
     field.set(ReflectTargetObject.class, "modify");
 
-    value = field.get(ReflectTargetObject.class);
-    log.info("value={}", value);
+    log.info("value={}", field.get(ReflectTargetObject.class));
+  }
+
+  public static void main(String[] args) throws ReflectiveOperationException {
+    Field field = ReflectTargetObject.class.getDeclaredField("staticFinalString");
+    field.setAccessible(true);
+
+    log.info("value={}", field.get(ReflectTargetObject.class));
+
+    Field modifiersField = Field.class.getDeclaredField("modifiers");
+    modifiersField.setAccessible(true);
+    modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+    //TODO error: IllegalAccessException
+//    field.set(ReflectTargetObject.class, "modify");
+    field.set(ReflectTargetObject.class, "modify");
+
+    log.info("value={}", field.get(ReflectTargetObject.class));
+  }
+
+  //TODO  static 按照网上说法是可以改的, 但是就是不行, 换Java7 也不行  但是 Boolean 又能改
+  // https://stackoverflow.com/questions/2474017/using-reflection-to-change-static-final-file-separatorchar-for-unit-testing#
+  // https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html
+  // https://stackoverflow.com/questions/3301635/change-private-static-final-field-using-java-reflection
+  @Test
+  @Ignore
+  public void testModifyStaticFinalStringThree() throws ReflectiveOperationException {
+    Field field = ReflectTargetObject.class.getDeclaredField("staticFinalStringBuilder");
+    field.setAccessible(true);
+
+    log.info("value={}", field.get(ReflectTargetObject.class));
+
+    Field modifiersField = Field.class.getDeclaredField("modifiers");
+    modifiersField.setAccessible(true);
+    modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+    //TODO error: IllegalAccessException
+//    field.set(ReflectTargetObject.class, "modify");
+    field.set(null, new StringBuilder("modify"));
+
+    log.info("value={}", field.get(ReflectTargetObject.class));
   }
 
   @Test

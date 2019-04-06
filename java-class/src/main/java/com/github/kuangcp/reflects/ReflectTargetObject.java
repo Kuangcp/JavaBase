@@ -16,6 +16,7 @@ class ReflectTargetObject {
 
   public static final String staticFinalString = "staticFinal";
   public static final Integer staticFinalInteger = 1;
+  public static final StringBuilder staticFinalStringBuilder = new StringBuilder("builder");
 
   // String 以及基本类型都是改不了的, 编译后被优化成了字面量, 反编译下这个类生成的字节码就知道了
   //  public String getFinalString() {
