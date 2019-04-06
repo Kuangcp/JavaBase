@@ -1,9 +1,5 @@
 package jvm.oom;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
-
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 

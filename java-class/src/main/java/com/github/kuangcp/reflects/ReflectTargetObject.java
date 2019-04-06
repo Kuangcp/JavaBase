@@ -39,7 +39,7 @@ class ReflectTargetObject {
   private String name;
   private int num = 1;
 
-  ReflectTargetObject(String name) {
+  public ReflectTargetObject(String name) {
     this.name = name;
   }
 }

@@ -1,4 +1,8 @@
 # 各种 OOM 场景
+- [OutOfMemoryError系列（1）: Java heap space](https://blog.csdn.net/renfufei/article/details/76350794)
+- [OutOfMemoryError系列（2）: GC overhead limit exceeded](https://blog.csdn.net/renfufei/article/details/77585294)
+- [OutOfMemoryError系列（3）: Permgen space](https://blog.csdn.net/renfufei/article/details/77994177#commentBox)
+- [OutOfMemoryError系列（4）: Metaspace](https://blog.csdn.net/renfufei/article/details/78061354)
 
 > 在容器中运行
 
