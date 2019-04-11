@@ -5,7 +5,8 @@
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <!-- encoder 默认配置为PatternLayoutEncoder -->
     <encoder>
-      <pattern>%d{HH:mm:ss.SSS} %highlight(%-5level) [%thread] %logger{36}:%yellow(%-3L) %msg%n</pattern>
+      <pattern>%d{HH:mm:ss.SSS} %highlight(%-5level) [%thread] %logger{36}:%yellow(%-3L) %msg%n
+      </pattern>
     </encoder>
     <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
       <level>DEBUG</level>
