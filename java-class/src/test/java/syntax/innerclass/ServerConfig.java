@@ -18,8 +18,6 @@ public class ServerConfig {
     this.port = builder.port;
   }
 
-  // 如果没有这个方法, 内部类就无需 static 声明
-  // TODO 原因
   public static ServerConfig defaultConfig() {
     return new ServerConfig.Builder().build();
   }
@@ -43,5 +41,4 @@ public class ServerConfig {
       return new ServerConfig(this);
     }
   }
-
 }

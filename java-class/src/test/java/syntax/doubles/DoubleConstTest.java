@@ -15,5 +15,4 @@ public class DoubleConstTest {
   public void testExtremum(){
     log.info("{} {}", ShowBinary.toBinaryString(Double.MIN_VALUE), ShowBinary.toBinaryString(Double.MIN_NORMAL));
   }
-
 }
