@@ -14,7 +14,8 @@ import org.junit.Test;
 
 /**
  * Created by https://github.com/kuangcp on 17-10-24  上午9:50
- * 使用反射得到对象的 成员属性
+ * 使用反射 修改对象的属性 static, final, 原始类型 等等
+ *
  * https://stackoverflow.com/questions/3301635/change-private-static-final-field-using-java-reflection
  * http://www.cnblogs.com/noKing/p/9038234.html
  *
