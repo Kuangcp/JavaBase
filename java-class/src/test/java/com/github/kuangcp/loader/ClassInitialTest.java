@@ -10,16 +10,18 @@ public class ClassInitialTest {
 
   public static void main(String[] args) throws ClassNotFoundException {
     String path = "com.github.kuangcp.loader.InitialTest";
-    Class<InitialTest> clazz = InitialTest.class;
-    log.debug("InitialTest.class");
 
-    Thread.currentThread().getContextClassLoader().loadClass(path);
-    log.debug("classLoader.loadClass");
+    Class<?> clazz = InitialTest.class;
+    log.debug("InitialTest.class {}", clazz.getSimpleName());
 
-    Class.forName(path);
-    log.debug("Class.forName");
+    clazz = Thread.currentThread().getContextClassLoader().loadClass(path);
+    log.debug("classLoader.loadClass {}", clazz.getSimpleName());
+
+    clazz = Class.forName(path);
+    log.debug("Class.forName {}", clazz.getSimpleName());
   }
 }
+
 @Slf4j
 class InitialTest {
 
