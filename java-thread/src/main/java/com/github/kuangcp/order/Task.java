@@ -27,7 +27,7 @@ public class Task implements Runnable {
   public void run() {
     while (true) {
       int count = this.count.get();
-      if (count % 5 != order) {
+      if (count % 3 != order) {
         continue;
       }
 

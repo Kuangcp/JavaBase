@@ -31,7 +31,7 @@ public class TaskWithVolatile implements Runnable {
   @Override
   public void run() {
     while (true) {
-      if (count % 5 != order) {
+      if (count % 3 != order) {
         continue;
       }
 

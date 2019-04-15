@@ -21,21 +21,15 @@ public class OrderedThreadTest {
     Thread thread1 = new Thread(new Task("A", 0, count));
     Thread thread2 = new Thread(new Task("B", 1, count));
     Thread thread3 = new Thread(new Task("C", 2, count));
-    Thread thread4 = new Thread(new Task("D", 3, count));
-    Thread thread5 = new Thread(new Task("E", 4, count));
 
     thread1.start();
     thread2.start();
     thread3.start();
-    thread4.start();
-    thread5.start();
 
     // 避免Junit主线程直接退出
     thread1.join();
     thread2.join();
     thread3.join();
-    thread4.join();
-    thread5.join();
   }
 
   @Test
@@ -43,20 +37,14 @@ public class OrderedThreadTest {
     Thread thread1 = new Thread(new TaskWithVolatile("A", 0));
     Thread thread2 = new Thread(new TaskWithVolatile("B", 1));
     Thread thread3 = new Thread(new TaskWithVolatile("C", 2));
-    Thread thread4 = new Thread(new TaskWithVolatile("D", 3));
-    Thread thread5 = new Thread(new TaskWithVolatile("E", 4));
 
     thread1.start();
     thread2.start();
     thread3.start();
-    thread4.start();
-    thread5.start();
 
     // 避免Junit主线程直接退出
     thread1.join();
     thread2.join();
     thread3.join();
-    thread4.join();
-    thread5.join();
   }
 }
