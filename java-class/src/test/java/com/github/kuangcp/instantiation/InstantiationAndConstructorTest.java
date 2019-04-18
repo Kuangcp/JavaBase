@@ -14,35 +14,37 @@ import org.junit.Test;
 
 /**
  * @author kuangcp on 3/9/19-5:48 PM
+ * 实例化和构造器的关系
+ *
  * clone 以及 serialize 创建对象时 不会调用构造器
  */
 @Slf4j
-public class TargetObjectTest {
+public class InstantiationAndConstructorTest {
 
   @Test
   public void testInitByNew() {
-    new TargetObject();
-    new TargetObject("name");
+    new InstantiationAndConstructor();
+    new InstantiationAndConstructor("name");
   }
 
   @Test
   public void testInitByNewInstance() throws IllegalAccessException, InstantiationException {
-    TargetObject.class.newInstance();
+    InstantiationAndConstructor.class.newInstance();
   }
 
   @Test
   public void testInitByReflect() throws ReflectiveOperationException {
-    Constructor<TargetObject> constructor = TargetObject.class.getConstructor(String.class);
+    Constructor<InstantiationAndConstructor> constructor = InstantiationAndConstructor.class.getConstructor(String.class);
 
     String name = "use reflect";
-    TargetObject domain = constructor.newInstance(name);
+    InstantiationAndConstructor domain = constructor.newInstance(name);
 
     assertThat(domain.getName(), equalTo(name));
   }
 
   @Test
   public void testInitByClone() throws CloneNotSupportedException {
-    TargetObject target = new TargetObject();
+    InstantiationAndConstructor target = new InstantiationAndConstructor();
 
     Object clone = target.clone();
     assertThat(target, equalTo(clone));
@@ -52,7 +54,7 @@ public class TargetObjectTest {
 
   @Test
   public void testInitByDeserialize() throws IOException, ClassNotFoundException {
-    TargetObject targetObject = new TargetObject("name");
+    InstantiationAndConstructor targetObject = new InstantiationAndConstructor("name");
 
     ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
     ObjectOutputStream output = new ObjectOutputStream(byteOutput);
@@ -61,7 +63,7 @@ public class TargetObjectTest {
     ByteArrayInputStream byteInput = new ByteArrayInputStream(byteOutput.toByteArray());
 
     ObjectInputStream input = new ObjectInputStream(byteInput);
-    TargetObject result = (TargetObject) input.readObject();
+    InstantiationAndConstructor result = (InstantiationAndConstructor) input.readObject();
     assertThat(result.getName(), equalTo("name"));
   }
 }

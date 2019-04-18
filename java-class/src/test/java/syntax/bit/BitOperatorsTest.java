@@ -20,14 +20,20 @@ import org.junit.Test;
 public class BitOperatorsTest {
 
   @Test
-  public void testSimple() {
+  public void testSimpleBitOperator() {
     // 与 : 1 1 -> 1 否则 0
+    // 1010
+    // 1001
+    // 1000
     assertThat(0b1010 & 0b1001, equalTo(0b1000));
 
     // 或 : 0 0 -> 0 否则 1
     assertThat(0b101 | 0b001, equalTo(0b101));
 
     // 异或: 不同 -> 1 否则 0
+    // 101
+    // 001
+    // 100
     assertThat(0b101 ^ 0b001, equalTo(0b100));
 
     // 非
@@ -84,16 +90,16 @@ public class BitOperatorsTest {
   public void testLeft() {
     assertThat(0b11_0110 << 2, equalTo(0b1101_1000));
 
-    assertThat(0b1<<31, equalTo(0b1000_0000_0000_0000_0000_0000_0000_0000));
+    assertThat(0b1 << 31, equalTo(0b1000_0000_0000_0000_0000_0000_0000_0000));
     show(0b1000_0000_0000_0000_0000_0000_0000_0000);
 
     // 溢出了32位...
-    assertThat(0b1<<35, equalTo(0b1000));
-    show(0b1<<35);
+    assertThat(0b1 << 35, equalTo(0b1000));
+    show(0b1 << 35);
   }
 
   private static void show(int result) {
-    log.info("{} {}", Integer.toBinaryString(result), result);
+    log.info("{} {}", String.format("%32s", Integer.toBinaryString(result)), result);
   }
 
   @Test

@@ -9,15 +9,15 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Data
 @Slf4j
-public class TargetObject implements Serializable, Cloneable {
+public class InstantiationAndConstructor implements Serializable, Cloneable {
 
   private String name;
 
-  public TargetObject() {
+  public InstantiationAndConstructor() {
     log.info("invoke empty constructor");
   }
 
-  public TargetObject(String name) {
+  public InstantiationAndConstructor(String name) {
     this.name = name;
     log.info("invoke constructor: name={}", name);
   }

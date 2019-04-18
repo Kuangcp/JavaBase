@@ -13,12 +13,22 @@ import java.util.concurrent.ScheduledExecutorService;
 public class UseThreadPool {
 
   private void baseType() {
-    ExecutorService a = Executors.newCachedThreadPool(); // 创建有缓存功能的线程池
-    ExecutorService b = Executors.newFixedThreadPool(1); // 创建具有固定大小的线程池
-    ExecutorService c = Executors.newSingleThreadExecutor();// 创建单线程的线程池
+    // 创建有缓存功能的线程池
+    ExecutorService a = Executors.newCachedThreadPool();
 
-    ScheduledExecutorService d = Executors.newScheduledThreadPool(1); //  创建固定大小的线程池,指定延迟
-    ScheduledExecutorService e = Executors.newSingleThreadScheduledExecutor();// 创建单线程的线程池,指定延迟
+    // 创建具有固定大小的线程池
+    ExecutorService b = Executors.newFixedThreadPool(1);
+
+    // 创建单线程的线程池
+    ExecutorService c = Executors.newSingleThreadExecutor();
+
+    // 创建具有定时功能的线程池 指定基本线程池数量, 该线程池的队列是无限队列
+    ScheduledExecutorService d = Executors.newScheduledThreadPool(1);
+
+    ///////////////
+
+    // 创建单线程的线程池,指定延迟
+    ScheduledExecutorService e = Executors.newSingleThreadScheduledExecutor();
 
 //    a.submit();      提交任务
 //    a.execute();     执行任务

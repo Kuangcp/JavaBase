@@ -1,6 +1,7 @@
 package com.github.kuangcp.loader;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 
 /**
  * @author kuangcp on 2019-04-15 12:08 AM
@@ -8,7 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ClassInitialTest {
 
-  public static void main(String[] args) throws ClassNotFoundException {
+  @Test
+  public void testLoad1() throws ClassNotFoundException {
     String path = "com.github.kuangcp.loader.InitialTest";
 
     Class<?> clazz = InitialTest.class;

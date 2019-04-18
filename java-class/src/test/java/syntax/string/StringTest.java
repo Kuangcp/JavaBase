@@ -51,7 +51,9 @@ public class StringTest {
   @Test
   public void testConstantPool() {
     assert new String("1") != new String("1");
+
     assert "1" != new String("1");
+
     assert "11" != new String("1") + new String("1");
 
     // 常量池
@@ -59,6 +61,7 @@ public class StringTest {
 
     // 左边在常量池 右边在堆, 即使 HashCode 一致
     assert "1" + "1" != new String("1") + new String("1");
+
     assert ("1" + "1").hashCode() == (new String("1") + new String("1")).hashCode();
 
     // 以下三种 右边表达式的结果都是等价的, 都在堆创建了一个新的对象
