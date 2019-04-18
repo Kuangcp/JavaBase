@@ -26,6 +26,7 @@ public class CountLatchDemo {
         ProcessingThread local = new ProcessingThread("localhost" + (9000 + i), cdl);
         nodes.add(local);
         local.start();
+        log.info("a: i={}", i);
       }
       cdl.await(); //达到quorum 开始发送更新
     } catch (InterruptedException e) {

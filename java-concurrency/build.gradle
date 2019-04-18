@@ -1,7 +1,6 @@
 plugins {
   id 'groovy'
   id 'maven'
-  id 'java'
 }
 
 dependencies {
