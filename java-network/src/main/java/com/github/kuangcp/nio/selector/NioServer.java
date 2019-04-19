@@ -1,4 +1,4 @@
-package com.github.kuangcp.nio;
+package com.github.kuangcp.nio.selector;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -13,6 +13,7 @@ import java.nio.charset.Charset;
  * Created by Myth on 2017/4/3 0003
  * NIO Server端，节省线程
  * 该程序启动就建立了一个可监听连接请求的ServerSocketChannel，并将该Channel注册到指定的Selector
+ *
  * 从JDK1.4开始，Java提供了NIO API来提供开发
  * 之前的都是一个线程处理一个客户端，线程资源消耗大，因为之前那些处理方式在程序输入输出时会线程阻塞，NIO就不会
  * NIO 采用多路复用和轮询的机制, 将阻塞都让一个线程来处理,然后提取出准备好的IO来操作, 提高性能, 请求和线程比为 n:1
@@ -31,12 +32,16 @@ public class NioServer {
   }
 
 
+  // selector 模型 轮询
   private synchronized void init() throws Exception {
     Selector selector = Selector.open();
+
     //通过OPEN方法来打开一个未绑定的ServerSocketChannel 实例
     ServerSocketChannel server = ServerSocketChannel.open();
-    //将该ServerSocketChannel绑定到指定ip
+
+    //将该ServerSocketChannel绑定到指定 ip 端口
     server.bind(new InetSocketAddress(PORT));
+
     //设置是NIO 非阻塞模式
     server.configureBlocking(false);
 
@@ -72,6 +77,7 @@ public class NioServer {
         if (sk.isReadable()) {
           SocketChannel sc = (SocketChannel) sk.channel();
           ByteBuffer buff = ByteBuffer.allocate(1024);
+
           StringBuilder content = new StringBuilder();
           try {
             while (sc.read(buff) > 0) {

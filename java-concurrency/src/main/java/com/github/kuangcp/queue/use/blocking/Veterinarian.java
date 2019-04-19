@@ -1,6 +1,8 @@
 package com.github.kuangcp.queue.use.blocking;
 
+import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 
 // 因为父类没有无参构造器，所以子类也没有，子类也要显式声明 宠物类
@@ -8,9 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Veterinarian extends Thread {
 
-  protected final BlockingQueue<Appointment<Pet>> pets;
-  protected String text = "";
-  protected final int restTime; // 预约之间的休息时间
+  private final BlockingQueue<Appointment<Pet>> pets;
+  String text;
+  private final int restTime; // 预约之间的休息时间
   private boolean shutdown = false;
 
   Veterinarian(BlockingQueue<Appointment<Pet>> pets, int pause) {
@@ -18,7 +20,7 @@ public class Veterinarian extends Thread {
     restTime = pause;
   }
 
-  synchronized void shutdown() {
+  private synchronized void shutdown() {
     shutdown = true;
   }
 
@@ -28,8 +30,9 @@ public class Veterinarian extends Thread {
       seePatient();
       try {
         sleep(restTime);
-      } catch (InterruptedException ignored) {
-        shutdown = true;
+      } catch (InterruptedException e) {
+        shutdown();
+        log.error(e.getMessage(), e);
       }
     }
   }
@@ -37,16 +40,20 @@ public class Veterinarian extends Thread {
   /**
    * 线程从队列中取出预约， 进行操作，如果当前队列没有预约， 就会阻塞
    */
-  void seePatient() {
+  private void seePatient() {
     try {
-      Appointment<Pet> ap = pets.take(); // 阻塞take
+      Appointment<Pet> ap = pets.poll(3, TimeUnit.SECONDS); // poll 发生阻塞
+      if (Objects.isNull(ap)) {
+        log.error("queue is empty: text={}", text);
+        shutdown();
+        return;
+      }
       Pet patient = ap.getPatient();
-      log.info(text + " take " + patient.name);
+      log.info(text + " take " + patient.getName());
       patient.examine();
     } catch (InterruptedException ignored) {
-      shutdown = true;
+      shutdown();
     }
   }
-
 }
 

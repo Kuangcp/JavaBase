@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Data
 @Slf4j
-class Appointment<T> {
+class Appointment<T extends Pet> {
 
   private final T toBeSeen;
 

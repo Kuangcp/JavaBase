@@ -1,19 +1,13 @@
 package com.github.kuangcp.queue.use.blocking;
 
-import lombok.Data;
-
 /**
  * Created by https://github.com/kuangcp on 17-8-18  上午9:28
- * 展示BlockingQueue的特性 多个兽医治疗宠物的队列
  */
-@Data
-abstract class Pet {
+interface Pet {
 
-  protected String name;
+  String getName();
 
-  Pet(String name) {
-    this.name = name;
-  }
+  void setName(String name);
 
-  abstract void examine();
+  void examine();
 }

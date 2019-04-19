@@ -1,22 +1,23 @@
 package com.github.kuangcp.queue.use.blocking;
 
-import lombok.ToString;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 
 
+@Data
 @Slf4j
-@ToString
-class Cat extends Pet {
+@EqualsAndHashCode(callSuper = false)
+class Cat implements Pet {
 
+  private String name;
 
   Cat(String name) {
-    super(name);
+    this.name = name;
   }
 
   @Override
-  void examine() {
-    log.info("cat: " + name);
+  public void examine() {
+    log.info("examine cat: " + name);
   }
-
-
 }

@@ -1,4 +1,4 @@
-package com.github.kuangcp.nio;
+package com.github.kuangcp.nio.selector;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;

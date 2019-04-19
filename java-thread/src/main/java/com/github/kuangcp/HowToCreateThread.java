@@ -10,7 +10,7 @@ public class HowToCreateThread {
    * 继承方式来实现线程
    * 继承Thread 重写run方法
    */
-  class ExampleOne extends Thread {
+  static class ExampleOne extends Thread {
 
     boolean runFlag = true;
 
@@ -20,13 +20,17 @@ public class HowToCreateThread {
         System.out.println("继承方式来实现线程 ");
       }
     }
+
+    public void shutdown() {
+      runFlag = false;
+    }
   }
 
   /**
    * 实现接口方式来实现线程
    * Runnable不是线程，是线程要运行的代码的宿主。
    */
-  class ExampleTwo implements Runnable {
+  static class ExampleTwo implements Runnable {
 
     boolean runFlag = true;
 
@@ -36,15 +40,19 @@ public class HowToCreateThread {
         System.out.println("实现接口方式来实现线程");
       }
     }
+
+    public void shutdown() {
+      runFlag = false;
+    }
   }
 
   /**
    * 直接实例化一个匿名内部方法在方法体里
    * 匿名内部类
    */
-  class ExampleThree {
+  static class ExampleThree {
 
-    void target() {
+    void test() {
       // lambda方式
       new Thread(() -> {
         System.out.println("直接实例化一个匿名内部方法在方法体里");

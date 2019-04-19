@@ -14,28 +14,20 @@ public class VeterinarianTest {
   @Test
   public void testRun() throws Exception {
     BlockingQueue<Appointment<Pet>> lists = new LinkedBlockingQueue<>();
-    Appointment<Pet> app = new Appointment<>(new Cat("name"));
-    lists.add(app);
-    app.getPatient().setName("who");
-
-    lists.add(app);
-    lists.add(new Appointment<Pet>(new Cat("name2")));
+    lists.add(new Appointment<>(new Cat("1")));
+    lists.add(new Appointment<>(new Cat("2")));
+    lists.add(new Appointment<>(new Dog("1")));
+    lists.add(new Appointment<>(new Dog("2")));
 
     Veterinarian veterinarian = new Veterinarian(lists, 2000);
-    veterinarian.text = "1";
-    veterinarian.start();
-// 链表这种对象，实参形参内存共享，所以可以启动后添加
-    lists.add(new Appointment<Pet>(new Dog("add")));
-    lists.add(new Appointment<Pet>(new Dog("dog2")));
-// 队列为空就阻塞了
-    log.info("{}", veterinarian);
+    veterinarian.text = "Veterinarian 1";
+    Veterinarian veterinarian2 = new Veterinarian(lists, 1000);
+    veterinarian2.text = "Veterinarian 2";
 
-    veterinarian = new Veterinarian(lists, 1000);
-    veterinarian.text = "2";
     veterinarian.start();
+    veterinarian2.start();
 
-    log.info("{}", veterinarian);
+    veterinarian.join();
+    veterinarian2.join();
   }
-
-
 }

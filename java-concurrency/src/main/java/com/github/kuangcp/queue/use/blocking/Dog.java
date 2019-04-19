@@ -1,19 +1,20 @@
 package com.github.kuangcp.queue.use.blocking;
 
-import lombok.ToString;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+@Data
 @Slf4j
-@ToString
-class Dog extends Pet {
+class Dog implements Pet {
 
+  private String name;
 
   Dog(String name) {
-    super(name);
+    this.name = name;
   }
 
   @Override
-  void examine() {
-    log.info("dog : " + name);
+  public void examine() {
+    log.info("examine dog : " + name);
   }
 }
