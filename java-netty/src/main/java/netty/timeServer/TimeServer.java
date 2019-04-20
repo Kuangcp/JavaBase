@@ -11,10 +11,14 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class TimeServer {
 
-  public void bind(int port) throws Exception {
+  static final int port = 8080;
+
+  public void start() throws Exception {
+    // NIO 结合两个线程池
     // 配置服务端的NIO线程组 , 一个用于接受客户端的连接, 一个是处理SocketChannel的网络读写
     EventLoopGroup bossGroup = new NioEventLoopGroup();
     EventLoopGroup workerGroup = new NioEventLoopGroup();
+
     try {
       ServerBootstrap serverBootstrap = new ServerBootstrap();
       serverBootstrap.group(bossGroup, workerGroup)

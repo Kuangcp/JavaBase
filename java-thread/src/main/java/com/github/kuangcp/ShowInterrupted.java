@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 public class ShowInterrupted {
 
   public static void main(String[] args) throws InterruptedException {
-
     Thread sleep = new Thread(new SleepRunner(), "Sleep");
     sleep.setDaemon(true);
 
@@ -24,9 +23,6 @@ public class ShowInterrupted {
     busy.interrupt();
     log.info("sleep={}", sleep.isInterrupted());
     log.info("busy={}", busy.isInterrupted());
-
-    sleep.join();
-    busy.join();
   }
 
   static class SleepRunner implements Runnable {

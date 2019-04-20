@@ -15,10 +15,9 @@ public class SocketClient {
 
   private String name;
 
-
   public static void main(String[] args) throws Exception {
     SocketClient client = new SocketClient();
-    client.setName();
+    client.inputName();
     client.start();
   }
 
@@ -37,7 +36,7 @@ public class SocketClient {
     }
   }
 
-  private void setName() throws Exception {
+  private void inputName() throws Exception {
     log.info("input name");
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     name = br.readLine();

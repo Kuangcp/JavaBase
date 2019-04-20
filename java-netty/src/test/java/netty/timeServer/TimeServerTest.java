@@ -13,6 +13,6 @@ public class TimeServerTest {
 
   @Test
   public void testServer() throws Exception {
-    timeServer.bind(8080);
+    timeServer.start();
   }
 }
