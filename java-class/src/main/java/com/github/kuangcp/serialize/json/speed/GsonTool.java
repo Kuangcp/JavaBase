@@ -13,14 +13,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GsonTool implements JsonTool<Person> {
 
-  @Override
-  public void read() {
+  private Gson gson = new Gson();
 
+  @Override
+  public void fromJSON(String json, Class<Person> target) {
+    gson.fromJson(json, target);
   }
 
   @Override
-  public void write(List<Person> dataList) {
-    Gson gson = new Gson();
+  public void toJSON(List<Person> dataList) {
     gson.toJson(dataList);
   }
 

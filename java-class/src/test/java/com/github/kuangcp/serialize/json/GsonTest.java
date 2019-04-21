@@ -25,7 +25,7 @@ public class GsonTest {
 
 
   /**
-   * read a standard json string
+   * fromJSON a standard json string
    */
   @Test
   public void testRead2() {

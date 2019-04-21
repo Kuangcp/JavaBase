@@ -8,7 +8,8 @@ import net.sf.cglib.proxy.MethodInterceptor;
  * -XX:MaxMetaSpaceSize=20M
  *
  * MetaSpace 一直缓慢的上涨, 一直在载入新的类,
- * 在Jvisualvm中看到的元空间最大是好几个g, 但是metaspace上涨到设置的限制时会抛出OOM
+ * 在Jvisualvm中看到的元空间最大是好几个g, 但是metaspace上涨到设置的最大限制时会抛出OOM
+ *
  * Caused by: java.lang.OutOfMemoryError: Metaspace
  *
  * @author kuangcp on 4/5/19-12:56 AM

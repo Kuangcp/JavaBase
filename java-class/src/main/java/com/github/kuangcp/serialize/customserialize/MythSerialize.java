@@ -1,8 +1,9 @@
-package com.github.kuangcp.customserialize;
+package com.github.kuangcp.serialize.customserialize;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by https://github.com/kuangcp on 17-10-24  下午2:25
@@ -10,13 +11,13 @@ import java.lang.reflect.Method;
  *
  * @author kuangcp
  */
+@Slf4j
 public class MythSerialize<T> {
 
-  public Object in(Class<T> target, String path) {
-    Object object = null;
+  public T in(Class<T> target, InputStream inputStream) {
+    T object = null;
     try {
-      FileInputStream fileInputStream = new FileInputStream(path);
-      Reader reader = new InputStreamReader(fileInputStream);
+      Reader reader = new InputStreamReader(inputStream);
       BufferedReader bufferedReader = new BufferedReader(reader);
       String line = bufferedReader.readLine();
       line = line.substring(1, line.length() - 1);
@@ -52,9 +53,8 @@ public class MythSerialize<T> {
     return object;
   }
 
-  public void out(T object, String path) {
+  public ByteArrayOutputStream out(T object) {
     try {
-      FileOutputStream fileOutputStream = new FileOutputStream(path);
       Class domain = object.getClass();
       Method[] methods = domain.getDeclaredMethods();
       StringBuilder builder = new StringBuilder();
@@ -64,21 +64,21 @@ public class MythSerialize<T> {
         if (method.getName().startsWith("get")) {
           Class returnType = method.getReturnType();
           builder.append(returnType.getName())
-              .append(":")
-              .append(method.getName().substring(3))
-              .append(":")
-              .append(method.invoke(object))
+              .append(":").append(method.getName().substring(3))
+              .append(":").append(method.invoke(object))
               .append(",");
         }
       }
       String result = builder.toString().substring(0, builder.length() - 1) + "]";
-      System.out.println(result);
-      // 使用ObjectOutStream类输出会有奇怪的字符
-      fileOutputStream.write(result.getBytes());
-      fileOutputStream.close();
-      System.out.println("序列化完成");
+
+      log.info("content={}", result);
+
+      ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
+      byteOutput.write(result.getBytes());
+      return byteOutput;
     } catch (IOException | IllegalAccessException | InvocationTargetException e) {
       e.printStackTrace();
     }
+    return null;
   }
 }

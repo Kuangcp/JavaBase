@@ -1,4 +1,4 @@
-package com.github.kuangcp.customserialize;
+package com.github.kuangcp.serialize.customserialize;
 
 /**
  * Created by https://github.com/kuangcp on 17-10-24  下午3:35

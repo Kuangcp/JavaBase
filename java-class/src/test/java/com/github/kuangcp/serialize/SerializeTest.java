@@ -23,7 +23,7 @@ import org.junit.Test;
 @Slf4j
 public class SerializeTest {
 
-
+  // 字节数组流
   @Test
   public void testSerializeWithByte() throws IOException, ClassNotFoundException {
     Person person = new Person("name");
@@ -44,15 +44,15 @@ public class SerializeTest {
   @Test
   public void testSerializeWithFile() {
     try {
-      out();
-      in();
+      writeFile();
+      readFile();
     } catch (IOException | ClassNotFoundException e) {
       log.error(e.getMessage(), e);
       Assert.fail();
     }
   }
 
-  private void out() throws IOException {
+  private void writeFile() throws IOException {
     Person person = new Person("myth");
 
     FileOutputStream fileOutputStream = new FileOutputStream("/home/kcp/test/person.md");
@@ -63,8 +63,8 @@ public class SerializeTest {
     log.debug("序列化完成, person={}", person);
   }
 
-  private void in() throws IOException, ClassNotFoundException {
-    FileInputStream fileInputStream = new FileInputStream("/home/kcp/test/object.md");
+  private void readFile() throws IOException, ClassNotFoundException {
+    FileInputStream fileInputStream = new FileInputStream("/home/kcp/test/person.md");
     ObjectInputStream in = new ObjectInputStream(fileInputStream);
     Person object = (Person) in.readObject();
     in.close();

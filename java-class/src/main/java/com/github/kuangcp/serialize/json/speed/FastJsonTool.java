@@ -12,12 +12,12 @@ import java.util.List;
 public class FastJsonTool implements JsonTool<Person> {
 
   @Override
-  public void read() {
-
+  public void fromJSON(String json, Class<Person> target) {
+    JSON.parseObject(json, target);
   }
 
   @Override
-  public void write(List<Person> dataList) {
+  public void toJSON(List<Person> dataList) {
     JSON.toJSON(dataList);
   }
 
