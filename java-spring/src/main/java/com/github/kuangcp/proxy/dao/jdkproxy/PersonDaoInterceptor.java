@@ -1,5 +1,6 @@
 package com.github.kuangcp.proxy.dao.jdkproxy;
 
+import com.github.kuangcp.proxy.dao.base.CustomInterceptor;
 import com.github.kuangcp.proxy.dao.base.Transaction;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -9,7 +10,7 @@ import java.lang.reflect.Method;
  *
  * @author Myth
  */
-public class PersonDaoInterceptor implements InvocationHandler {
+public class PersonDaoInterceptor implements InvocationHandler, CustomInterceptor {
 
   private Transaction transaction;
   private Object target;
@@ -21,19 +22,16 @@ public class PersonDaoInterceptor implements InvocationHandler {
 
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-    Object obj;
-    String methodName = method.getName();
+    Object result;
     //对指定的方法增强
-    if ("savePerson".equals(methodName) ||
-        "updatePerson".equals(methodName) ||
-        "deletePerson".equals(methodName)) {
+    if (isNeedTransaction(method.getName())) {
       this.transaction.beginTransaction();
-      obj = method.invoke(this.target, args);//调用目标类的目标方法
+      result = method.invoke(this.target, args);//调用目标类的目标方法
       this.transaction.commit();
     } else {
-      obj = method.invoke(this.target, args);//调用目标类的目标方法
+      result = method.invoke(this.target, args);//调用目标类的目标方法
     }
-    return obj;
+    return result;
   }
 
 }

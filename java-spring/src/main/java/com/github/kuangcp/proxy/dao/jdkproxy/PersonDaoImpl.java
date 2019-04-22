@@ -1,7 +1,6 @@
 package com.github.kuangcp.proxy.dao.jdkproxy;
 
 import com.github.kuangcp.proxy.dao.base.Person;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,15 +24,7 @@ public class PersonDaoImpl implements PersonDao {
 
   @Override
   public List<Person> getPerson() {
-    Person person = new Person();
-    person.setId(1L);
-    person.setName("aaa");
-    List<Person> personList = new ArrayList<Person>();
-    personList.add(person);
-    for (Person person2 : personList) {
-      log.info("{}", person2);
-    }
-    return personList;
+    return null;
   }
 
 }

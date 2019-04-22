@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * -Xms5m -Xmx5m -XX:+HeapDumpOnOutOfMemoryError
@@ -11,14 +13,18 @@ import java.util.Map;
  *
  * @author kuangcp on 4/3/19-10:11 PM
  */
+@Slf4j
 public class HeapOOM {
 
-  private byte[] data = new byte[1024 * 1024]; // 1 mib
-
   void createArray() {
-    List<HeapOOM> data = new ArrayList<>();
+    List<byte[]> data = new ArrayList<>();
     while (true) {
-      data.add(new HeapOOM());
+      data.add(new byte[1024 * 1024]);
+      try {
+        TimeUnit.SECONDS.sleep(1);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
     }
   }
 
@@ -30,7 +36,7 @@ public class HeapOOM {
       this.id = id;
     }
 
-    // 重写了hashCode 没有重写 equals 导致了该对象在Map这样的集合中作Key时, 不能正确的覆盖值
+    // 重写了hashCode 没有重写 equals 导致了该对象在Map这样的集合中作Key时, 不能按预期的覆盖旧值而是共存
     @Override
     public int hashCode() {
       return id.hashCode();
@@ -45,7 +51,7 @@ public class HeapOOM {
           m.put(new Key(i), "Number:" + i);
         }
       }
-      System.out.println("m.size()=" + m.size());
+      log.info("m.size()=" + m.size());
     }
   }
 }

@@ -19,7 +19,6 @@ public class JDKProxyTest {
     PersonDao proxy = (PersonDao) Proxy
         .newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(),
             interceptor);
-//		proxy.getPerson();
     proxy.deletePerson();
   }
 }
