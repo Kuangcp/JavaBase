@@ -1,4 +1,4 @@
-package com.github.kuangcp.nio.selector;
+package com.github.kuangcp.nio;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -26,7 +26,7 @@ public class EchoNIOServer {
     //通过OPEN方法来打开一个未绑定的ServerSocketChannel 实例
     ServerSocketChannel server = ServerSocketChannel.open();
     //将该ServerSocketChannel绑定到指定ip
-    server.bind(new InetSocketAddress(NioServer.PORT));
+    server.bind(new InetSocketAddress(NIOServer.PORT));
     //设置是NIO 非阻塞模式
     server.configureBlocking(false);
 

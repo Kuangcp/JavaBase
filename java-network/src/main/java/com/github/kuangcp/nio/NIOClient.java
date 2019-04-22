@@ -1,4 +1,4 @@
-package com.github.kuangcp.nio.selector;
+package com.github.kuangcp.nio;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -13,19 +13,19 @@ import lombok.extern.slf4j.Slf4j;
  * Created by Myth on 2017/4/5 0005
  */
 @Slf4j
-public class NioClient {
+class NIOClient {
 
   private Selector selector = null;
 
   private boolean stop = false;
 
   public static void main(String[] s) throws Exception {
-    new NioClient().init();
+    new NIOClient().init();
   }
 
   private void init() throws IOException {
     selector = Selector.open();
-    InetSocketAddress address = new InetSocketAddress(NioServer.PORT);
+    InetSocketAddress address = new InetSocketAddress(NIOServer.PORT);
     SocketChannel channel = SocketChannel.open(address);
     channel.configureBlocking(false);
     channel.register(selector, SelectionKey.OP_READ);
@@ -36,7 +36,7 @@ public class NioClient {
     try {
       while (scan.hasNextLine()) {
         String line = scan.nextLine();
-        channel.write(NioServer.charset.encode(line));
+        channel.write(NIOServer.charset.encode(line));
 
         if ("exit".equalsIgnoreCase(line)) {
           stop();
@@ -81,7 +81,7 @@ public class NioClient {
     while (sc.read(buff) > 0) {
       sc.read(buff);
       buff.flip();
-      content.append(NioServer.charset.decode(buff));
+      content.append(NIOServer.charset.decode(buff));
     }
     if (content.length() == 0) {
       return;

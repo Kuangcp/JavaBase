@@ -1,7 +1,7 @@
 package com.github.kuangcp.singleton;
 
 /**
- * 静态内部类[推荐用]
+ * 静态内部类 [推荐用]
  *
  * @author kuangcp on 2019-04-11 12:42 PM
  */

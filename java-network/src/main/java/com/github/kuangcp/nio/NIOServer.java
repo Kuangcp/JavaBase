@@ -1,4 +1,4 @@
-package com.github.kuangcp.nio.selector;
+package com.github.kuangcp.nio;
 
 import com.github.kuangcp.io.ResourceTool;
 import java.io.IOException;
@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
  * 原先的BIO是 1:1
  */
 @Slf4j
-public class NioServer {
+class NIOServer {
 
   static final int PORT = 30000;
 
@@ -35,7 +35,7 @@ public class NioServer {
   private volatile boolean stop = false;
 
   public static void main(String[] s) throws Exception {
-    new NioServer().start();
+    new NIOServer().start();
   }
 
   // selector 模型 轮询
