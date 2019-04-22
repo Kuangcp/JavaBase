@@ -1,5 +1,6 @@
 package com.github.kuangcp.proxy.dao.jdkproxy;
 
+import com.github.kuangcp.proxy.dao.base.Transaction;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
@@ -8,20 +9,18 @@ import java.lang.reflect.Method;
  *
  * @author Myth
  */
-public class PersonDaoInteceptor implements InvocationHandler {
+public class PersonDaoInterceptor implements InvocationHandler {
 
   private Transaction transaction;
   private Object target;
 
-  public PersonDaoInteceptor(Transaction transaction, Object target) {
+  public PersonDaoInterceptor(Transaction transaction, Object target) {
     this.transaction = transaction;
     this.target = target;
   }
 
   @Override
-  public Object invoke(Object proxy, Method method, Object[] args)
-      throws Throwable {
-    // TODO Auto-generated method stub
+  public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     Object obj;
     String methodName = method.getName();
     //对指定的方法增强

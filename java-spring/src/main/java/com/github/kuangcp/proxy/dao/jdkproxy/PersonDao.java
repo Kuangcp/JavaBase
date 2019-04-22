@@ -1,5 +1,6 @@
 package com.github.kuangcp.proxy.dao.jdkproxy;
 
+import com.github.kuangcp.proxy.dao.base.Person;
 import java.util.List;
 
 /**

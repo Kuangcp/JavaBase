@@ -1,16 +1,17 @@
 package com.github.kuangcp.proxy.dao.cglibproxy;
 
+import com.github.kuangcp.proxy.dao.base.Transaction;
 import java.lang.reflect.Method;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
-public class PersonDaoInteceptor implements MethodInterceptor {
+public class PersonDaoInterceptor implements MethodInterceptor {
 
   private Transaction transaction;
   private Object target;
 
-  public PersonDaoInteceptor(Transaction transaction, Object target) {
+  public PersonDaoInterceptor(Transaction transaction, Object target) {
     this.transaction = transaction;
     this.target = target;
   }

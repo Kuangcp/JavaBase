@@ -1,38 +1,37 @@
 package com.github.kuangcp.proxy.dao.jdkproxy;
 
+import com.github.kuangcp.proxy.dao.base.Person;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class PersonDaoImpl implements PersonDao {
 
   @Override
   public void savePerson() {
-    // TODO Auto-generated method stub
-    System.out.println("save person");
+    log.info("save person");
   }
 
   @Override
   public void updatePerson() {
-    // TODO Auto-generated method stub
-    System.out.println("update person");
+    log.info("update person");
   }
 
   @Override
   public void deletePerson() {
-    // TODO Auto-generated method stub
-    System.out.println("delete person");
+    log.info("delete person");
   }
 
   @Override
   public List<Person> getPerson() {
-    // TODO Auto-generated method stub
     Person person = new Person();
-    person.setPid(1L);
-    person.setPname("aaa");
+    person.setId(1L);
+    person.setName("aaa");
     List<Person> personList = new ArrayList<Person>();
     personList.add(person);
     for (Person person2 : personList) {
-      System.out.println(person2.getPname());
+      log.info("{}", person2);
     }
     return personList;
   }
