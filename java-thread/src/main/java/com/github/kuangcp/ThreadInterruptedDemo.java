@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author kuangcp on 2019-04-19 9:07 PM
  */
 @Slf4j
-public class ShowInterrupted {
+public class ThreadInterruptedDemo {
 
   public static void main(String[] args) throws InterruptedException {
     Thread sleep = new Thread(new SleepRunner(), "Sleep");
@@ -23,6 +23,8 @@ public class ShowInterrupted {
     busy.interrupt();
     log.info("sleep={}", sleep.isInterrupted());
     log.info("busy={}", busy.isInterrupted());
+
+    // sleep 方法收到中断信号后， 会抛出中断异常并返回 false 所以这里的输出 是 false true
   }
 
   static class SleepRunner implements Runnable {

@@ -8,11 +8,9 @@ import java.io.Serializable;
  *
  * @author kuangcp
  */
-class SimpleMethod {
+class SimpleGenericMethod {
 
   /**
-   * 简单的泛型方法 可以取代掉以往的Object的工具类的方法
-   *
    * @param list 对象集合
    * @param <T> 类型必须是对象, 即使是基本数据类型,也要使用对应的包装类
    * @return 返回中间的对象

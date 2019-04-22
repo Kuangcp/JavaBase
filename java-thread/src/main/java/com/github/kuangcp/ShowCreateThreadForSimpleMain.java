@@ -18,12 +18,11 @@ public class ShowCreateThreadForSimpleMain {
       log.info("id={} name={}", info.getThreadId(), info.getThreadName());
     }
   }
+
   // 预期输出
   //name=Monitor Ctrl-Break
   //name=Signal Dispatcher  分发处理发送给JVM进程信号
   //name=Finalizer  调用对象 finalize()
   //name=Reference Handler 清除 Reference
   //name=main
-
-
 }

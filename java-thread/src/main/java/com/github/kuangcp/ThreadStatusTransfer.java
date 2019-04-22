@@ -1,64 +1,56 @@
 package com.github.kuangcp;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Created by https://github.com/kuangcp on 17-8-20  下午8:46
- * TODO 线程的生命周期，状态转化
+ * 1. 使用 wait notify notifyAll 需要对调用对象加锁
+ * 2. 调用 wait 后 线程状态Running变为Waiting, 将当前线程放入对象的等待队列上
+ * 3. notify 调用后, 等待线程 wait 处 不会立即返回, 需要等到 notify 这个线程释放锁后才有机会
+ * 4. notify 调用后 将等待线程从等待队列放入同步队列, 线程状态 Waiting 变成 Blocked
  */
+@Slf4j
 public class ThreadStatusTransfer {
 
-  class ThisThread extends Thread {
+  private static boolean flag = true;
 
-    private boolean runFlag;
+  private static Object lock = new Object();
+
+  static class Wait implements Runnable {
 
     @Override
     public void run() {
-      while (runFlag) {
-        try {
-          Thread.sleep(1000);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-        System.out.println("Running");
-        synchronized (this) {
-          System.out.println("同步块");
+      // IDE 警告:
+      // synchronized 一个非 final 的变量, 容易发生 当该对象的引用地址更改后, 同步块里的代码能被并行运行, 因为锁的是真实堆上的对象
+      synchronized (lock) {
+        while (flag) {
           try {
-            wait();
+            log.info("flag is true: start wait");
+            lock.wait();
           } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
           }
-          setRunFlag(false);
-          notifyAll();
         }
+        log.info("flag is false. running");
       }
     }
+  }
 
-    public boolean isRunFlag() {
-      return runFlag;
-    }
+  static class Notify implements Runnable {
 
-    public void setRunFlag(boolean runFlag) {
-      this.runFlag = runFlag;
+    @Override
+    public void run() {
+      synchronized (lock) {
+        log.info("hold lock. notify");
+        lock.notify();
+        flag = false;
+      }
+
+      // 这一段就是重新获取锁, 会和wait进行竞争, 所以执行顺序不定
+      synchronized (lock) {
+        log.info("hold lock again");
+      }
     }
   }
 
-  public static void main(String[] a) {
-    ThreadStatusTransfer transfer = new ThreadStatusTransfer();
-    transfer.test();
-  }
-
-  public void test() {
-    ThisThread thisThread = new ThreadStatusTransfer().new ThisThread();
-    thisThread.setRunFlag(true);
-    thisThread.start();
-    try {
-      Thread.sleep(2000);
-      System.out.println("main");
-//            ThreadStatusTransfer.class.notify();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-    System.out.println("结束？");
-    System.out.println(thisThread.isRunFlag());
-    thisThread.setRunFlag(false);
-  }
 }

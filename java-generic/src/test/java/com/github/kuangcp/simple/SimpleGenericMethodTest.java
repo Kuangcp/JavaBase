@@ -8,7 +8,7 @@ import org.junit.Test;
  *
  * @author kuangcp
  */
-public class SimpleMethodTest {
+public class SimpleGenericMethodTest {
 
   /**
    * 和核心技术卷上不一样,应该是版本的问题, 入参就已经限制成数组了,怎么可能会有别的类型混进来
@@ -17,7 +17,7 @@ public class SimpleMethodTest {
   @Test
   public void testGetMiddle() {
     Float[] arrays = {2.1f, 4.2f, 3.5f};
-    Float result = SimpleMethod.getMiddle(arrays);
+    Float result = SimpleGenericMethod.getMiddle(arrays);
     assert result == 4.2f;
   }
 
@@ -31,7 +31,7 @@ public class SimpleMethodTest {
         new Score(70f, 80f),
         new Score(100f, 70f)
     };
-    Score result = SimpleMethod.getMax(scores);
+    Score result = SimpleGenericMethod.getMax(scores);
     assert result.getNormal() == 100;
   }
 }
