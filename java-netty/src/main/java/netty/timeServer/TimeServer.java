@@ -8,14 +8,15 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import lombok.extern.slf4j.Slf4j;
 
-public class TimeServer {
+class TimeServer {
 
   static final int port = 8080;
 
   public void start() throws Exception {
-    // NIO 结合两个线程池
-    // 配置服务端的NIO线程组 , 一个用于接受客户端的连接, 一个是处理SocketChannel的网络读写
+    // NIO 结合两个线程池 , boss 用于接受客户端的连接
+    //    worker 处理SocketChannel的 read write 然后交由对应的Handler处理
     EventLoopGroup bossGroup = new NioEventLoopGroup();
     EventLoopGroup workerGroup = new NioEventLoopGroup();
 
@@ -25,11 +26,12 @@ public class TimeServer {
           .channel(NioServerSocketChannel.class)
           .option(ChannelOption.SO_BACKLOG, 512)
           .childHandler(new ChildChannelHandler());
+
       // 绑定端口，同步等待成功 返回一个ChannelFuture, 用于异步操作的通知回调
-      ChannelFuture f = serverBootstrap.bind(port).sync();
+      ChannelFuture future = serverBootstrap.bind(port).sync();
 
       // 等待服务端监听端口关闭
-      f.channel().closeFuture().sync();
+      future.channel().closeFuture().sync();
     } finally {
       // 优雅退出，释放线程池资源
       bossGroup.shutdownGracefully();
@@ -37,12 +39,16 @@ public class TimeServer {
     }
   }
 
-  private class ChildChannelHandler extends ChannelInitializer<SocketChannel> {
+  @Slf4j
+  private static class ChildChannelHandler extends ChannelInitializer<SocketChannel> {
+
+    public ChildChannelHandler() {
+      log.info("init a initializer");
+    }
 
     @Override
     protected void initChannel(SocketChannel arg0) {
       arg0.pipeline().addLast(new TimeServerHandler());
     }
-
   }
 }

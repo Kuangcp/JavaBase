@@ -12,7 +12,7 @@ public class TimeClientTest {
 
   private TimeClient timeClient = new TimeClient();
 
-  @Test(threadPoolSize = 20, invocationCount = 50)
+  @Test(threadPoolSize = 5, invocationCount = 20)
 //  @Test
   public void testClient() throws Exception {
     timeClient.connectLocal(TimeServer.port);
