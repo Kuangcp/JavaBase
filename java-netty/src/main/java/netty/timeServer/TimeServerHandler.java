@@ -2,6 +2,7 @@ package netty.timeServer;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import java.nio.charset.StandardCharsets;
@@ -10,9 +11,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 服务端的业务代码 继承自 ChannelHandlerAdapter
+ * 服务端的业务代码 继承自 5: ChannelHandlerAdapter 4: SimpleChannelInboundHandler
  */
 @Slf4j
+@Sharable // 可被注册到多个 pipeline
 class TimeServerHandler extends SimpleChannelInboundHandler<Object> {
 
   public TimeServerHandler() {

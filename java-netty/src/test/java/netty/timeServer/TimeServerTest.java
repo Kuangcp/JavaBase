@@ -1,15 +1,23 @@
 package netty.timeServer;
 
-import org.junit.Test;
+
+import lombok.extern.slf4j.Slf4j;
+import org.testng.annotations.Test;
 
 /**
- * Created by https://github.com/kuangcp
- *
- * @author kuangcp on 18-3-20  上午10:53
+ * @author kuangcp on 2019-04-23 10:58 AM
  */
+@Slf4j
 public class TimeServerTest {
 
+  private TimeClient timeClient = new TimeClient();
   private TimeServer timeServer = new TimeServer();
+
+  //  @Test
+  @Test(threadPoolSize = 5, invocationCount = 20)
+  public void testClient() throws Exception {
+    timeClient.connectLocal(TimeServer.port);
+  }
 
   @Test
   public void testServer() throws Exception {

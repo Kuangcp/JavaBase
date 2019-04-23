@@ -15,17 +15,18 @@ class TimeServer {
   static final int port = 8080;
 
   public void start() throws Exception {
-    // NIO 结合两个线程池 , boss 用于接受客户端的连接
-    //    worker 处理SocketChannel的 read write 然后交由对应的Handler处理
+    // NIO 结合两个线程池
     EventLoopGroup bossGroup = new NioEventLoopGroup();
     EventLoopGroup workerGroup = new NioEventLoopGroup();
 
     try {
       ServerBootstrap serverBootstrap = new ServerBootstrap();
+      // boss/acceptor 用于接受客户端的连接  worker 处理SocketChannel的 read write 然后交由对应的Handler处理
+      // 可以看 group 的 doc
       serverBootstrap.group(bossGroup, workerGroup)
           .channel(NioServerSocketChannel.class)
           .option(ChannelOption.SO_BACKLOG, 512)
-          .childHandler(new ChildChannelHandler());
+          .childHandler(new ChannelInit());
 
       // 绑定端口，同步等待成功 返回一个ChannelFuture, 用于异步操作的通知回调
       ChannelFuture future = serverBootstrap.bind(port).sync();
@@ -40,15 +41,17 @@ class TimeServer {
   }
 
   @Slf4j
-  private static class ChildChannelHandler extends ChannelInitializer<SocketChannel> {
+  private static class ChannelInit extends ChannelInitializer<SocketChannel> {
 
-    public ChildChannelHandler() {
+    TimeServerHandler handler = new TimeServerHandler();
+
+    public ChannelInit() {
       log.info("init a initializer");
     }
 
     @Override
     protected void initChannel(SocketChannel arg0) {
-      arg0.pipeline().addLast(new TimeServerHandler());
+      arg0.pipeline().addLast(handler);
     }
   }
 }

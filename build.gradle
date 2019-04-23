@@ -33,16 +33,16 @@ allprojects {
   // All sub-modules add the following dependencies
   dependencies {
     
-    annotationProcessor rootProject.libs['lombok']
-    compileOnly rootProject.libs['lombok']
-    testAnnotationProcessor rootProject.libs['lombok']
-    testCompileOnly rootProject.libs['lombok']
+    annotationProcessor libs['lombok']
+    compileOnly libs['lombok']
+    testAnnotationProcessor libs['lombok']
+    testCompileOnly libs['lombok']
 
-    implementation rootProject.libs['logback-classic']
-    implementation rootProject.libs['kcp-tool']
+    implementation libs['logback-classic']
+    implementation libs['kcp-tool']
 
-    testImplementation rootProject.libs['junit']
-    testImplementation rootProject.libs['hamcrest-core']
-    testImplementation rootProject.libs['hamcrest-lib']
+    testImplementation libs['junit']
+    testImplementation libs['hamcrest-core']
+    testImplementation libs['hamcrest-lib']
   }
 }
