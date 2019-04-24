@@ -5,15 +5,19 @@ package com.github.kuangcp.util;
  */
 public class ShowBinary {
 
-  public static String toBinaryString(Integer value) {
+  public static String toBinary(Byte value) {
     return Integer.toBinaryString(value);
   }
 
-  public static String toBinaryString(Double value) {
+  public static String toBinary(Integer value) {
+    return Integer.toBinaryString(value);
+  }
+
+  public static String toBinary(Double value) {
     return Long.toBinaryString(Double.doubleToRawLongBits(value));
   }
 
-  public static String toBinaryString(Float value) {
+  public static String toBinary(Float value) {
     return Float.toHexString(value);
   }
 }

@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 import com.github.kuangcp.time.GetRunTime;
+import com.github.kuangcp.util.ShowBinary;
 import java.util.stream.IntStream;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -99,7 +100,7 @@ public class BitOperatorsTest {
   }
 
   private static void show(int result) {
-    log.info("{} {}", String.format("%32s", Integer.toBinaryString(result)), result);
+    log.info("{} {}", String.format("%32s", ShowBinary.toBinary(result)), result);
   }
 
   @Test

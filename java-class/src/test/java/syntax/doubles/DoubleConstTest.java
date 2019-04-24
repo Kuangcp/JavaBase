@@ -13,6 +13,6 @@ public class DoubleConstTest {
 
   @Test
   public void testExtremum(){
-    log.info("{} {}", ShowBinary.toBinaryString(Double.MIN_VALUE), ShowBinary.toBinaryString(Double.MIN_NORMAL));
+    log.info("{} {}", ShowBinary.toBinary(Double.MIN_VALUE), ShowBinary.toBinary(Double.MIN_NORMAL));
   }
 }
