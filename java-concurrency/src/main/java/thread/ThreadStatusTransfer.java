@@ -1,4 +1,4 @@
-package com.github.kuangcp;
+package thread;
 
 import lombok.extern.slf4j.Slf4j;
 

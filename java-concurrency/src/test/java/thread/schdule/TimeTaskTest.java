@@ -1,4 +1,4 @@
-package com.github.kuangcp.schdule;
+package thread.schdule;
 
 import java.util.Timer;
 import java.util.TimerTask;

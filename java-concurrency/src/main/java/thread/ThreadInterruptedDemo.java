@@ -1,4 +1,4 @@
-package com.github.kuangcp;
+package thread;
 
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;

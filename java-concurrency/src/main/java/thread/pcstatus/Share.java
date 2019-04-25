@@ -1,4 +1,4 @@
-package com.github.kuangcp.pcstatus;
+package thread.pcstatus;
 
 import lombok.extern.slf4j.Slf4j;
 

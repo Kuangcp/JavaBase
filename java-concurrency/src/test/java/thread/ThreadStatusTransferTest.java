@@ -1,9 +1,9 @@
-package com.github.kuangcp;
+package thread;
 
-import com.github.kuangcp.ThreadStatusTransfer.Notify;
-import com.github.kuangcp.ThreadStatusTransfer.Wait;
 import java.util.concurrent.TimeUnit;
 import org.junit.Test;
+import thread.ThreadStatusTransfer.Notify;
+import thread.ThreadStatusTransfer.Wait;
 
 /**
  * @author kuangcp on 2019-04-22 9:40 AM

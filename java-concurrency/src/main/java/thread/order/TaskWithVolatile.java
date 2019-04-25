@@ -1,4 +1,4 @@
-package com.github.kuangcp.order;
+package thread.order;
 
 import lombok.extern.slf4j.Slf4j;
 

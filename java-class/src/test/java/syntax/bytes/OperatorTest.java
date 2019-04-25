@@ -28,18 +28,33 @@ public class OperatorTest {
   public void testToInt() {
     int a = 13232;
     // 直接赋值 无法编译通过
-    byte b = (byte)a;
+    byte b = (byte) a;
 
     // int 赋值 byte 会截断后8位, 由于是有符号的, 结果是 10110000
     // 原码则是 01010000 : 所以 b是-80
     log.info("{}: {} -> {}", b, ShowBinary.toBinary(a), ShowBinary.toBinary(b));
   }
 
+  // 和 int 一样的计算方式
   @Test
-  public void testMod(){
+  public void testMod() {
     byte a = -64;
     byte b = -4;
-    // TODO 取余操作
-    log.info("{}", a%b);
+
+    // 取余操作 a%b = a - (a/b)*b
+    log.info("a % b = {} \n a / b = {}\n(a / b) * b = {}\n a - (a / b) * b = {}",
+        a % b, a / b, (a / b) * b, a - (a / b) * b);
+  }
+
+  @Test
+  public void testToString() {
+    byte[] bytes = "you".getBytes();
+
+    log.info("you={}", bytes);
+    // 默认采用 UTF8 编码
+    String result = new String(bytes);
+    log.info("result={}", result);
+
+    assertThat(result, equalTo("you"));
   }
 }

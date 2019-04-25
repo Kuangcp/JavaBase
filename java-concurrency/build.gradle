@@ -4,7 +4,8 @@ plugins {
 }
 
 dependencies {
-  implementation rootProject.libs['jedis']
-  implementation rootProject.libs['groovy']
-  implementation rootProject.libs['common-lang']
+  implementation libs['jedis']
+  implementation libs['groovy']
+  implementation libs['common-lang']
+  testCompile libs['testng']
 }

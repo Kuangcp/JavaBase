@@ -1,4 +1,4 @@
-package com.github.kuangcp;
+package thread;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;

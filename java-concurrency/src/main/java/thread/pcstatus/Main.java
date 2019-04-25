@@ -1,4 +1,4 @@
-package com.github.kuangcp.pcstatus;
+package thread.pcstatus;
 
 /**
  * Created by https://github.com/kuangcp on 18-1-4  下午12:02

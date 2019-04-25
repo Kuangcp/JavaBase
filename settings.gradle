@@ -6,7 +6,6 @@ include(
     , 'java-class'
     , 'java-gui'
     , 'java-network'
-    , 'java-thread'
     , 'java-algorithms'
     , 'java-question'
     , 'java-pattern'

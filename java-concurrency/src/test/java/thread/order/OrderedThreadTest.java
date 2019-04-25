@@ -1,4 +1,4 @@
-package com.github.kuangcp.order;
+package thread.order;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.Test;
