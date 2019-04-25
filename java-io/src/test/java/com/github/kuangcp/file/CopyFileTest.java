@@ -1,4 +1,4 @@
-package com.github.kuangcp.inout;
+package com.github.kuangcp.file;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;

@@ -1,4 +1,4 @@
-package com.github.kuangcp.inout;
+package com.github.kuangcp.file;
 
 import com.github.kuangcp.io.ResourceTool;
 import java.io.BufferedReader;

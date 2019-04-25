@@ -7,12 +7,11 @@ import org.junit.Test;
  * @author kuangcp on 2019-04-24 9:55 PM
  */
 @Slf4j
-public class FirstDemoTest {
-
+public class NeverStopThreadTest {
 
   @Test
   public void testNeverStop() throws Exception {
-    FirstDemo demo = new FirstDemo();
+    NeverStopThread demo = new NeverStopThread();
     Thread thread = new Thread(demo::neverStop);
     thread.start();
 
@@ -26,7 +25,7 @@ public class FirstDemoTest {
 
   @Test
   public void testVolatile() throws InterruptedException {
-    FirstDemo demo = new FirstDemo();
+    NeverStopThread demo = new NeverStopThread();
     Thread thread = new Thread(demo::normalStopWithVolatile);
     thread.start();
 
@@ -40,7 +39,7 @@ public class FirstDemoTest {
 
   @Test
   public void testSleep() throws InterruptedException {
-    FirstDemo demo = new FirstDemo();
+    NeverStopThread demo = new NeverStopThread();
     Thread thread = new Thread(demo::normalStopWithSleep);
     thread.start();
 

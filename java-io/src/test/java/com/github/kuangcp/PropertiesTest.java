@@ -5,11 +5,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 /**
  * @author kuangcp on 18-8-21-下午4:51
  */
+@Slf4j
 public class PropertiesTest {
 
   @Test
@@ -22,7 +24,7 @@ public class PropertiesTest {
     String a = properties.getProperty("A");
     String b = new String(properties.getProperty("B").getBytes(StandardCharsets.ISO_8859_1),
         StandardCharsets.UTF_8);
-    System.out.println(a + b);
 
+    log.info("a={} b={}", a, b);
   }
 }

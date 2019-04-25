@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author kuangcp on 2019-04-24 9:02 PM
  */
 @Slf4j
-class FirstDemo {
+class NeverStopThread {
 
   private boolean stop = false;
 
@@ -44,7 +44,6 @@ class FirstDemo {
   void stopWithSleep() {
     this.stopWithSleep = true;
   }
-
 
   // 由于CPU调度的不可控性, 所以并不会在 stop 执行后就立马停掉
   void normalStopWithVolatile() {
