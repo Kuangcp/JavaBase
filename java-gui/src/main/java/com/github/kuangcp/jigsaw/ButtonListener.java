@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author kuangcp on 18-9-16-上午11:15
  */
 @Slf4j
-public class Button implements ActionListener {
+public class ButtonListener implements ActionListener {
 
   public void actionPerformed(ActionEvent e) {
     log.debug("开始监听按钮的点击");

@@ -1,8 +1,7 @@
 package com.github.kuangcp.jigsaw;
 
 import java.awt.Image;
-import java.io.InputStream;
-import javax.imageio.ImageIO;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -14,120 +13,123 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class Move {
 
-  static int count = 0;
-  private Image temp = null;
-  private Image im0 = null;
-  private int x0, y0, position;
-
-  Move() {
-    try {
-      InputStream inputStream = getClass().getClassLoader()
-          .getResourceAsStream("jigsaw/" + position + ".jpg");
-
-      im0 = ImageIO.read(inputStream);
-//      im0 = ImageIO.read(getClass().getResource("/T/8.jpg"));//只是单纯的读取（只有一次）
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+  private static AtomicInteger count = new AtomicInteger();
+  private Image image = null;
+  private int x, y, position;
 
   /**
    * 上
    */
   void moveW() {
-    for (int i = 0; i < MainFrame.partVector.size(); i++) {
-      if (MainFrame.partVector.get(i).im.equals(im0)) {
-//	    			log.info("MainFrame.partVector.get(i).x = "+MainFrame.partVector.get(i).x+"MainFrame.partVector.get(i).y = "+MainFrame.partVector.get(i).y);
-        x0 = MainFrame.partVector.get(i).x;
-        y0 = MainFrame.partVector.get(i).y;
-        position = MainFrame.partVector.get(i).position;
-      }
-    }
-    for (int i = 0; i < MainFrame.partVector.size(); i++) {
-      if (MainFrame.partVector.get(i).x - 1 == x0 && MainFrame.partVector.get(i).y == y0) {
-        temp = MainFrame.partVector.get(i).im;
-        MainFrame.partVector.get(i).im = MainFrame.partVector.get(position).im;
-        MainFrame.partVector.get(position).im = temp;
+    refreshValueByImage();
+    for (int i = 0; i < ImageBlockMgr.images.size(); i++) {
+      if (ImageBlockMgr.images.get(i).x - 1 == x && ImageBlockMgr.images.get(i).y == y) {
+        cacheImage(i);
         break;
       }
     }
-    log.info("W {}", ++count);
+    log.info("W {}", count.incrementAndGet());
   }
 
   /**
    * 下
    */
   void moveS() {
-    for (int i = 0; i < MainFrame.partVector.size(); i++) {
-      if (MainFrame.partVector.get(i).im.equals(im0)) {
-//	    			log.info("MainFrame.partVector.get(i).x = "+MainFrame.partVector.get(i).x+"MainFrame.partVector.get(i).y = "+MainFrame.partVector.get(i).y);
-        x0 = MainFrame.partVector.get(i).x;
-        y0 = MainFrame.partVector.get(i).y;
-        position = MainFrame.partVector.get(i).position;
-      }
-    }
-//			log.info("x "+x0+" y "+y0+" p "+position);
-    for (int i = 0; i < MainFrame.partVector.size(); i++) {
-      if (MainFrame.partVector.get(i).x + 1 == x0 && MainFrame.partVector.get(i).y == y0) {
-//	    			log.info("MainFrame.partVector.get(i).x = "+MainFrame.partVector.get(i).x+"MainFrame.partVector.get(i).y = "+MainFrame.partVector.get(i).y);
-        temp = MainFrame.partVector.get(i).im;
-        MainFrame.partVector.get(i).im = MainFrame.partVector.get(position).im;
-        MainFrame.partVector.get(position).im = temp;
+    refreshValueByImage();
+
+//			log.info("x "+x+" y "+y+" p "+position);
+    for (int i = 0; i < ImageBlockMgr.images.size(); i++) {
+      if (ImageBlockMgr.images.get(i).x + 1 == x && ImageBlockMgr.images.get(i).y == y) {
+        ImageBlockMgr.show(i);
+        cacheImage(i);
         break;
       }
     }
-    log.info("S {}", ++count);
+    log.info("S {}", count.incrementAndGet());
   }
 
   /**
    * 左
    */
   void moveA() {
-    for (int i = 0; i < MainFrame.partVector.size(); i++) {
-      if (MainFrame.partVector.get(i).im.equals(im0)) {
-//	    			log.info("MainFrame.partVector.get(i).x = "+MainFrame.partVector.get(i).x+"MainFrame.partVector.get(i).y = "+MainFrame.partVector.get(i).y);
-        x0 = MainFrame.partVector.get(i).x;
-        y0 = MainFrame.partVector.get(i).y;
-        position = MainFrame.partVector.get(i).position;
-      }
-    }
-//			log.info("x "+x0+" y "+y0+" p "+position);
-    for (int i = 0; i < MainFrame.partVector.size(); i++) {
-      if (MainFrame.partVector.get(i).y - 1 == y0 && MainFrame.partVector.get(i).x == x0) {
-//	    			log.info("MainFrame.partVector.get(i).x = "+MainFrame.partVector.get(i).x+"MainFrame.partVector.get(i).y = "+MainFrame.partVector.get(i).y);
-        temp = MainFrame.partVector.get(i).im;
-        MainFrame.partVector.get(i).im = MainFrame.partVector.get(position).im;
-        MainFrame.partVector.get(position).im = temp;
+    refreshValueByImage();
+//			log.info("x "+x+" y "+y+" p "+position);
+    for (int i = 0; i < ImageBlockMgr.images.size(); i++) {
+      if (ImageBlockMgr.images.get(i).y - 1 == y && ImageBlockMgr.images.get(i).x == x) {
+        ImageBlockMgr.show(i);
+        cacheImage(i);
         break;
       }
     }
-    log.info("A {}", ++count);
+    log.info("A {}", count.incrementAndGet());
   }
 
   /**
    * 右
    */
   void moveD() {
-    for (int i = 0; i < MainFrame.partVector.size(); i++) {
-      if (MainFrame.partVector.get(i).im.equals(im0)) {
-//	    			log.info("MainFrame.partVector.get(i).x = "+MainFrame.partVector.get(i).x+"MainFrame.partVector.get(i).y = "+MainFrame.partVector.get(i).y);
-        x0 = MainFrame.partVector.get(i).x;
-        y0 = MainFrame.partVector.get(i).y;
-        position = MainFrame.partVector.get(i).position;
-      }
-    }
-//			log.info("x "+x0+" y "+y0+" p "+position);
-    for (int i = 0; i < MainFrame.partVector.size(); i++) {
-      if (MainFrame.partVector.get(i).y + 1 == y0 && MainFrame.partVector.get(i).x == x0) {
-//	    			log.info("MainFrame.partVector.get(i).x = "+MainFrame.partVector.get(i).x+"MainFrame.partVector.get(i).y = "+MainFrame.partVector.get(i).y);
-        temp = MainFrame.partVector.get(i).im;
-        MainFrame.partVector.get(i).im = MainFrame.partVector.get(position).im;
-        MainFrame.partVector.get(position).im = temp;
+    refreshValueByImage();
+//			log.info("x "+x+" y "+y+" p "+position);
+    for (int i = 0; i < ImageBlockMgr.images.size(); i++) {
+      if (ImageBlockMgr.images.get(i).y + 1 == y && ImageBlockMgr.images.get(i).x == x) {
+        ImageBlockMgr.show(i);
+        cacheImage(i);
         break;
       }
     }
-    log.info("D {}", ++count);
+    log.info("D {}", count.incrementAndGet());
   }
+
+  private void refreshValueByImage() {
+    for (int i = 0; i < ImageBlockMgr.images.size(); i++) {
+      if (ImageBlockMgr.isSameImage(i, image)) {
+        ImageBlockMgr.show(i);
+        cacheValue(ImageBlockMgr.getImageBlock(i));
+      }
+    }
+  }
+
+  private void cacheValue(ImageBlock imageBlock) {
+    x = imageBlock.x;
+    y = imageBlock.y;
+    position = imageBlock.position;
+  }
+
+  private void cacheImage(int i) {
+    ImageBlock target = ImageBlockMgr.images.get(i);
+    ImageBlock origin = ImageBlockMgr.images.get(position);
+
+    Image temp = target.image;
+    target.image = origin.image;
+    origin.image = temp;
+  }
+
+  /**
+   * 打乱顺序
+   */
+  void disrupt() {
+    for (int i = 0; i < 80; i++) {
+      int dir;
+      dir = (int) (Math.random() * 5);
+      switch (dir) {
+        case 1:
+          moveA();
+          break;
+        case 2:
+          moveD();
+          break;
+        case 3:
+          moveS();
+          break;
+        case 4:
+          moveW();
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
 }
 
 

@@ -2,8 +2,8 @@ package com.github.kuangcp.bio.onechatone;
 
 /**
  * Created by Myth on 2017/4/2
- * 信息的特定内容前后的的特殊字符，称为协议字符
- * TODO 但是这种做法很容易出现问题, 当数据内容出现协议字符时
+ * 特殊符号分隔法： 信息的特定内容前后的的特殊字符，称为协议字符
+ * 但是这种做法很容易出现问题, 当数据内容出现协议字符时
  */
 public interface ChatProtocol {
 
