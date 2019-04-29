@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.extern.slf4j.Slf4j;
-import sun.reflect.generics.scope.Scope;
 
 /**
  * Created by https://github.com/kuangcp
@@ -14,7 +13,7 @@ import sun.reflect.generics.scope.Scope;
  * @author kuangcp
  */
 @Slf4j
-class SortHelper {
+class MainSortHelper {
 
   // 数量级
   static int AMOUNT = 1000;

@@ -1,7 +1,6 @@
 package com.github.kuangcp.sort;
 
 import com.github.kuangcp.time.GetRunTime;
-import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
@@ -15,41 +14,41 @@ public class SortTest {
 
   @Test
   public void testSortCorrect() {
-    SortHelper.AMOUNT = 17;
-    SortHelper.SCOPE = 999;
-    SortHelper.show = true;
+    MainSortHelper.AMOUNT = 17;
+    MainSortHelper.SCOPE = 999;
+    MainSortHelper.show = true;
 
-    SortHelper.init();
+    MainSortHelper.init();
 
-    SortHelper.algorithms.forEach((k, v) -> {
+    MainSortHelper.algorithms.forEach((k, v) -> {
       log.info("sort: name={}", k.getName());
 
-      int[] data = SortHelper.data.get(v);
+      int[] data = MainSortHelper.data.get(v);
 
-      SortHelper.showData(data);
+      MainSortHelper.showData(data);
       k.sort(data);
-      SortHelper.showData(data);
+      MainSortHelper.showData(data);
 
-      SortHelper.validate(data);
+      MainSortHelper.validate(data);
       System.out.println();
     });
   }
 
   @Test
   public void testSortPerformance() {
-    SortHelper.AMOUNT = 8000;
-    SortHelper.SCOPE = 1000000;
+    MainSortHelper.AMOUNT = 8000;
+    MainSortHelper.SCOPE = 1000000;
 
-    SortHelper.init();
+    MainSortHelper.init();
 
-    SortHelper.algorithms.forEach((k, v) -> {
-      int[] data = SortHelper.data.get(v);
+    MainSortHelper.algorithms.forEach((k, v) -> {
+      int[] data = MainSortHelper.data.get(v);
 
       GetRunTime runTime = new GetRunTime().startCount();
       k.sort(data);
       runTime.endCountOneLine(k.getName());
 
-      SortHelper.validate(data);
+      MainSortHelper.validate(data);
       System.out.println();
     });
   }

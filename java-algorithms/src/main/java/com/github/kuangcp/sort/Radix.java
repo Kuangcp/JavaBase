@@ -1,11 +1,11 @@
 package com.github.kuangcp.sort;
 
 /**
- * 箱排序，
+ * 基数排序 箱排序
  *
  * @author Myth
  */
-public enum  Box implements SortAlgorithm {
+public enum Radix implements SortAlgorithm {
 
   INSTANCE;
 

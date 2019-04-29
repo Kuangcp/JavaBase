@@ -43,7 +43,6 @@ public class NeverStopThreadTest {
     Thread thread = new Thread(demo::normalStopWithSleep);
     thread.start();
 
-    // 如果不加输出, 可能线程都还没创建起来, 这里就直接修改成了false
     log.info("prepare to stop");
     demo.stopWithSleep();
 
