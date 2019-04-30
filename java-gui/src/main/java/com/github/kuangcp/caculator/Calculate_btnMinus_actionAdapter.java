@@ -17,6 +17,6 @@ class Calculate_btnMinus_actionAdapter implements ActionListener {
   }
 
   public void actionPerformed(ActionEvent e) {
-    adapter.btnMinus_actionPerformed();
+    adapter.btnMinusActionPerformed();
   }
 }

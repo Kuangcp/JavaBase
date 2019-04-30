@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Objects;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -182,7 +181,7 @@ public class Calculator extends JFrame {
     }
   }
 
-  void btnZero_actionPerformed(ActionEvent e) {
+  void btnZeroActionPerformed(ActionEvent e) {
     if (flag) { //如果刚刚按下了运算符
       txtResult.setText("");
       if (flag1) {//判断之前是否输入了点运算符
@@ -208,14 +207,14 @@ public class Calculator extends JFrame {
     flag3 = false;
   }
 
-  void btnIncrease_actionPerformed(ActionEvent e) {
+  void btnIncreaseActionPerformed(ActionEvent e) {
     if (flag3) {
       txtResult.setText(txtResult.getText());
       op = e.getActionCommand(); //得到刚刚按下的运算符
       front = txtResult.getText(); //记录加减乘除运算符之前输入的内容
     } else if (flag2) {
 //            ActionEvent ee = new ActionEvent("qq", 1, "pp");
-      btnEqual_actionPerformed();
+      btnEqualActionPerformed();
       op = e.getActionCommand(); //得到刚刚按下的运算符
       front = re;
       flag2 = false;
@@ -227,7 +226,7 @@ public class Calculator extends JFrame {
     flag = true; //记录已经按下了加减乘除运算符的其中一个
   }
 
-  void btnEqual_actionPerformed() {
+  void btnEqualActionPerformed() {
     if (!flag3) { //未曾按下等于运算符
       behind = txtResult.getText();
     } else {
@@ -259,7 +258,7 @@ public class Calculator extends JFrame {
     }
   }
 
-  void btnPoint_actionPerformed(ActionEvent e) {
+  void btnPointActionPerformed(ActionEvent e) {
     int num = txtResult.getText().indexOf(".");
     if (num < 0 && !flag) {
       txtResult.setText(txtResult.getText() + e.getActionCommand());
@@ -269,7 +268,7 @@ public class Calculator extends JFrame {
     }
   }
 
-  void btnBegin_actionPerformed() {//清零运算符事件处理
+  void btnBeginActionPerformed() {//清零运算符事件处理
     flag = false;
     flag1 = false;
     flag2 = false;
@@ -280,7 +279,7 @@ public class Calculator extends JFrame {
     txtResult.setText("0");
   }
 
-  void btnMinus_actionPerformed() {//取反运算符事件处理
+  void btnMinusActionPerformed() {//取反运算符事件处理
     if (txtResult.getText().equals("0")) {//如果文本框内容为0
       txtResult.setText(txtResult.getText());
     } else if (txtResult.getText().contains("-")) {//若文本框中含有负号
@@ -305,10 +304,10 @@ public class Calculator extends JFrame {
   }
 
   public static void main(String[] args) {
-    Calculator fc = new Calculator();
-    fc.setSize(400, 310);
-    fc.setLocation(200, 150);
-    fc.setVisible(true);
+    Calculator calculator = new Calculator();
+    calculator.setSize(400, 310);
+    calculator.setLocation(200, 150);
+    calculator.setVisible(true);
   }
 }
 

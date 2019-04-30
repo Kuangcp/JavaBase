@@ -20,7 +20,7 @@ public class MethodTest {
     list.add(new Fraction(-15, 1));
     list.add(new Fraction(5, 2));
     SimplexMethod sm = new SimplexMethod();
-    Integer index = sm.MaxList(list, false, true, false);
+    Integer index = sm.maxList(list, false, true, false);
     if (index != -1) {
       System.out.println(index + " => " + list.get(index));
     } else {

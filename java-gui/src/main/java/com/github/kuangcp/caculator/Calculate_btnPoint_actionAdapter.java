@@ -17,6 +17,6 @@ class Calculate_btnPoint_actionAdapter implements ActionListener {
   }
 
   public void actionPerformed(ActionEvent e) {
-    adapter.btnPoint_actionPerformed(e);
+    adapter.btnPointActionPerformed(e);
   }
 }

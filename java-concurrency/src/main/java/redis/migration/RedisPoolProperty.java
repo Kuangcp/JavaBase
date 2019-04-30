@@ -29,7 +29,6 @@ class RedisPoolProperty {
   //设定默认值为空字符串不能为null
   private String password = "";
 
-
   // host and port is effective
   boolean isAbleToInit() {
     return StringUtils.isNoneBlank(host) && port > 0 && port < 65535 && timeout > 0;

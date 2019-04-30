@@ -48,8 +48,8 @@ public class SimplexMethod {
    */
   private void init() {
     //添加求解式的数据
-    String maxs = config.getString("Max");
-    String[] temp = maxs.split(",");
+    String max = config.getString("Max");
+    String[] temp = max.split(",");
     for (String data : temp) {
 //            System.out.println(data);
       Max.add(Fraction.valueOf(data));
@@ -78,9 +78,9 @@ public class SimplexMethod {
       Tables.add(table);
     }
     //查看数据是否正确装填
-//        disp("单纯形表的中心数据 : ",Tables);
-    disp("求解的方程式系数 ：", false, Max, false);
-//        disp("约束条件的方程式",Rows);
+//        display("单纯形表的中心数据 : ",Tables);
+    display("求解的方程式系数 ：", false, Max, false);
+//        display("约束条件的方程式",Rows);
     //展示方程式
     System.out.println("原题样式 : ");
     showRows();
@@ -93,13 +93,13 @@ public class SimplexMethod {
   public void run() throws Exception {
     init();
 //运算出初始的表格
-    disp("中间计算结果", Tables);
+    display("中间计算结果", Tables);
     //计算最底下一行
-    CaculateLastRow();
+    CalculateLastRow();
     //计算右边列
-    CaculateRightCol();
+    CalculateRightCol();
     //判断是否达到退出条件
-    CONTINUE = isCONTINUES(Zs);
+    CONTINUE = isNeedContinue(Zs);
 
     //迭代的计算直到满足条件
     while (CONTINUE) {
@@ -142,13 +142,13 @@ public class SimplexMethod {
       Os.clear();
 //            log("下右两个计算集合的大小"+Zs.size()+":"+Os.size());
 
-      disp("中间计算结果", true, Tables, true);
+      display("中间计算结果", true, Tables, true);
       //计算最后一行
-      CaculateLastRow();
+      CalculateLastRow();
       //判断是否达到退出条件
-      CONTINUE = isCONTINUES(Zs);
+      CONTINUE = isNeedContinue(Zs);
       if (CONTINUE) {
-        CaculateRightCol();
+        CalculateRightCol();
       }
       System.out.println("******************************");
     }
@@ -166,7 +166,7 @@ public class SimplexMethod {
    * @throws Exception 异常
    */
   private void finallyResult() throws Exception {
-    Integer RightMin = MaxList(Os, false, true, false);
+    Integer RightMin = maxList(Os, false, true, false);
     boolean SUCCESS = true;
     if (RightMin == -1) {
       System.out.println("右列没有一个正数，最后一行也没有正数，原方程没有最优解");
@@ -182,17 +182,17 @@ public class SimplexMethod {
         results[t.getXb() - 1] = t.getBl();
       }
       System.out.println("最优目标值是 : " + result);
-      StringBuilder resultstr = new StringBuilder("X=(");
+      StringBuilder resultStr = new StringBuilder("X=(");
       for (Fraction d : results) {
         if (d != null) {
-          resultstr.append(d).append(",");
+          resultStr.append(d).append(",");
         } else {
-          resultstr.append("0,");
+          resultStr.append("0,");
         }
       }
-      resultstr = new StringBuilder(resultstr.substring(0, resultstr.length() - 1));
-      resultstr.append(")");
-      System.out.println(resultstr);
+      resultStr = new StringBuilder(resultStr.substring(0, resultStr.length() - 1));
+      resultStr.append(")");
+      System.out.println(resultStr);
 
     }
     for (String key : Xbs.keySet()) {
@@ -203,10 +203,10 @@ public class SimplexMethod {
   /**
    * 计算最后一行和最右边的一列
    */
-  private void CaculateLastRow() throws Exception {
+  private void CalculateLastRow() throws Exception {
     for (int i = 0; i < MAX_PARAMS; i++) {//循环变量个数
       Fraction temp = Max.get(i);
-//            disp("目标方程系数组",Max,false);
+//            display("目标方程系数组",Max,false);
 //            System.out.println("Max中取到的temp"+temp);
       for (int j = 0; j < EQUALITY; j++) {//循环层数
 //                System.out.println("乘积 "+Tables.get(j).getCb()+"*"+Tables.get(j).getRows().get(i)+" = "+Tables.get(j).getCb().multiply(Tables.get(j).getRows().get(i)));
@@ -216,13 +216,13 @@ public class SimplexMethod {
       Zs.add(temp);
 //            System.out.println("jieguo "+temp);
     }
-    disp("最后一行", false, Zs, false);
-    resultCol = MaxList(Zs, true, true, true);
+    display("最后一行", false, Zs, false);
+    resultCol = maxList(Zs, true, true, true);
 
   }
 
   //计算右边栏
-  private void CaculateRightCol() throws Exception {
+  private void CalculateRightCol() throws Exception {
 
 //        log("计算所得行最大Index"+resultCol);
     for (int i = 0; i < EQUALITY; i++) {
@@ -232,8 +232,8 @@ public class SimplexMethod {
       Tables.get(i).setO(temp);
       Os.add(temp);
     }
-    disp("右栏", false, Os, false);
-    resultRow = MaxList(Os, false, true, false);
+    display("右栏", false, Os, false);
+    resultRow = maxList(Os, false, true, false);
     if (resultRow == -1) {
       CONTINUE = false;
     }
@@ -249,7 +249,7 @@ public class SimplexMethod {
    * @param list 分数数组
    * @return false就不再继续
    */
-  private boolean isCONTINUES(List<Fraction> list) {
+  private boolean isNeedContinue(List<Fraction> list) {
     boolean flag = false;
     for (Fraction b : list) {
       if (b.isPositive()) {
@@ -257,7 +257,7 @@ public class SimplexMethod {
         break;
       }
     }
-//        disp("检测",Tables);
+//        display("检测",Tables);
     StringBuilder temp = new StringBuilder();
     for (int i = 0; i < EQUALITY; i++) {
       temp.append(Tables.get(i).getXb());
@@ -280,7 +280,7 @@ public class SimplexMethod {
    * @param permitMinus 是否允许负数进行笔记比较
    * @return 最大
    */
-  Integer MaxList(List<Fraction> list, boolean isMax, boolean haveInfinity, boolean permitMinus) {
+  Integer maxList(List<Fraction> list, boolean isMax, boolean haveInfinity, boolean permitMinus) {
     Integer index = null;
     //有非数的集合
     if (haveInfinity) {
@@ -339,8 +339,8 @@ public class SimplexMethod {
    *
    * @param list 数据数组
    */
-  private void disp(String title, List list) {
-    disp(title, true, list, true);
+  private void display(String title, List list) {
+    display(title, true, list, true);
   }
 
   /**
@@ -351,7 +351,7 @@ public class SimplexMethod {
    * @param list 数据
    * @param turn 内容是否换行
    */
-  private void disp(String title, boolean titleTurn, List list, boolean turn) {
+  private void display(String title, boolean titleTurn, List list, boolean turn) {
     if (titleTurn) {
       System.out.println(title);
     } else {

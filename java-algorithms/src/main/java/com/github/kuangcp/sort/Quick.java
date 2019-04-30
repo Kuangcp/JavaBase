@@ -13,117 +13,129 @@ public enum Quick implements SortAlgorithm {
 
   @Override
   public void sort(int[] data) {
-    sortData(data, 0, data.length - 1);
+    QuickSort sort = new FirstImpl();
+    sort.sortData(data, 0, data.length - 1);
+  }
+
+
+  interface QuickSort {
+
+    void sortData(int[] data, int low, int high);
   }
 
   /**
    * 高效的写法
    */
-  public void sortData(int[] data, int low, int high) {
-    if (low >= high) {
-      return;
-    }
+  static class FirstImpl implements QuickSort {
 
-    int lowIndex = low;
-    int highIndex = high;
-
-    int value = data[low];
-    while (lowIndex < highIndex) {
-      // 找出右边小于低位所在的标识值
-      while (lowIndex < highIndex && data[highIndex] >= value) {
-        highIndex -= 1;
+    @Override
+    public void sortData(int[] data, int low, int high) {
+      if (low >= high) {
+        return;
       }
-      data[lowIndex] = data[highIndex];
 
-      // 找出左边大于标识值
-      while (lowIndex < highIndex && data[lowIndex] <= value) {
-        lowIndex += 1;
-      }
-      data[highIndex] = data[lowIndex];
-    }
+      int lowIndex = low;
+      int highIndex = high;
 
-    data[lowIndex] = value;
+      int value = data[low];
+      while (lowIndex < highIndex) {
+        // 找出右边小于低位所在的标识值
+        while (lowIndex < highIndex && data[highIndex] >= value) {
+          highIndex -= 1;
+        }
+        data[lowIndex] = data[highIndex];
 
-    sortData(data, low, lowIndex - 1);
-    sortData(data, highIndex + 1, high);
-  }
-
-  public void sortData2(int[] data, int low, int high) {
-    int lowIndex = low;
-    int highIndex = high;
-    int index = data[low];
-
-    while (lowIndex < highIndex) {
-      while (lowIndex < highIndex && data[highIndex] >= index) {
-        highIndex--;
-      }
-      if (lowIndex < highIndex) {
-        int temp = data[highIndex];
+        // 找出左边大于标识值
+        while (lowIndex < highIndex && data[lowIndex] <= value) {
+          lowIndex += 1;
+        }
         data[highIndex] = data[lowIndex];
-        data[lowIndex] = temp;
-        lowIndex++;
       }
 
-      while (lowIndex < highIndex && data[lowIndex] <= index) {
-        lowIndex++;
-      }
-      if (lowIndex < highIndex) {
-        int temp = data[highIndex];
-        data[highIndex] = data[lowIndex];
-        data[lowIndex] = temp;
-        highIndex--;
-      }
-    }
+      data[lowIndex] = value;
 
-    if (lowIndex > low) {
-      sortData2(data, low, lowIndex - 1);
-    }
-    if (highIndex < high) {
-      sortData2(data, lowIndex + 1, high);
+      sortData(data, low, lowIndex - 1);
+      sortData(data, highIndex + 1, high);
     }
   }
 
-  public <T extends Comparable<? super T>> T[] quickSort(T[] targetArr,
-      int start, int end) {
-    int i = start + 1, j = end;
-    T key = targetArr[start];
-    // SortUtil<T>sUtil=newSortUtil<T>();
+  /**
+   * 个人手写
+   */
+  static class SecondImpl implements QuickSort {
+
+    @Override
+    public void sortData(int[] data, int low, int high) {
+      int lowIndex = low;
+      int highIndex = high;
+      int index = data[low];
+
+      while (lowIndex < highIndex) {
+        while (lowIndex < highIndex && data[highIndex] >= index) {
+          highIndex--;
+        }
+        if (lowIndex < highIndex) {
+          int temp = data[highIndex];
+          data[highIndex] = data[lowIndex];
+          data[lowIndex] = temp;
+          lowIndex++;
+        }
+
+        while (lowIndex < highIndex && data[lowIndex] <= index) {
+          lowIndex++;
+        }
+        if (lowIndex < highIndex) {
+          int temp = data[highIndex];
+          data[highIndex] = data[lowIndex];
+          data[lowIndex] = temp;
+          highIndex--;
+        }
+      }
+
+      if (lowIndex > low) {
+        sortData(data, low, lowIndex - 1);
+      }
+      if (highIndex < high) {
+        sortData(data, lowIndex + 1, high);
+      }
+    }
+  }
+
+  /**
+   * 对象数组排序
+   */
+  public <T extends Comparable<? super T>> T[] quickSort(T[] data, int start, int end) {
+    int low = start + 1, high = end;
+    T key = data[start];
 
     if (start >= end) {
-      return (targetArr);
+      return (data);
     }
-    /*
-     * 从i++和j--两个方向搜索不满足条件的值并交换
-     *
-     * 条件为：i++方向小于key，j--方向大于key
-     */
+
     while (true) {
-      while (targetArr[j].compareTo(key) > 0) {
-        j--;
+      while (data[high].compareTo(key) > 0) {
+        high--;
       }
-      while (targetArr[i].compareTo(key) < 0 && i < j) {
-        i++;
+      while (data[low].compareTo(key) < 0 && low < high) {
+        low++;
       }
-      if (i >= j) {
+      if (low >= high) {
         break;
       }
-      if (targetArr[i] == key) {
-        j--;
+      if (data[low] == key) {
+        high--;
       } else {
-        i++;
+        low++;
       }
     }
 
-    /* 关键数据放到‘中间’ */
-    // sUtil.swap(targetArr,start,j);
-
-    if (start < i - 1) {
-      this.quickSort(targetArr, start, i - 1);
+    if (start < low - 1) {
+      this.quickSort(data, start, low - 1);
     }
-    if (j + 1 < end) {
-      this.quickSort(targetArr, j + 1, end);
+    if (high + 1 < end) {
+      this.quickSort(data, high + 1, end);
     }
 
-    return targetArr;
+    return data;
   }
 }

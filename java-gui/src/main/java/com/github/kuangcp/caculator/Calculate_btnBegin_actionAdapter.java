@@ -17,6 +17,6 @@ class Calculate_btnBegin_actionAdapter implements ActionListener {
   }
 
   public void actionPerformed(ActionEvent e) {
-    adapter.btnBegin_actionPerformed();
+    adapter.btnBeginActionPerformed();
   }
 }

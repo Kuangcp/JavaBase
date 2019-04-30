@@ -15,7 +15,7 @@ public class SimplexMethod {
   //读取配置文件
   private static ReadProperties config;
   //最大参数个数
-  private static int MAXPARAMS;
+  private static int MAX_PARAMS;
   //最大行列式数
   private static int EQUALITY;
   //约束式子系数集合
@@ -34,7 +34,7 @@ public class SimplexMethod {
 
   static {
     config = new ReadProperties("src/main/resources/math/SimplexMethod.properties");
-    MAXPARAMS = config.getInt("MaxParams");
+    MAX_PARAMS = config.getInt("MaxParams");
     EQUALITY = config.getInt("Equality");
   }
 
@@ -48,8 +48,8 @@ public class SimplexMethod {
    */
   public void init() {
     //添加求解式的数据
-    String maxs = config.getString("Max");
-    String[] temp = maxs.split(",");
+    String max = config.getString("Max");
+    String[] temp = max.split(",");
     for (String data : temp) {
       //System.out.println(data);
       Max.add(Double.parseDouble(data));
@@ -59,8 +59,8 @@ public class SimplexMethod {
       String buffer = config.getString("E" + i);
       String[] tempList = buffer.split(",");
       Equality e = new Equality();
-      for (int j = 0; j < tempList.length; j++) {
-        e.getParams().add(Double.parseDouble(tempList[j]));
+      for (String s : tempList) {
+        e.getParams().add(Double.parseDouble(s));
       }
       e.setResult(config.getDouble("B" + i));
       e.setIndex(config.getInt("I" + i));
@@ -76,27 +76,26 @@ public class SimplexMethod {
       Tables.add(table);
     }
     //查看数据是否正确装填
-    disp("单纯形表的中心数据 : ", Tables);
-//        disp("求解的方程式",Max);
-//        disp("约束条件的方程式",Rows);
+    display("单纯形表的中心数据 : ", Tables);
+//        display("求解的方程式",Max);
+//        display("约束条件的方程式",Rows);
     //展示方程式
     System.out.println("原题样式 : ");
     showRows();
-
   }
 
   //进行表格的运算
-  public void run() {
+  private void run() {
     init();
-    Boolean flag = true;
+    boolean flag;
 //运算出初始的表格
     //计算最底下一行
-    CaculateLastRow();
+    CalculateLastRow();
     //计算右边列
-    CaculateRightCol();
+    CalculateRightCol();
     //判断是否达到退出条件
     flag = exitTime(Zs);
-    disp("运行状态", Tables);
+    display("运行状态", Tables);
 
 //迭代的计算直到满足条件
     while (!flag) {
@@ -138,64 +137,64 @@ public class SimplexMethod {
       Zs.clear();
       Os.clear();
       //计算最后一行
-      CaculateLastRow();
+      CalculateLastRow();
       //判断是否达到退出条件
       flag = exitTime(Zs);
       if (!flag) {
-        CaculateRightCol();
+        CalculateRightCol();
       }
-      disp("运行状态", Tables, true);
-      disp("底栏", Zs, false);
+      display("运行状态", Tables, true);
+      display("底栏", Zs, false);
 
     }
     //运算完成
-    Double result = 0.0;
-    Double[] results = new Double[MAXPARAMS];
+    double result = 0.0;
+    Double[] results = new Double[MAX_PARAMS];
     for (int i = 0; i < EQUALITY; i++) {
       Table t = Tables.get(i);
       result += t.getCb() * t.getB();
       results[t.getXb() - 1] = t.getB();
     }
     System.out.println("最优目标值是 : " + result);
-    String resultstr = "X=(";
+    StringBuilder resultStr = new StringBuilder("X=(");
     for (Double d : results) {
       if (d != null) {
-        resultstr += d + ",";
+        resultStr.append(d).append(",");
       } else {
-        resultstr += "0,";
+        resultStr.append("0,");
       }
 
     }
-    resultstr = resultstr.substring(0, resultstr.length() - 1);
-    resultstr += ")";
-    System.out.println(resultstr);
+    resultStr = new StringBuilder(resultStr.substring(0, resultStr.length() - 1));
+    resultStr.append(")");
+    System.out.println(resultStr);
 
   }
 
   /**
    * 计算最后一行和最右边的一列
    */
-  public void CaculateLastRow() {
-    for (int i = 0; i < MAXPARAMS; i++) {//循环变量个数
+  public void CalculateLastRow() {
+    for (int i = 0; i < MAX_PARAMS; i++) {//循环变量个数
       Double temp = Max.get(i);
       for (int j = 0; j < EQUALITY; j++) {//循环层数
         temp -= Tables.get(j).getRows().get(i) * Tables.get(j).getCb();
       }
       Zs.add(temp);
     }
-    disp("最后一行", Zs, false);
+    display("最后一行", Zs, false);
     resultCol = MaxList(Zs, true);
 
   }
 
-  public void CaculateRightCol() {
+  public void CalculateRightCol() {
     //计算右边栏
     for (int i = 0; i < EQUALITY; i++) {
       Double temp = Tables.get(i).getB() / Tables.get(i).getRows().get(resultCol);
       Tables.get(i).setO(temp);
       Os.add(temp);
     }
-    //disp("右栏",Os,false);
+    //display("右栏",Os,false);
     resultRow = MaxList(Os, false);
   }
 
@@ -221,7 +220,7 @@ public class SimplexMethod {
    * @return 极值下标
    */
   public Integer MaxList(List<Double> list, boolean max) {
-    Integer index = 0;
+    int index = 0;
     Double temp = list.get(index);
     for (int i = 1; i < list.size(); i++) {
       if (max && temp < list.get(i)) {
@@ -239,11 +238,11 @@ public class SimplexMethod {
   /**
    * 方便展示原始数据
    */
-  public void disp(String title, List list) {
-    disp(title, list, true);
+  public void display(String title, List list) {
+    display(title, list, true);
   }
 
-  public void disp(String title, List list, boolean flag) {
+  public void display(String title, List list, boolean flag) {
     System.out.println(title);
     for (int i = 0; i < list.size(); i++) {
       if (flag) {
@@ -262,7 +261,7 @@ public class SimplexMethod {
    */
   public void showRows() {
     StringBuilder MaxRows = new StringBuilder("Max(z)=");
-    for (int i = 0; i < MAXPARAMS; i++) {
+    for (int i = 0; i < MAX_PARAMS; i++) {
       if (Max.get(i) != 0) {
         MaxRows.append(Max.get(i)).append(" X").append(i + 1).append(" + ");
       }

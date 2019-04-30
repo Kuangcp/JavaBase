@@ -17,6 +17,6 @@ class Calculate_btnIncrease_actionAdapter implements ActionListener {
   }
 
   public void actionPerformed(ActionEvent e) {
-    adapter.btnIncrease_actionPerformed(e);
+    adapter.btnIncreaseActionPerformed(e);
   }
 }

@@ -17,6 +17,6 @@ class Calculate_btnZero_actionAdapter implements ActionListener {
   }
 
   public void actionPerformed(ActionEvent e) {
-    adapter.btnZero_actionPerformed(e);
+    adapter.btnZeroActionPerformed(e);
   }
 }

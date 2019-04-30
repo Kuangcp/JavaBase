@@ -17,6 +17,6 @@ class Calculate_btnEqual_actionAdapter implements ActionListener {
   }
 
   public void actionPerformed(ActionEvent e) {
-    adapter.btnEqual_actionPerformed();
+    adapter.btnEqualActionPerformed();
   }
 }

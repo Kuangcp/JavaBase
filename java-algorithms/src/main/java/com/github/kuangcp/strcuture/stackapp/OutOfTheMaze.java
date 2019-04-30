@@ -39,7 +39,7 @@ public class OutOfTheMaze {
   }
 
   public static void main(String[] args) {
-    for (int k = 0; k < 100; k++) {
+    for (int k = 0; k < minSize; k++) {
       stack[k] = new Point();
       path[k] = new Point();
     }
