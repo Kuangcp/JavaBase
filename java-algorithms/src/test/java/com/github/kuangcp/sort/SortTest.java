@@ -12,43 +12,44 @@ import org.junit.Test;
 @Slf4j
 public class SortTest {
 
+  // test sort algorithms was correct
   @Test
   public void testSortCorrect() {
-    MainSortHelper.AMOUNT = 17;
-    MainSortHelper.SCOPE = 999;
-    MainSortHelper.show = true;
+    SortHelper.AMOUNT = 17;
+    SortHelper.SCOPE = 999;
+    SortHelper.show = true;
 
-    MainSortHelper.init();
+    SortHelper.init();
 
-    MainSortHelper.algorithms.forEach((k, v) -> {
-      log.info("sort: name={}", k.getName());
+    SortHelper.algorithms.forEach((sort, sortNo) -> {
+      log.info("sort: name={}", sort.getName());
 
-      int[] data = MainSortHelper.data.get(v);
+      int[] data = SortHelper.data.get(sortNo);
 
-      MainSortHelper.showData(data);
-      k.sort(data);
-      MainSortHelper.showData(data);
+      SortHelper.showData(data);
+      sort.sort(data);
+      SortHelper.showData(data);
 
-      MainSortHelper.validate(data);
+      SortHelper.validate(data);
       System.out.println();
     });
   }
 
   @Test
   public void testSortPerformance() {
-    MainSortHelper.AMOUNT = 8000;
-    MainSortHelper.SCOPE = 1000000;
+    SortHelper.AMOUNT = 2000;
+    SortHelper.SCOPE = 10;
 
-    MainSortHelper.init();
+    SortHelper.init();
 
-    MainSortHelper.algorithms.forEach((k, v) -> {
-      int[] data = MainSortHelper.data.get(v);
+    SortHelper.algorithms.forEach((sort, sortNo) -> {
+      int[] data = SortHelper.data.get(sortNo);
 
       GetRunTime runTime = new GetRunTime().startCount();
-      k.sort(data);
-      runTime.endCountOneLine(k.getName());
+      sort.sort(data);
+      runTime.endCountOneLine(sort.getName());
 
-      MainSortHelper.validate(data);
+      SortHelper.validate(data);
       System.out.println();
     });
   }

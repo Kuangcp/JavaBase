@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author kuangcp
  */
 @Slf4j
-class MainSortHelper {
+class SortHelper {
 
   // 数量级
   static int AMOUNT = 1000;
@@ -27,8 +27,10 @@ class MainSortHelper {
   static ArrayList<int[]> data = new ArrayList<>();
 
   static void init() {
+    Radix.maxLen = String.valueOf(SCOPE).length();
+
     int count = -1;
-//    algorithms.put(Box.INSTANCE, ++count);
+    algorithms.put(Radix.INSTANCE, ++count);
     algorithms.put(Bubble.INSTANCE, ++count);
     algorithms.put(Insert.INSTANCE, ++count);
     algorithms.put(Select.INSTANCE, ++count);
@@ -54,7 +56,7 @@ class MainSortHelper {
 
     for (int i = 0; i < data.length; i++) {
       int length = String.valueOf(SCOPE).length();
-      System.out.printf("%"+length+"d ", data[i]);
+      System.out.printf("%" + length + "d ", data[i]);
       if ((i + 1) % 19 == 0) {
         System.out.println();
       }
