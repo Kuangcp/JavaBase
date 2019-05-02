@@ -1,5 +1,7 @@
 package com.github.kuangcp.sort;
 
+import java.util.Arrays;
+
 /**
  * 插入法排序，由小到大
  * 最坏的情况就是数列是有序的大到小，那么需要比较和移动 n(n+1)/2 次 时间复杂度是O(n^2)
@@ -12,19 +14,21 @@ public enum Insert implements SortAlgorithm {
 
   INSTANCE;
 
-  public void sort(int[] arr) {
-    int i, j;
-    int data;
-    for (i = 1; i < arr.length; i++) {
-      data = arr[i];
+  public int[] sort(int[] data) {
+    int[] result = Arrays.copyOf(data, data.length);
+    int i, j, tmp;
+
+    for (i = 1; i < result.length; i++) {
+      tmp = result[i];
       j = i - 1;
       //比较，如果是比前面还要小，就将数字往后移动一位。将小的那一位插入到合适位置
-      while (j >= 0 && data < arr[j]) {
-        arr[j + 1] = arr[j];
+      while (j >= 0 && tmp < result[j]) {
+        result[j + 1] = result[j];
         j--;
       }
-      arr[j + 1] = data;
+      result[j + 1] = tmp;
     }
+    return result;
   }
 
 }

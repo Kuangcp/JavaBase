@@ -1,5 +1,7 @@
 package com.github.kuangcp.sort;
 
+import java.util.Arrays;
+
 /**
  * 快速排序
  * 最坏的情况：当数列是一样的数据 O(n^2)
@@ -12,9 +14,11 @@ public enum Quick implements SortAlgorithm {
   INSTANCE;
 
   @Override
-  public void sort(int[] data) {
+  public int[] sort(int[] data) {
+    int[] result = Arrays.copyOf(data, data.length);
     QuickSort sort = new FirstImpl();
-    sort.sortData(data, 0, data.length - 1);
+    sort.sortData(result, 0, result.length - 1);
+    return result;
   }
 
 

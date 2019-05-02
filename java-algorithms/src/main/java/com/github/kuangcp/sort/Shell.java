@@ -1,6 +1,7 @@
 package com.github.kuangcp.sort;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,9 +19,10 @@ public enum Shell implements SortAlgorithm {
 
   INSTANCE;
 
-  public void sort(int[] arr) {
-    //如果改变了引用的指向，是对调用者无效的，要改变该引用的内存上的数据
-//		Test.display(arr);
+
+  // FIXME
+  public int[] sort(int[] data) {
+    int[] arr = Arrays.copyOf(data, data.length);
 
     List<List<Integer>> dataList = new ArrayList<>();
     List<Integer> arrs = new ArrayList<>();
@@ -65,5 +67,6 @@ public enum Shell implements SortAlgorithm {
       dataList = temp;
       last = randomNum;
     }
+    return arr;
   }
 }

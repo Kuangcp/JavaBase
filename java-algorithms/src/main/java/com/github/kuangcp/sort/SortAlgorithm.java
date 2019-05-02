@@ -5,7 +5,7 @@ package com.github.kuangcp.sort;
  */
 public interface SortAlgorithm {
 
-  void sort(int[] data);
+  int[] sort(int[] data);
 
   default String getName() {
     return this.getClass().getSimpleName();

@@ -1,8 +1,7 @@
 package com.github.kuangcp.sort;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,31 +21,28 @@ class SortHelper {
   static int SCOPE = 999999;
   static boolean show = false;
 
-  static Map<SortAlgorithm, Integer> algorithms = new HashMap<>();
+  static List<SortAlgorithm> algorithms = Arrays.asList(
+      Radix.INSTANCE
+      , Bubble.INSTANCE
+      , Insert.INSTANCE
+      , Select.INSTANCE
+      , Quick.INSTANCE
+//      , Shell.INSTANCE
+  );
 
-  static ArrayList<int[]> data = new ArrayList<>();
+  static int[] data;
 
   static void init() {
-    Radix.maxLen = String.valueOf(SCOPE).length();
+    Radix.maxLen = getScopeLength();
 
-    int count = -1;
-    algorithms.put(Radix.INSTANCE, ++count);
-    algorithms.put(Bubble.INSTANCE, ++count);
-    algorithms.put(Insert.INSTANCE, ++count);
-    algorithms.put(Select.INSTANCE, ++count);
-    algorithms.put(Shell.INSTANCE, ++count);
-    algorithms.put(Quick.INSTANCE, ++count);
-
-    for (int i = 0; i < algorithms.size(); i++) {
-      int[] temp = new int[AMOUNT];
-      data.add(temp);
-    }
+    data = new int[AMOUNT];
     for (int i = 0; i < AMOUNT; i++) {
-      int temp = ThreadLocalRandom.current().nextInt(SCOPE);
-      for (int j = 0; j < algorithms.size(); j++) {
-        data.get(j)[i] = temp;
-      }
+      data[i] = ThreadLocalRandom.current().nextInt(SCOPE);
     }
+  }
+
+  private static int getScopeLength() {
+    return String.valueOf(SCOPE).length();
   }
 
   static void showData(int[] data) {
@@ -55,7 +51,7 @@ class SortHelper {
     }
 
     for (int i = 0; i < data.length; i++) {
-      int length = String.valueOf(SCOPE).length();
+      int length = getScopeLength();
       System.out.printf("%" + length + "d ", data[i]);
       if ((i + 1) % 19 == 0) {
         System.out.println();

@@ -15,22 +15,21 @@ public class SortTest {
   // test sort algorithms was correct
   @Test
   public void testSortCorrect() {
-    SortHelper.AMOUNT = 17;
+    SortHelper.AMOUNT = 170;
     SortHelper.SCOPE = 999;
     SortHelper.show = true;
 
     SortHelper.init();
 
-    SortHelper.algorithms.forEach((sort, sortNo) -> {
+    SortHelper.algorithms.forEach(sort -> {
       log.info("sort: name={}", sort.getName());
-
-      int[] data = SortHelper.data.get(sortNo);
+      int[] data = SortHelper.data;
 
       SortHelper.showData(data);
-      sort.sort(data);
-      SortHelper.showData(data);
+      int[] result = sort.sort(data);
+      SortHelper.showData(result);
 
-      SortHelper.validate(data);
+      SortHelper.validate(result);
       System.out.println();
     });
   }
@@ -42,15 +41,12 @@ public class SortTest {
 
     SortHelper.init();
 
-    SortHelper.algorithms.forEach((sort, sortNo) -> {
-      int[] data = SortHelper.data.get(sortNo);
-
+    SortHelper.algorithms.forEach(sort -> {
       GetRunTime runTime = new GetRunTime().startCount();
-      sort.sort(data);
+      int[] result = sort.sort(SortHelper.data);
       runTime.endCountOneLine(sort.getName());
 
-      SortHelper.validate(data);
-      System.out.println();
+      SortHelper.validate(result);
     });
   }
 }

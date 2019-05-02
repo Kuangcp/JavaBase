@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * 基数排序 箱排序
+ * 基数排序
  *
  * @author Myth
  */
@@ -21,8 +21,10 @@ public enum Radix implements SortAlgorithm {
   //需要确定盒子的轮数 也就是数值的最大位数
   static int maxLen = 5;
 
-  public void sort(int[] data) {
+  public int[] sort(int[] data) {
+    int[] result = Arrays.copyOf(data, data.length);
     List<Integer> temp = Arrays.stream(data).boxed().collect(Collectors.toList());
+
     // 0 -> []. 1 -> [], ... 9 -> []
     Map<Integer, List<Integer>> box = new HashMap<>();
 
@@ -42,7 +44,8 @@ public enum Radix implements SortAlgorithm {
       }
     }
 
-    setArray(temp, data);
+    setArray(temp, result);
+    return result;
   }
 
   private static void addValue(Map<Integer, List<Integer>> box, int weight, int value) {
