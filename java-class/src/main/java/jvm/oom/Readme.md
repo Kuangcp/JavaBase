@@ -18,4 +18,7 @@ javac A.java
 
 java A
 
-疑问: 好几种情况并没有出现OOM而是直接被Killed了, 要思考Docker内存限制的实现方式了
+疑问: 好几种情况并没有出现OOM而是直接被Killed了 
+    - 这是因为 Linux 的 OOM Killer [Linux OOM killer](https://segmentfault.com/a/1190000008268803)
+    - 可执行 dmesg 看到类似于 `Out of memory: Kill process 10375 (java) score 59 or sacrifice child`
+
