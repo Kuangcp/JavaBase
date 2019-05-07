@@ -1,3 +1,0 @@
-dependencies {
-  testCompile rootProject.libs['testng']
-}

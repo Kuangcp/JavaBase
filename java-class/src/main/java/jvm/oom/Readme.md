@@ -22,3 +22,4 @@ java A
     - 这是因为 Linux 的 OOM Killer [Linux OOM killer](https://segmentfault.com/a/1190000008268803)
     - 可执行 dmesg 看到类似于 `Out of memory: Kill process 10375 (java) score 59 or sacrifice child`
 
+- [ ] 关闭 oom-killer

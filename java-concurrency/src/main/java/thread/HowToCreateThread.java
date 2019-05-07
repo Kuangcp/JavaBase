@@ -4,11 +4,10 @@ package thread;
  * Created by https://github.com/kuangcp on 17-8-20  下午8:44
  * 创建线程的多种方式
  */
-public class HowToCreateThread {
+class HowToCreateThread {
 
   /**
-   * 继承方式来实现线程
-   * 继承Thread 重写run方法
+   * 继承方式来实现线程 继承Thread 重写run方法
    */
   static class ExampleOne extends Thread {
 
@@ -27,8 +26,7 @@ public class HowToCreateThread {
   }
 
   /**
-   * 实现接口方式来实现线程
-   * Runnable不是线程，是线程要运行的代码的宿主。
+   * 实现接口方式来实现线程 Runnable不是线程，是线程要运行的代码的宿主。
    */
   static class ExampleTwo implements Runnable {
 
@@ -68,6 +66,9 @@ public class HowToCreateThread {
           System.out.println("直接实例化一个匿名内部方法在方法体里");
         }
       }).start();
+
+      // 方法引用
+      new Thread(this::test).start();
     }
   }
 }
