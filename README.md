@@ -27,6 +27,6 @@
 ************************
 
 ## 同类仓库
-> [tutorials](https://github.com/eugenp/tutorials)  
+> [tutorials](https://github.com/eugenp/tutorials) `baeldung` 
 > [Java 学习笔记](https://github.com/brianway/java-learning)  
 > [demo](https://gitee.com/code4everything/demo)  
