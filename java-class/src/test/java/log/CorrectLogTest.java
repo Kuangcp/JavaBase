@@ -32,6 +32,7 @@ public class CorrectLogTest {
       // Exception ClassName and message
       log.debug("C");
       log.error("" + e); //C
+
       log.debug("D");
       log.error(e.toString()); //D
 
