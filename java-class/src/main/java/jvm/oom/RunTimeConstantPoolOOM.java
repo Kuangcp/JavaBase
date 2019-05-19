@@ -3,25 +3,26 @@ package jvm.oom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 /**
  * Java7以下 运行时字符串常量池是放在了永久代中, 就会报错 OOM: Perm space
  * -XX:PermSize=10M -XX:MaxPermSize=10M
  *
- * Java7以上包括7, 运行时字符串常量池放在了堆中(Eden), 所以需要通过 -Xmx128M 来设限
+ * Java7以上包括7, 运行时字符串常量池放在了堆中(Eden), 所以需要通过设置堆大小来限制 -Xms5m -Xmx5m
  * 最终报错: OOM heap space 或者 GC overhead limit exceeded
  *
- * 同样的在Docker容器中运行, 同样的被Killed
- *
  * https://www.cnblogs.com/paddix/p/5309550.html
+ *
+ * 字符串的常量池不会被GC, 即使没有任何对象去引用
  *
  * @author kuangcp on 4/4/19-12:20 AM
  */
 public class RunTimeConstantPoolOOM {
+  private static List<String> data = new ArrayList<>();
 
   public static void main(String[] args) throws InterruptedException {
-    List<String> data = new ArrayList<>();
     int i = 0;
     Optional<String> result = IntStream.rangeClosed(1, 1000).mapToObj(String::valueOf)
         .reduce(String::concat);
@@ -29,11 +30,11 @@ public class RunTimeConstantPoolOOM {
 
     while (true) {
       data.add((result.get() + i++).intern());
-      // 如果加上睡眠, 就会发现 Eden 一直涨, 然后被回收掉, 并且部分转移到了 Old
-      // 但是转移的内存大小大约为Eden的1/4? 慢慢的 最终 OOM
 
-      // 如果不加, 瞬间 Old Gen 爆满然后 OOM heap space
-//      TimeUnit.MILLISECONDS.sleep(1);
+      // 如果不加, 瞬间 Old Gen 爆满然后 OOM : heap space
+      // 如果加上, 就会发现 Eden 一直涨, 然后被回收掉, 并且部分转移到了 Old
+      // 还能通过 visualvm 查看 内存的慢慢涨上去, 直到满了后 OOM, 内存被一下子释放掉
+      TimeUnit.MILLISECONDS.sleep(20);
     }
   }
 }

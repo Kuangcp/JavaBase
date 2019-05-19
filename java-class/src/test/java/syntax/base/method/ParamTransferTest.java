@@ -1,4 +1,4 @@
-package syntax.method;
+package syntax.base.method;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
