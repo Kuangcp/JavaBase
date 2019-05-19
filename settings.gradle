@@ -15,4 +15,5 @@ include(
     , 'java-guava'
     , 'java-netty'
     , 'java-spring'
+    , 'java-kafka'
 )

@@ -14,6 +14,9 @@ ext {
       , netty   : '4.1.35.Final'
       , guava   : '27.1-jre'
       , jmh     : '1.2.1'
+      , kafka   : '2.2.0'
+      , spring  : '5.1.5.RELEASE'
+      , aspectj : '1.9.0'
   ]
   libs = [
       // mine tool
@@ -50,6 +53,7 @@ ext {
 
       // db
       , "jedis"                   : "redis.clients:jedis:3.0.1"
+      , "MySQL"                   : "mysql:mysql-connector-java:8.0.15"
 
       // JSON dependency
       , "gson"                    : "com.google.code.gson:gson:2.8.5"
@@ -58,5 +62,18 @@ ext {
       , "jackson_databind"        : "com.fasterxml.jackson.core:jackson-databind:$ver.jackson"
       , "jackson_annotations"     : "com.fasterxml.jackson.core:jackson-annotations:$ver.jackson"
       , "jackson_smile"           : "com.fasterxml.jackson.dataformat:jackson-dataformat-smile:$ver.jackson"
+
+      , "aspectjrt"               : "org.aspectj:aspectjrt:$ver.aspectj"
+      , "aspectjweaver"           : "org.aspectj:aspectjweaver:$ver.aspectj"
+
+      // Spring
+      , "spring-core"             : "org.springframework:spring-core:$ver.spring"
+      , "spring-ctx"              : "org.springframework:spring-context:$ver.spring"
+      , "spring-beans"            : "org.springframework:spring-beans:$ver.spring"
+      , "spring-aop"              : "org.springframework:spring-aop:$ver.spring"
+      , "spring-orm"              : "org.springframework:spring-orm:$ver.spring"
+
+      // kafka
+      , "kafka-clients"           : "org.apache.kafka:kafka-clients:$ver.kafka"
   ]
 }

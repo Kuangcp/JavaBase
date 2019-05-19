@@ -8,6 +8,6 @@ package com.github.kuangcp.sort;
  *
  * @author kuangcp on 18-8-27-上午12:19
  */
-public class Tim {
+public enum  Tim {
 
 }

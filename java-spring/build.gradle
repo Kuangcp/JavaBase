@@ -1,56 +1,17 @@
-plugins {
-  id 'java'
-}
-
-group 'com.github.kuangcp'
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-buildDir = 'out/build'
-
-repositories {
-  mavenLocal()
-
-  def aliYun = "http://maven.aliyun.com/nexus/content/groups/public/"
-  def abroad = "http://central.maven.org/maven2/"
-  maven {
-    url = aliYun
-    artifactUrls abroad
-  }
-  maven {
-    url = "https://gitee.com/gin9/MavenRepos/raw/master"
-  }
-  jcenter()
-  mavenCentral()
-}
-
-rootProject.ext {
-  ver = [
-    spring: '5.1.5.RELEASE',
-    aspectj: '1.9.0'
-  ]
-}
-
 dependencies {
-  testImplementation 'junit:junit:4.12'
+  implementation libs['MySQL']
+  implementation libs['cglib']
 
-  implementation 'ch.qos.logback:logback-classic:1.2.3'
+  implementation libs['aspectjrt']
+  implementation libs['aspectjweaver']
 
-  implementation 'mysql:mysql-connector-java:8.0.15'
+  implementation libs['spring-core']
+  implementation libs['spring-ctx']
+  implementation libs['spring-beans']
+  implementation libs['spring-aop']
+  implementation libs['spring-orm']
 
-  implementation "cglib:cglib:3.2.9"
-
-  implementation "org.aspectj:aspectjrt:$rootProject.ver.aspectj"
-  implementation "org.aspectj:aspectjweaver:$rootProject.ver.aspectj"
-  
-  implementation "org.springframework:spring-core:$rootProject.ver.spring"
-  implementation "org.springframework:spring-context:$rootProject.ver.spring"
-  implementation "org.springframework:spring-beans:$rootProject.ver.spring"
-  implementation "org.springframework:spring-aop:$rootProject.ver.spring"
-  
-  implementation "org.springframework:spring-orm:$rootProject.ver.spring"
   implementation 'org.hibernate:hibernate-core:5.3.7.Final'
-  
+
   implementation 'commons-dbcp:commons-dbcp:1.4'
 }

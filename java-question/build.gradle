@@ -1,4 +1,3 @@
-
 dependencies {
-  implementation rootProject.libs['testng']
+  implementation libs['testng']
 }

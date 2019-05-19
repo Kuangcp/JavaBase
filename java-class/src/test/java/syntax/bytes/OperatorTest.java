@@ -41,7 +41,7 @@ public class OperatorTest {
     byte a = -64;
     byte b = -4;
 
-    // 取余操作 a%b = a - (a/b)*b
+    // 取余操作 a % b => a - (a / b) * b
     log.info("a % b = {} \n a / b = {}\n(a / b) * b = {}\n a - (a / b) * b = {}",
         a % b, a / b, (a / b) * b, a - (a / b) * b);
   }
