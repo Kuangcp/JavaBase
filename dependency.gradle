@@ -17,6 +17,7 @@ ext {
       , kafka   : '2.2.0'
       , spring  : '5.1.5.RELEASE'
       , aspectj : '1.9.0'
+      , hadoop  : '2.7.2'
   ]
   libs = [
       // mine tool
@@ -75,5 +76,10 @@ ext {
 
       // kafka
       , "kafka-clients"           : "org.apache.kafka:kafka-clients:$ver.kafka"
+
+      // hadoop
+      , "hadoop-common"           : "org.apache.hadoop:hadoop-common:$ver.hadoop"
+      , "hadoop-client"           : "org.apache.hadoop:hadoop-client:$ver.hadoop"
+      , "hadoop-hdfs"             : "org.apache.hadoop:hadoop-hdfs:$ver.hadoop"
   ]
 }

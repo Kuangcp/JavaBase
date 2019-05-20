@@ -16,4 +16,5 @@ include(
     , 'java-netty'
     , 'java-spring'
     , 'java-kafka'
+    , 'java-hadoop'
 )

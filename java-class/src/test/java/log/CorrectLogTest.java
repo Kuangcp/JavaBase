@@ -26,8 +26,8 @@ public class CorrectLogTest {
       System.out.println(num);
     } catch (Exception e) {
       // compile error
-//      log.error(e); //A
-//      log.error(e, e); //B
+      // log.error(e);    //A
+      // log.error(e, e); //B
 
       // Exception ClassName and message
       log.debug("C");

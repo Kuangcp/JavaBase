@@ -24,12 +24,15 @@ public class RunTimeConstantPoolOOM {
 
   public static void main(String[] args) throws InterruptedException {
     int i = 0;
+    // 先生成一个长字符串
     Optional<String> result = IntStream.rangeClosed(1, 1000).mapToObj(String::valueOf)
         .reduce(String::concat);
     assert result.isPresent();
 
     while (true) {
-      data.add((result.get() + i++).intern());
+      // 只要出现了显式的 + 字符串拼接, 就会创建新的字符串, intern() 方法调用与否结果都是一样的
+//      data.add((result.get() + i++).intern());
+      data.add((result.get() + i++));
 
       // 如果不加, 瞬间 Old Gen 爆满然后 OOM : heap space
       // 如果加上, 就会发现 Eden 一直涨, 然后被回收掉, 并且部分转移到了 Old

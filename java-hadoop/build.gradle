@@ -1,0 +1,5 @@
+dependencies {
+    implementation libs["hadoop-common"]
+    implementation libs["hadoop-client"]
+    implementation libs["hadoop-hdfs"]
+}
