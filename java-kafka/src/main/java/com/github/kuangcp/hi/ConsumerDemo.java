@@ -1,8 +1,11 @@
 package com.github.kuangcp.hi;
 
+import static com.github.kuangcp.hi.Constants.HI_TOPIC;
 import static com.github.kuangcp.hi.Constants.KAFKA_SERVER;
-import static com.github.kuangcp.hi.Constants.TOPIC;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.kuangcp.hi.dto.StartCommand;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
@@ -10,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.serialization.StringDeserializer;
 
 /**
  * @author kuangcp
@@ -19,18 +23,31 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 @Slf4j
 public class ConsumerDemo {
 
-  public static void main(String[] args) {
-    Properties properties = getConf();
+  private static Properties properties = getConf();
+  private static ObjectMapper mapper = new ObjectMapper();
 
+  static void receiveHi() {
     KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
-    kafkaConsumer.subscribe(Collections.singletonList(TOPIC));
+    kafkaConsumer.subscribe(Collections.singletonList(HI_TOPIC));
     while (true) {
       ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(100));
       for (ConsumerRecord<String, String> record : records) {
         log.info("offset = {}, value = %{}", record.offset(), record.value());
       }
     }
+  }
 
+  static void receiveStart() throws IOException {
+    KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
+    kafkaConsumer.subscribe(Collections.singletonList("OFC_PRODUCT_STATISTIC_JOB_DISPATCHING"));
+    while (true) {
+      ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(100));
+      for (ConsumerRecord<String, String> record : records) {
+        log.info("offset = {}, value = {}", record.offset(), record.value());
+        StartCommand command = mapper.readValue(record.value(), StartCommand.class);
+        System.out.println(command);
+      }
+    }
   }
 
   private static Properties getConf() {
@@ -41,9 +58,8 @@ public class ConsumerDemo {
     properties.put("auto.commit.interval.ms", "1000");
     properties.put("auto.offset.reset", "earliest");
     properties.put("session.timeout.ms", "30000");
-    properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-    properties
-        .put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+    properties.put("key.deserializer", StringDeserializer.class.getName());
+    properties.put("value.deserializer", StringDeserializer.class.getName());
     return properties;
   }
 }

@@ -9,5 +9,7 @@ public interface Constants {
 
   String KAFKA_SERVER = "127.0.0.1:9092";
 
-  String TOPIC = "Hi";
+  String HI_TOPIC = "Hi";
+
+  String START_TOPIC = "start";
 }
