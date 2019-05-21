@@ -84,8 +84,19 @@ public class ProducerDemo {
             .build();
         ProducerRecord<String, String> record = new ProducerRecord<>(
             "OFC_PRODUCT_STATISTIC_JOB_DISPATCHING", mapper.writeValueAsString(msg));
-        producer.send(record);
-        log.info("Sent: {}\n", msg);
+
+        long time = System.currentTimeMillis();
+        producer.send(record, (metadata, e) -> {
+          long elapsedTime = System.currentTimeMillis() - time;
+          if (metadata != null) {
+            System.out.printf("sent record(key=%s value=%s) " +
+                    "meta(partition=%d, offset=%d) time=%d\n",
+                record.key(), record.value(), metadata.partition(),
+                metadata.offset(), elapsedTime);
+          } else {
+            log.error(e.getMessage(), e);
+          }
+        });
       }
     } catch (Exception e) {
       log.error(e.getMessage(), e);
