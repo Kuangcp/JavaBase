@@ -8,14 +8,14 @@
 
 ************************
 
-| 基础  | 进阶 | 应用框架 |
+| 基础  | 进阶 | 应用 |
 |:----|:----|:----|
 | [Java8](/java-8)        | [并发](/java-concurrency) | [Netty](/java-netty)|
 | [集合](/java-collection) | [网络](/java-network)     |  [Guava](/java-guava)|
 | [算法](/java-algorithms) | [设计模式](/java-pattern) | [Spring](/java-spring)
 | [字节码](/java-class)    | [测试](/java-test)    | [Kafka](/java-kafka)|
-| [泛型](/java-generic)    | |
-| [IO](/java-io)          | |  |
+| [泛型](/java-generic)    |  | [Hadoop](/java-hadoop) | 
+| [IO](/java-io)          |  |  |
 
 [图形化](/java-gui) | [实际问题](/java-question)
 
@@ -27,7 +27,7 @@
 ************************
 
 ## 同类仓库
-> [tutorials](https://github.com/eugenp/tutorials) `baeldung` 
-> [Java 学习笔记](https://github.com/brianway/java-learning)  
-> [demo](https://gitee.com/code4everything/demo)  
+> [tutorials](https://github.com/eugenp/tutorials) `baeldung`   
+> [Java 学习笔记](https://github.com/brianway/java-learning)    
+> [demo](https://gitee.com/code4everything/demo)   
 
