@@ -1,5 +1,11 @@
 dependencies {
-    implementation libs["hadoop-common"]
-    implementation libs["hadoop-client"]
-    implementation libs["hadoop-hdfs"]
+    implementation (libs["hadoop-common"]) {
+        exclude group: 'org.slf4j'
+    }
+    implementation (libs["hadoop-client"]){
+        exclude group: 'org.slf4j'
+    }
+    implementation (libs["hadoop-hdfs"]){
+        exclude group: 'org.slf4j'
+    }
 }
