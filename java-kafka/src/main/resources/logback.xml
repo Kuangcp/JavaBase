@@ -72,6 +72,8 @@
     </filter>
   </appender>
 
+  <logger name="org.apache.kafka.clients" level="INFO" additivity="true"/>
+
   <root level="DEBUG">
     <appender-ref ref="STDOUT"/>
     <!--<appender-ref ref="DEBUG_FILE"/>-->

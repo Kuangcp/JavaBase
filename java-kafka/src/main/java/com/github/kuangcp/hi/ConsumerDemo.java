@@ -32,7 +32,7 @@ public class ConsumerDemo {
     while (true) {
       ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(100));
       for (ConsumerRecord<String, String> record : records) {
-        log.info("offset = {}, value = %{}", record.offset(), record.value());
+        log.info("offset = {}, value = {}", record.offset(), record.value());
       }
     }
   }
