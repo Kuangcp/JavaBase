@@ -13,9 +13,8 @@ import org.junit.Test;
 @Slf4j
 public class SplitDemoTest {
 
-
   // 截取第一次 target 出现之前的字符串
-  public String removeChar(String origin, String target) {
+  private String removeChar(String origin, String target) {
     int indexOf = origin.indexOf(target);
     if (indexOf == -1) {
       return origin;
@@ -24,7 +23,7 @@ public class SplitDemoTest {
   }
 
   // 去除最后一个字符
-  public String removeLast(String target) {
+  private String removeLast(String target) {
     if (Objects.isNull(target) || target.isEmpty()) {
       return "";
     }
@@ -47,5 +46,15 @@ public class SplitDemoTest {
       removeLast("122113.11.1.1.1.");
     }
     getRunTime.endCount("去除最后一个字符");
+  }
+
+  @Test
+  public void testEmpty() {
+    String line = "\"\",QP001,5";
+    String[] datas = line.split(",");
+    System.out.println(datas.length);
+    for (String data : datas) {
+      System.out.println(data);
+    }
   }
 }

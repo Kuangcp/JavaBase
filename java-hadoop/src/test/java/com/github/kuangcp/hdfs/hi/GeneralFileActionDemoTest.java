@@ -31,11 +31,11 @@ public class GeneralFileActionDemoTest {
     List<String> files = GeneralFileActionDemo.listFiles("/flink-batch");
     files.forEach(v -> {
       log.info("{}", v);
-//      try {
-//        GeneralFileActionDemo.deleteByURL(v);
-//      } catch (IOException e) {
-//        e.printStackTrace();
-//      }
+      try {
+        GeneralFileActionDemo.deleteByURL(v);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     });
   }
 
