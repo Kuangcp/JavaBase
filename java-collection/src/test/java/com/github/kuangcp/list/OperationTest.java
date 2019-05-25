@@ -12,13 +12,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * 交 差 并 补
+ * 交 差 并 补 集合运算
  *
  * @author kuangcp on 18-7-25-上午10:42
  */
 @Ignore
 @Slf4j
-public class ArrayListTest {
+public class OperationTest {
 
   private List<String> one = new ArrayList<>();
   private List<String> two = new ArrayList<>();
