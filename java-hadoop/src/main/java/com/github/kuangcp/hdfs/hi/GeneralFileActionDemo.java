@@ -26,32 +26,18 @@ import org.apache.hadoop.fs.Path;
 @Slf4j
 public class GeneralFileActionDemo {
 
-  private static String HDFS_HOST;
-  private static Configuration config;
-
-  static {
-    // "hdfs://127.0.0.1:8020"
-    HDFS_HOST = "hdfs://172.16.16.80:8020";
-
-    // warn for what ?
-//    System.setProperty("hadoop.home.dir", "/");
-
-    config = new Configuration();
-    config.set("fs.defaultFS", HDFS_HOST);
-  }
-
-  public static boolean createDirectory(String dirPath) throws IOException {
-    FileSystem fileSystem = FileSystem.get(config);
-    boolean result = fileSystem.mkdirs(new Path(dirPath));
+  public static boolean createDirectory(String url) throws IOException {
+    FileSystem fileSystem = FileSystem.get(getConfig(url));
+    boolean result = fileSystem.mkdirs(new Path(url));
     log.info("result={}", result);
     return result;
   }
 
-  public static void createNewFile(String toCreateFilePath, String content)
+  public static void createNewFile(String url, String content)
       throws IOException, InterruptedException {
-    FileSystem fs = FileSystem.get(config);
+    FileSystem fs = FileSystem.get(getConfig(url));
 
-    FSDataOutputStream os = fs.create(new Path(toCreateFilePath));
+    FSDataOutputStream os = fs.create(new Path(URI.create(url).getPath()));
     os.write(content.getBytes(StandardCharsets.UTF_8));
     os.flush();
     TimeUnit.SECONDS.sleep(4);
@@ -59,9 +45,9 @@ public class GeneralFileActionDemo {
     fs.close();
   }
 
-  public static List<String> listFiles(String DirFile) throws IOException {
-    FileSystem fs = FileSystem.get(URI.create(HDFS_HOST + DirFile), config);
-    Path path = new Path(DirFile);
+  public static List<String> listFiles(String url) throws IOException {
+    FileSystem fs = FileSystem.get(URI.create(url), getConfig(url));
+    Path path = new Path(url);
     FileStatus[] status = fs.listStatus(path);
 
     return Arrays.stream(status).map(v -> v.getPath().toString()).collect(Collectors.toList());
@@ -77,12 +63,8 @@ public class GeneralFileActionDemo {
 //    }
   }
 
-  public static boolean deleteByPath(String filePath) throws IOException {
-    return deleteByURL(HDFS_HOST + filePath);
-  }
-
   public static boolean deleteByURL(String url) throws IOException {
-    FileSystem fs = FileSystem.get(config);
+    FileSystem fs = FileSystem.get(getConfig(url));
     Path path = new Path(url);
     boolean isDeleted = fs.deleteOnExit(path);
     fs.close();
@@ -111,7 +93,7 @@ public class GeneralFileActionDemo {
    * notice that the url is the full path name
    */
   public static void readHDFSFile(String url) throws Exception {
-    FileSystem fs = FileSystem.get(config);
+    FileSystem fs = FileSystem.get(getConfig(url));
     Path path = new Path(url);
 
     // check if the file exists
@@ -120,7 +102,6 @@ public class GeneralFileActionDemo {
     }
 
     FSDataInputStream is = fs.open(path);
-
     // read line by line
     BufferedReader bufferedReader = new BufferedReader(
         new InputStreamReader(is, StandardCharsets.UTF_8));
@@ -136,5 +117,17 @@ public class GeneralFileActionDemo {
 
     is.close();
     fs.close();
+  }
+
+  private static Configuration getConfig(String url) {
+    Configuration config = new Configuration();
+    config.set("fs.defaultFS", getHost(url));
+
+    return config;
+  }
+
+  private static String getHost(String url) {
+    URI uri = URI.create(url);
+    return uri.getScheme() + "://" + uri.getHost() + ":" + uri.getPort();
   }
 }

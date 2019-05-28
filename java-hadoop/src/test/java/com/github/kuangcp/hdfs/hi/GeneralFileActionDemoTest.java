@@ -15,20 +15,22 @@ import org.junit.Test;
 @Slf4j
 public class GeneralFileActionDemoTest {
 
+  private static final String HDFS_HOST = "hdfs://172.16.16.80:8020";
+
   @Test
   public void testCreateDirectory() throws Exception {
-    boolean result = GeneralFileActionDemo.createDirectory("/flink-batch/test");
+    boolean result = GeneralFileActionDemo.createDirectory(HDFS_HOST + "/flink-batch/test");
     assertThat(result, equalTo(true));
   }
 
   @Test
   public void testCreateFile() throws IOException, InterruptedException {
-    GeneralFileActionDemo.createNewFile("/input/b.md", "fdasfasdfasd");
+    GeneralFileActionDemo.createNewFile(HDFS_HOST + "/input/b.md", "fdasfasdfasd");
   }
 
   @Test
   public void testList() throws IOException {
-    List<String> files = GeneralFileActionDemo.listFiles("/flink-batch");
+    List<String> files = GeneralFileActionDemo.listFiles(HDFS_HOST + "/flink-batch");
     files.forEach(v -> {
       log.info("{}", v);
       try {
@@ -41,14 +43,14 @@ public class GeneralFileActionDemoTest {
 
   @Test
   public void testDelete() throws IOException {
-    boolean result = GeneralFileActionDemo.deleteByPath("/input/b.md");
+    boolean result = GeneralFileActionDemo
+        .deleteByURL(HDFS_HOST + "/flink-batch/1559008370602_MONTH_2019-03-01_2019-03-27_SPU.csv");
     System.out.println(result);
   }
 
   @Test
   public void testRead() throws Exception {
-    // hdfs://172.16.16.80:8020
-    String url = "/flink-batch/SEASON2018-10-01_2018-12-31.csv";
-    GeneralFileActionDemo.readHDFSFile(url);
+    String url = "/flink-batch/1559008370602_MONTH_2019-03-01_2019-03-27_SPU.csv";
+    GeneralFileActionDemo.readHDFSFile(HDFS_HOST + url);
   }
 }
