@@ -7,7 +7,6 @@ allprojects {
 
   group = 'com.github.kuangcp'
 
-
   // default build dir is build/ but idea compile dir is out/, i'm dislike this way
   // dir out/ just have production/ and test/ dir
   buildDir = 'out/build'
@@ -19,20 +18,20 @@ allprojects {
     mavenLocal()
 
     def aliYun = "http://maven.aliyun.com/nexus/content/groups/public/"
-    def abroad = "http://central.maven.org/maven2/"
+    def kuangcp = "https://gitee.com/gin9/MavenRepos/raw/master"
+
     maven {
       url = aliYun
-      artifactUrls abroad
     }
     maven {
-      url = "https://gitee.com/gin9/MavenRepos/raw/master"
+      url = kuangcp
     }
     jcenter()
   }
-  
+
   // All sub-modules add the following dependencies
   dependencies {
-    
+
     annotationProcessor libs['lombok']
     compileOnly libs['lombok']
     testAnnotationProcessor libs['lombok']
