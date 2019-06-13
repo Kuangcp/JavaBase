@@ -81,5 +81,10 @@ ext {
       , "hadoop-common"           : "org.apache.hadoop:hadoop-common:$ver.hadoop"
       , "hadoop-client"           : "org.apache.hadoop:hadoop-client:$ver.hadoop"
       , "hadoop-hdfs"             : "org.apache.hadoop:hadoop-hdfs:$ver.hadoop"
+
+      // the dependencies with specific version for problem situation
+      , "cglib-3.2.4"             : "cglib:cglib:3.2.4"
+      , "asm-3.1"                 : "asm:asm:3.1"
+      , "asm-5.1"                 : "org.ow2.asm:asm:5.1"
   ]
 }
