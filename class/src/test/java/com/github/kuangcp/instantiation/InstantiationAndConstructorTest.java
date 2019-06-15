@@ -9,11 +9,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 /**
  * @author kuangcp on 3/9/19-5:48 PM
+ *
  * 实例化和构造器的关系
  *
  * clone 以及 serialize 创建对象时 不会调用构造器
@@ -23,23 +25,28 @@ public class InstantiationAndConstructorTest {
 
   @Test
   public void testInitByNew() {
-    new InstantiationAndConstructor();
-    new InstantiationAndConstructor("name");
+    InstantiationAndConstructor instance = new InstantiationAndConstructor("name");
+    log.info("instance={}", instance);
   }
 
+  // 反射实例化对象方式 实际上调用的空构造器
   @Test
-  public void testInitByNewInstance() throws IllegalAccessException, InstantiationException {
+  public void testInitByReflect1() throws IllegalAccessException, InstantiationException {
     InstantiationAndConstructor.class.newInstance();
   }
 
   @Test
   public void testInitByReflect() throws ReflectiveOperationException {
-    Constructor<InstantiationAndConstructor> constructor = InstantiationAndConstructor.class.getConstructor(String.class);
+    Constructor<InstantiationAndConstructor> constructor =
+        InstantiationAndConstructor.class.getConstructor(String.class);
 
-    String name = "use reflect";
+    String name = "get constructor by reflect";
     InstantiationAndConstructor domain = constructor.newInstance(name);
 
     assertThat(domain.getName(), equalTo(name));
+
+    Method d = InstantiationAndConstructor.class.getMethod("d");
+    d.invoke(new Object());
   }
 
   @Test
@@ -54,16 +61,19 @@ public class InstantiationAndConstructorTest {
 
   @Test
   public void testInitByDeserialize() throws IOException, ClassNotFoundException {
-    InstantiationAndConstructor targetObject = new InstantiationAndConstructor("name");
+    InstantiationAndConstructor origin = new InstantiationAndConstructor("name");
 
+    // 输出
     ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
     ObjectOutputStream output = new ObjectOutputStream(byteOutput);
-    output.writeObject(targetObject);
+    output.writeObject(origin);
 
+    // 输入
     ByteArrayInputStream byteInput = new ByteArrayInputStream(byteOutput.toByteArray());
-
     ObjectInputStream input = new ObjectInputStream(byteInput);
-    InstantiationAndConstructor result = (InstantiationAndConstructor) input.readObject();
-    assertThat(result.getName(), equalTo("name"));
+
+    InstantiationAndConstructor deserialize = (InstantiationAndConstructor) input.readObject();
+    assertThat(deserialize.getName(), equalTo("name"));
+
   }
 }

@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Data
 @Slf4j
-public class InstantiationAndConstructor implements Serializable, Cloneable {
+class InstantiationAndConstructor implements Serializable, Cloneable {
 
   private String name;
 
@@ -27,10 +27,4 @@ public class InstantiationAndConstructor implements Serializable, Cloneable {
     return super.clone();
   }
 
-  @Override
-  public String toString() {
-    return "TargetObject{" +
-        "name='" + name + '\'' +
-        '}';
-  }
 }

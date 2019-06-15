@@ -15,11 +15,10 @@ import org.junit.Test;
 public class ComplexConstructorTest {
 
   @Test
-  public void test() {
+  public void testInitField() {
     Server server = new Server(3306);
 
-    // TODO 解释
-    assertThat(server.actualPort == 0 || server.actualPort == Server.DEFAULT_PORT,
-        equalTo(true));
+    // TODO 永远为 0
+    assertThat(server.actualPort, equalTo(0));
   }
 }
