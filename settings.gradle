@@ -17,4 +17,5 @@ include(
     , 'spring'
     , 'kafka'
     , 'hadoop'
+    , 'flink'
 )

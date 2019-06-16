@@ -12,9 +12,9 @@ import lombok.extern.slf4j.Slf4j;
  * @author kuangcp
  */
 @Slf4j
-public class MythSerialize<T> {
+class MythSerialize<T> {
 
-  public T in(Class<T> target, InputStream inputStream) {
+  T in(Class<T> target, InputStream inputStream) {
     T object = null;
     try {
       Reader reader = new InputStreamReader(inputStream);
@@ -25,7 +25,6 @@ public class MythSerialize<T> {
       object = target.newInstance();
       Method[] methods = target.getDeclaredMethods();
       for (int i = 0; i < result.length; i += 3) {
-//                System.out.println("name:"+result[i+1]);
         for (Method method : methods) {
           if (method.getName().startsWith("set") && method.getName()
               .equals("set" + result[i + 1])) {

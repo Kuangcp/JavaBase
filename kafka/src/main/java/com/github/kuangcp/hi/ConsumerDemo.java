@@ -4,7 +4,7 @@ import static com.github.kuangcp.hi.Constants.HI_TOPIC;
 import static com.github.kuangcp.hi.Constants.KAFKA_SERVER;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.kuangcp.hi.dto.StartCommand;
+import com.github.kuangcp.hi.domain.StartCommand;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Collections;

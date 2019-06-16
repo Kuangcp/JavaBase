@@ -1,0 +1,4 @@
+dependencies {
+  implementation libs['flink-java']
+  implementation libs['flink-clients']
+}

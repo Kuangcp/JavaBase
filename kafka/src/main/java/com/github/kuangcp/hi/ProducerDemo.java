@@ -5,9 +5,9 @@ import static com.github.kuangcp.hi.Constants.KAFKA_SERVER;
 import static com.github.kuangcp.hi.Constants.START_TOPIC;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.kuangcp.hi.dto.ProductStatisticJobCommand;
-import com.github.kuangcp.hi.dto.ProductStatisticSpan;
-import com.github.kuangcp.hi.dto.StartCommand;
+import com.github.kuangcp.hi.domain.ProductStatisticJobCommand;
+import com.github.kuangcp.hi.domain.ProductStatisticSpan;
+import com.github.kuangcp.hi.domain.StartCommand;
 import com.github.kuangcp.io.ResourceTool;
 import java.io.IOException;
 import java.util.Date;

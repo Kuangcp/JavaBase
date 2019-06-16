@@ -1,4 +1,4 @@
-package com.github.kuangcp.hi.dto;
+package com.github.kuangcp.hi.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

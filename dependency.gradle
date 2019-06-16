@@ -18,6 +18,7 @@ ext {
       , spring  : '5.1.5.RELEASE'
       , aspectj : '1.9.0'
       , hadoop  : '2.7.2'
+      , flink   : '1.8.0'
   ]
   libs = [
       // mine tool
@@ -76,6 +77,10 @@ ext {
 
       // kafka
       , "kafka-clients"           : "org.apache.kafka:kafka-clients:$ver.kafka"
+      
+      // flink 
+      , "flink-java"              : "org.apache.flink:flink-java:$ver.flink"
+      , "flink-clients"           : "org.apache.flink:flink-clients_2.12:$ver.flink"
 
       // hadoop
       , "hadoop-common"           : "org.apache.hadoop:hadoop-common:$ver.hadoop"

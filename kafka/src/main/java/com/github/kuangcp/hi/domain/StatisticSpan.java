@@ -1,4 +1,4 @@
-package com.github.kuangcp.hi.dto;
+package com.github.kuangcp.hi.domain;
 
 public interface StatisticSpan {
 
