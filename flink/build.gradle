@@ -1,4 +1,20 @@
+version = '1.0.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
 dependencies {
   implementation libs['flink-java']
   implementation libs['flink-clients']
+}
+
+task uberJar(type: Jar) {
+  archiveClassifier = 'all-dependency'
+
+  from sourceSets.main.output
+
+  dependsOn configurations.runtimeClasspath
+  from {
+    configurations.runtimeClasspath.findAll {it.name.endsWith('jar')}.collect {zipTree(it)}
+  }
 }

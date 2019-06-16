@@ -1,10 +1,7 @@
 package com.github.kuangcp.hi;
 
-import com.github.kuangcp.hi.domain.CalculateVO;
-import com.github.kuangcp.hi.util.HDFSOutputFormat;
+import com.github.kuangcp.hi.util.SimpleSink;
 import com.github.kuangcp.hi.util.SourceProvider;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +19,10 @@ import org.apache.flink.api.java.tuple.Tuple2;
  * @since 2019-05-16 16:26
  */
 @Slf4j
-public class PartsSpuStatistic {
+public class SimpleStatistic {
 
   private static final ExecutionEnvironment ENV;
+  private static final int taskNum = 5;
 
   static {
     ENV = ExecutionEnvironment.getExecutionEnvironment();
@@ -32,15 +30,9 @@ public class PartsSpuStatistic {
 
   public static void main(String[] args) throws Exception {
     try {
-      if (Objects.isNull(args) || args.length != 1) {
-        log.warn("invalid param: args={} {}", args, "");
-        return;
+      for (int i = 0; i < taskNum; i++) {
+        calculateAndAggregate("batch-" + i);
       }
-
-      String originStr = new String(Base64.getDecoder().decode(args[0]), StandardCharsets.UTF_8);
-      log.info("command: originStr={}", originStr);
-
-      calculateOrder();
     } catch (Throwable e) {
       log.error(e.getMessage(), e);
     }
@@ -48,29 +40,25 @@ public class PartsSpuStatistic {
     ENV.execute("PartsSpuStatistic");
   }
 
-  @SuppressWarnings("deprecation")
-  static void calculateOrder() throws Exception {
-
-    calculateAndAggregate(new CalculateVO());
-  }
-
   /**
    * 分页计算并聚合
    */
-  private static void calculateAndAggregate(CalculateVO partitionVO) {
+  private static void calculateAndAggregate(String batchId) {
     AggregateOperator<Tuple2<String, Integer>> result = null;
 
-    SourceProvider provider = new SourceProvider(partitionVO);
+    SourceProvider provider = new SourceProvider(batchId);
     while (provider.hasNextPage()) {
       List<String> data = provider.generateResource();
       DataSource<String> source = ENV.fromCollection(data);
 
+      // 合并窗口数据
       DataSet<Tuple2<String, Integer>> counts = source
           .filter(Objects::nonNull)
           .map(new Mapper())
           .groupBy(0)
           .sum(1);
 
+      // 当前窗口和历史数据合并
       if (Objects.isNull(result)) {
         result = counts.groupBy(0).sum(1);
       } else {
@@ -83,7 +71,7 @@ public class PartsSpuStatistic {
       return;
     }
 
-    result.output(new HDFSOutputFormat(partitionVO));
+    result.output(new SimpleSink(batchId));
   }
 
   public static final class Mapper implements

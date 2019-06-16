@@ -1,6 +1,5 @@
 package com.github.kuangcp.hi.util;
 
-import com.github.kuangcp.hi.domain.CalculateVO;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,14 +16,15 @@ import org.apache.flink.configuration.Configuration;
 @lombok.Data
 @Slf4j
 @EqualsAndHashCode(callSuper = true)
-public class HDFSOutputFormat extends RichOutputFormat<Tuple2<String, Integer>> {
+public class SimpleSink extends RichOutputFormat<Tuple2<String, Integer>> {
 
-  private CalculateVO partitionVO;
+  private String name;
   private long createTime = System.currentTimeMillis();
+  // 如果给属性加上 transient 修饰, 就会报错 因为无法同步数据
   private List<Tuple2<String, Integer>> resultList = new LinkedList<>();
 
-  public HDFSOutputFormat(CalculateVO partitionVO) {
-    this.partitionVO = partitionVO;
+  public SimpleSink(String name) {
+    this.name = name;
   }
 
   @Override
@@ -43,8 +43,14 @@ public class HDFSOutputFormat extends RichOutputFormat<Tuple2<String, Integer>> 
   @Override
   public void close() {
     try {
+      log.info("size={}", resultList.size());
+      for (Tuple2<String, Integer> tuple : resultList) {
+        String name = tuple.f0;
+        Integer count = tuple.f1;
+
+        System.out.println("FinalResult " + name + " " + count);
+      }
     } catch (Exception e) {
-      log.error("创建文件失败, HDFS 服务不可用");
       log.error(e.getMessage(), e);
     }
   }
