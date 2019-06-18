@@ -1,4 +1,4 @@
-package com.github.kuangcp.hi.util;
+package com.github.kuangcp.hi;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -23,7 +23,7 @@ public class SimpleSink extends RichOutputFormat<Tuple2<String, Integer>> {
   // 如果给属性加上 transient 修饰, 就会报错 因为无法同步数据
   private List<Tuple2<String, Integer>> resultList = new LinkedList<>();
 
-  public SimpleSink(String name) {
+  SimpleSink(String name) {
     this.name = name;
   }
 
@@ -43,13 +43,7 @@ public class SimpleSink extends RichOutputFormat<Tuple2<String, Integer>> {
   @Override
   public void close() {
     try {
-      log.info("size={}", resultList.size());
-      for (Tuple2<String, Integer> tuple : resultList) {
-        String name = tuple.f0;
-        Integer count = tuple.f1;
-
-        System.out.println("FinalResult " + name + " " + count);
-      }
+      resultList.forEach(t -> log.info("name={} count={}", t.f0, t.f1));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
     }

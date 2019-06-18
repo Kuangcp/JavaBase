@@ -1,10 +1,9 @@
 package com.github.kuangcp.hi;
 
-import com.github.kuangcp.hi.util.SimpleSink;
-import com.github.kuangcp.hi.util.SourceProvider;
 import java.util.List;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
@@ -22,7 +21,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 public class SimpleStatistic {
 
   private static final ExecutionEnvironment ENV;
-  private static final int taskNum = 5;
+  private static final int taskNum = 1;
 
   static {
     ENV = ExecutionEnvironment.getExecutionEnvironment();
@@ -36,8 +35,16 @@ public class SimpleStatistic {
     } catch (Throwable e) {
       log.error(e.getMessage(), e);
     }
-    // 必须是方法的最后一行 否则 Flink 的执行计划无法生成
     ENV.execute("PartsSpuStatistic");
+
+    JobExecutionResult lastJobExecutionResult = ENV.getLastJobExecutionResult();
+    lastJobExecutionResult.getAllAccumulatorResults()
+        .forEach((k, v) -> log.error("failed : k={} {}", k, v));
+    if (lastJobExecutionResult.getAllAccumulatorResults().isEmpty()) {
+      log.info("run success");
+    } else {
+      log.error("run failed");
+    }
   }
 
   /**
@@ -46,19 +53,19 @@ public class SimpleStatistic {
   private static void calculateAndAggregate(String batchId) {
     AggregateOperator<Tuple2<String, Integer>> result = null;
 
-    SourceProvider provider = new SourceProvider(batchId);
+    SimpleSource provider = new SimpleSource(batchId);
     while (provider.hasNextPage()) {
       List<String> data = provider.generateResource();
       DataSource<String> source = ENV.fromCollection(data);
 
-      // 合并窗口数据
+      // 合并窗口内数据
       DataSet<Tuple2<String, Integer>> counts = source
           .filter(Objects::nonNull)
           .map(new Mapper())
           .groupBy(0)
           .sum(1);
 
-      // 当前窗口和历史数据合并
+      // 当前窗口内和历史数据合并
       if (Objects.isNull(result)) {
         result = counts.groupBy(0).sum(1);
       } else {

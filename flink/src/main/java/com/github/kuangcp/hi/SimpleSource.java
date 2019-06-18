@@ -1,4 +1,4 @@
-package com.github.kuangcp.hi.util;
+package com.github.kuangcp.hi;
 
 import java.time.Month;
 import java.util.List;
@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
  * 2019-06-16 15:12
  */
 @Slf4j
-public class SourceProvider {
+class SimpleSource {
 
   private String id;
 
@@ -20,15 +20,15 @@ public class SourceProvider {
 
   private int cursor;
 
-  public SourceProvider(String id) {
+  SimpleSource(String id) {
     this.id = id;
   }
 
-  public boolean hasNextPage() {
+  boolean hasNextPage() {
     return cursor < pageNum;
   }
 
-  public List<String> generateResource() {
+  List<String> generateResource() {
     cursor++;
     log.info("source: id={} cursor={}", id, cursor);
     return IntStream.rangeClosed(1, pageSize)
