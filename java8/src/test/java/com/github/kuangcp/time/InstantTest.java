@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 /**
- * https://github.com/kuangcp
+ * 用于表示一个瞬时
  *
  * @author kuangcp on 18-8-4-下午11:40
  */

@@ -1,8 +1,6 @@
 package com.github.kuangcp.stream.list;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.Before;
+import java.util.stream.IntStream;
 import org.junit.Test;
 
 /**
@@ -10,19 +8,10 @@ import org.junit.Test;
  */
 public class HandleExceptionTest {
 
-  private List<Integer> data = new ArrayList<>();
-
-  @Before
-  public void init() {
-    for (int i = 0; i < 10; i++) {
-      data.add(i);
-    }
-  }
-
   // NPE in stream
   @Test(expected = NullPointerException.class)
   public void testException() {
-    data.forEach(s -> {
+    IntStream.rangeClosed(1, 10).forEach(s -> {
       System.out.println(s);
       if (s > 7) {
         throw new NullPointerException("Oops ");

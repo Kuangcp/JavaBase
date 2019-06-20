@@ -6,13 +6,12 @@ import org.junit.Test;
 
 /**
  * Created by https://github.com/kuangcp
- * Java8 中新类 LocalDateTime
+ * Java8 时间类 LocalDateTime
  *
  * @author kuangcp
  */
 @Slf4j
 public class LocalDateTimeTest {
-
 
   @Test
   public void testGet() {
@@ -23,4 +22,5 @@ public class LocalDateTimeTest {
 
     log.debug("{} {}", dateTime.getDayOfWeek(), dateTime.getDayOfYear());
   }
+
 }

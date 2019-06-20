@@ -1,5 +1,7 @@
 package syntax.integer;
 
+import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 import org.junit.Test;
 
 /**
@@ -25,5 +27,24 @@ public class IntegerCacheTest {
       // 编译后等价于 sum = Integer.valueOf((int)(sum.intValue() + i));
     }
     System.out.println(sum);
+  }
+
+  // 自动拆装箱 NPE问题
+  @Test(expected = NullPointerException.class)
+  public void testBoxWithNPE() {
+    Integer num = null;
+    if (num == 1) {
+      System.out.println();
+    }
+  }
+
+  @Test
+  public void testAvoidBoxWithNPE() {
+    Integer num = ThreadLocalRandom.current().nextInt(100) > 50 ? null : 1;
+    if (Objects.equals(num, 1)) {
+      System.out.println("less");
+    } else {
+      System.out.println("more");
+    }
   }
 }

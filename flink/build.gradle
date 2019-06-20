@@ -8,13 +8,20 @@ dependencies {
   implementation libs['flink-clients']
 }
 
+application {
+  mainClassName = "com.github.kuangcp.hi.SimpleStatistic"
+}
+
+
 task uberJar(type: Jar) {
   archiveClassifier = 'all-dependency'
 
   from sourceSets.main.output
-
   dependsOn configurations.runtimeClasspath
   from {
-    configurations.runtimeClasspath.findAll {it.name.endsWith('jar')}.collect {zipTree(it)}
+    configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+  }
+  manifest {
+    attributes 'Main-Class': 'com.github.kuangcp.hi.SimpleStatistic'
   }
 }

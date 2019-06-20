@@ -10,7 +10,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
 
 /**
- * @author kuangchengping@qipeipu.com
+ * @author https://github.com/kuangcp
  * @since 2019-05-30 20:36
  */
 @lombok.Data

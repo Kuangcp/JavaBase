@@ -12,9 +12,7 @@ import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.tuple.Tuple2;
 
 /**
- * 将数据格式化并输出到HDFS
- *
- * @author kuangchengping@qipeipu.com
+ * @author https://github.com/kuangcp
  * @since 2019-05-16 16:26
  */
 @Slf4j
