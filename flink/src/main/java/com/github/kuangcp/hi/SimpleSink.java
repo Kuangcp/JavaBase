@@ -43,7 +43,7 @@ public class SimpleSink extends RichOutputFormat<Tuple2<String, Integer>> {
   @Override
   public void close() {
     try {
-      resultList.forEach(t -> log.info("name={} count={}", t.f0, t.f1));
+      resultList.forEach(t -> log.info("close by sink: name={} count={}", t.f0, t.f1));
     } catch (Exception e) {
       log.error(e.getMessage(), e);
     }

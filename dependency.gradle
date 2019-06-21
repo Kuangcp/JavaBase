@@ -81,6 +81,7 @@ ext {
       // flink 
       , "flink-java"              : "org.apache.flink:flink-java:$ver.flink"
       , "flink-clients"           : "org.apache.flink:flink-clients_2.12:$ver.flink"
+      , "flink-streaming-java"           : "org.apache.flink:flink-streaming-java_2.12:$ver.flink"
 
       // hadoop
       , "hadoop-common"           : "org.apache.hadoop:hadoop-common:$ver.hadoop"

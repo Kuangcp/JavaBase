@@ -6,12 +6,12 @@ apply plugin: 'application'
 dependencies {
   implementation libs['flink-java']
   implementation libs['flink-clients']
+  implementation libs['flink-streaming-java']
 }
 
 application {
   mainClassName = "com.github.kuangcp.hi.SimpleStatistic"
 }
-
 
 task uberJar(type: Jar) {
   archiveClassifier = 'all-dependency'

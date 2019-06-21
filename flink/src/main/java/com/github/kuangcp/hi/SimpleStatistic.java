@@ -26,6 +26,7 @@ public class SimpleStatistic {
   }
 
   public static void main(String[] args) throws Exception {
+    log.info("start calculate");
     try {
       for (int i = 0; i < taskNum; i++) {
         calculateAndAggregate("batch-" + i);
@@ -33,6 +34,8 @@ public class SimpleStatistic {
     } catch (Throwable e) {
       log.error(e.getMessage(), e);
     }
+
+    ENV.getConfig().setAutoWatermarkInterval(1000);
     ENV.execute("PartsSpuStatistic");
 
     JobExecutionResult lastJobExecutionResult = ENV.getLastJobExecutionResult();
@@ -70,6 +73,7 @@ public class SimpleStatistic {
         DataSet<Tuple2<String, Integer>> temp = result.union(counts);
         result = temp.groupBy(0).sum(1);
       }
+      log.info("aggregate once");
     }
 
     if (Objects.isNull(result)) {
