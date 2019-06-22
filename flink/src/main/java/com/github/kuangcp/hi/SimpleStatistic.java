@@ -2,6 +2,7 @@ package com.github.kuangcp.hi;
 
 import java.util.List;
 import java.util.Objects;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -46,6 +47,8 @@ public class SimpleStatistic {
     } else {
       log.error("run failed");
     }
+
+    System.exit(1);
   }
 
   /**

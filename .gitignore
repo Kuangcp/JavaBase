@@ -9,6 +9,7 @@ target/
 .idea/
 *.iml
 out/
+*.ipr
 
 # eclipse #
 bin/
