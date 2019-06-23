@@ -10,6 +10,7 @@ include(
     , 'question'
     , 'pattern'
     , 'java8'
+    , 'java11'
     , 'concurrency'
     , 'test'
     , 'guava'

@@ -37,6 +37,7 @@ public class SimpleStatistic {
     }
 
     ENV.getConfig().setAutoWatermarkInterval(1000);
+
     ENV.execute("PartsSpuStatistic");
 
     JobExecutionResult lastJobExecutionResult = ENV.getLastJobExecutionResult();
@@ -47,8 +48,6 @@ public class SimpleStatistic {
     } else {
       log.error("run failed");
     }
-
-    System.exit(1);
   }
 
   /**

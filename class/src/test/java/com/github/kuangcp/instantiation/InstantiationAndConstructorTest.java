@@ -42,33 +42,39 @@ public class InstantiationAndConstructorTest {
 
     String name = "get constructor by reflect";
     InstantiationAndConstructor domain = constructor.newInstance(name);
-
     assertThat(domain.getName(), equalTo(name));
 
-    Method d = InstantiationAndConstructor.class.getMethod("d");
-    d.invoke(new Object());
+    Method method = InstantiationAndConstructor.class.getMethod("setName", String.class);
+    name = "by method";
+    method.invoke(domain, name);
+    assertThat(domain.getName(), equalTo(name));
   }
 
   @Test
   public void testInitByClone() throws CloneNotSupportedException {
-    InstantiationAndConstructor target = new InstantiationAndConstructor();
+    String name = "clone";
+    InstantiationAndConstructor target = new InstantiationAndConstructor(name);
 
-    Object clone = target.clone();
+    log.info("start clone");
+    InstantiationAndConstructor clone = target.clone();
     assertThat(target, equalTo(clone));
 
     assertThat(clone == target, equalTo(false));
+    assertThat(clone.getName(), equalTo("clone"));
   }
 
   @Test
   public void testInitByDeserialize() throws IOException, ClassNotFoundException {
     InstantiationAndConstructor origin = new InstantiationAndConstructor("name");
 
-    // 输出
+    // 序列化
+    log.info("start serialize");
     ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
     ObjectOutputStream output = new ObjectOutputStream(byteOutput);
     output.writeObject(origin);
 
-    // 输入
+    // 反序列化
+    log.info("start deserialize");
     ByteArrayInputStream byteInput = new ByteArrayInputStream(byteOutput.toByteArray());
     ObjectInputStream input = new ObjectInputStream(byteInput);
 

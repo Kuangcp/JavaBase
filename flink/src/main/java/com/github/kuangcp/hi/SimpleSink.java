@@ -10,6 +10,8 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
 
 /**
+ * 模拟输出到文件
+ *
  * @author https://github.com/kuangcp
  * @since 2019-05-30 20:36
  */

@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 /**
+ * 测试 实例化对象和构造器之间的关系
+ *
  * @author kuangcp on 3/9/19-5:46 PM
  */
 @Data
@@ -13,18 +15,25 @@ class InstantiationAndConstructor implements Serializable, Cloneable {
 
   private String name;
 
+  static {
+    log.info("invoke static init block");
+  }
+
+  {
+    log.info("invoke init block");
+  }
+
   public InstantiationAndConstructor() {
     log.info("invoke empty constructor");
   }
 
   public InstantiationAndConstructor(String name) {
     this.name = name;
-    log.info("invoke constructor: name={}", name);
+    log.info("invoke constructor(name): name={}", name);
   }
 
   @Override
-  protected Object clone() throws CloneNotSupportedException {
-    return super.clone();
+  protected InstantiationAndConstructor clone() throws CloneNotSupportedException {
+    return (InstantiationAndConstructor) super.clone();
   }
-
 }
