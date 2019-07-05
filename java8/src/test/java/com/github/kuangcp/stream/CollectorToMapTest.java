@@ -1,4 +1,4 @@
-package com.github.kuangcp.stream.map;
+package com.github.kuangcp.stream;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +14,7 @@ import org.junit.Test;
  * @date 2019-05-13 10:34
  */
 @Slf4j
-public class ToMapTest {
+public class CollectorToMapTest {
 
   @Data
   @Builder

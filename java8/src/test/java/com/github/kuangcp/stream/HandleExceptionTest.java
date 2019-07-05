@@ -1,4 +1,4 @@
-package com.github.kuangcp.stream.list;
+package com.github.kuangcp.stream;
 
 import java.util.stream.IntStream;
 import org.junit.Test;
