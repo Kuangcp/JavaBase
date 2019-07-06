@@ -38,4 +38,11 @@ public class FlatMapTest {
     map.forEach((k, v) -> results.addAll(v));
     runTime.endCountOneLine();
   }
+
+  @Test
+  public void testDouble() {
+    double d = 23;
+    Object ob = d;
+    System.out.println(ob);
+  }
 }
