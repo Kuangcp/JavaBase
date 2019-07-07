@@ -7,6 +7,7 @@ import sun.misc.Unsafe;
  * -Xmx20M -XX:MaxDirectMemorySize=10M
  *
  * TODO 瞬间内存占满 似乎该参数在8中失效了
+ * TODO Java11 中删除了 sun 包, 需要找到替代方式获取直接内存
  *
  * @author kuangcp on 4/4/19-12:29 AM
  */
