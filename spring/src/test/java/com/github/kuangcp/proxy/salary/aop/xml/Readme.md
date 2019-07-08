@@ -1,0 +1,6 @@
+# 使用 XML 实现 AOP
+
+如果目标类实现了接口，则spring容器会采用jdkproxy,如果目标类没有实现接口
+
+则spring容器会采用  cglibproxy
+

@@ -28,8 +28,12 @@ public class ConcurrentModificationTest {
   // 经测试 ArrayList LinkedList Vector 行为均一致
   private List<String> list = new ArrayList<>();
 
-  // 虽然不会抛出异常, 但是会有bug, 因为list的长度随着remove在变小,
-  // 但是 遍历用的index没有随之变化, 就会出现元素被跳过没有被索引到的情况
+  /**
+   * 错误
+   *
+   * 虽然不会抛出异常, 但是有bug, 因为list的长度随着remove在变小,
+   * 但是 遍历用的index没有随之变化, 就会出现元素被跳过没有被索引到的情况
+   */
   @Test
   public void testNormal() {
     for (int i = 0; i < list.size(); i++) {
@@ -41,7 +45,41 @@ public class ConcurrentModificationTest {
     assertThat(list.size(), equalTo(6));
   }
 
-  // 这样写就没有任何错误了, 但是显然的这代码性能低下, 可读性差
+  /**
+   * 错误
+   *
+   * 反编译后的代码, forEach 实际上是语法糖, next 方法必然抛出异常
+   *
+   * <pre>
+   * Iterator var1 = this.list.iterator();
+   * while(var1.hasNext()) {
+   *   String x = (String)var1.next();
+   *   if (x.equals("del")) {
+   *     this.list.remove(x);
+   *   }
+   * }
+   * </pre>
+   */
+  @Test(expected = ConcurrentModificationException.class)
+  public void testForEach() {
+    for (String x : list) {
+      if (x.equals("del")) {
+        // 关键在于这里, 这个remove是使用迭代器遍历list, 找到目标后再复制原数组将对应的对象移除
+        // 其中 next() 方法调用了 checkForComodification 方法
+        // 由于 remove的调用增加了 modCount 所以在移除了一次后就抛出异常了
+        list.remove(x);
+        log.info("remove one");
+        // 如果这里加上 break语句 就没有异常, 这是因为修改了 modCount 但是不会执行到 next 方法
+//        break;
+      }
+    }
+  }
+
+  /**
+   * 正确
+   *
+   * 但是显然的性能低下, 可读性差
+   */
   @Test
   public void testNormalCorrect() {
     while (true) {
@@ -52,6 +90,8 @@ public class ConcurrentModificationTest {
           break;
         }
       }
+
+      // 没有需要移除的元素
       if (i == list.size()) {
         break;
       }
@@ -60,41 +100,22 @@ public class ConcurrentModificationTest {
     assertThat(list.size(), equalTo(4));
   }
 
-  // 反编译后的方法, forEach 实际上是语法糖
-  // Iterator var1 = this.list.iterator();
-  //    while(var1.hasNext()) {
-  //      String x = (String)var1.next();
-  //      if (x.equals("del")) {
-  //        this.list.remove(x);
-  //      }
-  //    }
-  @Test(expected = ConcurrentModificationException.class)
-  public void testForEach() {
-    for (String x : list) {
-      if (x.equals("del")) {
-        // 关键在于这里, 这个remove是遍历list, 找到一致的再复制数组将对应的对象移除
-        // 其中调用了 checkForComodification 方法, 由于 remove的调用增加了 modCount 所以就抛出异常了
-        list.remove(x);
-        // 如果这里加上 break语句 就没有异常, 这是因为修改了 modCount 但是不会执行到 next 方法
-//        break;
-      }
-    }
-  }
-
+  /**
+   * 正确
+   */
   @Test
   public void testIterator() {
     Iterator<String> it = list.iterator();
     while (it.hasNext()) {
       String x = it.next();
       if (x.equals("del")) {
-        // remove中有 expectedModCount = modCount; 避免了 ConcurrentModificationException
+        // remove中有 expectedModCount = modCount; 保证了两个值的一致性 避免了 ConcurrentModificationException
         it.remove();
       }
     }
     assertThat(list.size(), equalTo(4));
 
-    // 以上在Java8中可以简写为
-    //  list.removeIf(x -> x.equals("del"));
+    // 以上代码块在Java8中可以简写为  list.removeIf(x -> x.equals("del"));
   }
 
   @Before
@@ -104,15 +125,15 @@ public class ConcurrentModificationTest {
       list.add(i + "");
       list.add("del");
     }
-    for (int i = 0; i < 3; i++) {
-      list.add("del");
-    }
+
+    list.add("del");
     list.add("test");
     list.add("del");
   }
 
   @After
   public void after() {
+    log.info("result: ");
     list.forEach(System.out::println);
   }
 }
