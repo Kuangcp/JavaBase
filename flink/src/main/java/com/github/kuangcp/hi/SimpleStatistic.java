@@ -3,6 +3,7 @@ package com.github.kuangcp.hi;
 import java.util.List;
 import java.util.Objects;
 
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -13,6 +14,8 @@ import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.tuple.Tuple2;
 
 /**
+ * Batch 的 调用是通过 REST API的, 只能在发起请求的地方依据返回值来判断是否执行完成和成功
+ *
  * @author https://github.com/kuangcp
  * @since 2019-05-16 16:26
  */
@@ -36,18 +39,7 @@ public class SimpleStatistic {
       log.error(e.getMessage(), e);
     }
 
-    ENV.getConfig().setAutoWatermarkInterval(1000);
-
     ENV.execute("SimpleStatistic");
-
-    JobExecutionResult lastJobExecutionResult = ENV.getLastJobExecutionResult();
-    lastJobExecutionResult.getAllAccumulatorResults()
-        .forEach((k, v) -> log.error("failed : k={} {}", k, v));
-    if (lastJobExecutionResult.getAllAccumulatorResults().isEmpty()) {
-      log.info("run success");
-    } else {
-      log.error("run failed");
-    }
   }
 
   /**
@@ -70,12 +62,11 @@ public class SimpleStatistic {
 
       // 当前窗口内和历史数据合并
       if (Objects.isNull(result)) {
-        result = counts.groupBy(0).sum(1);
+        result = counts.groupBy(0).sum(1).name("cache");
       } else {
-        DataSet<Tuple2<String, Integer>> temp = result.union(counts);
-        result = temp.groupBy(0).sum(1);
+        DataSet<Tuple2<String, Integer>> temp = result.union(counts).name("union cache");
+        result = temp.groupBy(0).sum(1).name("merge cache");
       }
-      log.info("aggregate once");
     }
 
     if (Objects.isNull(result)) {
