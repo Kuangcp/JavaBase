@@ -22,7 +22,7 @@ class MythSerialize<T> {
       String line = bufferedReader.readLine();
       line = line.substring(1, line.length() - 1);
       String[] result = line.split("[,:]");
-      object = target.newInstance();
+      object = target.getDeclaredConstructor().newInstance();
       Method[] methods = target.getDeclaredMethods();
       for (int i = 0; i < result.length; i += 3) {
         for (Method method : methods) {
@@ -46,8 +46,8 @@ class MythSerialize<T> {
           }
         }
       }
-    } catch (InstantiationException | IOException | IllegalAccessException | InvocationTargetException e) {
-      e.printStackTrace();
+    } catch (InstantiationException | IOException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+      log.error(e.getMessage(), e);
     }
     return object;
   }

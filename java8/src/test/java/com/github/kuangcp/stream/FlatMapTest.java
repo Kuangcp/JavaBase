@@ -47,4 +47,11 @@ public class FlatMapTest {
     runTime.endCountOneLine();
     assertThat(results.size(), equalTo(4 * amount));
   }
+
+  @Test
+  public void testDouble() {
+    double d = 23;
+    Object ob = d;
+    System.out.println(ob);
+  }
 }
