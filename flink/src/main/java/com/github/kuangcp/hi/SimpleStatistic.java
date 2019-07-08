@@ -38,7 +38,7 @@ public class SimpleStatistic {
 
     ENV.getConfig().setAutoWatermarkInterval(1000);
 
-    ENV.execute("PartsSpuStatistic");
+    ENV.execute("SimpleStatistic");
 
     JobExecutionResult lastJobExecutionResult = ENV.getLastJobExecutionResult();
     lastJobExecutionResult.getAllAccumulatorResults()
