@@ -43,5 +43,6 @@ subprojects {
     testImplementation libs['junit']
     testImplementation libs['hamcrest-core']
     testImplementation libs['hamcrest-lib']
+    implementation project(":common-config")
   }
 }
