@@ -10,9 +10,12 @@ import com.github.kuangcp.hi.domain.ProductStatisticSpan;
 import com.github.kuangcp.hi.domain.StartCommand;
 import com.github.kuangcp.io.ResourceTool;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Properties;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -74,23 +77,24 @@ public class ProducerDemo {
     Producer<String, String> producer = null;
     HashSet<ProductStatisticSpan> spans = new HashSet<>();
     spans.add(ProductStatisticSpan.MONTH);
-    spans.add(ProductStatisticSpan.YEAR);
 
     try {
       producer = new KafkaProducer<>(properties);
-      for (int i = 0; i < 20; i++) {
+      for (int i = 0; i < 2; i++) {
         ProductStatisticJobCommand msg = ProductStatisticJobCommand.builder()
-            .startTime(new Date()).endTime(new Date()).id("32131" + i).productStatisticSpan(spans)
+            .id(UUID.randomUUID().toString() + "_test_" + i)
+            .startTime(toDate(LocalDateTime.now().withMonth(1)))
+            .endTime(toDate(LocalDateTime.now().withMonth(3)))
+            .productStatisticSpan(spans)
             .build();
-        ProducerRecord<String, String> record = new ProducerRecord<>(
-            "OFC_PRODUCT_STATISTIC_JOB_DISPATCHING", mapper.writeValueAsString(msg));
+        ProducerRecord<String, String> record = new ProducerRecord<>(Constants.COMMAND_TOPIC,
+            mapper.writeValueAsString(msg));
 
         long time = System.currentTimeMillis();
         producer.send(record, (metadata, e) -> {
           long elapsedTime = System.currentTimeMillis() - time;
           if (metadata != null) {
-            System.out.printf("sent record(key=%s value=%s) " +
-                    "meta(partition=%d, offset=%d) time=%d\n",
+            log.info("sent record(key={} value={}) meta(partition={}, offset={}) time={}",
                 record.key(), record.value(), metadata.partition(),
                 metadata.offset(), elapsedTime);
           } else {
@@ -109,6 +113,9 @@ public class ProducerDemo {
     }
   }
 
+  public static Date toDate(LocalDateTime dateTime) {
+    return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
+  }
 
   private static Properties getConf() {
     Properties properties = new Properties();

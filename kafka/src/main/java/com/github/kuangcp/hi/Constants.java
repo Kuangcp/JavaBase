@@ -12,4 +12,6 @@ public interface Constants {
   String HI_TOPIC = "Hi";
 
   String START_TOPIC = "start";
+
+  String COMMAND_TOPIC = "OFC_PRODUCT_STATISTIC_JOB_DISPATCHING";
 }
