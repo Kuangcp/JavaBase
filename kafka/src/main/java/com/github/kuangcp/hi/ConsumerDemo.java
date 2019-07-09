@@ -4,6 +4,7 @@ import static com.github.kuangcp.hi.Constants.HI_TOPIC;
 import static com.github.kuangcp.hi.Constants.KAFKA_SERVER;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.kuangcp.hi.domain.ProductStatisticJobCommand;
 import com.github.kuangcp.hi.domain.StartCommand;
 import java.io.IOException;
 import java.time.Duration;
@@ -37,14 +38,14 @@ public class ConsumerDemo {
     }
   }
 
-  static void receiveStart() throws IOException {
+  static void receiveCommand() throws IOException {
     KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
-    kafkaConsumer.subscribe(Collections.singletonList("OFC_PRODUCT_STATISTIC_JOB_DISPATCHING"));
+    kafkaConsumer.subscribe(Collections.singletonList(Constants.COMMAND_TOPIC));
     while (true) {
       ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(100));
       for (ConsumerRecord<String, String> record : records) {
         log.info("offset = {}, value = {}", record.offset(), record.value());
-        StartCommand command = mapper.readValue(record.value(), StartCommand.class);
+        ProductStatisticJobCommand command = mapper.readValue(record.value(), ProductStatisticJobCommand.class);
         System.out.println(command);
       }
     }

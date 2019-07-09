@@ -16,7 +16,7 @@ public class ConsumerDemoTest {
 
 
   @Test
-  public void testReceiveStart() throws IOException {
-    ConsumerDemo.receiveStart();
+  public void testReceiveCommand() throws IOException {
+    ConsumerDemo.receiveCommand();
   }
 }
