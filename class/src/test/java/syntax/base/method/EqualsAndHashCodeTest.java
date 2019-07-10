@@ -11,9 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 /**
- * @author kuangcp on 3/5/19-11:17 AM
- * 值类 必须重写 equals 使得比较时比较的是所有属性的值而不是地址
- * 其他普通类 不重写
+ * @author kuangcp
+ *
+ * 值类 必须重写 equals 使得比较时比较的是所有属性的值而不是地址 其他普通类 不重写
  */
 @Slf4j
 public class EqualsAndHashCodeTest {
@@ -33,7 +33,8 @@ public class EqualsAndHashCodeTest {
     private int age;
   }
 
-  // 若 hashCode 相等,不一定 equals; 若equals,hashCode一定相等
+  // 若 hashCode 相等,则 不一定满足 equals;
+  // 若满足 equals, 则 hashCode一定相等
   @Test
   public void testEquals() {
     Target target = new Target("you", 3);
@@ -44,8 +45,6 @@ public class EqualsAndHashCodeTest {
 
     assertThat(target.hashCode(), equalTo(you.hashCode()));
   }
-
-///////////////////////////////////////////
 
   class Electronics {
 
@@ -61,7 +60,7 @@ public class EqualsAndHashCodeTest {
     @Override
     public boolean equals(Object obj) {
       // 如果改成 用 类去判断 就能避免问题
-//      if(Objects.nonNull(obj) && obj.getClass() == this.getClass()){
+      // if(Objects.nonNull(obj) && obj.getClass() == this.getClass())
       if (Objects.nonNull(obj) && obj instanceof Electronics) {
         Electronics phone = (Electronics) obj;
         return phone.name.equals(name);
@@ -79,7 +78,7 @@ public class EqualsAndHashCodeTest {
 
     private int number;
 
-    public Phone(int number, String name) {
+    Phone(int number, String name) {
       this.number = number;
       this.name = name;
     }
@@ -111,7 +110,6 @@ public class EqualsAndHashCodeTest {
     assertThat(electronics.equals(a), equalTo(true));
 
     assertThat(a.equals(b), equalTo(false));
-
   }
 }
 
