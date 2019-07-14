@@ -3,11 +3,10 @@ package com.github.kuangcp.map;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import java.util.HashMap;
+import com.github.kuangcp.mock.map.MockMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -17,21 +16,14 @@ import org.junit.Test;
 @Slf4j
 public class RandomGetValueTest {
 
-  private Map<String, String> data = new HashMap<>();
-
-  @Before
-  public void init() {
-    for (int i = 0; i < 3; i++) {
-      data.put("_" + i, "_" + i);
-    }
-  }
+  private Map<Integer, Integer> data = MockMap.mock(5, 100, 10);
 
   @Test
   public void testRandomValue() {
-    String[] keys = new String[data.size()];
+    Integer[] keys = new Integer[data.size()];
     data.keySet().toArray(keys);
     int index = ThreadLocalRandom.current().nextInt(keys.length);
-    String result = data.get(keys[index]);
+    Integer result = data.get(keys[index]);
     log.debug("random: result={}", result);
 
     assertThat(data.values(), hasItem(result));

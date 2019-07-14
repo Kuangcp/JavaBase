@@ -1,10 +1,9 @@
 package com.github.kuangcp.map;
 
-import java.util.HashMap;
+import com.github.kuangcp.mock.map.MockMap;
 import java.util.Iterator;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -14,14 +13,7 @@ import org.junit.Test;
 @Slf4j
 public class IterateMapTest {
 
-  private static Map<String, String> map = new HashMap<>();
-
-  @BeforeClass
-  public static void init() {
-    map.put("1", "a");
-    map.put("2", "b");
-    map.put("3", "c");
-  }
+  private static Map<String, String> map = MockMap.mock(6, String.class, String.class);
 
   /**
    * 通过Map.keySet()遍历key和value,二次取值
