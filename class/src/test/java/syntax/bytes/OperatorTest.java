@@ -25,13 +25,13 @@ public class OperatorTest {
   }
 
   @Test
-  public void testToInt() {
+  public void testIntToByte() {
     int a = 13232;
     // 直接赋值 无法编译通过
     byte b = (byte) a;
 
     // int 赋值 byte 会截断后8位, 由于是有符号的, 结果是 10110000
-    // 原码则是 01010000 : 所以 b是-80
+    // 原码是 01010000 : 所以 b是-80
     log.info("{}: {} -> {}", b, ShowBinary.toBinary(a), ShowBinary.toBinary(b));
   }
 
@@ -42,8 +42,10 @@ public class OperatorTest {
     byte b = -4;
 
     // 取余操作 a % b => a - (a / b) * b
-    log.info("a % b = {} \n a / b = {}\n(a / b) * b = {}\n a - (a / b) * b = {}",
-        a % b, a / b, (a / b) * b, a - (a / b) * b);
+    log.info("a % b = {} ", a % b);
+    log.info("a / b = {}", a / b);
+    log.info("(a / b) * b = {}", (a / b) * b);
+    log.info("a - (a / b) * b = {}", a - (a / b) * b);
   }
 
   @Test

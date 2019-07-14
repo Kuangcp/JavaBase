@@ -95,7 +95,7 @@ public class HeapOOM {
     Thread timer = new Thread(() -> {
       while (true) {
         try {
-          TimeUnit.MILLISECONDS.sleep(300);
+          TimeUnit.SECONDS.sleep(3);
         } catch (InterruptedException e) {
           log.error(e.getMessage(), e);
         }

@@ -6,6 +6,7 @@ import org.junit.Test;
 
 /**
  * -Xms30m -Xmx30m -XX:+PrintGCDetails
+ * JDK9 以上 -Xlog:gc 更清晰
  *
  * @author kuangcp on 4/5/19-9:45 AM
  */
