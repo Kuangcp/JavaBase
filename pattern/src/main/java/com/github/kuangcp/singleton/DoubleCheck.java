@@ -4,7 +4,7 @@ import lombok.Data;
 
 /**
  * 双重校验方式  线程不安全
- *
+ * TODO 验证这个问题
  * https://blog.csdn.net/topdeveloperr/article/details/81194654
  *
  * @author kuangcp on 2019-04-11 12:41 PM

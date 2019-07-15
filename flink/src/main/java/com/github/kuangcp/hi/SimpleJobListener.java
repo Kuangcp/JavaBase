@@ -10,9 +10,8 @@ import org.apache.flink.runtime.jobgraph.JobStatus;
 /**
  * 如果该对象能注入到 下面类的属性上, 问题就简单一些了
  *
- * @author kuangchengping@qipeipu.com
+ * @author https://github.com/kuangcp on 2019-07-08 11:22
  * @see ExecutionGraph jobStatusListeners
- * @since 2019-07-08 11:22
  */
 @Deprecated
 public class SimpleJobListener implements JobStatusListener {
