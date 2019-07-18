@@ -44,7 +44,7 @@ class SimpleSource {
    */
   private void delayTime() {
     try {
-      TimeUnit.MILLISECONDS.sleep(100);
+      TimeUnit.MILLISECONDS.sleep(300);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }

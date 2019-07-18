@@ -40,11 +40,9 @@ public class IntegerCacheTest {
 
   @Test
   public void testAvoidBoxWithNPE() {
-    Integer num = ThreadLocalRandom.current().nextInt(100) > 50 ? null : 1;
+    Integer num = null;
     if (Objects.equals(num, 1)) {
-      System.out.println("less");
-    } else {
-      System.out.println("more");
+      System.out.println("true");
     }
   }
 }
