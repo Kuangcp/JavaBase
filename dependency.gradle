@@ -75,13 +75,17 @@ ext {
       , "spring-aop"              : "org.springframework:spring-aop:$ver.spring"
       , "spring-orm"              : "org.springframework:spring-orm:$ver.spring"
 
+      // mybatis
+      , "mybatis"                 : "org.mybatis:mybatis:3.5.2"
+      , "mybatis-plus"            : "com.baomidou:mybatis-plus:3.1.2"
+
       // kafka
       , "kafka-clients"           : "org.apache.kafka:kafka-clients:$ver.kafka"
-      
+
       // flink 
       , "flink-java"              : "org.apache.flink:flink-java:$ver.flink"
       , "flink-clients"           : "org.apache.flink:flink-clients_2.12:$ver.flink"
-      , "flink-streaming-java"           : "org.apache.flink:flink-streaming-java_2.12:$ver.flink"
+      , "flink-streaming-java"    : "org.apache.flink:flink-streaming-java_2.12:$ver.flink"
 
       // hadoop
       , "hadoop-common"           : "org.apache.hadoop:hadoop-common:$ver.hadoop"

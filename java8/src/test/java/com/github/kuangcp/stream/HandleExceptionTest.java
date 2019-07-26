@@ -1,5 +1,6 @@
 package com.github.kuangcp.stream;
 
+import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 import org.junit.Test;
 
@@ -11,12 +12,14 @@ public class HandleExceptionTest {
   // NPE in stream
   @Test(expected = NullPointerException.class)
   public void testException() {
-    IntStream.rangeClosed(1, 10)
-        .forEach(s -> {
-          System.out.println(s);
-          if (s > 7) {
-            throw new NullPointerException("Oops ");
-          }
-        });
+    IntConsumer consumer = v -> {
+      if (v > 3) {
+        throw new NullPointerException("Oops " + v);
+      } else {
+        System.out.println(v);
+      }
+    };
+
+    IntStream.rangeClosed(1, 5).forEach(consumer);
   }
 }

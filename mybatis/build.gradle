@@ -1,0 +1,4 @@
+dependencies {
+  implementation libs["mybatis"]
+  implementation libs["mybatis-plus"]
+}
