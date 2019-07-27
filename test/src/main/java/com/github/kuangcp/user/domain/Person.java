@@ -1,4 +1,4 @@
-package com.github.kuangcp.domain;
+package com.github.kuangcp.user.domain;
 
 import lombok.Data;
 
