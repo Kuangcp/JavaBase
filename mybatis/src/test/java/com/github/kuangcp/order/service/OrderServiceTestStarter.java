@@ -1,6 +1,6 @@
 package com.github.kuangcp.order.service;
 
-import com.github.kuangcp.base.BaseDaoTest;
+import com.github.kuangcp.base.TestStarter;
 import com.github.kuangcp.order.dto.OrderDTO;
 import com.github.kuangcp.time.GetRunTime;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
-public class OrderServiceTest extends BaseDaoTest {
+public class OrderServiceTestStarter extends TestStarter {
 
   @Autowired
   private OrderService orderService;

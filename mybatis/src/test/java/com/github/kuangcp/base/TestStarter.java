@@ -6,6 +6,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public abstract class BaseDaoTest {
+public abstract class TestStarter {
 
 }

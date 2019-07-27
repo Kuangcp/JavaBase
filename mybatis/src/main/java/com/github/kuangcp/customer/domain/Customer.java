@@ -1,4 +1,4 @@
-package com.github.kuangcp.user.domain;
+package com.github.kuangcp.customer.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("user")
-public class User {
+public class Customer {
 
   private Long id;
   private String name;

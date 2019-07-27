@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("user_order")
+@TableName("normal_order")
 public class Order {
 
   private Long id;
@@ -22,7 +22,7 @@ public class Order {
   private String detail;
   private BigDecimal price;
   private BigDecimal discount;
-  private Integer count;
+  private Integer num;
   private LocalDateTime payTime;
 
 }

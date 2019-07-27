@@ -1,7 +1,7 @@
 package com.github.kuangcp.order.dao;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.github.kuangcp.base.BaseDaoTest;
+import com.github.kuangcp.base.TestStarter;
 import com.github.kuangcp.mock.map.MockValue;
 import com.github.kuangcp.order.domain.Order;
 import java.time.LocalDateTime;
@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
-public class OrderDaoTest extends BaseDaoTest {
+public class OrderDaoTestStarter extends TestStarter {
 
   @Autowired
   private OrderDao orderDao;
@@ -21,7 +21,7 @@ public class OrderDaoTest extends BaseDaoTest {
   @Test
   public void testQuery() {
     Order origin = Order.builder()
-        .count(1)
+        .num(1)
         .detail("detail")
         .createTime(LocalDateTime.now())
         .payTime(LocalDateTime.now())
@@ -35,7 +35,7 @@ public class OrderDaoTest extends BaseDaoTest {
   public void testBulkInsert() throws InterruptedException {
 
     Consumer<Integer> consumer = start -> {
-      Order temp = Order.builder().count(MockValue.mock(Integer.class))
+      Order temp = Order.builder().num(MockValue.mock(Integer.class))
           .createTime(LocalDateTime.now()).build();
       for (int i = 0; i < 10000; i++) {
         long id = (start + i);

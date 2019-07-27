@@ -19,6 +19,6 @@ public class OrderDTO {
   private String detail;
   private BigDecimal price;
   private BigDecimal discount;
-  private Integer count;
+  private Integer num;
   private LocalDateTime payTime;
 }
