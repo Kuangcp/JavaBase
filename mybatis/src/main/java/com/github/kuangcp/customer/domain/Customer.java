@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("user")
+@TableName("customer")
 public class Customer {
 
   private Long id;
