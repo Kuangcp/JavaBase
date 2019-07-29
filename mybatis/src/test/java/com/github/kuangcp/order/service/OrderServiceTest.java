@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
-public class OrderServiceTestStarter extends TestStarter {
+public class OrderServiceTest extends TestStarter {
 
   @Autowired
   private OrderService orderService;

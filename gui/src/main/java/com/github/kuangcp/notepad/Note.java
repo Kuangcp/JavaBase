@@ -58,10 +58,10 @@ class Note extends JFrame {
     openItem.addActionListener(NotepadActionListener.LISTENER);
     openItem.setActionCommand(ActionCommand.OPEN_FILE);
 
-    JMenuItem saveAsItem = new JMenuItem("Save");
+    JMenuItem saveAsItem = new JMenuItem("Save as");
     saveAsItem.setName(HandlerType.FILE);
     saveAsItem.addActionListener(NotepadActionListener.LISTENER);
-    saveAsItem.setActionCommand(ActionCommand.SAVE_FILE);
+    saveAsItem.setActionCommand(ActionCommand.SAVE_AS_FILE);
 
     JMenuItem saveItem = new JMenuItem("Save");
     saveItem.setName(HandlerType.FILE);

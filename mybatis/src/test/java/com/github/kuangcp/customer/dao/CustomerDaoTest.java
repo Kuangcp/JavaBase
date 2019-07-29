@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
-public class CustomerDaoTestTestStarter extends TestStarter {
+public class CustomerDaoTest extends TestStarter {
 
   @Autowired
   private CustomerDao customerDao;

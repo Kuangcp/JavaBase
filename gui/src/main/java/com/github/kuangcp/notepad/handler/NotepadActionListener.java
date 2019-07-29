@@ -24,7 +24,7 @@ public class NotepadActionListener implements ActionListener {
 
   @Override
   public void actionPerformed(ActionEvent event) {
-    log.info(": event={}", event);
+    log.debug(": event={}", event);
     Object source = event.getSource();
     if (source instanceof JMenuItem) {
       String name = ((JMenuItem) source).getName();

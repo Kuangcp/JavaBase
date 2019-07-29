@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
-public class OrderDaoTestStarter extends TestStarter {
+public class OrderDaoTest extends TestStarter {
 
   @Autowired
   private OrderDao orderDao;
