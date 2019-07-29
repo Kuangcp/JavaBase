@@ -6,9 +6,9 @@ import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -16,8 +16,7 @@ import java.util.regex.Pattern;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by https://github.com/kuangcp
- * 读取类  是一个工具类
+ * Created by https://github.com/kuangcp 读取类  是一个工具类
  *
  * @author kuangcp
  */
@@ -88,24 +87,25 @@ public class ClassScanner {
               && ClassScanner.this.filterClassName(filename);
         }
       });
-      if (files != null) {
-        for (File file : files) {
-          if (file.isDirectory()) {
-            this.doScanPackageClassesByFile(classes, packageName + "." + file.getName(),
-                file.getAbsolutePath(), recursive);
-          } else {
-            String className = file.getName().substring(0, file.getName().length() - 6);
+      if (Objects.isNull(files)) {
+        return;
+      }
 
-            try {
-              classes.add(Thread.currentThread().getContextClassLoader()
-                  .loadClass(packageName + '.' + className));
-            } catch (ClassNotFoundException var14) {
-              var14.printStackTrace();
-              throw new InternalError("过滤失败");
-            }
+      for (File file : files) {
+        if (file.isDirectory()) {
+          this.doScanPackageClassesByFile(classes, packageName + "." + file.getName(),
+              file.getAbsolutePath(), recursive);
+        } else {
+          String className = file.getName().substring(0, file.getName().length() - 6);
+
+          try {
+            classes.add(Thread.currentThread().getContextClassLoader()
+                .loadClass(packageName + '.' + className));
+          } catch (ClassNotFoundException var14) {
+            var14.printStackTrace();
+            throw new InternalError("过滤失败");
           }
         }
-
       }
     }
   }
@@ -127,7 +127,9 @@ public class ClassScanner {
         do {
           JarEntry entry;
           do {
+            // 目标包下具体类 非目录
             do {
+              // 找到目标包
               do {
                 if (!entries.hasMoreElements()) {
                   return;
@@ -162,23 +164,23 @@ public class ClassScanner {
   private boolean filterClassName(String className) {
     if (!className.endsWith(".class")) {
       return false;
-    } else if (null != this.classFilters && !this.classFilters.isEmpty()) {
-      String tmpName = className.substring(0, className.length() - 6);
-      boolean flag = false;
-      Iterator var4 = this.classFilters.iterator();
+    }
 
-      while (var4.hasNext()) {
-        String str = (String) var4.next();
-        String tmpreg = "^" + str.replace("*", ".*") + "$";
-        Pattern p = Pattern.compile(tmpreg);
-        if (p.matcher(tmpName).find()) {
-          flag = true;
-          break;
-        }
-      }
-      return this.checkInOrEx && flag || !this.checkInOrEx && !flag;
-    } else {
+    if (Objects.isNull(classFilters) || this.classFilters.isEmpty()) {
       return true;
     }
+
+    String tmpName = className.substring(0, className.length() - 6);
+    boolean flag = false;
+
+    for (String str : this.classFilters) {
+      String tmpreg = "^" + str.replace("*", ".*") + "$";
+      Pattern p = Pattern.compile(tmpreg);
+      if (p.matcher(tmpName).find()) {
+        flag = true;
+        break;
+      }
+    }
+    return this.checkInOrEx && flag || !this.checkInOrEx && !flag;
   }
 }

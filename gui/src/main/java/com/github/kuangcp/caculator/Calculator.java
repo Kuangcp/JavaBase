@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.util.Objects;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -14,8 +15,7 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
 /**
- * 搜到的一个计算器实现代码
- * TODO 思考如何重构
+ * 搜到的一个计算器实现代码 TODO 思考如何重构
  */
 public class Calculator extends JFrame {
 
@@ -49,6 +49,8 @@ public class Calculator extends JFrame {
   private JButton btnEight = new JButton("8");
   private JButton btnNine = new JButton("9");
 
+  private Font dialogFont = new Font("Dialog", Font.PLAIN, 16);
+
   private Calculator() {
     try {
       setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -65,7 +67,6 @@ public class Calculator extends JFrame {
     setSize(new Dimension(400, 300));
     setTitle("计算器");
     txtResult.setEnabled(false);
-    txtResult.setFont(new Font("Dialog", Font.PLAIN, 20));
     txtResult.setEditable(false);
 
     txtResult.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -75,43 +76,36 @@ public class Calculator extends JFrame {
 
     //btnNull.addActionListener(new FrameCalculate_btnNull_actionAdapter(this));
     btnFour.setBounds(new Rectangle(33, 120, 46, 37));
-    btnFour.setFont(new Font("Dialog", Font.PLAIN, 20));
 
     btnFive.setBounds(new Rectangle(101, 120, 46, 37));
-    btnFive.setFont(new Font("Dialog", Font.PLAIN, 20));
 
     btnSix.setBounds(new Rectangle(167, 119, 46, 37));
-    btnSix.setFont(new Font("Dialog", Font.PLAIN, 20));
 
     btnDecrease.setBounds(new Rectangle(234, 120, 46, 37));
-    btnDecrease.setFont(new Font("Dialog", Font.PLAIN, 20));
 
     btnBegin.setBounds(new Rectangle(298, 121, 46, 37));
-    btnBegin.setFont(new Font("Dialog", Font.PLAIN, 15));
 
     btnBegin.addActionListener(new Calculate_btnBegin_actionAdapter(this));
     btnOne.setBounds(new Rectangle(33, 172, 46, 37));
-    btnOne.setFont(new Font("Dialog", Font.PLAIN, 20));
 
     btnTwo.setBounds(new Rectangle(101, 172, 46, 37));
-    btnTwo.setFont(new Font("Dialog", Font.PLAIN, 20));
 
     btnThree.setBounds(new Rectangle(167, 172, 46, 37));
-    btnThree.setFont(new Font("Dialog", Font.PLAIN, 20));
 
     btnMultiply.setBounds(new Rectangle(234, 172, 46, 37));
-    btnMultiply.setFont(new Font("Dialog", Font.PLAIN, 20));
 
     btnCancel.setBounds(new Rectangle(298, 172, 46, 37));
     btnCancel.setFont(new Font("Dialog", Font.PLAIN, 12));
 
     btnCancel.addActionListener(new Calculate_btnCancel_actionAdapter(this));
     btnZero.setBounds(new Rectangle(33, 222, 46, 37));
-    btnZero.setFont(new Font("Dialog", Font.PLAIN, 20));
 
     //加载数字0-9的监听事件
     bindListener(btnZero, btnOne, btnTwo, btnThree, btnFour, btnFive, btnSix, btnSeven, btnEight,
         btnNine);
+    setFontForCompenent(btnZero, btnOne, btnTwo, btnThree, btnFour, btnFive, btnSix, btnSeven,
+        btnEight, btnNine, txtResult, btnDecrease, btnBegin, btnMultiply, btnDivide, btnIncrease,
+        btnEqual);
 
     btnMinus.setBounds(new Rectangle(101, 222, 46, 37));
     btnMinus.setFont(new Font("Dialog", Font.PLAIN, 10));
@@ -123,14 +117,11 @@ public class Calculator extends JFrame {
 
     btnPoint.addActionListener(new Calculate_btnPoint_actionAdapter(this));
     btnDivide.setBounds(new Rectangle(234, 222, 46, 37));
-    btnDivide.setFont(new Font("Dialog", Font.PLAIN, 20));
 
     btnEqual.setBounds(new Rectangle(298, 222, 46, 37));
-    btnEqual.setFont(new Font("Dialog", Font.PLAIN, 20));
 
     btnEqual.addActionListener(new Calculate_btnEqual_actionAdapter(this));
     btnIncrease.setBounds(new Rectangle(234, 70, 46, 37));
-    btnIncrease.setFont(new Font("Dialog", Font.PLAIN, 20));
 
     //加载加减乘除运算符的监听事件
     btnIncrease.addActionListener(new Calculate_btnIncrease_actionAdapter(this));
@@ -139,19 +130,23 @@ public class Calculator extends JFrame {
     btnDivide.addActionListener(new Calculate_btnIncrease_actionAdapter(this));
 
     btnSeven.setBounds(new Rectangle(33, 70, 46, 37));
-    btnSeven.setFont(new Font("Dialog", Font.PLAIN, 20));
-
     btnEight.setBounds(new Rectangle(101, 70, 46, 37));
-    btnEight.setFont(new Font("Dialog", Font.PLAIN, 20));
-
     btnNine.setBounds(new Rectangle(167, 70, 46, 37));
-    btnNine.setFont(new Font("Dialog", Font.PLAIN, 20));
 
     bindButton(contentPane, btnZero, btnOne, btnTwo, btnThree, btnFour, btnFive, btnSix, btnSeven,
         btnEight, btnNine, btnDecrease, btnBegin, btnMultiply, btnCancel, btnMinus, btnPoint,
         btnDivide, btnEqual, btnIncrease, btnNull);
 
     contentPane.add(txtResult);
+  }
+
+  private void setFontForCompenent(JComponent... components) {
+    if (Objects.isNull(components)) {
+      return;
+    }
+    for (JComponent component : components) {
+      component.setFont(dialogFont);
+    }
   }
 
   private void bindListener(JButton... buttons) {
