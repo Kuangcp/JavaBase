@@ -1,4 +1,4 @@
-package com.github.kuangcp.organizationstructure;
+package com.github.kuangcp.organization.structure;
 
 /**
  * @author kuangcp on 18-9-17-下午1:46

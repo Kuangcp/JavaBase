@@ -1,4 +1,4 @@
-package com.github.kuangcp.organizationstructure;
+package com.github.kuangcp.organization.structure;
 
 /**
  * created by https://gitee.com/gin9
