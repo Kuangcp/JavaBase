@@ -3,8 +3,7 @@ package com.github.kuangcp.situation.asm.cglib;
 import net.sf.cglib.beans.BeanCopier;
 
 /**
- * @author https://github.com/kuangcp
- * @date 2019-06-13 09:12
+ * @author https://github.com/kuangcp on 2019-06-13 09:12
  */
 class SimpleTransformer {
 

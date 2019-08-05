@@ -19,7 +19,11 @@ import javax.swing.WindowConstants;
  */
 public class Calculator extends JFrame {
 
-  private String front = "", behind = ""; //分别用于记录加减乘除运算符之前,之后输入的内容
+  private short width = 46;
+  private short height = 37;
+
+  private String front = "";
+  private String behind = ""; //分别用于记录加减乘除运算符之前,之后输入的内容
   private String op; //用于记录运算符
   private String re;//用于存储运算结果的字符串格式
   private boolean flag = false; //用于记录是否按下了运算符
@@ -71,76 +75,76 @@ public class Calculator extends JFrame {
 
     txtResult.setHorizontalAlignment(SwingConstants.RIGHT);
     txtResult.setBounds(new Rectangle(33, 19, 310, 34));
-    btnNull.setBounds(new Rectangle(298, 70, 46, 37));
+    btnNull.setBounds(new Rectangle(298, 70, width, height));
     btnNull.setFont(new Font("Dialog", Font.PLAIN, 12));
 
     //btnNull.addActionListener(new FrameCalculate_btnNull_actionAdapter(this));
-    btnFour.setBounds(new Rectangle(33, 120, 46, 37));
+    btnFour.setBounds(new Rectangle(33, 120, width, height));
+    btnFive.setBounds(new Rectangle(101, 120, width, height));
+    btnSix.setBounds(new Rectangle(167, 119, width, height));
 
-    btnFive.setBounds(new Rectangle(101, 120, 46, 37));
+    btnDecrease.setBounds(new Rectangle(234, 120, width, height));
 
-    btnSix.setBounds(new Rectangle(167, 119, 46, 37));
+    btnBegin.setBounds(new Rectangle(298, 121, width, height));
 
-    btnDecrease.setBounds(new Rectangle(234, 120, 46, 37));
+    btnBegin.addActionListener(new CalculateBtnBeginActionAdapter(this));
+    btnOne.setBounds(new Rectangle(33, 172, width, height));
+    btnTwo.setBounds(new Rectangle(101, 172, width, height));
+    btnThree.setBounds(new Rectangle(167, 172, width, height));
 
-    btnBegin.setBounds(new Rectangle(298, 121, 46, 37));
+    btnMultiply.setBounds(new Rectangle(234, 172, width, height));
 
-    btnBegin.addActionListener(new Calculate_btnBegin_actionAdapter(this));
-    btnOne.setBounds(new Rectangle(33, 172, 46, 37));
-
-    btnTwo.setBounds(new Rectangle(101, 172, 46, 37));
-
-    btnThree.setBounds(new Rectangle(167, 172, 46, 37));
-
-    btnMultiply.setBounds(new Rectangle(234, 172, 46, 37));
-
-    btnCancel.setBounds(new Rectangle(298, 172, 46, 37));
+    btnCancel.setBounds(new Rectangle(298, 172, width, height));
     btnCancel.setFont(new Font("Dialog", Font.PLAIN, 12));
 
-    btnCancel.addActionListener(new Calculate_btnCancel_actionAdapter(this));
-    btnZero.setBounds(new Rectangle(33, 222, 46, 37));
+    btnCancel.addActionListener(new CalculateBtnCancelActionAdapter(this));
+    btnZero.setBounds(new Rectangle(33, 222, width, height));
 
     //加载数字0-9的监听事件
-    bindListener(btnZero, btnOne, btnTwo, btnThree, btnFour, btnFive, btnSix, btnSeven, btnEight,
-        btnNine);
-    setFontForCompenent(btnZero, btnOne, btnTwo, btnThree, btnFour, btnFive, btnSix, btnSeven,
-        btnEight, btnNine, txtResult, btnDecrease, btnBegin, btnMultiply, btnDivide, btnIncrease,
-        btnEqual);
+    bindListener(btnZero, btnOne, btnTwo, btnThree, btnFour,
+        btnFive, btnSix, btnSeven, btnEight, btnNine);
+    setFontForComponent(btnZero, btnOne, btnTwo, btnThree, btnFour, btnFive,
+        btnSix, btnSeven, btnEight, btnNine, txtResult, btnDecrease,
+        btnBegin, btnMultiply, btnDivide, btnIncrease, btnEqual);
 
-    btnMinus.setBounds(new Rectangle(101, 222, 46, 37));
+    btnMinus.setBounds(new Rectangle(101, 222, width, height));
     btnMinus.setFont(new Font("Dialog", Font.PLAIN, 10));
 
-    btnMinus.addActionListener(new Calculate_btnMinus_actionAdapter(this));
-    btnPoint.setBounds(new Rectangle(167, 222, 46, 37));
+    btnMinus.addActionListener(new CalculateBtnMinusActionAdapter(this));
+    btnPoint.setBounds(new Rectangle(167, 222, width, height));
     btnPoint.setFont(new Font("Dialog", Font.PLAIN, 30));
     btnPoint.setHorizontalTextPosition(SwingConstants.CENTER);
 
-    btnPoint.addActionListener(new Calculate_btnPoint_actionAdapter(this));
-    btnDivide.setBounds(new Rectangle(234, 222, 46, 37));
+    btnPoint.addActionListener(new CalculateBtnPointActionAdapter(this));
+    btnDivide.setBounds(new Rectangle(234, 222, width, height));
 
-    btnEqual.setBounds(new Rectangle(298, 222, 46, 37));
+    btnEqual.setBounds(new Rectangle(298, 222, width, height));
 
-    btnEqual.addActionListener(new Calculate_btnEqual_actionAdapter(this));
-    btnIncrease.setBounds(new Rectangle(234, 70, 46, 37));
+    btnEqual.addActionListener(new CalculateBtnEqualActionAdapter(this));
+    btnIncrease.setBounds(new Rectangle(234, 70, width, height));
 
     //加载加减乘除运算符的监听事件
-    btnIncrease.addActionListener(new Calculate_btnIncrease_actionAdapter(this));
-    btnDecrease.addActionListener(new Calculate_btnIncrease_actionAdapter(this));
-    btnMultiply.addActionListener(new Calculate_btnIncrease_actionAdapter(this));
-    btnDivide.addActionListener(new Calculate_btnIncrease_actionAdapter(this));
+    bindCalculatorListener();
 
-    btnSeven.setBounds(new Rectangle(33, 70, 46, 37));
-    btnEight.setBounds(new Rectangle(101, 70, 46, 37));
-    btnNine.setBounds(new Rectangle(167, 70, 46, 37));
+    btnSeven.setBounds(new Rectangle(33, 70, width, height));
+    btnEight.setBounds(new Rectangle(101, 70, width, height));
+    btnNine.setBounds(new Rectangle(167, 70, width, height));
 
-    bindButton(contentPane, btnZero, btnOne, btnTwo, btnThree, btnFour, btnFive, btnSix, btnSeven,
-        btnEight, btnNine, btnDecrease, btnBegin, btnMultiply, btnCancel, btnMinus, btnPoint,
-        btnDivide, btnEqual, btnIncrease, btnNull);
+    bindButton(contentPane, btnZero, btnOne, btnTwo, btnThree, btnFour, btnFive,
+        btnSix, btnSeven, btnEight, btnNine, btnDecrease, btnBegin, btnMultiply, btnCancel,
+        btnMinus, btnPoint, btnDivide, btnEqual, btnIncrease, btnNull);
 
     contentPane.add(txtResult);
   }
 
-  private void setFontForCompenent(JComponent... components) {
+  private void bindCalculatorListener() {
+    btnIncrease.addActionListener(new CalculateBtnIncreaseActionAdapter(this));
+    btnDecrease.addActionListener(new CalculateBtnIncreaseActionAdapter(this));
+    btnMultiply.addActionListener(new CalculateBtnIncreaseActionAdapter(this));
+    btnDivide.addActionListener(new CalculateBtnIncreaseActionAdapter(this));
+  }
+
+  private void setFontForComponent(JComponent... components) {
     if (Objects.isNull(components)) {
       return;
     }
@@ -157,7 +161,7 @@ public class Calculator extends JFrame {
       if (Objects.isNull(button)) {
         continue;
       }
-      button.addActionListener(new Calculate_btnZero_actionAdapter(this));
+      button.addActionListener(new CalculateBtnZeroActionAdapter(this));
     }
   }
 

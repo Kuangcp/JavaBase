@@ -8,15 +8,15 @@ import java.awt.event.ActionListener;
  *
  * @author kuangcp on 3/19/19-1:02 AM
  */
-class Calculate_btnPoint_actionAdapter implements ActionListener {
+class CalculateBtnBeginActionAdapter implements ActionListener {
 
   private Calculator adapter;
 
-  Calculate_btnPoint_actionAdapter(Calculator adapter) {
+  CalculateBtnBeginActionAdapter(Calculator adapter) {
     this.adapter = adapter;
   }
 
   public void actionPerformed(ActionEvent e) {
-    adapter.btnPointActionPerformed(e);
+    adapter.btnBeginActionPerformed();
   }
 }

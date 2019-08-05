@@ -8,11 +8,11 @@ import java.awt.event.ActionListener;
  *
  * @author kuangcp on 3/19/19-1:02 AM
  */
-class Calculate_btnMinus_actionAdapter implements ActionListener {
+class CalculateBtnMinusActionAdapter implements ActionListener {
 
   private Calculator adapter;
 
-  Calculate_btnMinus_actionAdapter(Calculator adapter) {
+  CalculateBtnMinusActionAdapter(Calculator adapter) {
     this.adapter = adapter;
   }
 

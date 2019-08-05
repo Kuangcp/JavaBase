@@ -1,7 +1,6 @@
-package com.github.kuangcp.simpleMethod.SimplexMethodQuarter;
+package com.github.kuangcp.simplex.method;
 
 import com.github.kuangcp.math.number.Fraction;
-import com.github.kuangcp.simpleMethod.number.ReadProperties;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.Map;
 /**
  * Created by Myth on 2017/3/22 0022
  */
-public class SimplexMethod {
+public class SimplexMethodWithFraction {
 
   private static ReadProperties config;//读取配置文件
   private static int MAX_PARAMS;//最大参数个数
@@ -29,13 +28,13 @@ public class SimplexMethod {
   private Integer Round = 1;
 
   static {
-    config = new ReadProperties("src/main/resources/math/SimplexMethod.properties");
+    config = new ReadProperties("math/SimplexMethod.properties");
     MAX_PARAMS = config.getInt("MaxParams");
     EQUALITY = config.getInt("Equality");
   }
 
   public static void main(String[] s) {
-    SimplexMethod sm = new SimplexMethod();
+    SimplexMethodWithFraction sm = new SimplexMethodWithFraction();
     try {
       sm.run();
     } catch (Exception e) {
@@ -280,7 +279,7 @@ public class SimplexMethod {
    * @param permitMinus 是否允许负数进行笔记比较
    * @return 最大
    */
-  Integer maxList(List<Fraction> list, boolean isMax, boolean haveInfinity, boolean permitMinus) {
+  public Integer maxList(List<Fraction> list, boolean isMax, boolean haveInfinity, boolean permitMinus) {
     Integer index = null;
     //有非数的集合
     if (haveInfinity) {

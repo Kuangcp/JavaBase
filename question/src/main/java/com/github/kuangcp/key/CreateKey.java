@@ -77,10 +77,8 @@ public class CreateKey {
     return keyBytes;
   }
 
-  public String generateKey(BigInteger privKey, BigInteger pubKey,
-      int licenseType, int productId,
-      int minorVersion, int majorVersion,
-      String userName) {
+  public String generateKey(BigInteger privKey, BigInteger pubKey, int licenseType, int productId,
+      int minorVersion, int majorVersion, String userName) {
 
     int customerId = random.nextInt(9000) + 1000;
     byte[] keyBytes = generateKeyBytes(licenseType, productId, minorVersion, majorVersion, userName,

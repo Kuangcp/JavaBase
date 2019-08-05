@@ -1,4 +1,4 @@
-package com.github.kuangcp.simpleMethod.SimplexMethodQuarter;
+package com.github.kuangcp.simplex.method;
 
 
 import com.github.kuangcp.math.number.Fraction;

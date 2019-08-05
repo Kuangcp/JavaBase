@@ -1,6 +1,7 @@
-package com.github.kuangcp.simpleMethod.SimplexMethodQuarter;
+package com.github.kuangcp.simplex.method;
 
 import com.github.kuangcp.math.number.Fraction;
+import com.github.kuangcp.simplex.method.SimplexMethodWithFraction;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ public class MethodTest {
     list.add(new Fraction(-1, 3));
     list.add(new Fraction(-15, 1));
     list.add(new Fraction(5, 2));
-    SimplexMethod sm = new SimplexMethod();
+    SimplexMethodWithFraction sm = new SimplexMethodWithFraction();
     Integer index = sm.maxList(list, false, true, false);
     if (index != -1) {
       System.out.println(index + " => " + list.get(index));
