@@ -9,6 +9,13 @@ import java.util.Properties;
 
 /**
  * Created by Myth on 2017/1/13 0013 - 20:51
+ * 将 java 目录和 resources 目录引入 classpath 即可正常运行
+ *
+ * 例如 IDEA编译目录： ./out/production
+ * java -classpath ./classes/:./resources/ com.github.kuangcp.simplex.method.ReadProperties
+ *
+ * 例如 Gradle 编译目录： ./out/build
+ * java -classpath ./classes/java/main/:./resources/main/ com.github.kuangcp.simplex.method.ReadProperties
  */
 public class ReadProperties {
 
@@ -17,7 +24,7 @@ public class ReadProperties {
   /**
    * @param file 例如 resources 目录下 a.properties
    */
-  public ReadProperties(String file) {
+  ReadProperties(String file) {
     try {
       URL resource = this.getClass().getClassLoader().getResource(file);
       if (Objects.isNull(resource)) {
@@ -31,11 +38,11 @@ public class ReadProperties {
     }
   }
 
-  public String getString(String key) {
+  String getString(String key) {
     return cfg.getProperty(key);
   }
 
-  public int getInt(String key) {
+  int getInt(String key) {
     return Integer.parseInt(cfg.getProperty(key));
   }
 
