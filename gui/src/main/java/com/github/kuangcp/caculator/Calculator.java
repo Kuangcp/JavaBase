@@ -9,88 +9,118 @@ import java.util.Objects;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 搜到的一个计算器实现代码 TODO 思考如何重构
  */
+@Slf4j
 public class Calculator extends JFrame {
 
-  private short width = 46;
-  private short height = 37;
+  private static final short width = 47;
+  private static final short height = 38;
+  private static final Font dialogFont = new Font("Dialog", Font.PLAIN, 16);
 
   private String front = "";
   private String behind = ""; //分别用于记录加减乘除运算符之前,之后输入的内容
-  private String op; //用于记录运算符
-  private String re;//用于存储运算结果的字符串格式
+  private String operator; //用于记录运算符
+  private String result;//用于存储运算结果的字符串格式
   private boolean flag = false; //用于记录是否按下了运算符
-  private boolean flag1 = false;//用于判断是否输入了点运算符
-  private boolean flag2 = false;//用于判断是否输入了数字
-  private boolean flag3 = false;//用于判断是否按下了等号运算符
+  private boolean dotFlag = false;//用于判断是否输入了点运算符
+  private boolean numFlag = false;//用于判断是否输入了数字
+  private boolean calculateFlag = false;//用于判断是否按下了等号运算符
 
   private JTextField txtResult = new JTextField("0");
-  private JButton btnNull = new JButton("sqrt");
-  private JButton btnFour = new JButton("4");
-  private JButton btnFive = new JButton("5");
-  private JButton btnSix = new JButton("6");
+  private JTextField inputCache = new JTextField("");
+  private JButton btnNull = new JButton("  ");
+
   private JButton btnDecrease = new JButton("-");
   private JButton btnBegin = new JButton("C");
-  private JButton btnOne = new JButton("1");
-  private JButton btnTwo = new JButton("2");
-  private JButton btnThree = new JButton("3");
+
   private JButton btnMultiply = new JButton("*");
   private JButton btnCancel = new JButton("←");
-  private JButton btnZero = new JButton("0");
+
   private JButton btnMinus = new JButton("+/-");
   private JButton btnPoint = new JButton(".");
   private JButton btnDivide = new JButton("/");
   private JButton btnEqual = new JButton("=");
   private JButton btnIncrease = new JButton("+");
-  private JButton btnSeven = new JButton("7");
-  private JButton btnEight = new JButton("8");
-  private JButton btnNine = new JButton("9");
-
-  private Font dialogFont = new Font("Dialog", Font.PLAIN, 16);
 
   private Calculator() {
     try {
+      rootPane.setLayout(null);
+      this.setResizable(false);
+      setSize(new Dimension(400, 300));
+      setTitle("计算器");
+
       setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-      initButton();
-    } catch (Exception exception) {
-      exception.printStackTrace();
+      initLogicButton();
+      initNumberButton();
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
     }
   }
 
-  private void initButton() {
-    JPanel contentPane = (JPanel) getContentPane();
-    contentPane.setLayout(null);
-    this.setResizable(false);
-    setSize(new Dimension(400, 300));
-    setTitle("计算器");
-    txtResult.setEnabled(false);
-    txtResult.setEditable(false);
+  /**
+   * 初始化数字按钮
+   */
+  private void initNumberButton() {
+    JButton btnZero = new JButton("0");
+    JButton btnOne = new JButton("1");
+    JButton btnTwo = new JButton("2");
+    JButton btnThree = new JButton("3");
+    JButton btnFour = new JButton("4");
+    JButton btnFive = new JButton("5");
+    JButton btnSix = new JButton("6");
 
-    txtResult.setHorizontalAlignment(SwingConstants.RIGHT);
-    txtResult.setBounds(new Rectangle(33, 19, 310, 34));
-    btnNull.setBounds(new Rectangle(298, 70, width, height));
-    btnNull.setFont(new Font("Dialog", Font.PLAIN, 12));
+    JButton btnSeven = new JButton("7");
+    JButton btnEight = new JButton("8");
+    JButton btnNine = new JButton("9");
 
-    //btnNull.addActionListener(new FrameCalculate_btnNull_actionAdapter(this));
+    btnZero.setBounds(new Rectangle(33, 222, width, height));
+    btnOne.setBounds(new Rectangle(33, 172, width, height));
+    btnTwo.setBounds(new Rectangle(101, 172, width, height));
+    btnThree.setBounds(new Rectangle(167, 172, width, height));
     btnFour.setBounds(new Rectangle(33, 120, width, height));
     btnFive.setBounds(new Rectangle(101, 120, width, height));
     btnSix.setBounds(new Rectangle(167, 119, width, height));
+
+    btnSeven.setBounds(new Rectangle(33, 70, width, height));
+    btnEight.setBounds(new Rectangle(101, 70, width, height));
+    btnNine.setBounds(new Rectangle(167, 70, width, height));
+
+    JButton[] numberButtons = {btnZero, btnOne, btnTwo, btnThree, btnFour, btnFive, btnSix,
+        btnSeven, btnEight, btnNine};
+
+    //加载数字0-9的监听事件
+    bindListener(numberButtons);
+    configFont(numberButtons);
+    showButton(numberButtons);
+  }
+
+  private void initLogicButton() {
+    txtResult.setEnabled(false);
+    txtResult.setEditable(false);
+    txtResult.setHorizontalAlignment(SwingConstants.RIGHT);
+    txtResult.setBounds(new Rectangle(33, 19, 310, 34));
+
+    inputCache.setEnabled(false);
+    inputCache.setEditable(false);
+    inputCache.setHorizontalAlignment(SwingConstants.RIGHT);
+    inputCache.setBounds(new Rectangle(27, 19, 310, 8));
+
+    btnNull.setBounds(new Rectangle(298, 70, width, height));
+    btnNull.setFont(new Font("Dialog", Font.PLAIN, 12));
 
     btnDecrease.setBounds(new Rectangle(234, 120, width, height));
 
     btnBegin.setBounds(new Rectangle(298, 121, width, height));
 
     btnBegin.addActionListener(new CalculateBtnBeginActionAdapter(this));
-    btnOne.setBounds(new Rectangle(33, 172, width, height));
-    btnTwo.setBounds(new Rectangle(101, 172, width, height));
-    btnThree.setBounds(new Rectangle(167, 172, width, height));
 
     btnMultiply.setBounds(new Rectangle(234, 172, width, height));
 
@@ -98,14 +128,8 @@ public class Calculator extends JFrame {
     btnCancel.setFont(new Font("Dialog", Font.PLAIN, 12));
 
     btnCancel.addActionListener(new CalculateBtnCancelActionAdapter(this));
-    btnZero.setBounds(new Rectangle(33, 222, width, height));
 
-    //加载数字0-9的监听事件
-    bindListener(btnZero, btnOne, btnTwo, btnThree, btnFour,
-        btnFive, btnSix, btnSeven, btnEight, btnNine);
-    setFontForComponent(btnZero, btnOne, btnTwo, btnThree, btnFour, btnFive,
-        btnSix, btnSeven, btnEight, btnNine, txtResult, btnDecrease,
-        btnBegin, btnMultiply, btnDivide, btnIncrease, btnEqual);
+    configFont(txtResult, btnDecrease, btnBegin, btnMultiply, btnDivide, btnIncrease, btnEqual);
 
     btnMinus.setBounds(new Rectangle(101, 222, width, height));
     btnMinus.setFont(new Font("Dialog", Font.PLAIN, 10));
@@ -124,27 +148,18 @@ public class Calculator extends JFrame {
     btnIncrease.setBounds(new Rectangle(234, 70, width, height));
 
     //加载加减乘除运算符的监听事件
-    bindCalculatorListener();
-
-    btnSeven.setBounds(new Rectangle(33, 70, width, height));
-    btnEight.setBounds(new Rectangle(101, 70, width, height));
-    btnNine.setBounds(new Rectangle(167, 70, width, height));
-
-    bindButton(contentPane, btnZero, btnOne, btnTwo, btnThree, btnFour, btnFive,
-        btnSix, btnSeven, btnEight, btnNine, btnDecrease, btnBegin, btnMultiply, btnCancel,
-        btnMinus, btnPoint, btnDivide, btnEqual, btnIncrease, btnNull);
-
-    contentPane.add(txtResult);
-  }
-
-  private void bindCalculatorListener() {
     btnIncrease.addActionListener(new CalculateBtnIncreaseActionAdapter(this));
     btnDecrease.addActionListener(new CalculateBtnIncreaseActionAdapter(this));
     btnMultiply.addActionListener(new CalculateBtnIncreaseActionAdapter(this));
     btnDivide.addActionListener(new CalculateBtnIncreaseActionAdapter(this));
+
+    showButton(btnDecrease, btnBegin, btnMultiply, btnCancel,
+        btnMinus, btnPoint, btnDivide, btnEqual, btnIncrease, btnNull);
+
+    rootPane.add(txtResult);
   }
 
-  private void setFontForComponent(JComponent... components) {
+  private void configFont(JComponent... components) {
     if (Objects.isNull(components)) {
       return;
     }
@@ -165,31 +180,32 @@ public class Calculator extends JFrame {
     }
   }
 
-  private void bindButton(JPanel panel, JButton... buttons) {
+  private void showButton(JButton... buttons) {
     if (Objects.isNull(buttons)) {
       return;
     }
-    if (Objects.isNull(panel)) {
+    if (Objects.isNull(rootPane)) {
       return;
     }
     for (JButton button : buttons) {
       if (Objects.isNull(button)) {
         continue;
       }
-      panel.add(button);
+
+      rootPane.add(button);
     }
   }
 
   void btnZeroActionPerformed(ActionEvent e) {
     if (flag) { //如果刚刚按下了运算符
       txtResult.setText("");
-      if (flag1) {//判断之前是否输入了点运算符
+      if (dotFlag) {//判断之前是否输入了点运算符
         txtResult.setText("0." + e.getActionCommand());
-        flag1 = false;
+        dotFlag = false;
       } else {
         txtResult.setText(e.getActionCommand());
       }
-      flag2 = true;
+      numFlag = true;
     } else {
       int num = txtResult.getText().indexOf(".");
       if (num < 0 && !txtResult.getText().equals("0")) {
@@ -203,33 +219,33 @@ public class Calculator extends JFrame {
       }
     }
     flag = false;
-    flag3 = false;
+    calculateFlag = false;
   }
 
   void btnIncreaseActionPerformed(ActionEvent e) {
-    if (flag3) {
+    if (calculateFlag) {
       txtResult.setText(txtResult.getText());
-      op = e.getActionCommand(); //得到刚刚按下的运算符
+      operator = e.getActionCommand(); //得到刚刚按下的运算符
       front = txtResult.getText(); //记录加减乘除运算符之前输入的内容
-    } else if (flag2) {
+    } else if (numFlag) {
 //            ActionEvent ee = new ActionEvent("qq", 1, "pp");
       btnEqualActionPerformed();
-      op = e.getActionCommand(); //得到刚刚按下的运算符
-      front = re;
-      flag2 = false;
+      operator = e.getActionCommand(); //得到刚刚按下的运算符
+      front = result;
+      numFlag = false;
     } else {
       front = txtResult.getText(); //记录加减乘除运算符之前输入的内容
-      op = e.getActionCommand(); //得到刚刚按下的运算符
+      operator = e.getActionCommand(); //得到刚刚按下的运算符
     }
-    flag3 = false;
+    calculateFlag = false;
     flag = true; //记录已经按下了加减乘除运算符的其中一个
   }
 
   void btnEqualActionPerformed() {
-    if (!flag3) { //未曾按下等于运算符
+    if (!calculateFlag) { //未曾按下等于运算符
       behind = txtResult.getText();
     } else {
-      front = re;
+      front = result;
     }
     try {
       if (Objects.isNull(front) || front.isEmpty() || Objects.isNull(behind) || behind.isEmpty()) {
@@ -238,22 +254,22 @@ public class Calculator extends JFrame {
       double a1 = Double.parseDouble(front);
       double b1 = Double.parseDouble(behind);
       double result;
-      if (Objects.equals(op, "+")) {
+      if (Objects.equals(operator, "+")) {
         result = a1 + b1;
-      } else if (Objects.equals(op, "-")) {
+      } else if (Objects.equals(operator, "-")) {
         result = a1 - b1;
-      } else if (Objects.equals(op, "*")) {
+      } else if (Objects.equals(operator, "*")) {
         result = a1 * b1;
       } else {
         result = a1 / b1;
       }
-      re = Double.toString(result);
-      txtResult.setText(re);
+      this.result = Double.toString(result);
+      txtResult.setText(this.result);
     } catch (ArithmeticException ce) {
       txtResult.setText("除数不能为零");
     }
-    if (!flag3) {
-      flag3 = true;
+    if (!calculateFlag) {
+      calculateFlag = true;
     }
   }
 
@@ -263,18 +279,18 @@ public class Calculator extends JFrame {
       txtResult.setText(txtResult.getText() + e.getActionCommand());
     }
     if (flag) {
-      flag1 = true;
+      dotFlag = true;
     }
   }
 
   void btnBeginActionPerformed() {//清零运算符事件处理
     flag = false;
-    flag1 = false;
-    flag2 = false;
-    flag3 = false;
+    dotFlag = false;
+    numFlag = false;
+    calculateFlag = false;
     front = "";
     behind = "";
-    re = "";
+    result = "";
     txtResult.setText("0");
   }
 
