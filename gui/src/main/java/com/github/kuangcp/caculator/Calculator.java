@@ -9,7 +9,6 @@ import java.util.Objects;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
@@ -69,32 +68,22 @@ public class Calculator extends JFrame {
    * 初始化数字按钮
    */
   private void initNumberButton() {
+    int startX = 30;
+    int startY = 170;
+    int deltaW = 70;
+    int deltaH = 50;
+    JButton[] numberButtons = new JButton[10];
+    for (int i = 1; i < 10; i++) {
+      JButton button = new JButton(String.valueOf(i));
+      int x = startX + ((i - 1) % 3) * deltaW;
+      int y = startY - ((i - 1) / 3) * deltaH;
+      button.setBounds(new Rectangle(x, y, width, height));
+      numberButtons[i] = button;
+    }
+
     JButton btnZero = new JButton("0");
-    JButton btnOne = new JButton("1");
-    JButton btnTwo = new JButton("2");
-    JButton btnThree = new JButton("3");
-    JButton btnFour = new JButton("4");
-    JButton btnFive = new JButton("5");
-    JButton btnSix = new JButton("6");
-
-    JButton btnSeven = new JButton("7");
-    JButton btnEight = new JButton("8");
-    JButton btnNine = new JButton("9");
-
-    btnZero.setBounds(new Rectangle(33, 222, width, height));
-    btnOne.setBounds(new Rectangle(33, 172, width, height));
-    btnTwo.setBounds(new Rectangle(101, 172, width, height));
-    btnThree.setBounds(new Rectangle(167, 172, width, height));
-    btnFour.setBounds(new Rectangle(33, 120, width, height));
-    btnFive.setBounds(new Rectangle(101, 120, width, height));
-    btnSix.setBounds(new Rectangle(167, 119, width, height));
-
-    btnSeven.setBounds(new Rectangle(33, 70, width, height));
-    btnEight.setBounds(new Rectangle(101, 70, width, height));
-    btnNine.setBounds(new Rectangle(167, 70, width, height));
-
-    JButton[] numberButtons = {btnZero, btnOne, btnTwo, btnThree, btnFour, btnFive, btnSix,
-        btnSeven, btnEight, btnNine};
+    btnZero.setBounds(new Rectangle(startX, startY + deltaH, width, height));
+    numberButtons[0] = btnZero;
 
     //加载数字0-9的监听事件
     bindListener(numberButtons);
