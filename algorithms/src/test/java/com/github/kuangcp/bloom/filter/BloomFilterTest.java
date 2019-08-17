@@ -14,7 +14,7 @@ public class BloomFilterTest {
   public void testMain() {
     BloomFilter bloomFilter = new BloomFilter();
     int count = 0;
-    for (int i = 0; i < 10000; i++) {
+    for (int i = 0; i < 10; i++) {
       String str = UUID.randomUUID().toString();
       boolean exist = bloomFilter.exist(str);
       if (exist) {

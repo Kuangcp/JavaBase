@@ -23,4 +23,18 @@ public class HashFunctions {
     return hash > 0 ? hash : hash * -1;
   };
 
+  static Function<String, Integer> hashWithString = url -> {
+    if (Objects.isNull(url)) {
+      return 0;
+    }
+    int hash = 7;
+    for (int i = 0; i < url.length(); i++) {
+      hash = hash * 31 + url.charAt(i);
+    }
+    hash = hash % 0x5fffff;
+
+    System.out.println(hash);
+    return hash;
+  };
+
 }
