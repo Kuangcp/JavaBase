@@ -45,10 +45,11 @@ public class OrderServiceImpl implements OrderService {
 
   private OrderDTO convert(Order order, Map<Long, Customer> userMap) {
     Customer customer = userMap.get(order.getUserId());
+    String username = getName(customer);
     return OrderDTO.builder()
         .num(order.getNum())
         .userId(order.getUserId())
-        .username(Optional.ofNullable(customer).map(Customer::getName).orElse(""))
+        .username(username)
         .createTime(order.getCreateTime())
         .updateTime(order.getUpdateTime())
         .detail(order.getDetail())
@@ -63,10 +64,11 @@ public class OrderServiceImpl implements OrderService {
   private OrderDTO convert(Order order) {
     Customer customer = customerDao.selectById(order.getUserId());
 
+    String username = getName(customer);
     return OrderDTO.builder()
         .num(order.getNum())
         .userId(order.getUserId())
-        .username(Optional.ofNullable(customer).map(Customer::getName).orElse(""))
+        .username(username)
         .createTime(order.getCreateTime())
         .updateTime(order.getUpdateTime())
         .detail(order.getDetail())
@@ -75,5 +77,9 @@ public class OrderServiceImpl implements OrderService {
         .payTime(order.getPayTime())
         .id(order.getId())
         .build();
+  }
+
+  private String getName(Customer customer) {
+    return Optional.ofNullable(customer).map(Customer::getName).orElse("");
   }
 }

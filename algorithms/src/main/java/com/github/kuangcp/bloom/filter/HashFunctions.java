@@ -31,10 +31,6 @@ public class HashFunctions {
     for (int i = 0; i < url.length(); i++) {
       hash = hash * 31 + url.charAt(i);
     }
-    hash = hash % 0x5fffff;
-
-    System.out.println(hash);
-    return hash;
+    return hash > 0 ? hash : -hash;
   };
-
 }
