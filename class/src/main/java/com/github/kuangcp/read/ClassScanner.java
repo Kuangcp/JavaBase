@@ -31,6 +31,7 @@ public class ClassScanner {
   private boolean checkInOrEx;
   private List<String> classFilters;
   private boolean excludeInner;
+  private boolean hasEnterEntry;
 
   public ClassScanner(Boolean excludeInner, Boolean checkInOrEx, List<String> classFilters) {
     this.excludeInner = excludeInner;
@@ -67,7 +68,7 @@ public class ClassScanner {
           String filePath = URLDecoder.decode(url.getFile(), StandardCharsets.UTF_8.name());
           this.doScanPackageClassesByFile(classes, packageName, filePath, recursive);
         } else if ("jar".equals(protocol)) {
-          this.doScanPackageClassesByJar(packageName, url, recursive, classes);
+          this.scanPackageClassesByJar(packageName, url, classes);
         }
       }
       return classes;
@@ -127,57 +128,49 @@ public class ClassScanner {
   /**
    * 从Jar中读取类
    */
-  private void doScanPackageClassesByJar(String basePackage, URL url, boolean recursive,
-      Set<Class<?>> classes) {
+  private void scanPackageClassesByJar(String basePackage, URL url, Set<Class<?>> classes) {
     String package2Path = basePackage.replace('.', '/');
 
     try {
       JarFile jar = ((JarURLConnection) url.openConnection()).getJarFile();
       Enumeration entries = jar.entries();
 
-      while (true) {
-        String name;
-        // TODO optimized !!!
-        do {
-          JarEntry entry;
-          do {
-            // 目标包下具体类 非目录
-            do {
-              // 找到目标包
-              do {
-                if (!entries.hasMoreElements()) {
-                  return;
-                }
-
-                entry = (JarEntry) entries.nextElement();
-                name = entry.getName();
-              } while (!name.startsWith(package2Path));
-            } while (entry.isDirectory());
-          } while (!recursive && name.lastIndexOf(47) != package2Path.length());
-        } while (this.excludeInner && name.indexOf(36) != -1);
-
-        String classSimpleName = name.substring(name.lastIndexOf(47) + 1);
-        if (this.filterClassName(classSimpleName)) {
-          String className = name.replace('/', '.');
-          className = className.substring(0, className.length() - suffix.length());
-
-          try {
-            classes.add(Thread.currentThread().getContextClassLoader().loadClass(className));
-          } catch (ClassNotFoundException e) {
-            log.error(e.getMessage(), e);
-            throw new RuntimeException("过滤失败");
-          }
-        }
-      }
-
-    } catch (IOException e) {
+      scanEntry(package2Path, classes, entries);
+    } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new InternalError("扫描jar失败");
     }
   }
 
-  private boolean filterClassName(String className) {
+  private void scanEntry(String packagePath, Set<Class<?>> classes, Enumeration entries) {
+    if (!entries.hasMoreElements()) {
+      return;
+    }
 
+    JarEntry entry = (JarEntry) entries.nextElement();
+    String name = entry.getName();
+
+    String classSimpleName = name.substring(name.lastIndexOf('/') + 1);
+    if (this.filterClassName(classSimpleName) && name.startsWith(packagePath)) {
+      String className = name.replace('/', '.');
+      hasEnterEntry = true;
+      className = className.substring(0, className.length() - suffix.length());
+      try {
+        classes.add(Thread.currentThread().getContextClassLoader().loadClass(className));
+      } catch (ClassNotFoundException e) {
+        log.error(e.getMessage(), e);
+        throw new RuntimeException("过滤失败");
+      }
+    }
+
+    // 已经遍历完目标目录，无需继续递归
+    if (hasEnterEntry && !name.startsWith(packagePath)) {
+      return;
+    }
+    scanEntry(packagePath, classes, entries);
+  }
+
+  private boolean filterClassName(String className) {
     if (!className.endsWith(suffix)) {
       return false;
     }

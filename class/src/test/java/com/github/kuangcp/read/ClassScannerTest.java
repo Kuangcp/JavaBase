@@ -1,5 +1,6 @@
 package com.github.kuangcp.read;
 
+import com.github.kuangcp.io.ResourceTool;
 import com.github.kuangcp.time.GetRunTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,11 +43,14 @@ public class ClassScannerTest {
 
   @Test
   public void testReadJar(){
+    GetRunTime getRunTime = new GetRunTime().startCount();
     ClassScanner scanner = new ClassScanner(true, true, Collections.emptyList());
-    Set<Class<?>> result = scanner.getPackageAllClasses(GetRunTime.class.getPackage().getName(), true);
+    String path = ResourceTool.class.getPackage().getName();
+    log.info("path={}", path);
+    Set<Class<?>> result = scanner.getPackageAllClasses(path, true);
     log.info("result {}", result.size());
-
     result.forEach(System.out::println);
+    getRunTime.endCountOneLine("");
   }
 
   private static String lowerCaseFirstLetter(String name) {
