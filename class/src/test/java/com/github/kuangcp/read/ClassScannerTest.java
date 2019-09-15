@@ -42,7 +42,7 @@ public class ClassScannerTest {
   }
 
   @Test
-  public void testReadJar(){
+  public void testReadJar() {
     GetRunTime getRunTime = new GetRunTime().startCount();
     ClassScanner scanner = new ClassScanner(true, true, Collections.emptyList());
     String path = ResourceTool.class.getPackage().getName();

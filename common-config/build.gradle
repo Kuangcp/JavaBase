@@ -1,3 +1,4 @@
 configurations {
+  // void dependency loop
   compile.exclude module: 'common-config'
 }

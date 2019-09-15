@@ -39,10 +39,6 @@ public class ClassScanner {
     this.classFilters = classFilters;
   }
 
-  public List<String> getClassFilters() {
-    return this.classFilters;
-  }
-
   /**
    * 按正则匹配, 递归获取包下所有类
    *
