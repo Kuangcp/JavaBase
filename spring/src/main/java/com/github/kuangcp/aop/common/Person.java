@@ -1,4 +1,4 @@
-package com.github.kuangcp.proxy.dao.base;
+package com.github.kuangcp.aop.common;
 
 import lombok.Data;
 

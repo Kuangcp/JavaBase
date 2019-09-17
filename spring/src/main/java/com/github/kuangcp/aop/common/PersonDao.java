@@ -1,11 +1,9 @@
-package com.github.kuangcp.aop.annotation;
+package com.github.kuangcp.aop.common;
 
 import java.util.List;
 
 /**
  * 目标接口
- *
- * @author Administrator
  */
 public interface PersonDao {
 

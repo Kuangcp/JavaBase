@@ -1,4 +1,4 @@
-package com.github.kuangcp.aop;
+package com.github.kuangcp.aop.exception;
 
 import com.github.kuangcp.aop.exception.action.PersonAction;
 import com.github.kuangcp.util.SpringHelper;

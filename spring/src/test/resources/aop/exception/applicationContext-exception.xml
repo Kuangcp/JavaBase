@@ -31,7 +31,7 @@
     <aop:pointcut expression="execution(* com.github.kuangcp.aop.exception.service.*.*(..))"
       id="perform"/>
     <aop:aspect ref="myException">
-      <aop:after-throwing method="getExcpetionMessage" throwing="ex" pointcut-ref="perform"/>
+      <aop:after-throwing method="getExceptionMessage" throwing="ex" pointcut-ref="perform"/>
     </aop:aspect>
   </aop:config>
 </beans>

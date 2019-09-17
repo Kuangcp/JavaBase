@@ -1,6 +1,6 @@
 package com.github.kuangcp.proxy.dao.jdkproxy;
 
-import com.github.kuangcp.proxy.dao.base.Person;
+import com.github.kuangcp.aop.common.Person;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 

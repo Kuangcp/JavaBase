@@ -6,11 +6,8 @@ package com.github.kuangcp.proxy.dao.base;
 public interface CustomInterceptor {
 
   default boolean isNeedTransaction(String methodName) {
-    return "savePerson".equals(methodName) || "updatePerson".equals(methodName) ||
-        "deletePerson".equals(methodName);
-  }
-
-  static boolean a() {
-    return true;
+    return "savePerson".equals(methodName)
+        || "updatePerson".equals(methodName)
+        || "deletePerson".equals(methodName);
   }
 }

@@ -10,11 +10,11 @@ public class PersonTest extends SpringHelper {
 
   @Override
   public String getXmlPath() {
-    return "proxy/salary/applicationContext.xml";
+    return "aop/annotation/applicationContext.xml";
   }
 
   @Test
-  public void test() {
+  public void testAnnotation() {
     PersonDaoImpl personDao = (PersonDaoImpl) context.getBean("personDao");
     personDao.getPerson();
   }
