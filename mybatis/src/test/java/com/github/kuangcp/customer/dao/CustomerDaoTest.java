@@ -1,8 +1,8 @@
 package com.github.kuangcp.customer.dao;
 
 import com.github.kuangcp.base.TestStarter;
-import com.github.kuangcp.mock.map.MockValue;
 import com.github.kuangcp.customer.domain.Customer;
+import com.github.kuangcp.mock.common.MockUsuallyValue;
 import java.util.List;
 import java.util.stream.LongStream;
 import lombok.extern.slf4j.Slf4j;
@@ -22,13 +22,14 @@ public class CustomerDaoTest extends TestStarter {
 
     customers.forEach(item -> log.info("item={}", item));
   }
-  
+
   @Test
-  public void testBulkInsert(){
+  public void testBulkInsert() {
+
     LongStream.rangeClosed(1, 1000)
         .mapToObj(i -> Customer.builder().id(i)
             .id(i)
-            .nation(MockValue.mock(Integer.class))
+            .nation(MockUsuallyValue.mock(Integer.class))
             .build())
         .forEach(customerDao::insert);
   }

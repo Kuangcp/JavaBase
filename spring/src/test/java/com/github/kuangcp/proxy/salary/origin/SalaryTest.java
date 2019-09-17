@@ -1,4 +1,4 @@
-package com.github.kuangcp.proxy.salary;
+package com.github.kuangcp.proxy.salary.origin;
 
 import org.junit.Test;
 

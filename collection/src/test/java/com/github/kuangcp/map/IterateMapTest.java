@@ -1,6 +1,6 @@
 package com.github.kuangcp.map;
 
-import com.github.kuangcp.mock.map.MockMap;
+import com.github.kuangcp.mock.MockMap;
 import java.util.Iterator;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;

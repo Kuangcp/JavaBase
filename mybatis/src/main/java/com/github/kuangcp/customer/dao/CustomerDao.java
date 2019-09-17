@@ -5,7 +5,9 @@ import com.github.kuangcp.customer.domain.Customer;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface CustomerDao extends BaseMapper<Customer> {
 
   @Select({"select * from customer where name like #{name} "})

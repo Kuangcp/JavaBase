@@ -5,8 +5,9 @@ import org.junit.Test;
 
 public class WhenTest extends SpringHelper {
 
-  static {
-    path = "cn/itcast/spring0909/createobject/when/applicationContext.xml";
+  @Override
+  public String getXmlPath() {
+    return "proxy/salary/applicationContext.xml";
   }
 
   @Test

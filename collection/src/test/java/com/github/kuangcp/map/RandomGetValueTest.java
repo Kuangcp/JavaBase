@@ -3,7 +3,7 @@ package com.github.kuangcp.map;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import com.github.kuangcp.mock.map.MockMap;
+import com.github.kuangcp.mock.MockMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.extern.slf4j.Slf4j;

@@ -7,25 +7,18 @@ public class PersonDaoImpl {
 
 
   public void savePerson() {
-    // TODO Auto-generated method stub
     System.out.println("save person");
   }
 
-
   public void updatePerson() {
-    // TODO Auto-generated method stub
     System.out.println("update person");
   }
 
-
   public void deletePerson() {
-    // TODO Auto-generated method stub
     System.out.println("delete person");
   }
 
-
   public List<Person> getPerson() {
-    // TODO Auto-generated method stub
     Person person = new Person();
 
     person.setPid(1L);
@@ -37,5 +30,4 @@ public class PersonDaoImpl {
     }
     return personList;
   }
-
 }

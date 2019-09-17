@@ -5,8 +5,10 @@ import org.junit.Test;
 
 public class SalaryTest extends SpringHelper {
 
-  static {
-    path = "cn/itcast/spring0909/aop/xml/salary/applicationContext.xml";
+
+  @Override
+  public String getXmlPath() {
+    return "proxy/salary/applicationContext.xml";
   }
 
   @Test

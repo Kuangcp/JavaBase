@@ -23,8 +23,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class PersonTest extends SpringHelper {
 
-  static {
-    path = "cn/itcast/spring0909/di/annotation/applicationContext.xml";
+  @Override
+  public String getXmlPath() {
+    return "proxy/salary/applicationContext.xml";
   }
 
   @Test

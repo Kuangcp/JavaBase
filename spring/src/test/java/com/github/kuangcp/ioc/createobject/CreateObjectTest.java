@@ -6,8 +6,9 @@ import org.junit.Test;
 
 public class CreateObjectTest extends SpringHelper {
 
-  static {
-    path = "cn/itcast/spring0909/createobject/applicationContext.xml";
+  @Override
+  public String getXmlPath() {
+    return "proxy/salary/applicationContext.xml";
   }
 
   /**

@@ -1,7 +1,12 @@
 package com.github.kuangcp.proxy.salary.jdkproxy;
 
-public class Security {
-	public void security(){
-		System.out.println("security");
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class Security implements Interceptor{
+
+	@Override
+	public void interceptor() {
+		log.info("security control");
 	}
 }

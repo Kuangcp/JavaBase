@@ -6,8 +6,9 @@ import org.junit.Test;
 
 public class ExceptionTest extends SpringHelper {
 
-  static {
-    path = "aop/exception/applicationContext-exception.xml";
+  @Override
+  public String getXmlPath() {
+    return "proxy/salary/applicationContext.xml";
   }
 
   @Test

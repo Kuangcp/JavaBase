@@ -5,8 +5,10 @@ import org.junit.Test;
 
 public class PersonTest extends SpringHelper {
 
-  static {
-    path = "cn/itcast/spring0909/extend/applicationContext.xml";
+
+  @Override
+  public String getXmlPath() {
+    return "proxy/salary/applicationContext.xml";
   }
 
   @Test

@@ -9,8 +9,9 @@ public class AliasTest extends SpringHelper {
    * 无论这两个类之间有什么继承关系，静态代码块比方法先执行
    * alia是对一个bean取别名
    */
-  static {
-    path = "cn/itcast/spring0909/alias/applicationContext.xml";
+  @Override
+  public String getXmlPath() {
+    return "proxy/salary/applicationContext.xml";
   }
 
   @Test

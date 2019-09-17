@@ -2,7 +2,7 @@ package com.github.kuangcp.order.dao;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.kuangcp.base.TestStarter;
-import com.github.kuangcp.mock.map.MockValue;
+import com.github.kuangcp.mock.common.MockUsuallyValue;
 import com.github.kuangcp.order.domain.Order;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class OrderDaoTest extends TestStarter {
   public void testBulkInsert() throws InterruptedException {
 
     Consumer<Integer> consumer = start -> {
-      Order temp = Order.builder().num(MockValue.mock(Integer.class))
+      Order temp = Order.builder().num(MockUsuallyValue.mock(Integer.class))
           .createTime(LocalDateTime.now()).build();
       for (int i = 0; i < 10000; i++) {
         long id = (start + i);
