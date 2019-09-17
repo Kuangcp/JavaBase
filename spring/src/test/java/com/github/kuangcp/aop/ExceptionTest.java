@@ -8,7 +8,7 @@ public class ExceptionTest extends SpringHelper {
 
   @Override
   public String getXmlPath() {
-    return "proxy/salary/applicationContext.xml";
+    return "aop/exception/applicationContext-exception.xml";
   }
 
   @Test

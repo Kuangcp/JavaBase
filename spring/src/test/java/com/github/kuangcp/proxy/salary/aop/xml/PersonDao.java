@@ -4,8 +4,6 @@ import java.util.List;
 
 /**
  * 目标接口
- *
- * @author Administrator
  */
 public interface PersonDao {
 

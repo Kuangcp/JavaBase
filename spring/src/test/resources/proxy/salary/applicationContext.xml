@@ -13,12 +13,14 @@
     4、拦截器  由spring内部实现
     5、aop的配置
    -->
-  <bean id="personDao" class="com.github.kuangcp.proxy.salary.aop.xml.PersonDaoImpl"></bean>
-  <bean id="transaction" class="com.github.kuangcp.proxy.salary.aop.xml.Transaction"></bean>
+  <bean id="personDao" class="com.github.kuangcp.proxy.salary.aop.xml.PersonDaoImpl"/>
+  <bean id="transaction" class="com.github.kuangcp.proxy.salary.aop.xml.Transaction"/>
+
   <!--
     aop的配置
    -->
   <aop:config>
+
     <!--
       切入点表达式
         expression
@@ -28,18 +30,17 @@
     <aop:pointcut
       expression="execution(* com.github.kuangcp.proxy.salary.aop.xml.PersonDaoImpl.*(..))"
       id="perform"/>
-    <!--
-      切面
-     -->
+
+    <!-- 切面 -->
     <aop:aspect ref="transaction">
+
       <!--
         前置通知
           *  在目标方法执行之前
           *
        -->
-      <!--
-     <aop:before method="beginTransaction" pointcut-ref="perform"/>
-      -->
+      <!--     <aop:before method="beginTransaction" pointcut-ref="perform"/>       -->
+
       <!--
         后置通知
           *  在目标方法执行之后
@@ -49,6 +50,7 @@
       <!--
      <aop:after-returning method="commit" pointcut-ref="perform" returning="val"/>
       -->
+
       <!--
         前置通知和后置通知只能在目标方法文中添加内容，但是控制不了目标方法的执行
        -->
@@ -61,16 +63,13 @@
       <!--
      <aop:after method="finallyMethod" pointcut-ref="perform"/>
       -->
-      <!--
-        异常通知
-           目的就是为了获取目标方法抛出的异常
-       -->
+
+      <!--         异常通知            目的就是为了获取目标方法抛出的异常        -->
       <aop:after-throwing method="exceptionMethod" throwing="ex" pointcut-ref="perform"/>
-      <!--
-        环绕通知
-           能控制目标方法的执行
-       -->
+
+      <!--         环绕通知            能控制目标方法的执行        -->
       <aop:around method="aroundMethod" pointcut-ref="perform"/>
+
     </aop:aspect>
   </aop:config>
 </beans>
