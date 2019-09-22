@@ -5,10 +5,10 @@ import java.awt.Point;
 /**
  * @author kuangcp on 18-11-22-下午6:14
  */
-class TranslateByOne implements PointAction {
+class TranslateByOne implements ElementAction {
 
   @Override
-  public void doForPoint(Point point) {
-    point.translate(1, 1);
+  public void action(Point point) {
+    point.translate(1, 2);
   }
 }

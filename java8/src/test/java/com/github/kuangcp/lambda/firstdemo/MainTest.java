@@ -2,16 +2,14 @@ package com.github.kuangcp.lambda.firstdemo;
 
 import java.awt.Point;
 import java.util.function.Consumer;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Created by Administrator on 2017/05/09
- * TODO 整理
- */
+@Slf4j
 public class MainTest {
 
-  private PointArrayList pointArrayList = new PointArrayList();
+  private ElementContainer<Point> pointArrayList = new ElementContainer<>();
 
   @Before
   public void init() {
@@ -25,16 +23,16 @@ public class MainTest {
     pointArrayList.forEach(new TranslateByOne());
 
     for (Point point : pointArrayList) {
-      System.out.println("for each " + point.toString());
+      log.info("for each " + point.toString());
     }
   }
 
-  // 2. 利用java8的 Consumer 的accept方法 （针对于接口单方法的一个抽象接口）
+  // 2. 利用 Java8 的函数式接口 Consumer 的accept方法 （针对于接口单方法的一个抽象接口）
   @Test
   public void testConsumer() {
     pointArrayList.forEach(new TranslateByOne8());
     for (Point point : pointArrayList) {
-      System.out.println("Java8\t " + point.toString());
+      log.info("Java8\t " + point.toString());
     }
   }
 
@@ -45,7 +43,7 @@ public class MainTest {
       @Override
       public void accept(Point point) {
         point.translate(1, 1);
-        System.out.println("AnonymousInnerClass " + point);
+        log.info("AnonymousInnerClass " + point);
       }
     });
   }
@@ -53,11 +51,13 @@ public class MainTest {
   // 4. lambda 表达式
   @Test
   public void testLambda() {
-    pointArrayList.forEach((Consumer<Point>) point -> point.translate(1, 1));
+//    pointArrayList.forEach((Consumer<Point>) point -> point.translate(1, 1));
+    pointArrayList.forEach((ElementAction) point -> point.translate(2, 1));
+
     // 将lambda参数列表映射为假想的方法的参数列表
     // 裁剪了匿名内部类定义的额外代码，实现lambda
     for (Point point : pointArrayList) {
-      System.out.println("lambda\t " + point.toString());
+      log.info("lambda\t " + point.toString());
     }
   }
 }
