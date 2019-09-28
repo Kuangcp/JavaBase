@@ -4,9 +4,7 @@ import com.github.kuangcp.aop.common.Person;
 import java.util.List;
 
 /**
- * 目标接口
- *
- * @author Administrator
+ * 代理对象需实现接口
  */
 public interface PersonDao {
 

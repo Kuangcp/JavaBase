@@ -1,21 +1,20 @@
 package com.github.kuangcp.proxy.dao.cglibproxy;
 
-import com.github.kuangcp.proxy.dao.base.CustomInterceptor;
-import com.github.kuangcp.proxy.dao.base.Transaction;
+import com.github.kuangcp.proxy.dao.common.InterceptorLogic;
+import com.github.kuangcp.proxy.dao.common.Transaction;
 import java.lang.reflect.Method;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
-public class PersonDaoInterceptor implements MethodInterceptor, CustomInterceptor {
+@Slf4j
+@AllArgsConstructor
+public class TransactionInterceptor implements MethodInterceptor {
 
   private Transaction transaction;
   private Object target;
-
-  public PersonDaoInterceptor(Transaction transaction, Object target) {
-    this.transaction = transaction;
-    this.target = target;
-  }
 
   // cglib 方式就是动态创建一个子类
   public Object createProxy() {
@@ -30,14 +29,8 @@ public class PersonDaoInterceptor implements MethodInterceptor, CustomIntercepto
   @Override
   public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy)
       throws Throwable {
-    Object result;
-    if (isNeedTransaction(method.getName())) {
-      this.transaction.beginTransaction();
-      result = method.invoke(this.target, method);//调用目标类的目标方法
-      this.transaction.commit();
-    } else {
-      result = method.invoke(this.target, method);//调用目标类的目标方法
-    }
-    return result;
+    log.info("method {} proxy object ={}", method.getName(), proxy);
+
+    return InterceptorLogic.transactionLogic(transaction, target, method, args);
   }
 }

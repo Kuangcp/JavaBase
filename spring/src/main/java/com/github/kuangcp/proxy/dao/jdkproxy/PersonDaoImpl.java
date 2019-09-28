@@ -1,6 +1,7 @@
 package com.github.kuangcp.proxy.dao.jdkproxy;
 
 import com.github.kuangcp.aop.common.Person;
+import java.util.Collections;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +25,6 @@ public class PersonDaoImpl implements PersonDao {
 
   @Override
   public List<Person> getPerson() {
-    return null;
+    return Collections.emptyList();
   }
-
 }
