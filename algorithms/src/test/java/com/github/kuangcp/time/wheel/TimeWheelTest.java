@@ -54,4 +54,27 @@ public class TimeWheelTest {
     }
   }
 
+
+  @Test
+  public void testRushLoop() {
+    for (int i = 1; i < 7; i++) {
+      boolean result = timeWheel.add("id" + i, () -> "fds", Duration.ofMillis(i * 10000));
+      log.info(": result={}", result);
+    }
+    timeWheel.printWheel();
+    timeWheel.start();
+
+    new Thread(() -> {
+      while (true) {
+        timeWheel.printWheel();
+        try {
+          TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+          log.error("", e);
+        }
+      }
+    }).start();
+    join();
+  }
+
 }

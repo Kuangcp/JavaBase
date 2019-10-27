@@ -13,9 +13,14 @@ public class DurationTest {
 
   @Test
   public void testConvert(){
-
     Duration duration = Duration.ofHours(23);
     duration = duration.plus(59, ChronoUnit.MINUTES);
     log.info("duration={}", duration.toMinutes());
+  }
+  
+  @Test
+  public void testNegative(){
+    Duration duration = Duration.ofMillis(-1000);
+    System.out.println(duration.getSeconds());
   }
 }
