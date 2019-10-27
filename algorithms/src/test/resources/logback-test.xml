@@ -12,7 +12,7 @@
     </filter>
   </appender>
 
-  <root level="INFO">
+  <root level="DEBUG">
 <!--  <root level="DEBUG">-->
     <appender-ref ref="STDOUT"/>
   </root>
