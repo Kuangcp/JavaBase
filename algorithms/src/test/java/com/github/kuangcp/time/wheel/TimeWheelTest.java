@@ -55,10 +55,19 @@ public class TimeWheelTest {
   }
 
 
+  private long calculate() {
+    long sum = 0;
+    for (int i = 0; i < 10000000; i++) {
+      Math.sqrt(sum);
+      sum += i;
+    }
+    return sum;
+  }
+
   @Test
   public void testRushLoop() {
     for (int i = 1; i < 7; i++) {
-      boolean result = timeWheel.add("id" + i, () -> "fds", Duration.ofMillis(i * 10000));
+      boolean result = timeWheel.add("id" + i, this::calculate, Duration.ofMillis(i * 10000));
       log.info(": result={}", result);
     }
     timeWheel.printWheel();

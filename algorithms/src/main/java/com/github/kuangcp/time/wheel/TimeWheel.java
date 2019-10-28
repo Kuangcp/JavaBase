@@ -33,11 +33,13 @@ public class TimeWheel {
 
   private volatile long startEmptyTime = -1;
   private volatile long maxTimeout = 10L;
+  private volatile long currentMills;
 
   private static final int SECONDS_SLOT = 60;
   private static final int MINUTES_SLOT = 60;
   private static final int HOURS_SLOT = 24;
   private static final int DAYS_SLOT = 30;
+
 
   private AtomicInteger currentSecond = new AtomicInteger(0);
   private AtomicInteger currentMinute = new AtomicInteger(0);
@@ -62,54 +64,6 @@ public class TimeWheel {
     wheels.put(ChronoUnit.DAYS, daysSlot);
   }
 
-  private static class LinkedList {
-
-    private Node head;
-    private Node tail;
-    private int len;
-
-    boolean add(Node node) {
-      len++;
-      if (Objects.isNull(head)) {
-        head = node;
-        tail = node;
-        return true;
-      }
-
-      this.tail.next = node;
-      this.tail = node;
-      return true;
-    }
-
-    void clear() {
-      len = 0;
-      this.head = null;
-      this.tail = null;
-    }
-
-    List<Node> toList() {
-      List<Node> result = new ArrayList<>(len);
-      Node pointer = this.head;
-      while (Objects.nonNull(pointer)) {
-        result.add(pointer);
-        pointer = pointer.next;
-      }
-      return result;
-    }
-
-    String toSimpleString() {
-      List<Node> nodes = toList();
-      if (nodes.isEmpty()) {
-        return "";
-      }
-      return nodes.stream().map(Node::getId).collect(Collectors.joining(","));
-    }
-
-    boolean isEmpty() {
-      return Objects.isNull(head);
-    }
-  }
-
   public TimeWheel() {
   }
 
@@ -118,40 +72,28 @@ public class TimeWheel {
     this.needExitVM = needExitVM;
   }
 
-  @Data
-  private static class Node {
-
-    private String id;
-    private Node next;
-    private long runTime;
-
-    Node(String id, Node next, long runTime) {
-      this.id = id;
-      this.next = next;
-      this.runTime = runTime;
-    }
-
-  }
-
-
   public void start() {
     master.execute(() -> {
       while (!stop) {
-        log.debug("cache: keys={}", cacheTasks.keySet());
-        if (cacheTasks.isEmpty()) {
-          long current = System.currentTimeMillis();
-          if (startEmptyTime == -1) {
-            startEmptyTime = current;
-          } else if (current - startEmptyTime > maxTimeout) {
-            log.warn("no any tasks with timeout");
-            shutdown();
+        long currentMills = System.currentTimeMillis();
+        try {
+          TimeUnit.MICROSECONDS.sleep(20);
+          if (currentMills - this.currentMills < 1000) {
             continue;
           }
-        }
 
-        try {
-          TimeUnit.SECONDS.sleep(1);
+          log.debug("cache: keys={}", cacheTasks.keySet());
+          if (cacheTasks.isEmpty()) {
+            if (startEmptyTime == -1) {
+              startEmptyTime = currentMills;
+            } else if (currentMills - startEmptyTime > maxTimeout) {
+              log.warn("no any tasks with timeout");
+              shutdown();
+              continue;
+            }
+          }
 
+          this.currentMills = currentMills;
           int seconds = this.currentSecond.incrementAndGet();
           this.rushLoop(seconds);
 
@@ -173,11 +115,9 @@ public class TimeWheel {
       List<Node> nodes = list.toList();
       list.clear();
       for (Node node : nodes) {
-        long millis = node.runTime - System.currentTimeMillis();
+        long millis = node.getRunTime() - System.currentTimeMillis();
         if (millis < 0) {
           log.error("system lose task: node={}", node);
-//          cacheTasks.remove(node.getId());
-//          continue;
         }
 
         Duration delay = Duration.ofMillis(millis);
