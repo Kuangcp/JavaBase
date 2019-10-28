@@ -22,7 +22,7 @@ import org.junit.Test;
 @Slf4j
 public class TimeWheelTest {
 
-  private TimeWheel timeWheel = new TimeWheel(3000L, true);
+  private TimeWheel timeWheel = new TimeWheel(3000L, true, false);
 
   @Test
   public void testAdd() throws Exception {
@@ -67,7 +67,7 @@ public class TimeWheelTest {
   private long calculate() {
     runRecord.add(System.currentTimeMillis());
 
-    OptionalInt reduce = IntStream.rangeClosed(0, 990000).reduce(Integer::sum);
+    OptionalInt reduce = IntStream.rangeClosed(0, 200).reduce(Integer::sum);
     return reduce.orElse(0);
   }
 
@@ -120,8 +120,8 @@ public class TimeWheelTest {
   private long startTime;
 
   private void initOverMinData() {
-    for (int i = 1; i < 12; i++) {
-      inputData.put("id" + i, i * 10000L);
+    for (int i = 1; i < 30; i++) {
+      inputData.put("id" + i, i * 6070L);
     }
   }
 
@@ -131,8 +131,9 @@ public class TimeWheelTest {
         .collect(Collectors.toList());
     for (int i = 0; i < entryList.size(); i++) {
       Long time = runRecord.get(i);
+      Long delayMills = entryList.get(i).getValue();
       log.info("{}:{} out={} runTime={}", entryList.get(i), time - startTime,
-          entryList.get(i).getValue() - time + startTime, time);
+          time - startTime - delayMills, time);
     }
   }
 
@@ -142,7 +143,7 @@ public class TimeWheelTest {
     initOverMinData();
     for (Entry<String, Long> entry : inputData.entrySet()) {
       boolean result = timeWheel
-          .add(entry.getKey(), this::calculateComplex, Duration.ofMillis(entry.getValue()));
+          .add(entry.getKey(), this::calculate, Duration.ofMillis(entry.getValue()));
       log.info("add task: id={} result={}", entry.getKey(), result);
     }
 

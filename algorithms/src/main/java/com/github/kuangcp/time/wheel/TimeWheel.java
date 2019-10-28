@@ -27,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TimeWheel {
 
+  private boolean debugMode = false;
   private volatile boolean stop = false;
   private volatile boolean needExitVM = false;
 
@@ -86,9 +87,10 @@ public class TimeWheel {
   public TimeWheel() {
   }
 
-  public TimeWheel(long maxTimeout, boolean needExitVM) {
+  public TimeWheel(long maxTimeout, boolean needExitVM, boolean debugMode) {
     this.maxTimeout = maxTimeout;
     this.needExitVM = needExitVM;
+    this.debugMode = debugMode;
   }
 
   public void start() {
@@ -96,9 +98,11 @@ public class TimeWheel {
       while (!stop) {
         long currentMills = System.currentTimeMillis();
         try {
-          TimeUnit.MICROSECONDS.sleep(20);
-          if (currentMills - this.currentMills < 1000) {
-            continue;
+          if (!debugMode) {
+            TimeUnit.MICROSECONDS.sleep(20);
+            if (currentMills - this.currentMills < 1000) {
+              continue;
+            }
           }
 
           log.debug("cache: keys={}", cacheTasks.keySet());
@@ -119,7 +123,6 @@ public class TimeWheel {
           LinkedList<TaskNode>[] lists = wheels.get(ChronoUnit.SECONDS);
           LinkedList<TaskNode> list = lists[seconds % SECONDS_SLOT];
           this.invokeAll(seconds, list);
-
         } catch (Exception e) {
           log.error("", e);
         }
@@ -134,7 +137,10 @@ public class TimeWheel {
       List<TaskNode> nodes = list.toList();
       list.clear();
       for (TaskNode node : nodes) {
-        long millis = node.getLastTime() - System.currentTimeMillis();
+        long millis = node.getLastTime() + node.getDelayMills() - System.currentTimeMillis();
+        if (debugMode) {
+          millis -= SECONDS_SLOT * 1000;
+        }
         log.warn(": millis={}", millis);
         if (millis < 0) {
           log.error("system lose task: node={}", node);
@@ -152,11 +158,13 @@ public class TimeWheel {
     for (int i = 0; i < sortedSlots.size(); i++) {
       ChronoUnit unit = sortedSlots.get(i);
       int temp = -1;
+      Integer threshold = slots.get(unit);
       if (i == 0) {
-        if (seconds >= slots.get(unit)) {
+        if (seconds >= threshold) {
           AtomicInteger counter = counters.get(unit);
           counter.set(0);
           temp = counters.get(sortedSlots.get(i + 1)).incrementAndGet();
+          temp %= threshold;
         }
       } else if (i == sortedSlots.size() - 1) {
         AtomicInteger counter = counters.get(unit);
@@ -164,10 +172,11 @@ public class TimeWheel {
         this.removeAndAdd(unit, 0);
         temp = -1;
       } else {
-        if (temp > slots.get(unit)) {
+        if (temp > threshold) {
           AtomicInteger counter = counters.get(unit);
           counter.set(0);
           temp = counters.get(sortedSlots.get(i + 1)).incrementAndGet();
+          temp %= threshold;
         }
       }
 
@@ -271,7 +280,7 @@ public class TimeWheel {
 
     long hours = delay.toHours();
     if (hours > 0) {
-      return insertWheel(ChronoUnit.HOURS, this.currentHour.get() + hours,node);
+      return insertWheel(ChronoUnit.HOURS, this.currentHour.get() + hours, node);
     }
 
     long minutes = delay.toMinutes();
