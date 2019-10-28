@@ -2,7 +2,8 @@ package com.github.kuangcp.time.wheel;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -13,8 +14,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -51,17 +50,37 @@ public class TimeWheel {
 
   // id -> task
   private final Map<String, Callable<?>> cacheTasks = new ConcurrentHashMap<>();
-  private final Map<ChronoUnit, LinkedList[]> wheels = new ConcurrentHashMap<>();
+  private final Map<ChronoUnit, LinkedList<TaskNode>[]> wheels = new ConcurrentHashMap<>();
+  private final Map<ChronoUnit, AtomicInteger> counters = new ConcurrentHashMap<>();
+  private final Map<ChronoUnit, Integer> slots = new ConcurrentHashMap<>();
+  private final List<ChronoUnit> sortedSlots = Arrays
+      .asList(ChronoUnit.SECONDS, ChronoUnit.MINUTES, ChronoUnit.HOURS, ChronoUnit.DAYS);
 
   {
+    init();
+  }
+
+  @SuppressWarnings("unchecked")
+  private void init() {
     LinkedList[] secondsSlot = new LinkedList[SECONDS_SLOT];
     wheels.put(ChronoUnit.SECONDS, secondsSlot);
+    counters.put(ChronoUnit.SECONDS, currentSecond);
+    slots.put(ChronoUnit.SECONDS, SECONDS_SLOT);
+
     LinkedList[] minutesSlot = new LinkedList[MINUTES_SLOT];
     wheels.put(ChronoUnit.MINUTES, minutesSlot);
+    counters.put(ChronoUnit.MINUTES, currentMinute);
+    slots.put(ChronoUnit.MINUTES, MINUTES_SLOT);
+
     LinkedList[] hoursSlot = new LinkedList[HOURS_SLOT];
     wheels.put(ChronoUnit.HOURS, hoursSlot);
+    counters.put(ChronoUnit.HOURS, currentHour);
+    slots.put(ChronoUnit.HOURS, HOURS_SLOT);
+
     LinkedList[] daysSlot = new LinkedList[DAYS_SLOT];
     wheels.put(ChronoUnit.DAYS, daysSlot);
+    counters.put(ChronoUnit.DAYS, currentDay);
+    slots.put(ChronoUnit.DAYS, DAYS_SLOT);
   }
 
   public TimeWheel() {
@@ -95,10 +114,10 @@ public class TimeWheel {
 
           this.currentMills = currentMills;
           int seconds = this.currentSecond.incrementAndGet();
-          this.rushLoop(seconds);
+          this.pushTimeWheel(seconds);
 
-          LinkedList[] lists = wheels.get(ChronoUnit.SECONDS);
-          LinkedList list = lists[seconds % SECONDS_SLOT];
+          LinkedList<TaskNode>[] lists = wheels.get(ChronoUnit.SECONDS);
+          LinkedList<TaskNode> list = lists[seconds % SECONDS_SLOT];
           this.invokeAll(seconds, list);
 
         } catch (Exception e) {
@@ -109,13 +128,14 @@ public class TimeWheel {
   }
 
   private void removeAndAdd(ChronoUnit unit, int index) {
-    LinkedList[] lists = wheels.get(unit);
-    LinkedList list = lists[index];
+    LinkedList<TaskNode>[] lists = wheels.get(unit);
+    LinkedList<TaskNode> list = lists[index];
     if (Objects.nonNull(list) && !list.isEmpty()) {
-      List<Node> nodes = list.toList();
+      List<TaskNode> nodes = list.toList();
       list.clear();
-      for (Node node : nodes) {
-        long millis = node.getRunTime() - System.currentTimeMillis();
+      for (TaskNode node : nodes) {
+        long millis = node.getLastTime() - System.currentTimeMillis();
+        log.warn(": millis={}", millis);
         if (millis < 0) {
           log.error("system lose task: node={}", node);
         }
@@ -127,51 +147,49 @@ public class TimeWheel {
     }
   }
 
-  private void rushLoop(int seconds) {
-    int costMin = -1;
-    int costHour = -1;
-    int costDay = -1;
+  private void pushTimeWheel(int seconds) {
+    Map<Integer, Integer> tempIndex = new HashMap<>(sortedSlots.size());
+    for (int i = 0; i < sortedSlots.size(); i++) {
+      ChronoUnit unit = sortedSlots.get(i);
+      int temp = -1;
+      if (i == 0) {
+        if (seconds >= slots.get(unit)) {
+          AtomicInteger counter = counters.get(unit);
+          counter.set(0);
+          temp = counters.get(sortedSlots.get(i + 1)).incrementAndGet();
+        }
+      } else if (i == sortedSlots.size() - 1) {
+        AtomicInteger counter = counters.get(unit);
+        counter.set(0);
+        this.removeAndAdd(unit, 0);
+        temp = -1;
+      } else {
+        if (temp > slots.get(unit)) {
+          AtomicInteger counter = counters.get(unit);
+          counter.set(0);
+          temp = counters.get(sortedSlots.get(i + 1)).incrementAndGet();
+        }
+      }
 
-    if (seconds >= SECONDS_SLOT) {
-      this.currentSecond.set(0);
-      costMin = this.currentMinute.incrementAndGet();
-    }
-    if (costMin > MINUTES_SLOT) {
-      this.currentMinute.set(0);
-      costHour = this.currentHour.incrementAndGet();
-    }
-    if (costHour > HOURS_SLOT) {
-      this.currentHour.set(0);
-      costDay = this.currentDay.incrementAndGet();
-    }
-
-    if (costDay > DAYS_SLOT) {
-      this.currentDay.set(0);
-      this.removeAndAdd(ChronoUnit.DAYS, 0);
-      costDay = -1;
-    }
-
-    if (costDay != -1) {
-      this.removeAndAdd(ChronoUnit.DAYS, costDay);
-    }
-
-    if (costHour != -1) {
-      this.removeAndAdd(ChronoUnit.HOURS, costHour);
+      tempIndex.put(i + 1, temp);
     }
 
-    if (costMin != -1) {
-      this.removeAndAdd(ChronoUnit.MINUTES, costMin);
+    for (int i = sortedSlots.size() - 1; i > 0; i--) {
+      Integer nextIndex = tempIndex.get(i);
+      if (nextIndex != -1) {
+        this.removeAndAdd(sortedSlots.get(i), nextIndex);
+      }
     }
   }
 
-  private void invokeAll(int seconds, LinkedList list) {
+  private void invokeAll(int seconds, LinkedList<TaskNode> list) {
     if (Objects.isNull(list) || list.isEmpty()) {
-      log.warn("no tasks need invoke");
+      log.debug("no tasks need invoke");
       return;
     }
 
-    List<Node> nodes = list.toList();
-    for (Node node : nodes) {
+    List<TaskNode> nodes = list.toList();
+    for (TaskNode node : nodes) {
       String id = node.getId();
       Callable<?> func = cacheTasks.get(id);
       log.debug("[{}]before invoke: id={}", seconds, id);
@@ -184,7 +202,7 @@ public class TimeWheel {
       }
     }
     list.clear();
-    log.info("[{}]invoke all tasks successful.", seconds);
+    log.debug("[{}]invoke all tasks successful.", seconds);
   }
 
   public void shutdown() {
@@ -220,11 +238,19 @@ public class TimeWheel {
   public void printWheel() {
     for (ChronoUnit unit : wheels.keySet()) {
       LinkedList[] lists = wheels.get(unit);
+
+      boolean hasData = false;
+      StringBuilder builder = new StringBuilder(unit.toString());
       for (int i = 0; i < lists.length; i++) {
         LinkedList list = lists[i];
         if (Objects.nonNull(list) && !list.isEmpty()) {
-          log.info("{} [{}] ids={}", unit.toString(), i, list.toSimpleString());
+          hasData = true;
+          builder.append(String.format("[%2s] ids=%s. ", i, list.toSimpleString()));
         }
+      }
+
+      if (hasData) {
+        log.info(builder.toString());
       }
     }
   }
@@ -236,42 +262,44 @@ public class TimeWheel {
       return false;
     }
 
-    long runTime = delay.toMillis() + System.currentTimeMillis();
+    long current = System.currentTimeMillis();
+    long delayMills = delay.toMillis();
+    TaskNode node = new TaskNode(id, null, current, delayMills);
     if (days > 0) {
-      return insertWheel(ChronoUnit.DAYS, days, id, runTime);
+      return insertWheel(ChronoUnit.DAYS, this.currentDay.get() + days, node);
     }
 
     long hours = delay.toHours();
     if (hours > 0) {
-      return insertWheel(ChronoUnit.HOURS, hours, id, runTime);
+      return insertWheel(ChronoUnit.HOURS, this.currentHour.get() + hours,node);
     }
 
     long minutes = delay.toMinutes();
     if (minutes > 0) {
-      return insertWheel(ChronoUnit.MINUTES, minutes, id, runTime);
+      return insertWheel(ChronoUnit.MINUTES, this.currentMinute.get() + minutes, node);
     }
 
     long seconds = delay.getSeconds();
-    // TODO expire
-    if (seconds >= -2 && seconds <= 0) {
-      return insertWheel(ChronoUnit.SECONDS, 0, id, runTime);
+    // TODO expire too long time
+    if (seconds >= -10 && seconds <= 1) {
+      return insertWheel(ChronoUnit.SECONDS, this.currentSecond.get() + 1, node);
     }
-    if (seconds > 0) {
-      return insertWheel(ChronoUnit.SECONDS, seconds, id, runTime);
+    if (seconds > 1) {
+      return insertWheel(ChronoUnit.SECONDS, this.currentSecond.get() + seconds, node);
     }
 
     log.warn("task is expire: id={} delay={}", id, delay);
     return false;
   }
 
-  private boolean insertWheel(ChronoUnit unit, long index, String id, long runTime) {
+  private boolean insertWheel(ChronoUnit unit, long index, TaskNode node) {
     int idx = (int) index;
-    LinkedList[] lists = wheels.get(unit);
-    LinkedList list = lists[idx];
+    LinkedList<TaskNode>[] lists = wheels.get(unit);
+    LinkedList<TaskNode> list = lists[idx];
     if (Objects.isNull(list)) {
-      list = new LinkedList();
+      list = new LinkedList<>();
       lists[idx] = list;
     }
-    return list.add(new Node(id, null, runTime));
+    return list.add(node);
   }
 }

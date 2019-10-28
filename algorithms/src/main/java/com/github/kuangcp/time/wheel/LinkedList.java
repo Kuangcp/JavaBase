@@ -8,13 +8,13 @@ import java.util.stream.Collectors;
 /**
  * @author https://github.com/kuangcp on 2019-10-28 13:10
  */
-class LinkedList {
+class LinkedList<T extends Node> {
 
-  private Node head;
-  private Node tail;
+  private T head;
+  private T tail;
   private int len;
 
-  boolean add(Node node) {
+  boolean add(T node) {
     len++;
     if (Objects.isNull(head)) {
       head = node;
@@ -33,22 +33,22 @@ class LinkedList {
     this.tail = null;
   }
 
-  List<Node> toList() {
-    List<Node> result = new ArrayList<>(len);
-    Node pointer = this.head;
+  List<T> toList() {
+    List<T> result = new ArrayList<>(len);
+    T pointer = this.head;
     while (Objects.nonNull(pointer)) {
       result.add(pointer);
-      pointer = pointer.getNext();
+      pointer = (T)pointer.getNext();
     }
     return result;
   }
 
   String toSimpleString() {
-    List<Node> nodes = toList();
+    List<T> nodes = toList();
     if (nodes.isEmpty()) {
       return "";
     }
-    return nodes.stream().map(Node::getId).collect(Collectors.joining(","));
+    return nodes.stream().map(T::getId).collect(Collectors.joining(","));
   }
 
   boolean isEmpty() {
