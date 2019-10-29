@@ -19,8 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * https://github.com/wolaiye1010/zdc-java-script
  *
- * 类似于 HashMap的设计结构
- * 设计支持 30 天内延迟任务
+ * 类似于 HashMap的设计结构 设计支持 30 天内延迟任务
  *
  * @author https://github.com/kuangcp on 2019-10-11 20:53
  */
@@ -33,7 +32,7 @@ public class TimeWheel {
 
   private volatile long startEmptyTime = -1;
   private volatile long maxTimeout = 10L;
-  private volatile long currentMills;
+  private volatile long lastCheckMills;
 
   private static final int SECONDS_SLOT = 60;
   private static final int MINUTES_SLOT = 60;
@@ -100,7 +99,7 @@ public class TimeWheel {
         try {
           if (!debugMode) {
             TimeUnit.MICROSECONDS.sleep(20);
-            if (currentMills - this.currentMills < 1000) {
+            if (currentMills - this.lastCheckMills < 1000) {
               continue;
             }
           }
@@ -116,7 +115,7 @@ public class TimeWheel {
             }
           }
 
-          this.currentMills = currentMills;
+          this.lastCheckMills = currentMills;
           int seconds = this.currentSecond.incrementAndGet();
           this.pushTimeWheel(seconds);
 
@@ -141,9 +140,8 @@ public class TimeWheel {
         if (debugMode) {
           millis -= SECONDS_SLOT * 1000;
         }
-        log.warn(": millis={}", millis);
         if (millis < 0) {
-          log.error("system lose task: node={}", node);
+          log.error("system invoke task delay: delay={} node={}", millis, node);
         }
 
         Duration delay = Duration.ofMillis(millis);
@@ -153,6 +151,7 @@ public class TimeWheel {
     }
   }
 
+  // TODO BUG
   private void pushTimeWheel(int seconds) {
     Map<Integer, Integer> tempIndex = new HashMap<>(sortedSlots.size());
     for (int i = 0; i < sortedSlots.size(); i++) {
@@ -177,6 +176,9 @@ public class TimeWheel {
           counter.set(0);
           temp = counters.get(sortedSlots.get(i + 1)).incrementAndGet();
           temp %= threshold;
+        } else {
+          AtomicInteger counter = counters.get(unit);
+          temp = counter.incrementAndGet();
         }
       }
 
@@ -245,6 +247,8 @@ public class TimeWheel {
   }
 
   public void printWheel() {
+    log.info("sec:{} min:{} hour:{}", this.currentSecond.get(), this.currentMinute.get(),
+        this.currentHour.get());
     for (ChronoUnit unit : wheels.keySet()) {
       LinkedList[] lists = wheels.get(unit);
 
@@ -302,7 +306,9 @@ public class TimeWheel {
   }
 
   private boolean insertWheel(ChronoUnit unit, long index, TaskNode node) {
-    int idx = (int) index;
+    Integer slot = slots.get(unit);
+    int idx = (int) index % slot;
+
     LinkedList<TaskNode>[] lists = wheels.get(unit);
     LinkedList<TaskNode> list = lists[idx];
     if (Objects.isNull(list)) {

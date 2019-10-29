@@ -22,7 +22,7 @@ import org.junit.Test;
 @Slf4j
 public class TimeWheelTest {
 
-  private TimeWheel timeWheel = new TimeWheel(3000L, true, false);
+  private TimeWheel timeWheel = new TimeWheel(10L, true, true);
 
   @Test
   public void testAdd() throws Exception {
@@ -120,8 +120,10 @@ public class TimeWheelTest {
   private long startTime;
 
   private void initOverMinData() {
-    for (int i = 1; i < 30; i++) {
-      inputData.put("id" + i, i * 6070L);
+    int dataSize = 60 * 60 * 2;
+    dataSize /= 1000;
+    for (int i = 1; i < dataSize; i++) {
+      inputData.put("id" + i, i * 1000000L);
     }
   }
 
@@ -144,7 +146,7 @@ public class TimeWheelTest {
     for (Entry<String, Long> entry : inputData.entrySet()) {
       boolean result = timeWheel
           .add(entry.getKey(), this::calculate, Duration.ofMillis(entry.getValue()));
-      log.info("add task: id={} result={}", entry.getKey(), result);
+      log.debug("add task: id={} result={}", entry.getKey(), result);
     }
 
     timeWheel.printWheel();
