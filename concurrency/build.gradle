@@ -1,11 +1,11 @@
 plugins {
   id 'groovy'
-  id 'maven'
+  id 'maven-publish'
 }
 
 dependencies {
   implementation libs['jedis']
   implementation libs['groovy']
   implementation libs['common-lang']
-  testCompile libs['testng']
+  testImplementation(libs['testng'])
 }

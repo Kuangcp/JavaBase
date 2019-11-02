@@ -3,7 +3,7 @@ apply from: 'dependency.gradle'
 // parent and child project all use this config
 subprojects {
   apply plugin: 'java'
-  apply plugin: 'maven'
+  apply plugin: 'maven-publish'
 
   group = 'com.github.kuangcp'
 
@@ -17,7 +17,7 @@ subprojects {
   repositories {
     mavenLocal()
 
-    def aliYun = "http://maven.aliyun.com/nexus/content/groups/public/"
+    def aliYun = "https://maven.aliyun.com/nexus/content/groups/public/"
     def kuangcp = "https://gitee.com/gin9/MavenRepos/raw/master"
 
     maven {
