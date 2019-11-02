@@ -121,9 +121,9 @@ public class TimeWheelTest {
 
   private void initOverMinData() {
     int dataSize = 60 * 60 * 2;
-    dataSize /= 1000;
+    dataSize = 10;
     for (int i = 1; i < dataSize; i++) {
-      inputData.put("id" + i, i * 1000000L);
+      inputData.put("id" + i,  i * 65_000L);
     }
   }
 

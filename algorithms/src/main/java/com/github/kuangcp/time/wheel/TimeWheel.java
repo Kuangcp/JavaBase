@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -153,42 +154,49 @@ public class TimeWheel {
 
   // TODO BUG
   private void pushTimeWheel(int seconds) {
-    Map<Integer, Integer> tempIndex = new HashMap<>(sortedSlots.size());
+    Map<ChronoUnit, Integer> tempIndex = new HashMap<>(sortedSlots.size());
     for (int i = 0; i < sortedSlots.size(); i++) {
       ChronoUnit unit = sortedSlots.get(i);
-      int temp = -1;
       Integer threshold = slots.get(unit);
+      int upIndex = -1;
+
+      // 最小轮
       if (i == 0) {
         if (seconds >= threshold) {
+          int up = seconds / threshold;
           AtomicInteger counter = counters.get(unit);
           counter.set(0);
-          temp = counters.get(sortedSlots.get(i + 1)).incrementAndGet();
-          temp %= threshold;
+          upIndex = counters.get(sortedSlots.get(i + 1)).addAndGet(up);
+        } else {
+          break;
         }
+        // 最大轮
       } else if (i == sortedSlots.size() - 1) {
         AtomicInteger counter = counters.get(unit);
         counter.set(0);
         this.removeAndAdd(unit, 0);
-        temp = -1;
+        upIndex = -1;
       } else {
-        if (temp > threshold) {
-          AtomicInteger counter = counters.get(unit);
+        AtomicInteger counter = counters.get(unit);
+        if (counter.get() >= threshold) {
           counter.set(0);
-          temp = counters.get(sortedSlots.get(i + 1)).incrementAndGet();
-          temp %= threshold;
-        } else {
-          AtomicInteger counter = counters.get(unit);
-          temp = counter.incrementAndGet();
+          upIndex = counters.get(sortedSlots.get(i + 1)).incrementAndGet();
         }
       }
 
-      tempIndex.put(i + 1, temp);
+      if (upIndex != -1) {
+        tempIndex.put(sortedSlots.get(i + 1), upIndex);
+      }
     }
+//    if (!tempIndex.isEmpty()) {
+//      log.info(": tempIndex={}", tempIndex);
+//    }
 
-    for (int i = sortedSlots.size() - 1; i > 0; i--) {
-      Integer nextIndex = tempIndex.get(i);
-      if (nextIndex != -1) {
-        this.removeAndAdd(sortedSlots.get(i), nextIndex);
+    if (!tempIndex.isEmpty()) {
+      for (Entry<ChronoUnit, Integer> entry : tempIndex.entrySet()) {
+        ChronoUnit unit = entry.getKey();
+        Integer value = entry.getValue();
+        this.removeAndAdd(unit, value % slots.get(unit));
       }
     }
   }
@@ -206,7 +214,8 @@ public class TimeWheel {
       log.debug("[{}]before invoke: id={}", seconds, id);
       try {
         Future<?> result = pool.submit(func);
-        log.info("[{}]invoke: id={} result={}", seconds, id, result.get());
+        log.info("[{}:{}:{}] id={} result={}", this.currentSecond.get(), this.currentMinute.get(),
+            this.currentHour.get(), id, result.get());
         cacheTasks.remove(id);
       } catch (Exception e) {
         log.error("", e);
