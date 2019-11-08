@@ -96,4 +96,9 @@ public class StringTest {
     String b = new StringBuilder("Ja").append("va").toString();
     Assert.assertFalse(b.intern() == b);
   }
+
+  @Test
+  public void testReplaceSpecialChar(){
+    "".replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "*");
+  }
 }
