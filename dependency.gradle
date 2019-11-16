@@ -14,7 +14,7 @@ ext {
       , netty   : '4.1.35.Final'
       , guava   : '27.1-jre'
       , jmh     : '1.2.1'
-      , kafka   : '2.2.0'
+      , kafka   : '2.3.1'
       , spring  : '5.1.5.RELEASE'
       , aspectj : '1.9.0'
       , hadoop  : '2.7.2'
