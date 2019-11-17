@@ -4,7 +4,10 @@ import static com.github.kuangcp.hi.Constants.KAFKA_SERVER;
 
 import java.util.Properties;
 import java.util.UUID;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 
 /**
  * @author https://github.com/kuangcp on 2019-11-13 09:37
@@ -12,29 +15,29 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 public class KafkaConfigManager {
 
   public static Properties getConsumerConfig() {
-    Properties properties = new Properties();
-    properties.put("bootstrap.servers", KAFKA_SERVER);
-    properties.put("group.id", "TestGroup-" + UUID.randomUUID().toString());
-    properties.put("enable.auto.commit", "true");
-    properties.put("auto.commit.interval.ms", "1000");
-    properties.put("auto.offset.reset", "earliest");
-    properties.put("session.timeout.ms", "30000");
-    properties.put("key.deserializer", StringDeserializer.class.getName());
-    properties.put("value.deserializer", StringDeserializer.class.getName());
-    return properties;
+    Properties config = new Properties();
+    config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KAFKA_SERVER);
+    config.put(ConsumerConfig.GROUP_ID_CONFIG, "TestGroup-" + UUID.randomUUID().toString());
+    config.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
+    config.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "1000");
+    config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+    config.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
+    config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+    config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+    return config;
   }
 
   public static Properties getProducerConfig() {
-    Properties properties = new Properties();
-    properties.put("bootstrap.servers", KAFKA_SERVER);
-    properties.put("acks", "all");
-    properties.put("retries", 0);
-    properties.put("batch.size", 16384);
-    properties.put("linger.ms", 1);
-    properties.put("buffer.memory", 33554432);
+    Properties config = new Properties();
+    config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KAFKA_SERVER);
+    config.put(ProducerConfig.ACKS_CONFIG, "all");
+    config.put(ProducerConfig.RETRIES_CONFIG, 0);
+    config.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
+    config.put(ProducerConfig.LINGER_MS_CONFIG, 1);
+    config.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
 
-    properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-    properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-    return properties;
+    config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+    config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+    return config;
   }
 }
