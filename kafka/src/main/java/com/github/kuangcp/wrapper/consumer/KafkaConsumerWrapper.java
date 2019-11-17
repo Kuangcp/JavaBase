@@ -3,7 +3,6 @@ package com.github.kuangcp.wrapper.consumer;
 import com.github.kuangcp.wrapper.config.KafkaConfigManager;
 import java.time.Duration;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Properties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -16,7 +15,8 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 @Slf4j
 public class KafkaConsumerWrapper {
 
-  private static Properties properties = KafkaConfigManager.getConsumerConfig();
+  private static Properties properties = KafkaConfigManager.getConsumerConfig()
+      .orElseThrow(() -> new RuntimeException(""));
 
   static void consumer(Duration duration, Collection<String> topics) {
     KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
@@ -25,6 +25,7 @@ public class KafkaConsumerWrapper {
       ConsumerRecords<String, String> records = kafkaConsumer.poll(duration);
       for (ConsumerRecord<String, String> record : records) {
         log.info("offset = {}, value = {}", record.offset(), record.value());
+
       }
     }
   }
