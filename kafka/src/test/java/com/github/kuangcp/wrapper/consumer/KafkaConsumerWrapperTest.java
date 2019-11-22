@@ -10,7 +10,9 @@ import org.junit.Test;
 public class KafkaConsumerWrapperTest {
 
   @Test
-  public void testConsumer(){
-    KafkaConsumerWrapper.consumer(Duration.ofMillis(1000), Collections.singleton("Hi"));
+  public void testConsumerWithSimpleExecutor() {
+    HiExecutor executor = new HiExecutor();
+
+    KafkaConsumerWrapper.consumer(Duration.ofMillis(1000), Collections.singletonList(executor));
   }
 }

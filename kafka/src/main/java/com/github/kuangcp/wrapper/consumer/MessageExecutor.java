@@ -1,14 +1,12 @@
 package com.github.kuangcp.wrapper.consumer;
 
-import com.github.kuangcp.wrapper.Message;
-
 /**
  * @author https://github.com/kuangcp on 2019-11-13 09:47
  */
-public interface MessageExecutor {
+public interface MessageExecutor<T> {
 
   /**
    * 处理消息
    */
-  void execute(Message message);
+  void execute(T message);
 }
