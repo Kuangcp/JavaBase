@@ -61,6 +61,7 @@ public class KafkaProducerWrapper {
     try {
       String messageStr = objectMapper.writeValueAsString(message);
       producer.send(new ProducerRecord<>(topic, messageStr));
+      log.info("send message succeed: messageStr={}", messageStr);
     } catch (JsonProcessingException e) {
       log.error("", e);
     }

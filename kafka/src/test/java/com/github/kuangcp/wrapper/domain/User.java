@@ -24,4 +24,6 @@ public class User implements Serializable {
 
   private List<String> phones;
 
+  private List<Book> books;
+
 }
