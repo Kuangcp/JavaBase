@@ -22,6 +22,7 @@ public class BloomFilter {
   static {
     functions.add(HashFunctions.hashByObjects);
     functions.add(HashFunctions.hashWithString);
+    functions.add(HashFunctions.murmurHash2);
   }
 
   public void add(String str) {

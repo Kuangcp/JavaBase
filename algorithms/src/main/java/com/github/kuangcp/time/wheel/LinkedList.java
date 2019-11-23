@@ -33,6 +33,7 @@ class LinkedList<T extends Node> {
     this.tail = null;
   }
 
+  @SuppressWarnings("unchecked")
   List<T> toList() {
     List<T> result = new ArrayList<>(len);
     T pointer = this.head;

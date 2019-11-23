@@ -14,7 +14,7 @@ ext {
       , netty   : '4.1.35.Final'
       , guava   : '27.1-jre'
       , jmh     : '1.2.1'
-      , kafka   : '2.2.0'
+      , kafka   : '2.3.1'
       , spring  : '5.1.5.RELEASE'
       , aspectj : '1.9.0'
       , hadoop  : '2.7.2'
@@ -30,6 +30,7 @@ ext {
       , "groovy"                  : "org.codehaus.groovy:groovy-all:$ver.groovy"
       , "cglib"                   : "cglib:cglib:3.2.9"
       , "common-math"             : "org.apache.commons:commons-math3:3.6.1"
+      , "common-codec"            : "commons-codec:commons-codec:1.13"
       , "guava"                   : "com.google.guava:guava:$ver.guava"
 
       // test, junit has removed hamcrest since 4.11

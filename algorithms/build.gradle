@@ -1,3 +1,4 @@
 dependencies {
   implementation(group: 'com.github.jsonzou', name: 'jmockdata', version: '4.1.2')
+  implementation(libs['common-codec'])
 }

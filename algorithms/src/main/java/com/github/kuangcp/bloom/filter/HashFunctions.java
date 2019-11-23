@@ -2,6 +2,7 @@ package com.github.kuangcp.bloom.filter;
 
 import java.util.Objects;
 import java.util.function.Function;
+import org.apache.commons.codec.digest.MurmurHash2;
 
 /**
  * https://stackoverflow.com/questions/34595/what-is-a-good-hash-function
@@ -33,4 +34,8 @@ public class HashFunctions {
     }
     return hash > 0 ? hash : -hash;
   };
+
+  // Kafka 默认分区器 hash 算法
+  static Function<String, Integer> murmurHash2 = MurmurHash2::hash32;
+
 }
