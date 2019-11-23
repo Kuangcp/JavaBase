@@ -13,6 +13,13 @@ public class KafkaConsumerWrapperTest {
   public void testConsumerWithSimpleExecutor() {
     HiExecutor executor = new HiExecutor();
 
+    KafkaConsumerWrapper.consumerPlainText(Duration.ofMillis(1000),
+        Collections.singletonList(executor));
+  }
+
+  @Test
+  public void testConsumerMessage(){
+    LoginMessageExecutor executor = new LoginMessageExecutor();
     KafkaConsumerWrapper.consumer(Duration.ofMillis(1000), Collections.singletonList(executor));
   }
 }

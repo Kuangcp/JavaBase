@@ -1,5 +1,6 @@
 package com.github.kuangcp.wrapper;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 import lombok.Data;
@@ -10,7 +11,9 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class Message<T> {
+public class Message<T> implements Serializable {
+
+  private static final long serialVersionUID = 0L;
 
   /**
    * 消息Id

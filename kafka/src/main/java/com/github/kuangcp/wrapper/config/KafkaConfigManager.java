@@ -36,10 +36,15 @@ public class KafkaConfigManager {
       return Optional.empty();
     }
 
-    load.getProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG);
+    String groupId;
+    Optional<String> groupOpt = Optional.ofNullable(load)
+        .map(v -> v.getProperty(ConsumerConfig.GROUP_ID_CONFIG));
+    groupId = groupOpt.orElseGet(() -> "Group-" + UUID.randomUUID().toString());
+
     Properties config = new Properties();
     config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, serverOpt.get());
-    config.put(ConsumerConfig.GROUP_ID_CONFIG, "TestGroup-" + UUID.randomUUID().toString());
+    config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+
     config.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
     config.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "1000");
     config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
