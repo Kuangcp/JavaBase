@@ -52,4 +52,28 @@ public class KafkaConsumerWrapper {
       }
     }
   }
+
+  static <T> void consumers(Duration duration, List<SingleTopicMessageExecutor<T>> executors) {
+    if (Objects.isNull(duration) || Objects.isNull(executors) || executors.isEmpty()) {
+      log.warn("consumer param invalid");
+      return;
+    }
+
+    Map<String, SingleTopicMessageExecutor<T>> executorMap = executors.stream()
+        .collect(Collectors.toMap(SingleTopicMessageExecutor::getTopic,
+            Function.identity(), (front, current) -> current));
+
+    KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
+    kafkaConsumer.subscribe(executorMap.keySet());
+    while (true) {
+      ConsumerRecords<String, String> records = kafkaConsumer.poll(duration);
+      for (ConsumerRecord<String, String> record : records) {
+        SingleTopicMessageExecutor<T> executor = executorMap.get(record.topic());
+
+        if (Objects.nonNull(executor)) {
+          pool.submit(() -> executor.execute(record.value()));
+        }
+      }
+    }
+  }
 }
