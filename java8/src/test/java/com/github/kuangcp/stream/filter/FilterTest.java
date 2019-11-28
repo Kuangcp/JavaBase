@@ -1,4 +1,4 @@
-package com.github.kuangcp.lambda.filter;
+package com.github.kuangcp.stream.filter;
 
 import java.util.stream.IntStream;
 import lombok.extern.slf4j.Slf4j;
