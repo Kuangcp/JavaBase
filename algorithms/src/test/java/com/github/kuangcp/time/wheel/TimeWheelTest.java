@@ -14,11 +14,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * @author https://github.com/kuangcp on 2019-10-27 12:15
  */
+@Ignore
 @Slf4j
 public class TimeWheelTest {
 

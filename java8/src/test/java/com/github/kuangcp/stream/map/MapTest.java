@@ -17,7 +17,7 @@ public class MapTest {
 
 
   @Test
-  public void testConvertMap() throws IllegalAccessException, InstantiationException {
+  public void testConvertMap() {
     Map<Long, A> input = new HashMap<>();
     input.put(1L, new A());
     Map<Long, B> result = convert(input, B.class);
