@@ -13,10 +13,9 @@
     </filter>
   </appender>
 
-  <root level="DEBUG">
+  <root level="INFO">
     <appender-ref ref="STDOUT"/>
   </root>
 
-  <logger name="org.apache.kafka.clients" level="DEBUG"/>
-  <logger name="com.github.kuangcp.hi.ConsumerDemo" level="DEBUG"/>
+<!--  <logger name="com.github.kuangcp" level="DEBUG"/>-->
 </configuration>

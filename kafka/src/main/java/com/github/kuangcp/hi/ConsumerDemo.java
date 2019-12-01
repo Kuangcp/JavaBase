@@ -5,7 +5,8 @@ import static com.github.kuangcp.hi.Constants.KAFKA_SERVER;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kuangcp.hi.domain.ProductStatisticJobCommand;
-import com.github.kuangcp.hi.domain.StartCommand;
+import com.github.kuangcp.kafka.KafkaConsumerUtil;
+import com.github.kuangcp.kafka.common.SimpleMessageExecutor;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Collections;
@@ -28,14 +29,20 @@ public class ConsumerDemo {
   private static ObjectMapper mapper = new ObjectMapper();
 
   static void receiveHi() {
-    KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
-    kafkaConsumer.subscribe(Collections.singletonList(HI_TOPIC));
-    while (true) {
-      ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(100));
-      for (ConsumerRecord<String, String> record : records) {
-        log.info("offset = {}, value = {}", record.offset(), record.value());
+    SimpleMessageExecutor executor = new SimpleMessageExecutor() {
+      @Override
+      public void execute(String message) {
+        log.info("message={}", message);
       }
-    }
+
+      @Override
+      public String getTopic() {
+        return HI_TOPIC;
+      }
+    };
+
+    KafkaConsumerUtil.consumerPlainText(Duration.ofMillis(1000),
+        Collections.singletonList(executor));
   }
 
   static void receiveCommand() throws IOException {
@@ -45,7 +52,8 @@ public class ConsumerDemo {
       ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(100));
       for (ConsumerRecord<String, String> record : records) {
         log.info("offset = {}, value = {}", record.offset(), record.value());
-        ProductStatisticJobCommand command = mapper.readValue(record.value(), ProductStatisticJobCommand.class);
+        ProductStatisticJobCommand command = mapper
+            .readValue(record.value(), ProductStatisticJobCommand.class);
         System.out.println(command);
       }
     }
