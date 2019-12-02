@@ -1,4 +1,5 @@
 dependencies {
+  implementation libs['kcp-tool']
   implementation libs['kafka-clients']
   implementation libs['jackson_core']
   implementation libs['jackson_databind']
