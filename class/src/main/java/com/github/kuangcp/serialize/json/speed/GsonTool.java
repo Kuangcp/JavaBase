@@ -16,13 +16,13 @@ public class GsonTool implements JsonTool<Person> {
   private Gson gson = new Gson();
 
   @Override
-  public void fromJSON(String json, Class<Person> target) {
-    gson.fromJson(json, target);
+  public Person fromJSON(String json, Class<Person> target) {
+    return gson.fromJson(json, target);
   }
 
   @Override
-  public void toJSON(List<Person> dataList) {
-    gson.toJson(dataList);
+  public String toJSON(List<Person> dataList) {
+    return gson.toJson(dataList);
   }
 
   @Override

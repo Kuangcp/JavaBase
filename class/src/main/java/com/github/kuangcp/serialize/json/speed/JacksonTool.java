@@ -16,13 +16,13 @@ public class JacksonTool implements JsonTool<Person> {
   private ObjectMapper mapper = new ObjectMapper();
 
   @Override
-  public void fromJSON(String json, Class<Person> target) throws IOException {
-    mapper.readValue(json, target);
+  public Person fromJSON(String json, Class<Person> target) throws IOException {
+    return mapper.readValue(json, target);
   }
 
   @Override
-  public void toJSON(List<Person> dataList) throws JsonProcessingException {
-    mapper.writeValueAsString(dataList);
+  public String toJSON(List<Person> dataList) throws JsonProcessingException {
+    return mapper.writeValueAsString(dataList);
   }
 
   @Override

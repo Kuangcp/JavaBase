@@ -11,9 +11,9 @@ import java.util.List;
  */
 public interface JsonTool<T> {
 
-  void fromJSON(String json, Class<T> target) throws IOException;
+  T fromJSON(String json, Class<T> target) throws IOException;
 
-  void toJSON(List<T> dataList) throws JsonProcessingException;
+  String toJSON(List<T> dataList) throws JsonProcessingException;
 
   String getName();
 }
