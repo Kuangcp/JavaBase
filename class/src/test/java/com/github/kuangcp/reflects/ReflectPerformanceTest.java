@@ -11,6 +11,7 @@ import org.junit.Test;
 /**
  * 反射的性能问题 http://www.cnblogs.com/zhishan/p/3195771.html
  * cglib(已缓存) 耗时 50%-70% 于缓存, 10% 于 原始方式
+ * TODO 操作字节码方式取代反射
  *
  * @author kuangcp
  */
