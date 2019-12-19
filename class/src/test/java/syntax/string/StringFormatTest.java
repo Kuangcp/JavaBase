@@ -24,7 +24,12 @@ public class StringFormatTest {
 
     System.out.println(Math.ceil(2435 / 1000.0) % 60);
     String result = String.format("%02d:%02d:%02d", duration.toHours(), duration.toMinutes() % 60,
-        (int)Math.ceil(mills / 1000.0) % 60);
+        (int) Math.ceil(mills / 1000.0) % 60);
     System.out.println(result);
+  }
+
+  @Test
+  public void testCaculate() {
+    System.out.println((20 * 10000) / 30);
   }
 }
