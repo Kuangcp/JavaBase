@@ -12,17 +12,17 @@ import org.junit.Test;
  */
 public class ParamTransferTest {
 
-  class A {
+  static class A {
 
     private String name;
 
   }
 
-  // 值传递
   private void modifyName(A a) {
     a.name = "2";
     assertThat(a.name, equalTo("2"));
 
+    // 只更改到形参不能更改实参引用指向
     a = new A();
     a.name = "3";
     assertThat(a.name, equalTo("3"));
@@ -36,6 +36,4 @@ public class ParamTransferTest {
     modifyName(a);
     assertThat(a.name, equalTo("2"));
   }
-
-
 }

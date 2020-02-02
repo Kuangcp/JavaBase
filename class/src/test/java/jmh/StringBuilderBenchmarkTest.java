@@ -15,7 +15,7 @@ public class StringBuilderBenchmarkTest {
   public void test() throws RunnerException {
     Options options = new OptionsBuilder()
         .include(StringBuilderBenchmark.class.getSimpleName())
-        .output("/home/kcp/test/jmh/Benchmark.log").build();
+        .output("/tmp/Benchmark.log").build();
     new Runner(options).run();
   }
 }

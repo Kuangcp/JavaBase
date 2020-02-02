@@ -24,12 +24,12 @@ class InstantiationAndConstructor implements Serializable, Cloneable {
   }
 
   public InstantiationAndConstructor() {
-    log.info("invoke empty constructor");
+    log.warn("invoke empty constructor");
   }
 
   public InstantiationAndConstructor(String name) {
     this.name = name;
-    log.info("invoke constructor(name): name={}", name);
+    log.warn("invoke constructor(name): name={}", name);
   }
 
   @Override
