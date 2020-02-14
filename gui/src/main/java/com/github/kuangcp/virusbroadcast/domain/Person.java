@@ -63,6 +63,9 @@ public class Person {
    * 被感染
    */
   public void beInfected() {
+    if (this.isInfected()) {
+      return;
+    }
     City.trans(PersonState.NORMAL, PersonState.SHADOW);
     state = PersonState.SHADOW;
     infectedTime = DisplayPanel.worldTime;
@@ -75,7 +78,7 @@ public class Person {
   }
 
   public void willInfected() {
-    if (isInfected()) {
+    if (this.isInfected()) {
       return;
     }
 
@@ -86,7 +89,7 @@ public class Person {
         continue;
       }
 
-      if (this.isSafeWith(person)) {
+      if (this.mayInfected(person)) {
         this.beInfected();
       }
     }
@@ -95,7 +98,7 @@ public class Person {
   /**
    * 是否感染
    */
-  public boolean isSafeWith(Person person) {
+  public boolean mayInfected(Person person) {
     if (person.getState() == PersonState.NORMAL) {
       return false;
     }
