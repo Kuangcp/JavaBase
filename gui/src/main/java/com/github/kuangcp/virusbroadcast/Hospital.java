@@ -9,41 +9,17 @@ import java.util.List;
 /**
  *
  */
-public class Hospital {
+public enum Hospital {
+
+  INSTANCE;
 
   private int x = 800;
   private int y = 110;
-
   private int width;
   private int height = 606;
-
-  public int getWidth() {
-    return width;
-  }
-
-
-  public int getHeight() {
-    return height;
-  }
-
-  public int getX() {
-    return x;
-  }
-
-  public int getY() {
-    return y;
-  }
-
-  private static Hospital hospital = new Hospital();
-
-  public static Hospital getInstance() {
-    return hospital;
-  }
-
-  private Point point = new Point(800, 100);
   private List<Bed> beds = new ArrayList<>();
 
-  private Hospital() {
+  Hospital() {
     if (Constants.BED_COUNT == 0) {
       width = 0;
       height = 0;
@@ -51,14 +27,12 @@ public class Hospital {
     int column = Constants.BED_COUNT / 100;
     width = column * 6;
 
+    Point offset = new Point(800, 100);
     for (int i = 0; i < column; i++) {
-
       for (int j = 10; j <= 610; j += 6) {
-        Bed bed = new Bed(point.getX() + i * 6, point.getY() + j);
+        Bed bed = new Bed(offset.getX() + i * 6, offset.getY() + j);
         beds.add(bed);
-
       }
-
     }
   }
 
@@ -69,5 +43,37 @@ public class Hospital {
       }
     }
     return null;
+  }
+
+  public int getX() {
+    return x;
+  }
+
+  public void setX(int x) {
+    this.x = x;
+  }
+
+  public int getY() {
+    return y;
+  }
+
+  public void setY(int y) {
+    this.y = y;
+  }
+
+  public int getWidth() {
+    return width;
+  }
+
+  public void setWidth(int width) {
+    this.width = width;
+  }
+
+  public int getHeight() {
+    return height;
+  }
+
+  public void setHeight(int height) {
+    this.height = height;
   }
 }

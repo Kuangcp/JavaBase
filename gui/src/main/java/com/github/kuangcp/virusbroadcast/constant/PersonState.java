@@ -7,17 +7,23 @@ public interface PersonState {
 
   int NORMAL = 0;
 
-  // 疑似
-  int SUSPECTED = NORMAL + 1;
+  /**
+   * 潜伏期
+   */
+  int SHADOW = NORMAL + 1;
 
-  // 潜伏期
-  int SHADOW = NORMAL + 2;
+  /**
+   * 确诊
+   */
+  int CONFIRMED = NORMAL + 2;
 
-  int CONFIRMED = NORMAL + 3;
+  /**
+   * 隔离
+   */
+  int FREEZE = NORMAL + 3;
 
-  // 隔离
-  int FREEZE = NORMAL + 4;
-
-  // 治愈
-  int CURED = NORMAL + 5;
+  /**
+   * 死亡
+   */
+  int DEAD = NORMAL + 4;
 }

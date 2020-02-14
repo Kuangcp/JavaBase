@@ -1,12 +1,14 @@
 package com.github.kuangcp.virusbroadcast.gui;
 
 import com.github.kuangcp.virusbroadcast.Hospital;
-import com.github.kuangcp.virusbroadcast.domain.Person;
-import com.github.kuangcp.virusbroadcast.PersonPool;
+import com.github.kuangcp.virusbroadcast.domain.City;
 import com.github.kuangcp.virusbroadcast.constant.PersonState;
+import com.github.kuangcp.virusbroadcast.domain.Person;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JPanel;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,63 +23,76 @@ public class DisplayPanel extends JPanel implements Runnable {
    */
   public static int worldTime = 0;
 
+  private volatile boolean runnable = true;
+  private volatile int infected;
+
+
   public DisplayPanel() {
     this.setBackground(new Color(0x444444));
   }
 
-  @Override
-  public void paint(Graphics arg0) {
-    super.paint(arg0);
-    //draw border
-    arg0.setColor(new Color(0x00ff00));
-    arg0.drawRect(Hospital.getInstance().getX(), Hospital.getInstance().getY(),
-        Hospital.getInstance().getWidth(), Hospital.getInstance().getHeight());
+  private static Map<Integer, Color> colorMap = new HashMap<>();
 
-    List<Person> people = PersonPool.getInstance().getPersonList();
-    if (people == null) {
+  static {
+    colorMap.put(PersonState.NORMAL, Color.white);
+    colorMap.put(PersonState.SHADOW, Color.yellow);
+    colorMap.put(PersonState.CONFIRMED, Color.red);
+    colorMap.put(PersonState.FREEZE, Color.red);
+  }
+
+  @Override
+  public void paint(Graphics graphics) {
+    super.paint(graphics);
+
+    //draw border
+    graphics.setColor(Color.green);
+    Hospital hospital = Hospital.INSTANCE;
+    graphics.drawRect(hospital.getX(), hospital.getY(), hospital.getWidth(), hospital.getHeight());
+
+    List<Person> personList = City.getInstance().getPersonList();
+
+    if (personList.isEmpty()) {
+      this.stop(false);
       return;
     }
-    int pIndex = 0;
-    people.get(pIndex).update();
-    for (Person person : people) {
 
-      switch (person.getState()) {
-        case PersonState.NORMAL: {
-          arg0.setColor(new Color(0xdddddd));
-
-        }
-        break;
-        case PersonState.SHADOW: {
-          arg0.setColor(new Color(0xffee00));
-
-        }
-        break;
-        case PersonState.CONFIRMED:
-        case PersonState.FREEZE: {
-          arg0.setColor(new Color(0xff0000));
-
-        }
-        break;
+    int sum = 0;
+    for (Person person : personList) {
+      if (person.isInfected()) {
+        sum++;
       }
+      Color color = colorMap.get(person.getState());
+      graphics.setColor(color);
+
       person.update();
-      arg0.fillOval(person.getX(), person.getY(), 3, 3);
+      graphics.fillOval(person.getX(), person.getY(), 3, 3);
     }
-    pIndex++;
-    if (pIndex >= people.size()) {
-      pIndex = 0;
+    this.infected = sum;
+    if (sum == 0) {
+      this.stop(true);
     }
   }
 
   @Override
   public void run() {
-    while (true) {
+    while (runnable) {
       this.repaint();
+
       try {
-        Thread.sleep(100);
+        Thread.sleep(30);
         worldTime++;
       } catch (InterruptedException e) {
         log.error("", e);
       }
+    }
+  }
+
+  public synchronized void stop(boolean survival) {
+    this.runnable = false;
+    if (survival) {
+      log.warn("End of epidemic situation!");
+    } else {
+      log.warn("No one survived!");
     }
   }
 }
