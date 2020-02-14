@@ -23,7 +23,10 @@ public class City implements Runnable {
   private int centerX = 400;
   private int centerY = 400;
   private int personCount = CITY_PERSON_SCALE;
+  private volatile boolean init = false;
 
+  private static City city = new City();
+  public List<Person> personList = new CopyOnWriteArrayList<>();
   private static Map<Integer, AtomicInteger> counts;
 
   static {
@@ -33,8 +36,32 @@ public class City implements Runnable {
     counts.get(PersonState.NORMAL).set(CITY_PERSON_SCALE);
   }
 
-  private static City city = new City();
-  public List<Person> personList = new CopyOnWriteArrayList<>();
+  private City() {
+    for (int i = 0; i < this.personCount; i++) {
+      int x = (int) (100 * ThreadLocalRandom.current().nextGaussian() + centerX);
+      int y = (int) (100 * ThreadLocalRandom.current().nextGaussian() + centerY);
+      if (x > 700) {
+        x = 700;
+      }
+      Person person = new Person(x, y);
+      personList.add(person);
+    }
+  }
+
+  public void initInfected() {
+    // 初始感染
+    for (int i = 0; i < Constants.ORIGINAL_COUNT; i++) {
+      int index = new Random().nextInt(personList.size() - 1);
+      Person person = personList.get(index);
+
+      while (person.isInfected()) {
+        index = new Random().nextInt(personList.size() - 1);
+        person = personList.get(index);
+      }
+      person.beInfected();
+    }
+  }
+
 
   public static City getInstance() {
     return city;
@@ -55,35 +82,15 @@ public class City implements Runnable {
     fromCount.decrementAndGet();
   }
 
-  private City() {
-    for (int i = 0; i < this.personCount; i++) {
-      int x = (int) (100 * ThreadLocalRandom.current().nextGaussian() + centerX);
-      int y = (int) (100 * ThreadLocalRandom.current().nextGaussian() + centerY);
-      if (x > 700) {
-        x = 700;
-      }
-      Person person = new Person(x, y);
-      personList.add(person);
-    }
-
-    // 初始感染
-    for (int i = 0; i < Constants.ORIGINAL_COUNT; i++) {
-      int index = new Random().nextInt(personList.size() - 1);
-      Person person = personList.get(index);
-
-      while (person.isInfected()) {
-        index = new Random().nextInt(personList.size() - 1);
-        person = personList.get(index);
-      }
-      person.beInfected();
-    }
-  }
-
   @Override
   public void run() {
     while (true) {
+      if (!init) {
+        this.initInfected();
+        this.init = true;
+      }
       try {
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         showCityInfo();
       } catch (Exception e) {
         log.error("", e);
@@ -93,13 +100,15 @@ public class City implements Runnable {
 
   public void showCityInfo() {
     StringBuilder temp = new StringBuilder();
+    int sum = 0;
     for (Entry<Integer, AtomicInteger> entry : counts.entrySet()) {
       Optional<PersonStateEnum> stateOpt = PersonStateEnum.getByValue(entry.getKey());
       if (stateOpt.isPresent()) {
         int value = entry.getValue().get();
         temp.append(String.format("%6s: %5d ▌", stateOpt.get().getDesc(), value));
+        sum += value;
       }
     }
-    log.info("{}", temp.toString());
+    log.info("{} sum:{}", temp.toString(), sum);
   }
 }

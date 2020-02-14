@@ -116,12 +116,12 @@ public class Person {
   }
 
   private boolean freeze(Bed bed) {
-    City.trans(PersonState.CONFIRMED, PersonState.FREEZE);
     if (Objects.nonNull(this.bed) || Objects.isNull(bed)) {
 //      System.out.println("隔离区没有空床位");
       return false;
     }
 
+    City.trans(PersonState.CONFIRMED, PersonState.FREEZE);
     this.bed = bed;
     state = PersonState.FREEZE;
     x = bed.getX();
