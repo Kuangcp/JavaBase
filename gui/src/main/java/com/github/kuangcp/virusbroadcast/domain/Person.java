@@ -151,7 +151,7 @@ public class Person {
     return true;
   }
 
-  // 随机移动
+  // 随机移动 TODO 确诊无法移动
   private void action() {
     if (state == PersonState.FREEZE) {
       return;

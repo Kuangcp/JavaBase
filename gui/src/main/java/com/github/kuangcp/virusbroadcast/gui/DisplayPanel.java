@@ -24,8 +24,6 @@ public class DisplayPanel extends JPanel implements Runnable {
   public static int worldTime = 0;
 
   private volatile boolean runnable = true;
-  private volatile int infected;
-
 
   public DisplayPanel() {
     this.setBackground(new Color(0x444444));
@@ -37,7 +35,7 @@ public class DisplayPanel extends JPanel implements Runnable {
     colorMap.put(PersonState.NORMAL, Color.white);
     colorMap.put(PersonState.SHADOW, Color.yellow);
     colorMap.put(PersonState.CONFIRMED, Color.red);
-    colorMap.put(PersonState.FREEZE, Color.red);
+    colorMap.put(PersonState.FREEZE, Color.blue);
   }
 
   @Override
@@ -45,7 +43,7 @@ public class DisplayPanel extends JPanel implements Runnable {
     super.paint(graphics);
 
     //draw border
-    graphics.setColor(Color.green);
+    graphics.setColor(Color.blue);
     Hospital hospital = Hospital.INSTANCE;
     graphics.drawRect(hospital.getX(), hospital.getY(), hospital.getWidth(), hospital.getHeight());
 
@@ -67,7 +65,6 @@ public class DisplayPanel extends JPanel implements Runnable {
       person.update();
       graphics.fillOval(person.getX(), person.getY(), 3, 3);
     }
-    this.infected = sum;
     if (sum == 0) {
       this.stop(true);
     }
