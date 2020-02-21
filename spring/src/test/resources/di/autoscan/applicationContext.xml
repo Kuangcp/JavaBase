@@ -20,5 +20,5 @@
     base-package
        会在base-package的值所在的包及子包下扫描所有的类
    -->
-  <context:component-scan base-package="com.github.kuangcp.di.scan"></context:component-scan>
+  <context:component-scan base-package="com.github.kuangcp.di.autoscan"/>
 </beans>

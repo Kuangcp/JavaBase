@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
-	<!-- 把documentManager,worddocument,exceldocument,pdfdocument -->
-	<bean id="documentManager" class="com.github.kuangcp.document.spring.DocumentManager">
-		<!--
-			document是一个接口
-		 -->
-		<property name="document">
-		    <!--
-		    	通过ref给接口赋值
-		     -->
-			<ref bean="wordDocument"/>
-		</property>
-	</bean>
+  <!-- 把documentManager,worddocument,exceldocument,pdfdocument -->
+  <bean id="documentManager" class="com.github.kuangcp.document.spring.DocumentManager">
+    <!-- 			document是一个接口 		 -->
+    <property name="document" ref="wordDocument"/>
+  </bean>
 
-	<bean id="wordDocument" class="com.github.kuangcp.document.spring.WordDocument"/>
-
-	<bean id="excelDocument" class="com.github.kuangcp.document.spring.ExcelDocument"/>
-
-	<bean id="pdfDocument" class="com.github.kuangcp.document.spring.PDFDocument"/>
+  <bean id="wordDocument" class="com.github.kuangcp.document.WordDocument"/>
+  <bean id="excelDocument" class="com.github.kuangcp.document.ExcelDocument"/>
+  <bean id="pdfDocument" class="com.github.kuangcp.document.PDFDocument"/>
 </beans>

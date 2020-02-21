@@ -1,20 +1,19 @@
-package com.github.kuangcp.di.scan;
+package com.github.kuangcp.di.annotation;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
-import org.springframework.stereotype.Component;
 
-@Component("perso")
 public class Person {
 
   @Resource(name = "student")
-  private Student studen;
+  private Student student;
 
+  @Resource
   private Long pid;
 
   public void say() {
-    this.studen.say();
+    this.student.say();
   }
 
   @PostConstruct

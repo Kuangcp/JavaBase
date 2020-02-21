@@ -1,4 +1,4 @@
-package com.github.kuangcp.di.di.annotation;
+package com.github.kuangcp.di.annotation;
 
 public class Student {
 

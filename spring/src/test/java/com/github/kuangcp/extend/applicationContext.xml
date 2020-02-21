@@ -8,7 +8,7 @@
       spring容器不会为该类创建对象
    -->
   <bean id="person" class="com.github.kuangcp.extend.Person" abstract="true">
-    <property name="name" value="王二麻子的哥"></property>
+    <property name="name" value="王二麻子的哥"/>
   </bean>
   <!--
     parent 指定后

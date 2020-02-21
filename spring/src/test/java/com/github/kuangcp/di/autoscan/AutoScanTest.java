@@ -1,4 +1,4 @@
-package com.github.kuangcp.di.scan;
+package com.github.kuangcp.di.autoscan;
 
 import com.github.kuangcp.util.SpringHelper;
 import org.junit.Test;
@@ -14,16 +14,16 @@ import org.junit.Test;
  *
  * @author Administrator
  */
-public class PersonTest extends SpringHelper {
+public class AutoScanTest extends SpringHelper {
 
   @Override
   public String getXmlPath() {
-    return "proxy/salary/applicationContext.xml";
+    return "di/autoscan/applicationContext.xml";
   }
 
   @Test
   public void test() {
-    Person person = (Person) context.getBean("perso");
+    Person person = (Person) context.getBean("person");
     person.say();
   }
 }

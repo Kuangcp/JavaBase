@@ -15,7 +15,7 @@
       <context:annotation-config></context:annotation-config>
     3、把student和person导入进来
   -->
-  <context:annotation-config></context:annotation-config>
-  <bean id="student" class="com.github.kuangcp.di.di.annotation.Student"></bean>
-  <bean id="person" class="com.github.kuangcp.di.di.annotation.Person"></bean>
+  <context:annotation-config/>
+  <bean id="student" class="com.github.kuangcp.di.annotation.Student"/>
+  <bean id="person" class="com.github.kuangcp.di.annotation.Person"/>
 </beans>

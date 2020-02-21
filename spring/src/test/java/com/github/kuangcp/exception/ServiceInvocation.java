@@ -2,7 +2,9 @@ package com.github.kuangcp.exception;
 
 
 import com.github.kuangcp.exception.service.Service;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ServiceInvocation {
 
   /**
@@ -10,17 +12,12 @@ public class ServiceInvocation {
    * 该方法是service总的调用接口,所以能在这里统一处理异常
    */
   public static Object execution(ServiceMapping serviceMapping) {
-    /**
-     * serviceMapping
-     *   serviceClass cn.itcast.exception.service.StudentServiceImpl
-     *   methodName   savePerson
-     */
     Object obj = null;
     try {
       Service service = (Service) Class.forName(serviceMapping.getServiceClass()).newInstance();
       obj = service.service(serviceMapping);
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("", e);
     }
     return obj;
   }

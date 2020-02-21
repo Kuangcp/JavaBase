@@ -1,4 +1,4 @@
-package com.github.kuangcp.di.di.xml.constructor;
+package com.github.kuangcp.di.xml.constructor;
 
 import com.github.kuangcp.util.SpringHelper;
 import org.junit.Test;

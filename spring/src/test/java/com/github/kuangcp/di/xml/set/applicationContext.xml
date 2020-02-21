@@ -3,7 +3,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
-  <bean id="person" class="com.github.kuangcp.di.di.xml.set.Person">
+  <bean id="person" class="com.github.kuangcp.di.xml.set.Person">
     <!--
       property就是代表属性
         在spring中基本类型(包装类型和String)都可以用value来赋值
@@ -49,5 +49,5 @@
       </props>
     </property>
   </bean>
-  <bean id="student" class="com.github.kuangcp.di.di.xml.set.Student"></bean>
+  <bean id="student" class="com.github.kuangcp.di.xml.set.Student"></bean>
 </beans>

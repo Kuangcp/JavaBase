@@ -18,7 +18,7 @@ import sun.misc.Unsafe;
 /**
  * @author kuangcp on 3/9/19-5:48 PM
  *
- * 实例化 对象的方式
+ * 实例化 对象的方式 https://juejin.im/post/5d44530a6fb9a06aed7103bd
  * 1. new
  * 1. 反射获取构造器调用
  * 1. clone

@@ -1,5 +1,7 @@
 package com.github.kuangcp.document.spring;
 
+import com.github.kuangcp.document.Document;
+
 /**
  * 利用spring的ioc和di做到了完全的面向接口编程
  *

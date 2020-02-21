@@ -1,4 +1,4 @@
-package com.github.kuangcp.di.di.xml.set;
+package com.github.kuangcp.di.xml.set;
 
 import java.util.List;
 import java.util.Map;

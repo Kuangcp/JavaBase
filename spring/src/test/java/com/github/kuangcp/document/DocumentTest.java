@@ -6,7 +6,7 @@ public class DocumentTest {
 
   @Test
   public void test() {
-    /**
+    /*
      * 没有做到完成的面向接口编程
      */
     Document document = new WordDocument();

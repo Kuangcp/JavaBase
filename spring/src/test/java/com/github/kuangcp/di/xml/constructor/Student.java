@@ -1,4 +1,4 @@
-package com.github.kuangcp.di.di.xml.constructor;
+package com.github.kuangcp.di.xml.constructor;
 
 public class Student {
 	public void say(){

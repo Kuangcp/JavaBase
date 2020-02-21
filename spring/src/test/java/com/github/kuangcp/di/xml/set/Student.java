@@ -1,4 +1,4 @@
-package com.github.kuangcp.di.di.xml.set;
+package com.github.kuangcp.di.xml.set;
 
 public class Student {
 

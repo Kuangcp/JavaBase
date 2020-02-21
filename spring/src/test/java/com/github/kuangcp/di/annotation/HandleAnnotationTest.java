@@ -1,4 +1,4 @@
-package com.github.kuangcp.di.di.annotation;
+package com.github.kuangcp.di.annotation;
 
 import com.github.kuangcp.util.SpringHelper;
 import org.junit.Test;
@@ -21,11 +21,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  * @author Administrator
  */
-public class PersonTest extends SpringHelper {
+public class HandleAnnotationTest extends SpringHelper {
 
   @Override
   public String getXmlPath() {
-    return "proxy/salary/applicationContext.xml";
+    return "di/annotation/applicationContext.xml";
   }
 
   @Test

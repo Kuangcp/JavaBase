@@ -3,7 +3,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
-  <bean id="person" class="com.github.kuangcp.di.di.xml.constructor.Person">
+  <bean id="person" class="com.github.kuangcp.di.xml.constructor.Person">
     <!--
       构造函数的参数
         index  第几个参数，下标从0开始
@@ -17,5 +17,5 @@
     <constructor-arg index="1" ref="student"></constructor-arg>
   </bean>
 
-  <bean id="student" class="com.github.kuangcp.di.di.xml.constructor.Student"></bean>
+  <bean id="student" class="com.github.kuangcp.di.xml.constructor.Student"></bean>
 </beans>
