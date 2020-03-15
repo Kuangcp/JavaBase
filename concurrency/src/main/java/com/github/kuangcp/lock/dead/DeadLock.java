@@ -12,20 +12,21 @@ import lombok.extern.slf4j.Slf4j;
  * @author kuangcp on 3/4/19-7:52 AM
  */
 @Slf4j
-class DeadLock {
+class DeadLock implements MythDeadLockAble {
 
   private final String id;
+
   private final Lock locks = new ReentrantLock();
 
   DeadLock(String id) {
     this.id = id;
   }
 
-  private String getId() {
+  public String getId() {
     return id;
   }
 
-  void prepareRun(Food food, DeadLock lock) {
+  public void prepareRun(Food food, MythDeadLockAble lock) {
     boolean required = false;
     while (!required) {
       try {
@@ -50,7 +51,8 @@ class DeadLock {
     }
   }
 
-  private void confirmRun(Food food, DeadLock lock) {
+  @Override
+  public void confirmRun(Food food, MythDeadLockAble lock) {
     locks.lock(); // 尝试锁住其他线程 正是这里可能出现死锁，因为这个其他线程已经加锁这里就死锁了
     try {
       log.info("run: currentId={} resource={} lock={} time={}",
@@ -58,5 +60,10 @@ class DeadLock {
     } finally {
       locks.unlock();
     }
+  }
+
+  @Override
+  public boolean confirmRun2(Food food, MythDeadLockAble lock) {
+    return false;
   }
 }
