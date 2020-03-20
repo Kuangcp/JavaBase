@@ -2,6 +2,9 @@ package com.github.kuangcp.old;
 
 import lombok.Data;
 
+/**
+ * 构造者模式，相当于 Builder 注解
+ */
 @Data
 public class BuildFactory {
 
@@ -14,7 +17,7 @@ public class BuildFactory {
   }
 
   // 内部静态类
-  public static class Builder implements ObjBuilder<BuildFactory> {
+  public static class Builder {
 
     private String name;
     private String addr;
@@ -29,12 +32,8 @@ public class BuildFactory {
       return this;
     }
 
-    @Override
     public BuildFactory build() {
       return new BuildFactory(this);
     }
-
   }
 }
-
-

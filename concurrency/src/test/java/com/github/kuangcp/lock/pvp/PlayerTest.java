@@ -8,19 +8,18 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.locks.ReentrantLock;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 /**
  * @author kuangcp on 2019-04-21 11:14 AM
+ *
+ * 加锁顺序问题测试， 结论 加锁需要顺序，释放锁无需顺序
  */
 @Slf4j
 public class PlayerTest {
 
   private Map<String, Player> playerMap = new HashMap<>();
-
-  private ReentrantLock lock = new ReentrantLock();
 
   private void arenaLogic(Player a, Player b) throws InterruptedException {
     log.info("enter arena: a={} b={}", a, b);

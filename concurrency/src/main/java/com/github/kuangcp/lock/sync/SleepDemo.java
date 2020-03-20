@@ -23,7 +23,6 @@ public class SleepDemo {
 
     @Override
     public void run() {
-      // TODO why warning
       while (true) {
         synchronized (this) {
           try {
