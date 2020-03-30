@@ -10,14 +10,14 @@
 
 | 基础  | 进阶 | 应用 |
 |:----|:----|:----|
-| [Java8](/java-8)        | [并发](/java-concurrency) | [Netty](/java-netty)|
-| [集合](/java-collection) | [网络](/java-network)     |  [Guava](/java-guava)|
-| [算法](/java-algorithms) | [设计模式](/java-pattern) | [Spring](/java-spring)
-| [字节码](/java-class)    | [测试](/java-test)    | [Kafka](/java-kafka)|
-| [泛型](/java-generic)    |  | [Hadoop](/java-hadoop) | 
-| [IO](/java-io)          |  |  |
+| [Java8](/java8)        | [并发](/concurrency) | [Netty](/netty)|
+| [集合](/collection) | [网络](/network)     |  [Guava](/guava)|
+| [算法](/algorithms) | [设计模式](/pattern) | [Spring](/spring)
+| [字节码](/class)    | [测试](/test)    | [Kafka](/kafka)|
+| [泛型](/generic)    |  | [Hadoop](/hadoop) | 
+| [IO](/io)          |  |  |
 
-[图形化](/java-gui) | [实际问题](/java-question)
+[图形化](/gui) | [实际问题](/question)
 
 ************************
 
