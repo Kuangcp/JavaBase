@@ -63,15 +63,18 @@ public class BitOperatorsTest {
   }
 
 
+  /**
+   * 右移
+   */
   @Test
   public void testRight() {
     // 带符号的 右移操作 正数则左补0 负数则左补1
     assertThat(0b101 >> 2, equalTo(0b1));
 
-    // 11111111111111111111111111111011 -0b101的补码表示(也是实际存储的值)
+    // 11111111111111111111111111111011 -0b101的补码 (也是实际存储的值)
+    // 11111111111111111111111111111110 右移两位后的补码
+    // 10000000000000000000000000000010 从补码 -1 取反 得到 原码
     show(-0b101);
-    // 11111111111111111111111111111110 右移两位
-    // 10000000000000000000000000000010 -1 取反 得到 原码
     assertThat(-0b101 >> 2, equalTo(-0b10));
 
     // 无视符号位的 右移操作 左补0
@@ -87,6 +90,9 @@ public class BitOperatorsTest {
     assertThat(0b110011 >> 3, equalTo(0b110011 >>> 3));
   }
 
+  /**
+   * 左移
+   */
   @Test
   public void testLeft() {
     assertThat(0b11_0110 << 2, equalTo(0b1101_1000));
@@ -119,14 +125,12 @@ public class BitOperatorsTest {
   public void testCompareSpeed() {
     GetRunTime runTime = new GetRunTime().startCount();
     IntStream.rangeClosed(1, 10000).forEach(BitOperatorsTest::idempotentOperations);
-    runTime.endCount("bit ");
+    runTime.endCountOneLine("bit ");
 
     runTime.startCount();
     IntStream.rangeClosed(1, 10000)
         .forEach(i -> Math.pow(2, Math.floor(Math.log(i) / Math.log(2)) + 1));
-    runTime.endCount("log and pow");
-
-    // 后者性能优于前者, 因为虽然前者是位运算, 但是有太多多余操作
+    runTime.endCountOneLine("log and pow");
   }
 
   /**
