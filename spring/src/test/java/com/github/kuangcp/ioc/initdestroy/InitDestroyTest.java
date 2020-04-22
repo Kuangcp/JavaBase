@@ -1,6 +1,6 @@
 package com.github.kuangcp.ioc.initdestroy;
 
-import com.github.kuangcp.util.SpringHelper;
+import com.github.kuangcp.common.SpringHelper;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

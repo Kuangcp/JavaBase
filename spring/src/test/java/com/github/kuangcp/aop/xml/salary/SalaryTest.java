@@ -1,6 +1,6 @@
 package com.github.kuangcp.aop.xml.salary;
 
-import com.github.kuangcp.util.SpringHelper;
+import com.github.kuangcp.common.SpringHelper;
 import org.junit.Test;
 
 public class SalaryTest extends SpringHelper {

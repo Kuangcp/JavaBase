@@ -1,6 +1,6 @@
 package com.github.kuangcp.hibernate.annotation;
 
-import com.github.kuangcp.util.SpringHelper;
+import com.github.kuangcp.common.SpringHelper;
 import org.junit.Test;
 
 public class PersonTest extends SpringHelper {

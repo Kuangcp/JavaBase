@@ -1,4 +1,4 @@
-package com.github.kuangcp.util;
+package com.github.kuangcp.common;
 
 import org.junit.Before;
 import org.springframework.context.ApplicationContext;

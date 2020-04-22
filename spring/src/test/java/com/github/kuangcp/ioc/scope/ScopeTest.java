@@ -1,7 +1,7 @@
 package spring_ioc.cn.itcast.spring0909.scope;
 
 import com.github.kuangcp.ioc.scope.HelloWorld;
-import com.github.kuangcp.util.SpringHelper;
+import com.github.kuangcp.common.SpringHelper;
 import org.junit.Test;
 
 /**

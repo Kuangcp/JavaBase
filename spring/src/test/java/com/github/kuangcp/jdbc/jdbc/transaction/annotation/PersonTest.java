@@ -1,6 +1,6 @@
 package com.github.kuangcp.jdbc.jdbc.transaction.annotation;
 
-import com.github.kuangcp.util.SpringHelper;
+import com.github.kuangcp.common.SpringHelper;
 import org.junit.Test;
 
 

@@ -1,6 +1,6 @@
 package com.github.kuangcp.jdbc.jdbc;
 
-import com.github.kuangcp.util.SpringHelper;
+import com.github.kuangcp.common.SpringHelper;
 import java.util.List;
 import org.junit.Test;
 

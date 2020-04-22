@@ -1,7 +1,7 @@
 package com.github.kuangcp.aop.xml;
 
 
-import com.github.kuangcp.util.SpringHelper;
+import com.github.kuangcp.common.SpringHelper;
 import org.junit.Test;
 
 /**

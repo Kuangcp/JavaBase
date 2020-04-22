@@ -1,7 +1,7 @@
 package com.github.kuangcp.aop.exception;
 
 import com.github.kuangcp.aop.exception.action.PersonAction;
-import com.github.kuangcp.util.SpringHelper;
+import com.github.kuangcp.common.SpringHelper;
 import org.junit.Test;
 
 public class ExceptionTest extends SpringHelper {

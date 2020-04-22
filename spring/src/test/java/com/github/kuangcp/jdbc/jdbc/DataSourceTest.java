@@ -1,6 +1,6 @@
 package com.github.kuangcp.jdbc.jdbc;
 
-import com.github.kuangcp.util.SpringHelper;
+import com.github.kuangcp.common.SpringHelper;
 import javax.sql.DataSource;
 import org.junit.Test;
 
