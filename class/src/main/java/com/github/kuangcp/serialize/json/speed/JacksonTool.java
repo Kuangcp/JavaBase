@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class JacksonTool implements JsonTool<Person> {
 
-  private ObjectMapper mapper = new ObjectMapper();
+  public static final ObjectMapper mapper = new ObjectMapper();
 
   @Override
   public Person fromJSON(String json, Class<Person> target) throws IOException {
