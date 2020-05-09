@@ -1,9 +1,21 @@
 apply from: 'dependency.gradle'
 
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8"
+  }
+}
+
 // parent and child project all use this config
 subprojects {
   apply plugin: 'java'
   apply plugin: 'maven-publish'
+  apply plugin: "org.sonarqube"
 
   group = 'com.github.kuangcp'
 

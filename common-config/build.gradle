@@ -2,3 +2,5 @@ configurations {
   // void dependency loop
   compile.exclude module: 'common-config'
 }
+
+version = '1.0.0'
