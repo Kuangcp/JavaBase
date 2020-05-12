@@ -1,12 +1,8 @@
-## 2018-11-25 23:16:17
-- 处理好了依赖问题, 但是 xml没有处理好
+# Spring 学习
+> [spring-learning](https://github.com/brianway/spring-learning)
 
-## 2017-08-27 10:24:05
-- 新建成一个gradle项目，但是依赖还没处理
-
-
-## 2016.11.19
-> 通过一个简单例子重构多次，讲解AOP思想和Spring基础
+## Spring简易实现
+> [spring](https://github.com/Kuangcp/java-wheel/tree/master/spring)`刘欣 从0开始造Spring`
 
 ## AOP
 ### XML实现
