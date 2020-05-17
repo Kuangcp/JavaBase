@@ -55,7 +55,7 @@ public class SerializeTest {
   private void writeFile() throws IOException {
     Person person = new Person("myth");
 
-    FileOutputStream fileOutputStream = new FileOutputStream("/home/kcp/test/person.md");
+    FileOutputStream fileOutputStream = new FileOutputStream("/tmp/person.log");
     ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
     out.writeObject(person);
     out.close();
@@ -64,7 +64,7 @@ public class SerializeTest {
   }
 
   private void readFile() throws IOException, ClassNotFoundException {
-    FileInputStream fileInputStream = new FileInputStream("/home/kcp/test/person.md");
+    FileInputStream fileInputStream = new FileInputStream("/tmp/person.log");
     ObjectInputStream in = new ObjectInputStream(fileInputStream);
     Person object = (Person) in.readObject();
     in.close();
