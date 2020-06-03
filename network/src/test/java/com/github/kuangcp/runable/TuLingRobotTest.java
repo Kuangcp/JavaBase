@@ -21,15 +21,15 @@ import org.junit.Test;
 @Slf4j
 public class TuLingRobotTest {
 
-  private OkHttpClient client = new OkHttpClient();
+  private final static OkHttpClient client = new OkHttpClient();
 
-  private Optional<String> get(String url) throws IOException {
+  static Optional<String> get(String url) throws IOException {
     Request request = new Request.Builder()
         .url(url).build();
 
     try (Response response = client.newCall(request).execute()) {
       if (response.body() != null) {
-        return Optional.ofNullable(response.body().string());
+        return Optional.of(response.body().string());
       }
       return Optional.empty();
     }

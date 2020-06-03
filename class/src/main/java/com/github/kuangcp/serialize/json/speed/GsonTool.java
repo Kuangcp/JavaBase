@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GsonTool implements JsonTool<Person> {
 
-  private Gson gson = new Gson();
+  private static final Gson gson = new Gson();
 
   @Override
   public Person fromJSON(String json, Class<Person> target) {

@@ -27,12 +27,14 @@ public class OperatorTest {
   @Test
   public void testIntToByte() {
     int a = 13232;
-    // 直接赋值 无法编译通过
+    // 直接赋值 无法编译通过 需强转
     byte b = (byte) a;
 
-    // int 赋值 byte 会截断后8位, 由于是有符号的, 结果是 10110000
-    // 原码是 01010000 : 所以 b是-80
-    log.info("{}: {} -> {}", b, ShowBinary.toBinary(a), ShowBinary.toBinary(b));
+    // int 赋值给 byte 仅保留后8位, 结果是 10110000
+    // 反码 10101111
+    // 原码 11010000
+    // 所以 b是-80
+    log.info("{} int: {} -> byte: {}", b, ShowBinary.toBinary(a), ShowBinary.toBinary(b));
   }
 
   // 和 int 一样的计算方式

@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.StopWatch;
 import org.junit.Test;
 
 
@@ -43,14 +44,27 @@ public class ClassScannerTest {
 
   @Test
   public void testReadJar() {
-    GetRunTime getRunTime = new GetRunTime().startCount();
+    StopWatch watch = new StopWatch();
     ClassScanner scanner = new ClassScanner(true, true, Collections.emptyList());
     String path = ResourceTool.class.getPackage().getName();
     log.info("path={}", path);
+
+    watch.start();
     Set<Class<?>> result = scanner.getPackageAllClasses(path, true);
     log.info("result {}", result.size());
     result.forEach(System.out::println);
-    getRunTime.endCountOneLine("");
+    watch.stop();
+    System.out.println(watch.toString());
+
+    watch.reset();
+    watch.start();
+
+    scanner = new ClassScanner(true, true, Collections.emptyList());
+    result = scanner.getPackageAllClasses("com.google.gson", true);
+    log.info("result {}", result.size());
+    result.forEach(System.out::println);
+    watch.stop();
+    System.out.println(watch.toString());
   }
 
   private static String lowerCaseFirstLetter(String name) {
