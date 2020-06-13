@@ -26,7 +26,6 @@ public class CustomSortTest {
       return 0;
     });
 
-    assertTrue(maxOpt.isPresent());
     assertThat(maxOpt.get(), equalTo("map23"));
   }
 }

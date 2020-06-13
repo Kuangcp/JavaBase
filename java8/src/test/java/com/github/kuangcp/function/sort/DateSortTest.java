@@ -38,12 +38,14 @@ public class DateSortTest {
   @Test
   public void testSimple() {
     IntStream.rangeClosed(1, 10)
-        .mapToObj(i -> LocalDateTime.now().plusDays(i)).sorted((a, b) -> a.compareTo(b) * -1)
+        .mapToObj(i -> LocalDateTime.now().plusDays(i))
+        .sorted((a, b) -> a.compareTo(b) * -1)
         .forEach(System.out::println);
 
     List<LocalDateTime> data = IntStream.rangeClosed(1, 10)
-        .mapToObj(i -> LocalDateTime.now().plusDays(i)).collect(Collectors.toList());
-    data.sort((a, b) -> a.compareTo(b) * -1);
+        .mapToObj(i -> LocalDateTime.now().plusDays(i))
+        .sorted((a, b) -> a.compareTo(b) * -1)
+        .collect(Collectors.toList());
     data.forEach(System.out::println);
   }
 

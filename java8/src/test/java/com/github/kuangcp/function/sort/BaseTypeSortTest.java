@@ -27,7 +27,7 @@ public class BaseTypeSortTest {
 
     GetRunTime getRunTime = new GetRunTime().startCount();
     lists.sort(Comparator.comparingInt(Integer::intValue));
-    getRunTime.endCount("排序完成");
+    getRunTime.endCount("int 排序完成");
   }
 
   // TODO 一起执行时 为什么这个后执行的方法要快, 单独执行就不会有这样的情况
@@ -39,6 +39,6 @@ public class BaseTypeSortTest {
 
     GetRunTime getRunTime = new GetRunTime().startCount();
     lists.sort(Comparator.comparingLong(Long::longValue));
-    getRunTime.endCount("排序完成");
+    getRunTime.endCount("long 排序完成");
   }
 }

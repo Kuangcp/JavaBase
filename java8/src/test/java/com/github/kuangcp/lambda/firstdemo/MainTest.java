@@ -17,8 +17,8 @@ public class MainTest {
     pointArrayList.add(new Point(5, 5));
   }
 
-  @Test
   // 1. 利用内部迭代, 将一个接口实现类的对象传入
+  @Test
   public void testByPolymorphic() {
     pointArrayList.forEach(new TranslateByOne());
 

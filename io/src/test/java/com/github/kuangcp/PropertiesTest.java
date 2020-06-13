@@ -1,6 +1,5 @@
 package com.github.kuangcp;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -16,15 +15,14 @@ public class PropertiesTest {
 
   @Test
   public void testRead() throws IOException {
+    String path = Properties.class.getResource("/properties/main.properties").getPath();
     Properties properties = new Properties();
-//    String path = Properties.class.getResource("./properties/main.properties").getPath();
-    System.out.println(new File("").getAbsolutePath());
-    properties.load(new FileInputStream("src/test/resources/properties/main.properties"));
+    properties.load(new FileInputStream(path));
 
     String a = properties.getProperty("A");
-    String b = new String(properties.getProperty("B").getBytes(StandardCharsets.ISO_8859_1),
-        StandardCharsets.UTF_8);
+    String b = properties.getProperty("B");
+    String decodedB = new String(b.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
 
-    log.info("a={} b={}", a, b);
+    log.info("a={} b=[{}] [{}]", a, b, decodedB);
   }
 }

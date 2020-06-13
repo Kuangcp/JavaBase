@@ -19,9 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 关于相对路径文件的复制问题
  *
- * InputStream   所有输入流基类（建立流）（字节流）
- * InputStreamReader 将字节流  转换成 字符流
- * BufferedReader  从字符流输入流读取文件
+ * InputStream   所有输入流基类（建立流）（字节流） InputStreamReader 将字节流  转换成 字符流 BufferedReader  从字符流输入流读取文件
  *
  * 注意: 如果输出流尚未关闭 内存的数据尚未刷新到硬盘上, 会导致不一致的情况
  */
