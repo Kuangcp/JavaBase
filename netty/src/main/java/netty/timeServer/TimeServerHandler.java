@@ -14,14 +14,17 @@ import lombok.extern.slf4j.Slf4j;
  * 服务端的业务代码 继承自 5: ChannelHandlerAdapter 4: SimpleChannelInboundHandler
  */
 @Slf4j
-@Sharable // 可被注册到多个 pipeline
+@Sharable
+    // 可被注册到多个 pipeline
 class TimeServerHandler extends SimpleChannelInboundHandler<Object> {
+
+  private TimeServer timeServer;
 
   public TimeServerHandler() {
     log.warn("init a instance");
   }
 
-  private static AtomicInteger counter = new AtomicInteger();
+  private static final AtomicInteger counter = new AtomicInteger();
 
   /**
    * 成功建立连接后, 读取服务端的消息
@@ -38,6 +41,9 @@ class TimeServerHandler extends SimpleChannelInboundHandler<Object> {
     String result;
     if (Command.QUERY_TIME.equalsIgnoreCase(body)) {
       result = LocalDateTime.now().toString();
+    } else if (Command.STOP_SERVER.equalsIgnoreCase(body)) {
+      timeServer.stop();
+      result = Command.STOP_SERVER;
     } else {
       result = "BAD ORDER";
     }
@@ -59,5 +65,13 @@ class TimeServerHandler extends SimpleChannelInboundHandler<Object> {
   @Override
   public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
     ctx.close();
+  }
+
+  public TimeServer getTimeServer() {
+    return timeServer;
+  }
+
+  public void setTimeServer(TimeServer timeServer) {
+    this.timeServer = timeServer;
   }
 }

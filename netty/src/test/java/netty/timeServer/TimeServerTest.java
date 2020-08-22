@@ -10,14 +10,7 @@ import org.testng.annotations.Test;
 @Slf4j
 public class TimeServerTest {
 
-  private TimeClient timeClient = new TimeClient();
-  private TimeServer timeServer = new TimeServer();
-
-  //  @Test
-  @Test(threadPoolSize = 5, invocationCount = 20)
-  public void testClient() throws Exception {
-    timeClient.connectLocal(TimeServer.port);
-  }
+  private final TimeServer timeServer = new TimeServer();
 
   @Test
   public void testServer() throws Exception {

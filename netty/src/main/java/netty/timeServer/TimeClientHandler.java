@@ -4,7 +4,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.util.internal.StringUtil;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -13,16 +15,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class TimeClientHandler extends SimpleChannelInboundHandler<Object> {
 
+  private ChannelHandlerContext ctx;
+
   /**
    * 当客户端和服务端成功建立连接后, 就会调用该方法
    */
   @Override
   public void channelActive(ChannelHandlerContext ctx) {
-    byte[] req = Command.QUERY_TIME.getBytes();
-    ByteBuf firstMessage = Unpooled.buffer(req.length);
-    firstMessage.writeBytes(req);
-    // 将消息发送至服务端
-    ctx.writeAndFlush(firstMessage);
+    log.info("connected");
+    if (Objects.isNull(this.ctx)) {
+      this.ctx = ctx;
+    }
+  }
+  public boolean isConnected (){
+    return Objects.nonNull(ctx);
   }
 
   /**
@@ -38,8 +44,8 @@ class TimeClientHandler extends SimpleChannelInboundHandler<Object> {
 
     log.info("client receive msg: {}", body);
 
-    // 收到消息就关闭连接
-    ctx.close();
+//    // 收到消息就关闭连接
+//    ctx.close();
   }
 
   /**
@@ -50,5 +56,34 @@ class TimeClientHandler extends SimpleChannelInboundHandler<Object> {
     // 释放资源
     log.warn("Unexpected exception from downstream: {}", cause.getMessage());
     ctx.close();
+  }
+
+  /**
+   * 这里就需要考虑和服务端协商 发送数据的正确反序列化问题了，也就是伪TCP问题: "拆包"
+   */
+  public void sendMsg(String msg) {
+    if (StringUtil.isNullOrEmpty(msg)) {
+      return;
+    }
+
+    if (Objects.isNull(ctx)) {
+      log.warn("not connect");
+      return;
+    }
+
+    log.info("msg={}", msg);
+    byte[] req = msg.getBytes();
+    ByteBuf firstMessage = Unpooled.buffer(req.length);
+    firstMessage.writeBytes(req);
+    // 将消息发送至服务端
+    ctx.writeAndFlush(firstMessage);
+  }
+
+  public ChannelHandlerContext getCtx() {
+    return ctx;
+  }
+
+  public void close() {
+    this.ctx.close();
   }
 }
