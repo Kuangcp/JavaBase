@@ -30,7 +30,7 @@ import sun.misc.Unsafe;
 @Slf4j
 public class InstantiationAndConstructorTest {
 
-  // 调用构造器
+  // 直接调用构造器
   @Test
   public void testInitByNew() {
     InstantiationAndConstructor instance = new InstantiationAndConstructor("name");
@@ -94,7 +94,7 @@ public class InstantiationAndConstructorTest {
     assertThat(deserialize.getName(), equalTo("name"));
   }
 
-  // Unsafe  allocateInstance 方法
+  // Unsafe  allocateInstance 方法 不会调用构造器
   @Test
   public void testInitByUnsafe() throws Exception {
     Field field = Unsafe.class.getDeclaredField("theUnsafe");
