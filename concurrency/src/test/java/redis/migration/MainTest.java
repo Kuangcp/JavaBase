@@ -10,18 +10,18 @@ import org.junit.Test;
 public class MainTest {
 
   @Test
-  public void testTransferAllKey() {
+  public void testTransferAllKey() throws InterruptedException {
     RedisPoolProperty origin = new RedisPoolProperty();
     origin.setHost("127.0.0.1");
-    origin.setPort(6666);
+    origin.setPort(6667);
     origin.setTimeout(100);
 
     RedisPoolProperty target = new RedisPoolProperty();
     target.setHost("127.0.0.1");
-    target.setPort(6666);
+    target.setPort(6667);
     target.setTimeout(100);
 
-    Main main = new Main(origin, target, 2, 4);
+    Main main = new Main(origin, target, 4, 2);
     main.transferAllKey();
   }
 }

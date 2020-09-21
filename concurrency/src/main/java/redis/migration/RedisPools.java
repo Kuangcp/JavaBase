@@ -2,7 +2,6 @@ package redis.migration;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -13,8 +12,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 /**
- * Created by https://github.com/kuangcp on 17-6-9  上午9:56
- * 一个连接redis的连接池实例, TODO 需要检查性能
+ * Created by https://github.com/kuangcp on 17-6-9  上午9:56 一个连接redis的连接池实例, TODO 需要检查性能
  */
 @Slf4j
 @Data
@@ -55,7 +53,7 @@ public class RedisPools {
             property.getTimeout());
       }
     } catch (Exception e) {
-      logger.error("create pool error: {}", e);
+      logger.error("create pool error", e);
     }
   }
 
@@ -69,50 +67,23 @@ public class RedisPools {
     initPool();
   }
 
-  public Optional<Jedis> getJedis(RedisPoolProperty property) {
-    initPool(property);
-    return getJedis();
-  }
-
-  /**
-   * 同步获取Jedis实例
-   *
-   * @return Jedis
-   * jedis.close直接放在finally里，用完了自动关闭
-   */
-  public Optional<Jedis> getJedis() {
+  public JedisPool getJedisPool() {
     if (jedisPool == null) {
       logger.info("pool is empty re init");
       initPool();
     }
-    if (Objects.isNull(jedisPool)) {
-      return Optional.empty();
-    }
-    Jedis jedis = null;
-    try {
-      jedis = jedisPool.getResource();
-      logger.trace("use pool={} get conn={}", jedisPool, jedis);
-    } catch (Exception e) {
-      logger.error("pool init error {}", e);
-    } finally {
-      if (jedis != null) {
-        jedis.close();
-      }
-    }
-    return Optional.ofNullable(jedis);
+    return jedisPool;
   }
 
   /**
    * 测试当前连接池是否可用
    */
-  public boolean isAvailable() {
-    Optional<Jedis> jedisOpt = getJedis();
-    if (jedisOpt.isPresent()) {
-      Jedis jedis = jedisOpt.get();
-      String pingResult = jedis.ping();
-      return "pong".equalsIgnoreCase(pingResult);
+  public static boolean isAvailable(Jedis jedis) {
+    if (Objects.isNull(jedis)) {
+      return false;
     }
-    return false;
+    String pingResult = jedis.ping();
+    return "pong".equalsIgnoreCase(pingResult);
   }
 
   /**

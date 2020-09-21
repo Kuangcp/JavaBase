@@ -2,15 +2,19 @@ package redis.migration;
 
 import static java.util.stream.Collectors.groupingBy;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Tuple;
 
 /**
@@ -19,13 +23,14 @@ import redis.clients.jedis.Tuple;
 @Slf4j
 public class Main {
 
-  private RedisPools origin = new RedisPools();
-  private RedisPools target = new RedisPools();
+  private final RedisPools origin = new RedisPools();
+  private final RedisPools target = new RedisPools();
 
-  private RedisPoolProperty originProperty;
-  private RedisPoolProperty targetProperty;
-  private Integer originDatabase;
-  private Integer targetDatabase;
+  private final RedisPoolProperty originProperty;
+  private final RedisPoolProperty targetProperty;
+
+  private final Integer originDatabase;
+  private final Integer targetDatabase;
 
   Main(RedisPoolProperty originProperty, RedisPoolProperty targetProperty,
       Integer originDatabase, Integer targetDatabase) {
@@ -35,49 +40,49 @@ public class Main {
     this.targetDatabase = targetDatabase;
   }
 
-  void transferAllKey() {
-    boolean init = init();
+  /**
+   * Jedis对象 并不是并发安全的，所以应该使用JedisPool
+   */
+  void transferAllKey() throws InterruptedException {
+    boolean init = initRedisPool();
     if (!init) {
       return;
     }
 
-    if (!origin.isAvailable() || !target.isAvailable()) {
-      log.error("conn has invalid ");
-      return;
+    JedisPool originPool = origin.getJedisPool();
+    JedisPool targetPool = target.getJedisPool();
+
+    try (final Jedis resource = originPool.getResource()) {
+      if (!RedisPools.isAvailable(resource)) {
+        log.error("conn has invalid ");
+        return;
+      }
     }
-    Optional<Jedis> originOpt = origin.getJedis();
-    Optional<Jedis> targetOpt = target.getJedis();
 
-    if (!originOpt.isPresent() || !targetOpt.isPresent()) {
-      log.warn("connect failed: ");
-      return;
+    try (final Jedis resource = targetPool.getResource()) {
+      if (!RedisPools.isAvailable(resource)) {
+        log.error("conn has invalid ");
+        return;
+      }
     }
-    Jedis originRedis = originOpt.get();
-    Jedis targetRedis = targetOpt.get();
-    originRedis.select(originDatabase);
-    targetRedis.select(targetDatabase);
 
-    Set<String> keys = getKeys(origin, originProperty, originDatabase);
+    Set<String> keys = getKeys(origin, originDatabase);
+    ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-//    keys.parallelStream().forEach(k -> System.out.println(System.currentTimeMillis() + " "+k));
-
-    // TODO 如果使用  parallelStream 就会 WRONGTYPE Operation against a key holding the wrong kind of value
-    //  不使用则不会
-
-
-    // 手动多线程
+    final CountDownLatch latch = new CountDownLatch(keys.size());
     Map<Integer, List<String>> collect = keys.stream().collect(groupingBy(String::length));
     for (List<String> value : collect.values()) {
-      new Thread(() -> value.forEach(k -> transferOneKey(k, originRedis, targetRedis))).start();
+      for (String k : value) {
+        pool.submit(() -> {
+          transferOneKey(k, originPool, targetPool);
+          latch.countDown();
+        });
+      }
     }
-
-//    GetRunTime getRunTime = GetRunTime.GET_RUN_TIME;
-//    getRunTime.startCount();
-//    keys.forEach(key -> transferOneKey(key, originRedis, targetRedis));
-//    getRunTime.endCount("all");
+    latch.await();
   }
 
-  private boolean init() {
+  private boolean initRedisPool() {
     if (Objects.isNull(originProperty) || Objects.isNull(targetProperty)) {
       log.warn("init property error: ");
       return false;
@@ -89,35 +94,41 @@ public class Main {
     return true;
   }
 
-  private void transferOneKey(String key, Jedis originJedis, Jedis targetJedis) {
-    String type = originJedis.type(key);
-    Optional<RedisDataType> dataType = RedisDataType.of(type);
+  private void transferOneKey(String key, JedisPool originPool, JedisPool targetPool) {
+    try (Jedis originJedis = originPool.getResource()) {
+      originJedis.select(originDatabase);
+      String type = originJedis.type(key);
+      Optional<RedisDataType> dataType = RedisDataType.of(type);
 
-    log.info("prepared : key={} type={}", key, type);
+      if (!dataType.isPresent()) {
+        log.warn("unsupported data type: key={} type={}", key, type);
+        return;
+      }
 
-    if (!dataType.isPresent()) {
-      log.warn("unsupported data type: type={}", type);
-      return;
+      log.info("prepared : key={} type={}", key, type);
+
+      try (final Jedis targetJedis = targetPool.getResource()) {
+        targetJedis.select(targetDatabase);
+        switch (dataType.get()) {
+          case SET:
+            transferSet(key, originJedis, targetJedis);
+            break;
+          case HASH:
+            transferHash(key, originJedis, targetJedis);
+            break;
+          case LIST:
+            transferList(key, originJedis, targetJedis);
+            break;
+          case ZSET:
+            transferZSet(key, originJedis, targetJedis);
+            break;
+          case String:
+            targetJedis.set(key, originJedis.get(key));
+            break;
+        }
+        log.info("transferOneKey : key={} stamp={}", key, System.currentTimeMillis());
+      }
     }
-
-    switch (dataType.get()) {
-      case SET:
-        transferSet(key, originJedis, targetJedis);
-        break;
-      case HASH:
-        transferHash(key, originJedis, targetJedis);
-        break;
-      case LIST:
-        transferList(key, originJedis, targetJedis);
-        break;
-      case ZSET:
-        transferZSet(key, originJedis, targetJedis);
-        break;
-      case String:
-        targetJedis.set(key, originJedis.get(key));
-        break;
-    }
-    log.info("transferOneKey : key={} stamp={}", key, System.currentTimeMillis());
   }
 
   private void transferZSet(String key, Jedis originJedis, Jedis targetJedis) {
@@ -149,15 +160,14 @@ public class Main {
   /**
    * get keys
    */
-  private Set<String> getKeys(RedisPools pool, RedisPoolProperty property, int database) {
-    Optional<Jedis> jedisOpt = pool.getJedis(property);
-    if (!jedisOpt.isPresent()) {
-      return new HashSet<>(0);
+  private Set<String> getKeys(RedisPools pool, int database) {
+    final JedisPool jedisPool = pool.getJedisPool();
+    try (final Jedis jedis = jedisPool.getResource()) {
+      if (Objects.isNull(jedis)) {
+        return Collections.emptySet();
+      }
+      jedis.select(database);
+      return jedis.keys("*");
     }
-
-    Jedis jedis = jedisOpt.get();
-    jedis.select(database);
-    return jedis.keys("*");
   }
-
 }
