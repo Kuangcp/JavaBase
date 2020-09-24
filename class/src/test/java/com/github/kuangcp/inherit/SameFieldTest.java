@@ -3,6 +3,8 @@ package com.github.kuangcp.inherit;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
+import lombok.extern.slf4j.Slf4j;
+import org.hamcrest.core.IsNot;
 import org.junit.Test;
 
 /**
@@ -16,14 +18,26 @@ import org.junit.Test;
  */
 public class SameFieldTest {
 
+  @Slf4j
   public static class A {
 
-    int age = 1;
+    int size = 1;
+
+    public int getSize() {
+      log.info("invoke");
+      return size;
+    }
   }
 
+  @Slf4j
   public static class B extends A {
 
-    int age = 3;
+    int size = 3;
+
+    public int getSize() {
+      log.info("invoke");
+      return size;
+    }
   }
 
   @Test
@@ -34,7 +48,10 @@ public class SameFieldTest {
     System.out.println(a.getClass());
     System.out.println(b.getClass());
 
-    // TODO ?
-    assertThat(a.age + b.age, equalTo(4));
+    assertThat(a.size + b.size, equalTo(4));
+
+    assertThat(a.size, IsNot.not(a.getSize()));
+
+    assertThat(a.getSize() + b.getSize(), equalTo(6));
   }
 }

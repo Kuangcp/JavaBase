@@ -23,12 +23,12 @@ public class ShortCircuitTest {
   @Test
   public void testAnd() {
     // first satisfied, invoke second
-    if (flag == 0 && addValue()) {
+    if (true && addValue()) {
       assertThat(flag, equalTo(1));
     }
 
     // first expression is not satisfied conditions, then second expression not invoke
-    if (flag == 2 && addValue()) {
+    if (false && addValue()) {
       assertThat(flag, equalTo(1));
     }
   }
@@ -36,15 +36,13 @@ public class ShortCircuitTest {
   @Test
   public void testOr() {
     // first expression is satisfied conditions, then second expression not invoke
-    if (flag == 0 || addValue()) {
+    if (true || addValue()) {
       assertThat(flag, equalTo(0));
     }
 
     // first not satisfied, invoke second
-    if (flag == 2 || addValue()) {
+    if (false || addValue()) {
       assertThat(flag, equalTo(1));
     }
   }
-
-  // TODO 位运算
 }

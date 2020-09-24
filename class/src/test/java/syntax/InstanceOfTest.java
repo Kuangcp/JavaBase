@@ -10,7 +10,7 @@ import org.junit.Test;
  * @author https://github.com/Kuangcp
  * @date 2019-05-10 08:18
  */
-public class InstanceofTest {
+public class InstanceOfTest {
 
   @Test
   public void test() {
