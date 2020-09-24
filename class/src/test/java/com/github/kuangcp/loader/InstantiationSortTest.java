@@ -7,8 +7,7 @@ import lombok.extern.slf4j.Slf4j;
  * 类属性和对象属性实例化的顺序
  *
  * 17:21:08.112 INFO  [main] c.g.k.i.InstantiationSortTest:21  object init block
- * 17:21:08.117 INFO  [main] c.g.k.i.InstantiationSortTest:25  constructor
- * 17:21:08.118 INFO  [main] c.g.k.i.InstantiationSortTest:26  a=1 b=2
+ * 17:21:08.117 INFO  [main] c.g.k.i.InstantiationSortTest:25  constructor a=1 b=2
  * 17:21:08.120 INFO  [main] c.g.k.i.InstantiationSortTest:17  static init block
  * 17:21:08.120 INFO  [main] c.g.k.i.InstantiationSortTest:30  static method
  */
@@ -29,8 +28,7 @@ public class InstantiationSortTest {
   }
 
   InstantiationSortTest() {
-    log.info("constructor");
-    log.info("a={} b={}", a, b);
+    log.info("constructor a={} b={}", a, b);
   }
 
   static void staticMethod() {

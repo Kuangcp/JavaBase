@@ -1,7 +1,6 @@
 package com.github.kuangcp.read;
 
 import com.github.kuangcp.io.ResourceTool;
-import com.github.kuangcp.time.GetRunTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,8 +35,7 @@ public class ClassScannerTest {
       if (clazz != BaseFather.class && BaseFather.class.isAssignableFrom(clazz)) { // 继承自 BaseFather
         String rawName = clazz.getSimpleName();
         String name = lowerCaseFirstLetter(rawName);
-        System.out.println(String.format
-            ("    public final static %s %s = new %s();", rawName, name, rawName));
+        System.out.printf("    public final static %s %s = new %s();%n", rawName, name, rawName);
       }
     }
   }
