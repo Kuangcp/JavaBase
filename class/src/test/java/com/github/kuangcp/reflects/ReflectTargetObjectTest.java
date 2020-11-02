@@ -244,7 +244,11 @@ public class ReflectTargetObjectTest {
     removeFinalModifier(Boolean.class.getField("FALSE"), true);
 
     log.info("Everything is true? {}", false);
+
     assertThat(false, equalTo(true));
+    assert Boolean.FALSE == true;
+
+    assert false != true;
   }
 
   /**
