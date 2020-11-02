@@ -49,6 +49,14 @@ public class StringTest {
     Assert.assertNotSame(second.intern(), second);
   }
 
+  @Test
+  public void testConcat() throws Exception {
+    String foo = "foo";
+    // javap -v 查看编译器生成的字节码，能看到这里使用了 StringBuilder 进行替换
+    String result = foo + "bar";
+    //TODO complete
+  }
+
   //TODO replace replaceAll replaceFirst
 
   @Test
