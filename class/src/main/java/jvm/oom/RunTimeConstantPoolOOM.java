@@ -1,9 +1,6 @@
 package jvm.oom;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 /**
@@ -20,7 +17,6 @@ import java.util.stream.IntStream;
  * @author kuangcp on 4/4/19-12:20 AM
  */
 public class RunTimeConstantPoolOOM {
-  private static List<String> data = new ArrayList<>();
 
   public static void main(String[] args) throws InterruptedException {
     int i = 0;
@@ -32,12 +28,13 @@ public class RunTimeConstantPoolOOM {
     while (true) {
       // 只要出现了显式的 + 字符串拼接, 就会创建新的字符串, intern() 方法调用与否结果都是一样的
 //      data.add((result.get() + i++).intern());
-      data.add((result.get() + i++));
+//      data.add((result.get() + i++));
 
+      result.get().intern();
       // 如果不加, 瞬间 Old Gen 爆满然后 OOM : heap space
       // 如果加上, 就会发现 Eden 一直涨, 然后被回收掉, 并且部分转移到了 Old
       // 还能通过 visualvm 查看 内存的慢慢涨上去, 直到满了后 OOM, 内存被一下子释放掉
-      TimeUnit.MILLISECONDS.sleep(20);
+//      TimeUnit.MILLISECONDS.sleep(5);
     }
   }
 }
