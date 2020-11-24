@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-class ReflectTargetObject {
+public class ReflectTargetObject {
 
   public static final String staticFinalString = "staticFinal";
   public static final Integer staticFinalInteger = 1;
