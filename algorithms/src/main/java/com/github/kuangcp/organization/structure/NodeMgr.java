@@ -22,7 +22,7 @@ public class NodeMgr implements NodeAction {
   /**
    * 存放任意多棵树
    */
-  private Map<String, Node> nodes = new ConcurrentHashMap<>();
+  private final Map<String, Node> nodes = new ConcurrentHashMap<>();
 
   // TODO 列出整个树
   public String tree(String parentId) {

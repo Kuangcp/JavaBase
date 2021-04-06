@@ -21,7 +21,7 @@ public class ClimbStairs {
   /**
    * 总台阶数
    */
-  private static final int totalStep = 3;
+  private static final int totalStep = 5;
 
   private static int count = 0;
 
@@ -38,21 +38,23 @@ public class ClimbStairs {
   @Test
   public void testDP() {
     int result = dp(totalStep);
-    log.info(": result={}", result);
+    log.info("result={}", result);
   }
 
   @Test
   public void testDPOptimize() {
     int[] list = new int[totalStep + 1];
-    int result = dp2(totalStep, list);
-    log.info(": result={}", result);
+    int result = dpWithCache(totalStep, list);
+    log.info("result={}", result);
   }
 
   private void recursionStep(int step, int n) {
+    log.info("step:{} n={}", step, n );
     if (step > n) {
       return;
     }
     if (step == n) {
+      log.info("add");
       count++;
     }
     recursionStep(step + 1, n);
@@ -70,12 +72,12 @@ public class ClimbStairs {
   /**
    * use cache
    */
-  private int dp2(int n, int[] list) {
+  private int dpWithCache(int n, int[] list) {
     if (n <= 2) {
       return n;
     }
     if (0 == list[n]) {
-      list[n] = dp2(n - 1, list) + dp2(n - 2, list);
+      list[n] = dpWithCache(n - 1, list) + dpWithCache(n - 2, list);
     }
 
     return list[n];

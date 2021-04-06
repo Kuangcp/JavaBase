@@ -14,10 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BloomFilter {
 
-  private static List<Function<String, Integer>> functions = new ArrayList<>();
+  private static final List<Function<String, Integer>> functions = new ArrayList<>();
   private static final short LEN_OF_BYTE = 7;
 
-  private byte[] cache = new byte[2 << 28];
+  private final byte[] cache = new byte[2 << 28];
 
   static {
     functions.add(HashFunctions.hashByObjects);
