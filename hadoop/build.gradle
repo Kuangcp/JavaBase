@@ -1,4 +1,5 @@
 dependencies {
+    implementation project(":common-config")
     implementation (libs["hadoop-common"]) {
         exclude group: 'org.slf4j'
     }

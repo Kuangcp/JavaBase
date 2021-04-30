@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+  implementation project(":common-config")
   implementation libs['jedis']
   implementation libs['groovy']
   implementation libs['common-lang']

@@ -1,4 +1,5 @@
 dependencies {
+  implementation project(":common-config")
   implementation libs['testng']
 
   implementation libs["cglib-3.2.4"]

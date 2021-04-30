@@ -1,4 +1,5 @@
 
 dependencies {
+  implementation project(":common-config")
   implementation rootProject.libs['guava']
 }

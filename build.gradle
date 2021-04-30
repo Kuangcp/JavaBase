@@ -43,7 +43,6 @@ subprojects {
 
   // All sub-modules add the following dependencies
   dependencies {
-
     annotationProcessor libs['lombok']
     compileOnly libs['lombok']
     testAnnotationProcessor libs['lombok']
@@ -55,6 +54,5 @@ subprojects {
     testImplementation libs['junit']
     testImplementation libs['hamcrest-core']
     testImplementation libs['hamcrest-lib']
-    implementation project(":common-config")
   }
 }

@@ -4,6 +4,7 @@ apply plugin: 'java'
 apply plugin: 'application'
 
 dependencies {
+  implementation project(":common-config")
   implementation libs['flink-java']
   implementation libs['flink-clients']
   implementation libs['flink-streaming-java']
