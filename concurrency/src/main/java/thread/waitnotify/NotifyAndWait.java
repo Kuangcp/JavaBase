@@ -1,4 +1,4 @@
-package thread;
+package thread.waitnotify;
 
 import java.util.Optional;
 import java.util.UUID;
