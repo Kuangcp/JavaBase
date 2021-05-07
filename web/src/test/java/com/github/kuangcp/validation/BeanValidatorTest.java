@@ -20,11 +20,10 @@ public class BeanValidatorTest {
     param.setState(-1);
     try {
       BeanValidator.check(param);
+      Assert.fail();
     } catch (Exception e) {
       Assert.assertEquals(e.getMessage(), ErrorMsgConstant.STATE_ERROR);
-      return;
     }
-    Assert.fail();
   }
 
   @Test
@@ -42,10 +41,9 @@ public class BeanValidatorTest {
     param.setState(3);
     try {
       BeanValidator.check(param);
+      Assert.fail();
     } catch (Exception e) {
       Assert.assertEquals(e.getMessage(), ErrorMsgConstant.STR_STATE_ERROR);
-      return;
     }
-    Assert.fail();
   }
 }
