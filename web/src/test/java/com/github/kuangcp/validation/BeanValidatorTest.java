@@ -9,19 +9,19 @@ public class BeanValidatorTest {
 
   @Test
   public void testValid() {
-    TestParam d = new TestParam();
-    d.setState(ActiveState.ACTIVE);
-    BeanValidator.check(d);
+    TestParam param = new TestParam();
+    param.setState(ActiveState.ACTIVE);
+    BeanValidator.check(param);
   }
 
   @Test
   public void testInvalid() {
-    TestParam d = new TestParam();
-    d.setState(-1);
+    TestParam param = new TestParam();
+    param.setState(-1);
     try {
-      BeanValidator.check(d);
+      BeanValidator.check(param);
     } catch (Exception e) {
-      Assert.assertEquals(e.getMessage(), "状态不合法");
+      Assert.assertEquals(e.getMessage(), ErrorMsgConstant.STATE_ERROR);
       return;
     }
     Assert.fail();
@@ -29,21 +29,21 @@ public class BeanValidatorTest {
 
   @Test
   public void testValidStr() {
-    TestParam d = new TestParam();
-    d.setStr("2");
-    d.setState(ActiveState.NONE);
-    BeanValidator.check(d);
+    TestParam param = new TestParam();
+    param.setStr(StrState.SECOND);
+    param.setState(ActiveState.NONE);
+    BeanValidator.check(param);
   }
 
   @Test
   public void testInvalidStr() {
-    TestParam d = new TestParam();
-    d.setStr("2s");
-    d.setState(3);
+    TestParam param = new TestParam();
+    param.setStr("2s");
+    param.setState(3);
     try {
-      BeanValidator.check(d);
+      BeanValidator.check(param);
     } catch (Exception e) {
-      Assert.assertEquals(e.getMessage(), "状态str不合法");
+      Assert.assertEquals(e.getMessage(), ErrorMsgConstant.STR_STATE_ERROR);
       return;
     }
     Assert.fail();

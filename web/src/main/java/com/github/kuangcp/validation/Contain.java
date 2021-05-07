@@ -14,7 +14,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = {EnumContainValidator.class})
 @interface Contain {
 
-    Class value();
+    Class<?> value();
 
     Class<?>[] groups() default {};
 

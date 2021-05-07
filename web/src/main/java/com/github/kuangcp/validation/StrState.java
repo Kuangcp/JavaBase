@@ -2,8 +2,8 @@ package com.github.kuangcp.validation;
 
 public interface StrState {
 
-  String nu = null;
+  String NONE = null;
 
-  String d = "2";
+  String SECOND = "2";
 
 }

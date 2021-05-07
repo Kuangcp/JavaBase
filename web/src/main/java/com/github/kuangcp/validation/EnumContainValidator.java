@@ -12,18 +12,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EnumContainValidator implements ConstraintValidator<Contain, Object> {
 
-  private Class code;
+  private Class<?> enumClass;
 
   @Override
   public void initialize(Contain constraintAnnotation) {
-    this.code = constraintAnnotation.value();
+    this.enumClass = constraintAnnotation.value();
   }
 
   @Override
   public boolean isValid(Object judgeValue, ConstraintValidatorContext constraintValidatorContext) {
     try {
-
-      return Arrays.stream(code.getFields())
+      return Arrays.stream(enumClass.getFields())
           .filter(v -> Modifier.isFinal(v.getModifiers()) && Modifier.isStatic(v.getModifiers()))
           .anyMatch(v -> Objects.equals(getStaticFieldValue(v), judgeValue));
     } catch (Exception e) {
@@ -51,12 +50,11 @@ public class EnumContainValidator implements ConstraintValidator<Contain, Object
     try {
       result = field.get(obj);
     } catch (IllegalAccessException e) {
-      throw new RuntimeException("IllegalAccess for" + field.getDeclaringClass() + field.getName(),
+      throw new RuntimeException("IllegalAccess for " + field.getDeclaringClass() + field.getName(),
           e);
     }
     return result;
   }
-
 
   /**
    * 设置方法为可访问（私有方法可以被外部调用）
