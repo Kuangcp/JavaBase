@@ -20,4 +20,5 @@ include(
     , 'hadoop'
     , 'flink'
     , 'mybatis'
+    , 'web'
 )
