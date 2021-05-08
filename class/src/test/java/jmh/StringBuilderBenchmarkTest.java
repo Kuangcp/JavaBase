@@ -13,9 +13,11 @@ public class StringBuilderBenchmarkTest {
 
   @Test
   public void test() throws RunnerException {
+    String output = "/tmp/StringBuilderBenchmark-" + System.currentTimeMillis() + ".log";
+    System.out.println(output);
     Options options = new OptionsBuilder()
         .include(StringBuilderBenchmark.class.getSimpleName())
-        .output("/tmp/Benchmark.log").build();
+        .output(output).build();
     new Runner(options).run();
   }
 }

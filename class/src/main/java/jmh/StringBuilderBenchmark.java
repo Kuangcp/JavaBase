@@ -15,9 +15,9 @@ import org.openjdk.jmh.annotations.Warmup;
  */
 @BenchmarkMode(Mode.Throughput)
 @Warmup(iterations = 3)
-@Measurement(iterations = 10, time = 1)
-@Threads(4)
-@Fork(2)
+@Measurement(iterations = 5, time = 2)
+@Threads(3)
+@Fork(3)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class StringBuilderBenchmark {
 
@@ -32,6 +32,15 @@ public class StringBuilderBenchmark {
   @Benchmark
   public void testStringBuilderAdd() {
     StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < 10; i++) {
+      sb.append(i);
+    }
+    sb.toString();
+  }
+
+  @Benchmark
+  public void testStringBufferAdd() {
+    StringBuffer sb = new StringBuffer();
     for (int i = 0; i < 10; i++) {
       sb.append(i);
     }
