@@ -36,16 +36,17 @@ class NIOClient {
     try {
       while (scan.hasNextLine()) {
         String line = scan.nextLine();
-        channel.write(NIOServer.charset.encode(line));
-
         if ("exit".equalsIgnoreCase(line)) {
-          stop();
+          log.info("exit client");
+          this.stop();
           return;
         }
+
+        channel.write(NIOServer.charset.encode(line));
       }
     } catch (IOException e) {
       log.error(e.getMessage(), e);
-      stop();
+      this.stop();
     }
   }
 
@@ -59,8 +60,8 @@ class NIOClient {
     public void run() {
       try {
         while (!stop) {
-          selector.select();
-
+          // 如果不设置超时时间会一直阻塞等待，导致客户端无法退出
+          selector.select(5000);
           for (SelectionKey sk : selector.selectedKeys()) {
             selector.selectedKeys().remove(sk);
             if (sk.isReadable()) {
@@ -69,7 +70,7 @@ class NIOClient {
           }
         }
       } catch (Exception e) {
-        e.printStackTrace();
+        log.error("", e);
       }
     }
   }
@@ -86,7 +87,7 @@ class NIOClient {
     if (content.length() == 0) {
       return;
     }
-    log.info("msg={}", content.toString());
+    log.info("server: {}", content);
     sk.interestOps(SelectionKey.OP_READ);
   }
 }

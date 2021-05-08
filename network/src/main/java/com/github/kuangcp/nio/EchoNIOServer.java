@@ -21,6 +21,7 @@ public class EchoNIOServer {
   public static void main(String[] args) throws IOException {
     new EchoNIOServer().start();
   }
+
   public void start() throws IOException {
     Selector selector = Selector.open();
     //通过OPEN方法来打开一个未绑定的ServerSocketChannel 实例
@@ -78,9 +79,9 @@ public class EchoNIOServer {
           String body = new String(bytes, StandardCharsets.UTF_8);
           System.out.println("The time server receive order : " + body);
           if ("STOP".equalsIgnoreCase(body)) {
-            stop();
+            this.stop();
           }
-          doWrite(sc);
+          this.doWrite(sc, body);
         } else if (readBytes < 0) {
           // 对端链路关闭
           key.cancel();
@@ -92,9 +93,8 @@ public class EchoNIOServer {
 
   }
 
-
-  private void doWrite(SocketChannel channel) throws IOException {
-    byte[] bytes = "response".getBytes();
+  private void doWrite(SocketChannel channel, String body) throws IOException {
+    byte[] bytes = (body + "?").getBytes();
     ByteBuffer writeBuffer = ByteBuffer.allocate(bytes.length);
     writeBuffer.put(bytes);
     writeBuffer.flip();

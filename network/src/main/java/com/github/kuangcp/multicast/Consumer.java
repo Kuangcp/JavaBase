@@ -9,15 +9,12 @@ import lombok.extern.slf4j.Slf4j;
  * @author https://github.com/kuangcp on 2020-01-15 20:34
  */
 @Slf4j
-public class Two {
-
-  private static int port = 8000;
-  private static String address = "228.0.0.4";
+public class Consumer {
 
   public static void main(String[] args) {
     try {
-      InetAddress group = InetAddress.getByName(address);
-      MulticastSocket multicastSocket = new MulticastSocket(port);
+      InetAddress group = InetAddress.getByName(MulticastConstant.ipAddress);
+      MulticastSocket multicastSocket = new MulticastSocket(MulticastConstant.port);
       multicastSocket.joinGroup(group);
       byte[] buffer = new byte[1024];
 

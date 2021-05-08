@@ -70,7 +70,7 @@ class NIOServer {
         }
         // 连接建立
         else if (sk.isConnectable()) {
-          System.out.println("close");
+          log.info("close");
         }
         // 读就绪
         else if (sk.isReadable()) {
@@ -78,7 +78,7 @@ class NIOServer {
         }
         // 写就绪
         else if (sk.isWritable()) {
-
+          log.info("writeable");
         }
       }
     }
