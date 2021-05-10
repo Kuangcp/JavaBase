@@ -36,8 +36,8 @@ ext {
       // test, junit has removed hamcrest since 4.11
       , "hamcrest-core"           : "org.hamcrest:hamcrest-core:$ver.hamcrest"
       , "hamcrest-lib"            : "org.hamcrest:hamcrest-library:$ver.hamcrest"
-      , "jmh"                     : "org.openjdk.jmh:jmh-core:1.21"
-      , "jmh-generator-annprocess": "org.openjdk.jmh:jmh-generator-annprocess:1.21"
+      , "jmh"                     : "org.openjdk.jmh:jmh-core:1.30"
+      , "jmh-generator-annprocess": "org.openjdk.jmh:jmh-generator-annprocess:1.30"
 
       , "junit"                   : "junit:junit:$ver.junit"
       , "mockito-core"            : "org.mockito:mockito-core:2.21.0"
