@@ -25,12 +25,12 @@ import sun.misc.Unsafe;
  * 1. 反序列化
  * 1. Unsafe.allocateInstance
  *
- * clone 以及 serialize 创建对象时 不会调用构造器
+ * clone 以及 serialize，Unsafe  allocateInstance 三种方式 创建对象时 不会调用构造器
  */
 @Slf4j
 public class InstantiationAndConstructorTest {
 
-  // 直接调用构造器
+  // 显式调用构造器
   @Test
   public void testInitByNew() {
     InstantiationAndConstructor instance = new InstantiationAndConstructor("name");
@@ -44,7 +44,7 @@ public class InstantiationAndConstructorTest {
     InstantiationAndConstructor.class.newInstance();
   }
 
-  // 反射实例化对象方式 获取指定构造器
+  // 反射实例化对象方式 获取并调用指定构造器
   @Test
   public void testInitByReflect() throws ReflectiveOperationException {
     Constructor<InstantiationAndConstructor> constructor =
