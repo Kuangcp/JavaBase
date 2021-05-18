@@ -45,14 +45,12 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
 
   @Override
   public void channelActive(ChannelHandlerContext ctx) throws Exception {
-    //添加连接
     log.debug("客户端加入连接：" + ctx.channel());
     ChannelSupervise.addChannel(ctx.channel());
   }
 
   @Override
   public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-    //断开连接
     log.debug("客户端断开连接：" + ctx.channel());
     ChannelSupervise.removeChannel(ctx.channel());
   }
@@ -68,23 +66,26 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
       handshaker.close(ctx.channel(), (CloseWebSocketFrame) frame.retain());
       return;
     }
+
     // 判断是否ping消息
     if (frame instanceof PingWebSocketFrame) {
       ctx.channel().write(
           new PongWebSocketFrame(frame.content().retain()));
       return;
     }
+
     // 本例程仅支持文本消息，不支持二进制消息
     if (!(frame instanceof TextWebSocketFrame)) {
       log.debug("本例程仅支持文本消息，不支持二进制消息");
       throw new UnsupportedOperationException(String.format(
           "%s frame types not supported", frame.getClass().getName()));
     }
+
     // 返回应答消息
     String request = ((TextWebSocketFrame) frame).text();
     log.debug("服务端收到：" + request);
-    TextWebSocketFrame tws = new TextWebSocketFrame(new Date().toString()
-        + ctx.channel().id() + "：" + request);
+    TextWebSocketFrame tws = new TextWebSocketFrame(
+        new Date().toString() + ctx.channel().id() + "：" + request);
 
     // 群发至所有连接
 //    ChannelSupervise.send2All(tws);
@@ -96,8 +97,7 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
   /**
    * 唯一的一次http请求，用于创建websocket
    */
-  private void handleHttpRequest(ChannelHandlerContext ctx,
-      FullHttpRequest req) {
+  private void handleHttpRequest(ChannelHandlerContext ctx, FullHttpRequest req) {
     //要求Upgrade为websocket，过滤掉get/Post
     if (!req.decoderResult().isSuccess()
         || (!"websocket".equals(req.headers().get("Upgrade")))) {
@@ -106,12 +106,12 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
           HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST));
       return;
     }
+
     WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
         "ws://localhost:7094/ws", null, false);
     handshaker = wsFactory.newHandshaker(req);
     if (handshaker == null) {
-      WebSocketServerHandshakerFactory
-          .sendUnsupportedVersionResponse(ctx.channel());
+      WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
     } else {
       handshaker.handshake(ctx.channel(), req);
     }
@@ -124,8 +124,7 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
       FullHttpRequest req, DefaultFullHttpResponse res) {
     // 返回应答给客户端
     if (res.status().code() != 200) {
-      ByteBuf buf = Unpooled.copiedBuffer(res.status().toString(),
-          CharsetUtil.UTF_8);
+      ByteBuf buf = Unpooled.copiedBuffer(res.status().toString(), CharsetUtil.UTF_8);
       res.content().writeBytes(buf);
       buf.release();
     }
