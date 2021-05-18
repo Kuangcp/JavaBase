@@ -5,8 +5,12 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 import com.github.kuangcp.time.GetRunTime;
 import com.github.kuangcp.util.ShowBinary;
+import java.nio.charset.StandardCharsets;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -131,6 +135,35 @@ public class BitOperatorsTest {
     IntStream.rangeClosed(1, 10000)
         .forEach(i -> Math.pow(2, Math.floor(Math.log(i) / Math.log(2)) + 1));
     runTime.endCountOneLine("log and pow");
+  }
+
+  @Test
+  public void testXORByByte() {
+    String originMsg = "原始中文内容123Abc";
+
+    byte[] data = originMsg.getBytes(StandardCharsets.UTF_8);
+    log.info("data={}", data);
+
+    byte[] one = transfer(data);
+    log.info("data={}", one);
+
+    byte[] two = transfer(one);
+    log.info("data={}", two);
+
+    String oneStr = StringUtils.toEncodedString(one, StandardCharsets.UTF_8);
+    String twoStr = StringUtils.toEncodedString(two, StandardCharsets.UTF_8);
+    assertThat(twoStr, equalTo(originMsg));
+    Assert.assertNotEquals(oneStr, originMsg);
+  }
+
+  private byte[] transfer(byte[] data) {
+    byte[] key = {3, 56, 12, 22, 35, 87, 123, 83, 111, 34, 23, 56, 34, 56};
+    int maxKey = key.length;
+    byte[] result = new byte[data.length];
+    for (int i = 0; i < data.length; i++) {
+      result[i] = (byte) (data[i] ^ key[i % maxKey]);
+    }
+    return result;
   }
 
   /**
