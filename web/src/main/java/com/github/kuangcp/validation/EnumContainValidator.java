@@ -21,7 +21,16 @@ public class EnumContainValidator implements ConstraintValidator<Contain, Object
 
   @Override
   public boolean isValid(Object judgeValue, ConstraintValidatorContext constraintValidatorContext) {
+    if (Objects.isNull(judgeValue)) {
+      return false;
+    }
     try {
+      if (!enumClass.isInterface()) {
+        log.warn("只能使用接口对入参进行约束: class:{}", enumClass.getSimpleName());
+        return false;
+      }
+
+      // TODO 实际使用需要缓存反射的字段
       return Arrays.stream(enumClass.getFields())
           .filter(v -> Modifier.isFinal(v.getModifiers()) && Modifier.isStatic(v.getModifiers()))
           .anyMatch(v -> Objects.equals(getStaticFieldValue(v), judgeValue));

@@ -11,6 +11,7 @@ public class BeanValidatorTest {
   public void testValid() {
     TestParam param = new TestParam();
     param.setState(ActiveState.ACTIVE);
+    param.setStr(StrState.SECOND);
     BeanValidator.check(param);
   }
 
@@ -18,6 +19,7 @@ public class BeanValidatorTest {
   public void testInvalid() {
     TestParam param = new TestParam();
     param.setState(-1);
+    param.setStr(StrState.SECOND);
     try {
       BeanValidator.check(param);
       Assert.fail();
