@@ -25,7 +25,7 @@ import java.util.Properties;
 @Component
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare",
         args = {Connection.class, Integer.class})})
-public class SharedInterceptor implements Interceptor {
+public class ShardingTableInterceptor implements Interceptor {
 
     @Autowired
     private AuthUtil authUtil;
