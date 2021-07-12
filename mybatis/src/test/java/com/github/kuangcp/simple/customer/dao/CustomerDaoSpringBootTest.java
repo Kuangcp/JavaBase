@@ -1,6 +1,6 @@
 package com.github.kuangcp.simple.customer.dao;
 
-import com.github.kuangcp.base.TestStarter;
+import com.github.kuangcp.base.SpringBootTestStarter;
 import com.github.kuangcp.sharding.manual.AuthUtil;
 import com.github.kuangcp.simple.customer.domain.Customer;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.LongStream;
 
 @Slf4j
-public class CustomerDaoTest extends TestStarter {
+public class CustomerDaoSpringBootTest extends SpringBootTestStarter {
 
     @Autowired
     private CustomerDao customerDao;

@@ -20,6 +20,9 @@ public class ConsistentHashingAlgorithm {
         }
     }
 
+    /**
+     * TODO 线程不安全，以及环的多节点维护问题
+     */
     public static ConsistentHashingAlgorithm useWithCache(int totalNode) {
         ConsistentHashingAlgorithm result = cache.get(totalNode);
         if (Objects.nonNull(result)) {
@@ -72,6 +75,9 @@ public class ConsistentHashingAlgorithm {
         return circle.get(hash);
     }
 
+    /**
+     * TODO 线程不安全
+     */
     public long hash(String key) {
         if (md5 == null) {
             try {

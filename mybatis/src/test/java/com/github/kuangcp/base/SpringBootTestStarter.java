@@ -6,6 +6,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public abstract class TestStarter {
+public abstract class SpringBootTestStarter {
 
 }

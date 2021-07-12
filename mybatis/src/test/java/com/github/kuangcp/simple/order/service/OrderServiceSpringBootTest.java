@@ -1,6 +1,6 @@
 package com.github.kuangcp.simple.order.service;
 
-import com.github.kuangcp.base.TestStarter;
+import com.github.kuangcp.base.SpringBootTestStarter;
 import com.github.kuangcp.simple.order.dto.OrderDTO;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
-public class OrderServiceTest extends TestStarter {
+public class OrderServiceSpringBootTest extends SpringBootTestStarter {
 
   @Autowired
   private OrderService orderService;

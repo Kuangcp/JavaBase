@@ -1,7 +1,7 @@
 package com.github.kuangcp.simple.order.dao;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.github.kuangcp.base.TestStarter;
+import com.github.kuangcp.base.SpringBootTestStarter;
 import com.github.kuangcp.simple.order.domain.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @Slf4j
-public class OrderDaoTest extends TestStarter {
+public class OrderDaoSpringBootTest extends SpringBootTestStarter {
 
   @Autowired
   private OrderDao orderDao;
