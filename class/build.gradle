@@ -1,15 +1,17 @@
 dependencies {
-  implementation project(":common-config")
+    implementation project(":common-config")
 
-  implementation libs['fastjson']
-  implementation libs['gson']
-  implementation libs['jackson_core']
-  implementation libs['jackson_databind']
-  implementation libs['jackson_annotations']
-  implementation libs['jackson_smile']
+    implementation libs['kcp-tool']
 
-  implementation libs['jmh']
-  implementation libs['jmh-generator-annprocess']
-  implementation libs['common-lang']
-  implementation libs['cglib']
+    implementation libs['fastjson']
+    implementation libs['gson']
+    implementation libs['jackson_core']
+    implementation libs['jackson_databind']
+    implementation libs['jackson_annotations']
+    implementation libs['jackson_smile']
+
+    implementation libs['jmh']
+    implementation libs['jmh-generator-annprocess']
+    implementation libs['common-lang']
+    implementation libs['cglib']
 }

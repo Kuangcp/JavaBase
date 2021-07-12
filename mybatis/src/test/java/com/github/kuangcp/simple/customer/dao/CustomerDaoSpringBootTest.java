@@ -18,10 +18,11 @@ public class CustomerDaoSpringBootTest extends SpringBootTestStarter {
     @Autowired
     private AuthUtil authUtil;
 
-    private void login(Long orgId){
+    private void login(Long orgId) {
         authUtil.clearAuth();
         authUtil.completeAuth(orgId);
     }
+
     @Test
     public void testQuery() {
         login(2L);

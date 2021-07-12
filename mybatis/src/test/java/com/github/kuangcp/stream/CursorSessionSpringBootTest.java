@@ -45,13 +45,14 @@ public class CursorSessionSpringBootTest extends SpringBootTestStarter {
         List<String> partsCode = IntStream.range(0, 30000)
                 .mapToObj(v -> UUID.randomUUID().toString()).collect(Collectors.toList());
         Random random = new Random();
+        long userFrame = 30; // 构造不同数据段
         for (int i = 1; i < 700_000; i++) {
             LocalDateTime now = LocalDateTime.now();
             Date start = Date.from(now.plusDays(-1 * (i / 1000)).atZone(ZoneId.systemDefault()).toInstant());
 
             Report report = Report.builder()
                     .inquiryCode(partsCode.get(random.nextInt(30000)))
-                    .userId((long) i % 6 + 70)
+                    .userId((long) i % 6 + userFrame)
                     .inquiryCount(i % 7)
                     .haveGoodsCount(i % 4)
                     .purchaseCount(i % 2)
@@ -72,7 +73,7 @@ public class CursorSessionSpringBootTest extends SpringBootTestStarter {
         log.info("={}", stopWatch.prettyPrint());
     }
 
-    // 90s = 30 * 3
+    // 90s = 30 * 3s
     @Test
     public void testPageQueryAll() throws Exception {
         StopWatch stopWatch = new StopWatch();
