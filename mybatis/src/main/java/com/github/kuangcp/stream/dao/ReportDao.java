@@ -19,22 +19,22 @@ import java.util.List;
 @Repository
 public interface ReportDao extends BaseMapper<Report> {
 
-    @Select("SELECT user_id, inquiry_code, SUM(inquiry_count) AS inquiry_count" +
-            ", SUM(have_goods_count) AS have_goods_count, SUM(purchase_count) AS purchase_count" +
-            " FROM pq_inquiry_parts_report WHERE statistics_time BETWEEN #{start} AND #{end}" +
+    @Select("SELECT user_id, b, SUM(c) AS c" +
+            ", SUM(d) AS d, SUM(e) AS e" +
+            " FROM report WHERE statistics_time BETWEEN #{start} AND #{end}" +
             " AND user_id IN (1,2,3,4,5,6)" +
-            " GROUP BY inquiry_code")
+            " GROUP BY b")
     @Options(resultSetType = ResultSetType.FORWARD_ONLY, fetchSize = Integer.MIN_VALUE)
     @ResultType(Report.class)
     void selectAutoList(@Param("start") Date start,
                         @Param("end") Date end,
                         ResultHandler<Report> handler);
 
-    @Select("SELECT user_id, inquiry_code, SUM(inquiry_count) AS inquiry_count" +
-            ", SUM(have_goods_count) AS have_goods_count, SUM(purchase_count) AS purchase_count" +
-            " FROM pq_inquiry_parts_report WHERE statistics_time BETWEEN #{start} AND #{end}" +
+    @Select("SELECT user_id, b, SUM(c) AS c" +
+            ", SUM(d) AS d, SUM(e) AS e" +
+            " FROM report WHERE statistics_time BETWEEN #{start} AND #{end}" +
             " AND user_id IN (1,2,3,4,5,6)" +
-            " GROUP BY inquiry_code LIMIT #{startIdx},#{size}")
+            " GROUP BY b LIMIT #{startIdx},#{size}")
     List<Report> queryByPage(@Param("start") Date start,
                              @Param("end") Date end,
                              @Param("startIdx") long startIdx,
