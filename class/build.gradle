@@ -11,7 +11,8 @@ dependencies {
     implementation libs['jackson_smile']
 
     implementation libs['jmh']
-    implementation libs['jmh-generator-annprocess']
+    annotationProcessor libs['jmh-generator-annprocess']
+
     implementation libs['common-lang']
     implementation libs['cglib']
 }
