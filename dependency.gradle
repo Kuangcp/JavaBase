@@ -5,7 +5,7 @@ ext {
     ver = [
             logback   : '1.2.5'
             , jedis   : '2.9.0'
-            , junit   : '4.12'
+            , junit   : '4.13.2'
             , groovy  : '3.0.8'
             , mail    : '1.4.7'
             , jackson : '2.9.5'
@@ -23,6 +23,7 @@ ext {
     libs = [
             // mine tool
             "kcp-tool"                  : "com.github.kuangcp:kcp-tool:$ver.kcp_tool"
+            , "kcp-tuple"               : "com.github.kuangcp:kcp-tuple:$ver.kcp_tool"
 
             // tool
             , "lombok"                  : "org.projectlombok:lombok:1.18.2"
@@ -49,6 +50,7 @@ ext {
             // network
             , "ok-http"                 : "com.squareup.okhttp3:okhttp:3.13.1"
             , "netty"                   : "io.netty:netty-all:$ver.netty"
+            , "blade-mvc"               : "com.bladejava:blade-mvc:2.0.15.RELEASE"
 
             // mail
             , "mail"                    : "javax.mail:mail:$ver.mail"

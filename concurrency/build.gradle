@@ -1,12 +1,21 @@
 plugins {
-  id 'groovy'
-  id 'maven-publish'
+    id 'groovy'
+    id 'maven-publish'
+    id 'application'
+}
+
+application {
+    mainClass = 'cmd.Application'
 }
 
 dependencies {
-  implementation project(":common-config")
-  implementation libs['jedis']
-  implementation libs['groovy']
-  implementation libs['common-lang']
-  testImplementation(libs['testng'])
+    implementation project(":common-config")
+    implementation libs['kcp-tuple']
+
+    implementation libs['blade-mvc']
+
+    implementation libs['jedis']
+    implementation libs['groovy']
+    implementation libs['common-lang']
+    testImplementation(libs['testng'])
 }

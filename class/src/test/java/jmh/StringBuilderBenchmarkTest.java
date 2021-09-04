@@ -1,6 +1,5 @@
 package jmh;
 
-import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -15,6 +14,8 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author kuangcp on 2019-04-21 11:39 PM
  */
@@ -26,39 +27,40 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class StringBuilderBenchmarkTest {
 
-  @Test
-  public void test() throws RunnerException {
-    String output = "/tmp/StringBuilderBenchmark-" + System.currentTimeMillis() + ".log";
-    System.out.println(output);
-    Options options = new OptionsBuilder()
-        .include(StringBuilderBenchmarkTest.class.getSimpleName())
-        .output(output).build();
-    new Runner(options).run();
-  }
-
-  @Benchmark
-  public void testStringAdd() {
-    String a = "";
-    for (int i = 0; i < 10; i++) {
-      a += i;
+    @Test
+    public void test() throws RunnerException {
+        String output = "/tmp/StringBuilderBenchmark-" + System.currentTimeMillis() + ".log";
+        System.out.println(output);
+        Options options = new OptionsBuilder()
+                .include(StringBuilderBenchmark.class.getSimpleName())
+//                .include(StringBuilderBenchmarkTest.class.getSimpleName())
+                .output(output).build();
+        new Runner(options).run();
     }
-  }
 
-  @Benchmark
-  public void testStringBuilderAdd() {
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < 10; i++) {
-      sb.append(i);
+    @Benchmark
+    public void testStringAdd() {
+        String a = "";
+        for (int i = 0; i < 10; i++) {
+            a += i;
+        }
     }
-    sb.toString();
-  }
 
-  @Benchmark
-  public void testStringBufferAdd() {
-    StringBuffer sb = new StringBuffer();
-    for (int i = 0; i < 10; i++) {
-      sb.append(i);
+    @Benchmark
+    public void testStringBuilderAdd() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 10; i++) {
+            sb.append(i);
+        }
+        sb.toString();
     }
-    sb.toString();
-  }
+
+    @Benchmark
+    public void testStringBufferAdd() {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < 10; i++) {
+            sb.append(i);
+        }
+        sb.toString();
+    }
 }

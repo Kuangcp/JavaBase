@@ -1,6 +1,8 @@
 # projcet #
 *.log
 logs/
+jmh/
+jmh_*
 
 # maven #
 target/

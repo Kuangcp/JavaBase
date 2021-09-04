@@ -1,6 +1,9 @@
 package com.github.kuangcp.lock.pvp;
 
 import com.github.kuangcp.tuple.Tuple2;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,8 +11,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
 
 /**
  * @author kuangcp on 2019-04-21 11:14 AM
@@ -19,7 +20,7 @@ import org.junit.jupiter.api.Test;
 @Slf4j
 public class PlayerTest {
 
-  private Map<String, Player> playerMap = new HashMap<>();
+  private final Map<String, Player> playerMap = new HashMap<>();
 
   private void arenaLogic(Player a, Player b) throws InterruptedException {
     log.info("enter arena: a={} b={}", a, b);
