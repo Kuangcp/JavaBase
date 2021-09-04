@@ -10,7 +10,7 @@ ext {
             , mail    : '1.4.7'
             , jackson : '2.9.5'
             , hamcrest: '1.3'
-            , kcp_tool: '1.0.7'
+            , kcp_tool: '1.0.8'
             , netty   : '4.1.67.Final'
             , guava   : '30.1.1-jre'
             , jmh     : '1.33'
@@ -24,6 +24,7 @@ ext {
             // mine tool
             "kcp-tool"                  : "com.github.kuangcp:kcp-tool:$ver.kcp_tool"
             , "kcp-tuple"               : "com.github.kuangcp:kcp-tuple:$ver.kcp_tool"
+            , "kcp-core"                : "com.github.kuangcp:kcp-core:$ver.kcp_tool"
 
             // tool
             , "lombok"                  : "org.projectlombok:lombok:1.18.2"

@@ -1,7 +1,8 @@
 package thread;
 
-import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author kuangcp on 2019-04-22 9:55 AM
@@ -11,7 +12,7 @@ public class ThreadJoinDemo {
 
   static class Domino implements Runnable {
 
-    private Thread thread;
+    private final Thread thread;
 
     public Domino(Thread thread) {
       this.thread = thread;

@@ -38,11 +38,12 @@ subprojects {
         maven {
             url = kuangcp
         }
-        jcenter()
     }
 
     // All sub-modules add the following dependencies
     dependencies {
+        implementation libs['kcp-tool']
+
         annotationProcessor libs['lombok']
         compileOnly libs['lombok']
         testAnnotationProcessor libs['lombok']

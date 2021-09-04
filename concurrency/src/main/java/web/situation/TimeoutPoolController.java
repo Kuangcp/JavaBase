@@ -5,8 +5,8 @@ import com.blade.mvc.annotation.Path;
 import com.blade.mvc.http.Response;
 import lombok.extern.slf4j.Slf4j;
 import situation.timoutpool.CreateNewPool;
-import situation.timoutpool.Param;
-import situation.timoutpool.Result;
+import situation.timoutpool.base.Param;
+import situation.timoutpool.base.Result;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;

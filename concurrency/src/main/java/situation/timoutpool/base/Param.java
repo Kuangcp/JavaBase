@@ -1,4 +1,4 @@
-package situation.timoutpool;
+package situation.timoutpool.base;
 
 import lombok.Builder;
 import lombok.Data;

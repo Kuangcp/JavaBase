@@ -14,14 +14,13 @@ public class ThreadStatusTransfer {
 
   private static boolean flag = true;
 
-  private static Object lock = new Object();
+  private static final Object lock = new Object();
 
   static class Wait implements Runnable {
 
     @Override
     public void run() {
-      // IDE 警告:
-      // synchronized 一个非 final 的变量, 容易发生 当该对象的引用地址更改后, 同步块里的代码能被并行运行, 因为锁的是真实堆上的对象
+      // 如果 synchronized 一个非 final 的变量, 容易发生 当该对象的引用地址更改后, 同步块里的代码可以被并发执行，因为锁的对象发生变化
       synchronized (lock) {
         while (flag) {
           try {

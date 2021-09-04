@@ -2,6 +2,8 @@ package situation.timoutpool;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import situation.timoutpool.base.Param;
+import situation.timoutpool.base.Result;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
