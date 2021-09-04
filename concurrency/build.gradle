@@ -5,7 +5,7 @@ plugins {
 }
 
 application {
-    mainClass = 'cmd.Application'
+    mainClass = 'web.Application'
 }
 
 dependencies {

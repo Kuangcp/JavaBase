@@ -1,4 +1,4 @@
-package cmd.situation;
+package web.situation;
 
 import com.blade.mvc.annotation.GetRoute;
 import com.blade.mvc.annotation.Path;

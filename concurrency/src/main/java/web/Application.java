@@ -1,4 +1,4 @@
-package cmd;
+package web;
 
 import com.blade.Blade;
 
