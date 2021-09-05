@@ -1,0 +1,191 @@
+package com.github.kuangcp.tank.v3;
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * 坦克3.0 版本：
+ * <p>
+ * 1 多颗子弹连发  （限制：最多五颗子弹即五个线程）
+ * 2 敌人的坦克也能够发射子弹
+ * 3 打到敌人坦克敌人消失 做出爆炸效果
+ * 4 让敌方坦克可以自由的随机上下左右移动
+ * 5 控制我方坦克和敌方坦克在规定范围内移动
+ * 6 有窗口提示信息
+ * 7 坦克不重叠，与障碍物不重叠
+ * <p>
+ * <p>
+ * 8 可以把这里的窗体做成线程 但是都是静态成员，所以就算做成线程 出来的新界面也还是原来的属性（一样的界面）
+ * 总结：不应该随便设置静态成员的  尤其是可能会新建的成员
+ * 解决方案：
+ * 在需要用到无法引用到的对象时，除了做成静态，还可以在当前添加这个对象的引用
+ * 然后构造器 里传入所要调用的对象 就能解决问题了，多线程启动也会是初始化的状态
+ * ！！最好放在别的函数里，不要改动构造器，会对以前的代码有影响（）
+ * 9 可以暂停游戏，继续游戏
+ * 原来这么简单，设置动的那些Speed为0 不就是静止么。。还有方向不能动 还有焦点的自动跳转
+ * 10 可以继续上局游戏开始玩
+ * 11 有游戏的音效（操纵声音文件）
+ */
+@SuppressWarnings("serial")
+public class TankFrame extends JFrame implements Runnable {//implements Runnable
+
+    public MyPanel3 mp = null;//坦克的主画板
+    public MyPanel301 mp2 = null;//放按钮的画板
+    public MyPanel301 mpe1 = null;//对按钮事件监听处理的
+    public MyPanel302 mp3 = null;  //显示属性的画板
+    public MyPanel303 Fir;
+    public JButton jb1 = null, jb2 = null, jb3, jb4;  //按钮
+    public JSplitPane jsp1, jsp2;//拆分窗格
+    public JLabel jl1 = null, jl2 = null, jl3 = null, me = null, prizeNo = null;
+    public int count = 0;  //判断是否首次运行
+
+    //作出我需要的菜单
+    JMenuBar jmb = null;
+    //开始游戏
+    JMenu jm1 = null;
+    JMenu jm2 = null;
+    JMenuItem jmil = null;
+    //退出系统
+    JMenuItem jmi2 = null;
+    //存盘退出
+    JMenuItem jmi3 = null;
+    JMenuItem jmi4 = null;
+    //帮助窗口
+    JMenuItem Help = null;
+
+    //	public void inter(){
+//		t.interrupt();
+//	}
+//最外层JFrame的构造函数
+//	public TankGame3_1(){
+    public void run() {
+
+        mp = new MyPanel3(this);//坦克运动的那个画布
+        mpe1 = new MyPanel301(this, mp.hero, mp.ets, mp.bricks, mp.irons, mp.ETS, mp.myself);//监听按钮事件的画布对象
+        mp2 = new MyPanel301(this, mp.hero, mp.ets, mp.bricks, mp.irons, mp.ETS, mp.myself);//放按钮的画布
+
+        //提示信息
+        jl1 = new JLabel("           : " + mp.hero.getLife() + "                    : " + mp.ets.size());
+        prizeNo = new JLabel("已击杀    ：" + mp.hero.getPrize());//战绩的标签
+//		jl2 = new JLabel("提示：WSAD-上下左右  J-发子弹");
+//		jl3 = new JLabel("上面是生命值和敌人数");
+        me = new JLabel("Myth");
+
+        mp3 = new MyPanel302(jl1, mp.hero, mp.ets, prizeNo);//显示一些属性
+
+        if (count != 0) {
+            //已经成为一个线程 要启动它
+            Thread t = new Thread(mp);
+            t.start();
+            Thread t2 = new Thread(mp3);
+            t2.start();
+        }
+        //创建菜单及菜单选项
+        jmb = new JMenuBar();
+        jm1 = new JMenu("Game(G)");
+        jm2 = new JMenu("Help(H)");
+
+        //设置快捷方式
+        jm1.setMnemonic('G');
+        jm2.setMnemonic('H');
+        jmil = new JMenuItem("New Game(N)");
+        jmi2 = new JMenuItem("Pause");
+        jmi3 = new JMenuItem("Save & Exit(C)");
+        jmi4 = new JMenuItem("ContinueLast(S)");
+        Help = new JMenuItem("Setting");
+
+        //
+        Help.addActionListener(mpe1);
+        Help.setActionCommand("Help");/////////
+        //注册监听
+        jmi4.addActionListener(mpe1);
+        jmi4.setActionCommand("Continue");////////////
+        //注册监听
+        jmi3.addActionListener(mpe1);
+        jmi3.setActionCommand("saveExit");////////
+        //
+        jmi2.addActionListener(mpe1);
+        jmi2.setActionCommand("暂停");/////////
+        jmi2.setMnemonic('E');
+        //对jmil相应
+        jmil.addActionListener(mpe1);
+        jmil.setActionCommand("开始");//////
+
+        jm1.add(jmil);
+//				jm1.add(jmi2);
+        jm1.add(jmi3);
+        jm1.add(jmi4);
+
+        jm2.add(Help);
+
+        jmb.add(jm1);
+        jmb.add(jm2);
+
+        jb3 = new JButton("暂停游戏");
+        jb3.addActionListener(mpe1);  //注册监听
+        jb3.setActionCommand("暂停");/////////
+        jb4 = new JButton("继续游戏");
+        jb4.addActionListener(mpe1);  //注册监听
+        jb4.setActionCommand("继续");/////////
+
+        jb2 = new JButton("退出游戏");
+        jb2.addActionListener(mpe1);  //注册监听
+        jb2.setActionCommand("结束");/////////
+
+        if (count == 0) jb1 = new JButton("游戏开始");
+        else jb1 = new JButton("重新开始");
+        jb1.addActionListener(mpe1);  //注册监听
+        jb1.setActionCommand("开始");///////////
+
+        mp2.add(jb1);
+        mp2.add(jb2);
+        mp2.add(jb3);
+        mp2.add(jb4);
+
+        //显示属性的窗体：
+        mp3.setLayout(new GridLayout(6, 1, 0, 0));
+
+        mp3.add(jl1);//网格布局
+        mp3.add(prizeNo);
+//		mp3.add(jl2);
+//		mp3.add(jl3);
+        mp3.add(me);
+//		jl1 =new JLabel("898908098");//不会对上面造成任何影响
+
+        jsp2 = new JSplitPane(0, mp2, mp3);//水平
+        jsp2.setDividerLocation(150);
+        Fir = new MyPanel303();
+        if (count != 0) jsp1 = new JSplitPane(1, mp, jsp2);//垂直
+        else jsp1 = new JSplitPane(1, Fir, jsp2);
+        jsp1.setDividerLocation(760);
+
+        //把画板加入JFrame
+        this.add(jsp1, BorderLayout.CENTER);
+//		this.add(mp2,BorderLayout.EAST);
+//		this.add(mp,BorderLayout.CENTER);
+
+        //注册键盘监听
+        //下面的语句翻译为 ：当前类的监听者是mp
+        this.addKeyListener(mp);
+        this.setJMenuBar(jmb);
+        //焦点跳转  tab切换
+        this.setFocusable(getFocusTraversalKeysEnabled());
+/**JFrame 窗体的属性*/
+
+
+        this.setTitle("Tank");
+        this.setLocation(150, 60);
+        this.setSize(1000, 625);
+        this.setVisible(true);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    }
+
+
+//	@Override
+//	public void run() {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
+}
