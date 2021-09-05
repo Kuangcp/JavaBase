@@ -44,7 +44,8 @@ public class MyPanel3 extends JPanel implements KeyListener, Runnable {
     public Vector<Brick> bricks = new Vector<Brick>();
     public Vector<Iron> irons = new Vector<Iron>();
     //所有按下键的code集合
-    public Vector<KE> actions = new Vector<KE>();
+    // fixme  并发修改问题
+    public Vector<KE> actions = new Vector<>();
     public static int[][] ETS = new int[12][2];
     public static int[] myself = new int[6];
 
@@ -575,22 +576,18 @@ public class MyPanel3 extends JPanel implements KeyListener, Runnable {
                 jj = false;
             }
 
-
             /**自己做的开火函数
              //hero.drawS(hero.getX(), hero.getY(), hero.getDirect(), hero.g);
              */
-
         }
         //必须重新绘制窗口，不然上面的方法不能视觉上动起来
         this.repaint();
         count = 0;
-
     }
 
     //键离开了就把按键从集合中移除
     @Override
     public void keyReleased(KeyEvent re) {
-        // TODO Auto-generated method stub
         switch (re.getKeyCode()) {
             case KeyEvent.VK_A:
                 actions.remove(a);
@@ -620,8 +617,6 @@ public class MyPanel3 extends JPanel implements KeyListener, Runnable {
 
     @Override
     public void keyTyped(KeyEvent arg0) {
-        // TODO Auto-generated method stub
-
     }
 
     /**

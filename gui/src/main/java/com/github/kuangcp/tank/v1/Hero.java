@@ -1,16 +1,19 @@
 package com.github.kuangcp.tank.v1;
 
 
-import com.github.kuangcp.tank.v2.Shot;
 import com.github.kuangcp.tank.util.TankTool;
+import com.github.kuangcp.tank.v2.Shot;
 
 import java.awt.*;
 import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Hero extends Tank {
 
     //子弹集合
     public Vector<Shot> ss = new Vector<>();
+    private final ExecutorService shotExecutePool;
 
     public Shot s = null;//子弹
     public Graphics g; //画笔不可少
@@ -21,7 +24,7 @@ public class Hero extends Tank {
     public Vector<Iron> irons;
     public boolean to = true;
     static int prize = 0;//击敌个数
-    public int SHOTS = 8;//主坦克子弹线程存活的最大数
+    public int maxLiveShot = 8;//主坦克子弹线程存活的最大数
     int speed = 3;
     static int Life = 10;
 
@@ -64,15 +67,16 @@ public class Hero extends Tank {
         this.ets = ets;
         this.bricks = bricks;
         this.irons = irons;
+
+        this.shotExecutePool = Executors.newFixedThreadPool(maxLiveShot);
     }
 
-    /**
-     * 被重新封装
-     */
-    // 视频的样板开火函数
     public void shotEnemy() {
-        //判断坦克方向来 初始化子弹的起始发射位置
+        if (this.ss.size() >= this.maxLiveShot || !this.getisLive()) {
+            return;
+        }
 
+        //判断坦克方向来 初始化子弹的起始发射位置
         switch (this.getDirect()) {
             case 0://0123 代表 上下左右
                 s = new Shot(this.getX() - 1, this.getY() - 15, 0);
@@ -92,8 +96,7 @@ public class Hero extends Tank {
                 break;
         }
         //启动子弹线程
-        Thread t = new Thread(s);
-        t.start();
+        shotExecutePool.execute(s);
     }
 
     //移动的函数
@@ -106,11 +109,11 @@ public class Hero extends Tank {
         }
         //检测障碍物
         for (Brick brick : bricks) {
-            if (!TankTool.hasHint(this, brick))
+            if (TankTool.hasHint(this, brick))
                 to = false;
         }
         for (Iron iron : irons) {
-            if (!TankTool.hasHint(this, iron))
+            if (TankTool.hasHint(this, iron))
                 to = false;
         }
         if (to)
@@ -123,11 +126,11 @@ public class Hero extends Tank {
             if (!TankTool.Rush(this, et))
                 to = false;
         for (Brick brick : bricks) {
-            if (!TankTool.hasHint(this, brick))
+            if (TankTool.hasHint(this, brick))
                 to = false;
         }
         for (Iron iron : irons) {
-            if (!TankTool.hasHint(this, iron))
+            if (TankTool.hasHint(this, iron))
                 to = false;
         }
         if (to)
@@ -140,11 +143,11 @@ public class Hero extends Tank {
             if (!TankTool.Rush(this, et))
                 to = false;
         for (Brick brick : bricks) {
-            if (!TankTool.hasHint(this, brick))
+            if (TankTool.hasHint(this, brick))
                 to = false;
         }
         for (Iron iron : irons) {
-            if (!TankTool.hasHint(this, iron))
+            if (TankTool.hasHint(this, iron))
                 to = false;
         }
         if (to)
@@ -157,11 +160,11 @@ public class Hero extends Tank {
             if (!TankTool.Rush(this, et))
                 to = false;
         for (Brick brick : bricks) {
-            if (!TankTool.hasHint(this, brick))
+            if (TankTool.hasHint(this, brick))
                 to = false;
         }
         for (Iron iron : irons) {
-            if (!TankTool.hasHint(this, iron))
+            if (TankTool.hasHint(this, iron))
                 to = false;
         }
         if (to)

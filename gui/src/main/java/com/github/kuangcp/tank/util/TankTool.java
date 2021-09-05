@@ -231,9 +231,6 @@ public class TankTool {
      * 工具类  检测是否有障碍物是否可以通行
      */
     public static boolean hasHint(Tank t, Hinder h) {
-        //坦克  障碍物
-        boolean flag = true;
-        flag = true;
         int hx = 20, hy = 10;
         switch (t.getDirect()) {
             case 0://上
@@ -243,8 +240,7 @@ public class TankTool {
                         && t.getY() - 15 >= h.getHy() && t.getY() - 15 <= h.getHy() + hy
                         || t.getX() + 10 >= h.getHx() && t.getX() + 10 <= h.getHx() + hx
                         && t.getY() - 15 >= h.getHy() && t.getY() - 15 <= h.getHy() + hy)
-                    flag = false;
-                return flag;
+                    return true;
             case 1://下
                 if (t.getX() - 10 >= h.getHx() && t.getX() - 10 <= h.getHx() + hx
                         && t.getY() + 15 >= h.getHy() && t.getY() + 15 <= h.getHy() + hy
@@ -252,8 +248,7 @@ public class TankTool {
                         && t.getY() + 15 >= h.getHy() && t.getY() + 15 <= h.getHy() + hy
                         || t.getX() + 10 >= h.getHx() && t.getX() + 10 <= h.getHx() + hx
                         && t.getY() + 15 >= h.getHy() && t.getY() + 15 <= h.getHy() + hy)
-                    flag = false;
-                return flag;
+                    return true;
             case 2:
                 if (t.getX() - 15 >= h.getHx() && t.getX() - 15 <= h.getHx() + hx
                         && t.getY() - 10 >= h.getHy() && t.getY() - 10 <= h.getHy() + hy
@@ -261,8 +256,7 @@ public class TankTool {
                         && t.getY() >= h.getHy() && t.getY() <= h.getHy() + hy
                         || t.getX() - 15 >= h.getHx() && t.getX() - 15 <= h.getHx() + hx
                         && t.getY() + 10 >= h.getHy() && t.getY() + 10 <= h.getHy() + hy)
-                    flag = false;
-                return flag;
+                    return true;
             case 3:
                 if (t.getX() + 15 >= h.getHx() - 2 && t.getX() + 15 <= h.getHx() + hx
                         && t.getY() + 10 >= h.getHy() && t.getY() + 10 <= h.getHy() + hy
@@ -270,11 +264,9 @@ public class TankTool {
                         && t.getY() >= h.getHy() && t.getY() <= h.getHy() + hy
                         || t.getX() + 15 >= h.getHx() - 2 && t.getX() + 15 <= h.getHx() + hx
                         && t.getY() - 10 >= h.getHy() && t.getY() - 10 <= h.getHy() + hy)
-                    flag = false;
-                return flag;
+                    return true;
         }
-        return flag;
-
+        return false;
     }
 
     /**

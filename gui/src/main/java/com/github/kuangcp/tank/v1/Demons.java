@@ -2,52 +2,36 @@
 package com.github.kuangcp.tank.v1;
 
 
-import com.github.kuangcp.tank.v2.Shot;
 import com.github.kuangcp.tank.util.TankTool;
+import com.github.kuangcp.tank.v2.Shot;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 敌方坦克父类
  * 可以继续延伸做出多样化的坦克
  * <p>
- * 还是有一个小bug 子弹集合是敌方坦克的成员属性
- * 坦克内存一回收 子弹也就没了，但是不符合实际
- * 坦克死了 子弹也应该继续飞
+ * FIXME 子弹集合是敌方坦克的成员属性 坦克内存一回收 子弹也就没了， 坦克死了 子弹也应该继续飞
  */
+@Slf4j
 public class Demons extends Tank implements Runnable {
 
     public boolean alive;
     public Vector<Shot> ds = new Vector<>();//子弹集合
+    private final ExecutorService shotExecutePool;
     public Vector<Demons> ets;
     public Vector<Brick> bricks;
     public Vector<Iron> irons;
     public Shot s = null;
+    public int maxLiveShot = 16; //子弹线程存活的最大数
     Hero hero;
+
     boolean with = true; //同类之间有无重叠（true是可以往前走）
-
-    public boolean isWith() {
-        return with;
-    }
-
-
-    public void setWith(boolean with) {
-        this.with = with;
-    }
-
-
-    public boolean isBri() {
-        return bri;
-    }
-
-
-    public void setBri(boolean bri) {
-        this.bri = bri;
-    }
-
     boolean bri = true;
     boolean to = true;
-
 
     //继承了属性，即使直接使用父类的构造器，构造器也一定要显式声明
     public Demons(int x, int y, int speed, int direct) {
@@ -56,6 +40,7 @@ public class Demons extends Tank implements Runnable {
         this.direct = direct;
         this.speed = speed;
         this.alive = true;
+        this.shotExecutePool = Executors.newFixedThreadPool(this.maxLiveShot);
     }
 
     public void SetInfo(Hero hero, Vector<Demons> ets, Vector<Brick> bricks, Vector<Iron> irons) {
@@ -63,6 +48,22 @@ public class Demons extends Tank implements Runnable {
         this.ets = ets;
         this.bricks = bricks;
         this.irons = irons;
+    }
+
+    public boolean isWith() {
+        return with;
+    }
+
+    public void setWith(boolean with) {
+        this.with = with;
+    }
+
+    public boolean isBri() {
+        return bri;
+    }
+
+    public void setBri(boolean bri) {
+        this.bri = bri;
     }
 
     /**
@@ -81,7 +82,9 @@ public class Demons extends Tank implements Runnable {
      */
     public void shotEnemy() {
         //判断坦克方向来 初始化子弹的起始发射位置
-
+        if (!this.alive || ds.size() >= this.maxLiveShot) {
+            return;
+        }
         switch (this.getDirect()) {
             case 0: {//0123 代表 上下左右
                 s = new Shot(this.getX() - 1, this.getY() - 15, 0);
@@ -105,8 +108,7 @@ public class Demons extends Tank implements Runnable {
             }
         }
         //启动子弹线程
-        Thread t = new Thread(s);
-        t.start();
+        shotExecutePool.execute(s);
     }
 
 //    public void run (){
@@ -299,18 +301,18 @@ public class Demons extends Tank implements Runnable {
     public boolean toUp() {
         if (y > 30) {
             to = true;
-            for (int k = 0; k < ets.size(); k++) {
-                if (!TankTool.Rush(this, ets.get(k))) {
+            for (Demons et : ets) {
+                if (!TankTool.Rush(this, et)) {
                     to = (false);
                     break;
                 }
             }
-            for (int i = 0; i < bricks.size(); i++) {
-                if (!TankTool.hasHint(this, bricks.get(i)))
+            for (Brick brick : bricks) {
+                if (TankTool.hasHint(this, brick))
                     to = false;
             }
-            for (int i = 0; i < irons.size(); i++) {
-                if (!TankTool.hasHint(this, irons.get(i)))
+            for (Iron iron : irons) {
+                if (TankTool.hasHint(this, iron))
                     to = false;
             }
             if (to && TankTool.Rush(this, hero)) {
@@ -322,7 +324,6 @@ public class Demons extends Tank implements Runnable {
                 }
             } else {
                 return false;
-//    			this.direct = ((int)(Math.random()*100))%4;
             }
 
         } else return false;
@@ -332,18 +333,18 @@ public class Demons extends Tank implements Runnable {
     public boolean toDown() {
         if (y < 530) {
             to = true;
-            for (int k = 0; k < ets.size(); k++) {
-                if (!TankTool.Rush(this, ets.get(k))) {
+            for (Demons et : ets) {
+                if (!TankTool.Rush(this, et)) {
                     to = (false);
                     break;
                 }
             }
-            for (int i = 0; i < bricks.size(); i++) {
-                if (!TankTool.hasHint(this, bricks.get(i)))
+            for (Brick brick : bricks) {
+                if (TankTool.hasHint(this, brick))
                     to = false;
             }
-            for (int i = 0; i < irons.size(); i++) {
-                if (!TankTool.hasHint(this, irons.get(i)))
+            for (Iron iron : irons) {
+                if (TankTool.hasHint(this, iron))
                     to = false;
             }
             if (to && TankTool.Rush(this, hero)) {
@@ -365,18 +366,18 @@ public class Demons extends Tank implements Runnable {
     public boolean toLeft() {
         if (x > 30) {
             to = true;
-            for (int k = 0; k < ets.size(); k++) {
-                if (!TankTool.Rush(this, ets.get(k))) {
-                    to = (false);
+            for (Demons et : ets) {
+                if (!TankTool.Rush(this, et)) {
+                    to = false;
                     break;
                 }
             }
-            for (int i = 0; i < bricks.size(); i++) {
-                if (!TankTool.hasHint(this, bricks.get(i)))
+            for (Brick brick : bricks) {
+                if (TankTool.hasHint(this, brick))
                     to = false;
             }
-            for (int i = 0; i < irons.size(); i++) {
-                if (!TankTool.hasHint(this, irons.get(i)))
+            for (Iron iron : irons) {
+                if (TankTool.hasHint(this, iron))
                     to = false;
             }
             if (to && TankTool.Rush(this, hero)) {
@@ -384,11 +385,10 @@ public class Demons extends Tank implements Runnable {
                 try {
                     Thread.sleep(100);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.error("", e);
                 }
             } else {
                 return true;
-//    			this.direct = ((int)(Math.random()*100))%4;
             }
 
         } else return false;
@@ -398,18 +398,18 @@ public class Demons extends Tank implements Runnable {
     public boolean toRight() {
         if (x < 710) {
             to = true;
-            for (int k = 0; k < ets.size(); k++) {
-                if (!TankTool.Rush(this, ets.get(k))) {
+            for (Demons et : ets) {
+                if (!TankTool.Rush(this, et)) {
                     to = (false);
                     break;
                 }
             }
-            for (int i = 0; i < bricks.size(); i++) {
-                if (!TankTool.hasHint(this, bricks.get(i)))
+            for (Brick brick : bricks) {
+                if (TankTool.hasHint(this, brick))
                     to = false;
             }
-            for (int i = 0; i < irons.size(); i++) {
-                if (!TankTool.hasHint(this, irons.get(i)))
+            for (Iron iron : irons) {
+                if (TankTool.hasHint(this, iron))
                     to = false;
             }
             if (to && TankTool.Rush(this, hero)) {
@@ -538,9 +538,7 @@ public class Demons extends Tank implements Runnable {
                     break;
                 default:
                     break;
-
             }
-
 
             //判断坦克是否死亡
             if (!this.getisLive()) {
