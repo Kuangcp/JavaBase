@@ -2,18 +2,21 @@
 package com.github.kuangcp.tank.v3;
 
 
-import com.github.kuangcp.tank.v1.Brick;
-import com.github.kuangcp.tank.v1.Demons;
-import com.github.kuangcp.tank.v1.Hero;
-import com.github.kuangcp.tank.v1.Iron;
-import com.github.kuangcp.tank.v2.Shot;
+import com.github.kuangcp.tank.constant.StageCommand;
 import com.github.kuangcp.tank.util.Audio;
 import com.github.kuangcp.tank.util.Saved;
 import com.github.kuangcp.tank.util.Setting;
+import com.github.kuangcp.tank.v1.Brick;
+import com.github.kuangcp.tank.v1.EnemyTank;
+import com.github.kuangcp.tank.v1.Hero;
+import com.github.kuangcp.tank.v1.Iron;
+import com.github.kuangcp.tank.v2.Shot;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 import java.util.Vector;
 
 /**
@@ -21,62 +24,46 @@ import java.util.Vector;
  * 并且监控按钮事件
  */
 @SuppressWarnings("serial")
-public class MyPanel301 extends JPanel implements ActionListener {
-
-
-    static Thread t = null;
-    TankFrame T;
+@Slf4j
+public class StageActionPanel extends JPanel implements ActionListener {
+    static Thread actionThread = null;
+    TankFrame frame;
     Hero hero;
-    Vector<Demons> ets;
+    Vector<EnemyTank> ets;
     Vector<Iron> irons;
     Vector<Brick> bricks;
     int[][] ETS;
     int[] myself;
-    Audio Begin;
+    Audio beginAudio;
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        //监听从按钮发来的事件
-
-
-//		if(ae.getActionCommand().equals("开始")||ae.getActionCommand().equals("Continue")){
         //上面是不合理的，会有隐藏的bug在里面，这种做法要抛弃
-        if (ae.getActionCommand().equals("开始")) {
-            System.out.println("开始");
-            T.count = 1;
-            T.mp.Continue = true;
-            Shot.setSpeed(8);
-            T.remove(T.jsp1);
-            t = new Thread(T);
-
-            t.start();//将画板线程开启
-            if (Begin != null) {
-                Begin.setLive(false);
-            }
-            Begin = new Audio("./src/RE/GameBegin.wav");
-            Begin.start();
+        if (ae.getActionCommand().equals(StageCommand.START)) {
+            this.startGame();
         }
+
         if (ae.getActionCommand().equals("结束")) {
             System.out.println("结束");
             System.exit(0);
         }
         if (ae.getActionCommand().equals("暂停")) {
             System.out.println("暂停");
-            T.mp.hero.setSpeed(0);
+            frame.mp.hero.setSpeed(0);
             Shot.setSpeed(0);
-            for (int i = 0; i < ets.size(); i++) {
-                ets.get(i).setSpeed(0);
+            for (EnemyTank et : ets) {
+                et.setSpeed(0);
             }
-            T.requestFocus();
+            frame.requestFocus();
         }
         if (ae.getActionCommand().equals("继续")) {
             System.out.println("继续");
-            T.mp.hero.setSpeed(3);
+            frame.mp.hero.setSpeed(3);
             Shot.setSpeed(8);
-            for (int i = 0; i < ets.size(); i++) {
-                ets.get(i).setSpeed(2);
+            for (EnemyTank et : ets) {
+                et.setSpeed(2);
             }
-            T.requestFocus();//把焦点还给JFrame
+            frame.requestFocus();//把焦点还给JFrame
         }
         if (ae.getActionCommand().equals("exit")) {
             //不能把下面的saveExit口令放到这里来或，会出现先后顺序的一些错误
@@ -99,52 +86,57 @@ public class MyPanel301 extends JPanel implements ActionListener {
         }
         if (ae.getActionCommand().equals("Continue")) {
             //重新开启一个画板
-            System.out.println("开始");
-            T.count = 1;
-            T.mp.Continue = false;
+            System.out.println(StageCommand.START);
+            frame.firstStart = false;
+            frame.mp.resumePlay = false;
             Shot.setSpeed(8);
-            T.remove(T.jsp1);
+            frame.remove(frame.jsp1);
 //				Saved s = new Saved(ets, hero, bricks, irons,ETS,myself);
 //				s.readAll();
             //实现一样的功能还省内存
             new Saved(ets, hero, bricks, irons, ETS, myself).readDataBase();
-            t = new Thread(T);
+            actionThread = new Thread(frame);
 
-            t.start();//将画板线程开启
+            actionThread.start();//将画板线程开启
             //读取
 //			Saved s = new Saved(ets, hero, bricks, irons);
 //			s.readAll();
-            Begin = new Audio("./src/RE/GameBegin.wav");
-            Begin.start();
+            beginAudio = new Audio("./src/RE/GameBegin.wav");
+//            beginAudio.start();
         }
     }
 
+    private void startGame() {
+        if (Objects.nonNull(actionThread) && !actionThread.isInterrupted()) {
+            log.info("clean last stage");
+            actionThread.interrupt();
+            // TODO clean
+            for (EnemyTank et : ets) {
+                et.setAlive(false);
+            }
+        }
 
-    public MyPanel301(TankFrame T, Hero he, Vector<Demons> ets, Vector<Brick> bricks, Vector<Iron> irons, int[][] ETS, int[] myself) {
-        this.T = T;
+        frame.firstStart = false;
+        MyPanel3.resumePlay = true;
+        Shot.setSpeed(8);
+        frame.remove(frame.jsp1);
+        actionThread = new Thread(frame);
+        actionThread.setName("actionThread");
+        actionThread.start();//将画板线程开启
+        if (beginAudio != null) {
+            beginAudio.setLive(false);
+        }
+        beginAudio = new Audio("./src/RE/GameBegin.wav");
+//        beginAudio.start();
+    }
+
+    public StageActionPanel(TankFrame frame, Hero he, Vector<EnemyTank> ets, Vector<Brick> bricks, Vector<Iron> irons, int[][] ETS, int[] myself) {
+        this.frame = frame;
         this.hero = he;
         this.ets = ets;
         this.bricks = bricks;
         this.irons = irons;
         this.ETS = ETS;
         this.myself = myself;
-//		System.out.println("MyPanel301的成员地址"+ets);
     }
 }
-//class P extends JPanel{
-//	Image over = null;
-//	public P(){
-//		try {
-//			over = ImageIO.read(getClass().getResource("/images/Over4.jpg"));
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-//	public void paint(Graphics g){
-//		super.paint(g);
-//		
-//		g.drawImage(over,0,0,760,560,this);
-//
-//	}
-//}

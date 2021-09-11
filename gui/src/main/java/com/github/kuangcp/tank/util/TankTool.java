@@ -1,92 +1,21 @@
 package com.github.kuangcp.tank.util;
 
+import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.v1.Brick;
-import com.github.kuangcp.tank.v1.Hero;
 import com.github.kuangcp.tank.v1.Hinder;
 import com.github.kuangcp.tank.v1.Tank;
 import com.github.kuangcp.tank.v2.Shot;
-import com.github.kuangcp.tank.v3.Bomb;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.Vector;
+import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class TankTool {
 
     /**
-     * 工具类-检测爆炸的函数
+     * 碰撞检测函数 坦克之间
      */
-    public static void Bong(Tank t, Shot s, Vector<Bomb> bombs) {
-        /*
-         * 形参： 坦克 子弹 炸弹集合
-         */
-
-//		System.out.println("t.getLife()"+t.getLife());
-        switch (t.getDirect()) {//上下左右
-            case 0:
-            case 1:
-                if (t.getX() - 10 <= s.sx &&
-                        t.getX() + 10 >= s.sx &&
-                        t.getY() - 15 <= s.sy &&
-                        t.getY() + 15 >= s.sy) {
-                    s.isLive = false;
-                    t.setLife(t.getLife() - 1);//生命值减一
-//		    	System.out.println("减一");
-
-                    if (t.getLife() == 0) t.setLive(false);
-                    //创建一个炸弹，放入集合
-                    Bomb b = new Bomb(t.getX() - 10, t.getY() - 15);//敌方的坐标
-                    bombs.add(b);
-                    if (t instanceof Hero) {
-                        t.setX(480);
-                        t.setY(500);
-                        t.setDirect(0);
-//			    	try {
-//						Thread.sleep(300);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-                    }
-                }
-                break;
-            case 2:
-            case 3:
-                if (t.getX() - 15 <= s.sx &&
-                        t.getX() + 15 >= s.sx &&
-                        t.getY() - 10 <= s.sy &&
-                        t.getY() + 10 >= s.sy) {
-                    s.isLive = false;
-                    t.setLife(t.getLife() - 1);
-//			    	System.out.println("减一");
-
-                    if (t.getLife() == 0) t.setLive(false);
-                    //创建一个炸弹，放入集合
-
-                    Bomb b = new Bomb(t.getX() - 15, t.getY() - 10);//敌方的坐标
-                    bombs.add(b);
-                    if (t instanceof Hero) {
-                        t.setX(480);
-                        t.setY(500);
-                        t.setDirect(0);
-//			    	try {
-//						Thread.sleep(300);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-                    }
-                }
-                break;
-
-        }
-//		System.out.println("hero life :"+t.getLife());
-
-    }
-
-    /**
-     * 工具类-坦克之间的碰撞检测函数
-     */
-    public static boolean Rush(Tank me, Tank you) {
-
+    public static boolean hasHint(Tank me, Tank you) {
         boolean flag = true;
         switch (you.getDirect()) {//对方 上下
             case 0:
@@ -228,12 +157,12 @@ public class TankTool {
     }
 
     /**
-     * 工具类  检测是否有障碍物是否可以通行
+     * 碰撞检测函数 坦克 和 障碍物
      */
     public static boolean hasHint(Tank t, Hinder h) {
         int hx = 20, hy = 10;
         switch (t.getDirect()) {
-            case 0://上
+            case DirectType.UP:
                 if (t.getX() - 10 >= h.getHx() && t.getX() - 10 <= h.getHx() + hx
                         && t.getY() - 15 >= h.getHy() && t.getY() - 15 <= h.getHy() + hy
                         || t.getX() >= h.getHx() && t.getX() <= h.getHx() + hx
@@ -241,7 +170,7 @@ public class TankTool {
                         || t.getX() + 10 >= h.getHx() && t.getX() + 10 <= h.getHx() + hx
                         && t.getY() - 15 >= h.getHy() && t.getY() - 15 <= h.getHy() + hy)
                     return true;
-            case 1://下
+            case DirectType.DOWN:
                 if (t.getX() - 10 >= h.getHx() && t.getX() - 10 <= h.getHx() + hx
                         && t.getY() + 15 >= h.getHy() && t.getY() + 15 <= h.getHy() + hy
                         || t.getX() >= h.getHx() && t.getX() <= h.getHx() + hx
@@ -249,7 +178,7 @@ public class TankTool {
                         || t.getX() + 10 >= h.getHx() && t.getX() + 10 <= h.getHx() + hx
                         && t.getY() + 15 >= h.getHy() && t.getY() + 15 <= h.getHy() + hy)
                     return true;
-            case 2:
+            case DirectType.LEFT:
                 if (t.getX() - 15 >= h.getHx() && t.getX() - 15 <= h.getHx() + hx
                         && t.getY() - 10 >= h.getHy() && t.getY() - 10 <= h.getHy() + hy
                         || t.getX() - 15 >= h.getHx() && t.getX() - 15 <= h.getHx() + hx
@@ -257,7 +186,7 @@ public class TankTool {
                         || t.getX() - 15 >= h.getHx() && t.getX() - 15 <= h.getHx() + hx
                         && t.getY() + 10 >= h.getHy() && t.getY() + 10 <= h.getHy() + hy)
                     return true;
-            case 3:
+            case DirectType.RIGHT:
                 if (t.getX() + 15 >= h.getHx() - 2 && t.getX() + 15 <= h.getHx() + hx
                         && t.getY() + 10 >= h.getHy() && t.getY() + 10 <= h.getHy() + hy
                         || t.getX() + 15 >= h.getHx() - 2 && t.getX() + 15 <= h.getHx() + hx
@@ -280,6 +209,18 @@ public class TankTool {
             if (h instanceof Brick) {
                 h.setLive(false);
             }
+        }
+    }
+
+    public static void yieldMsTime(long time) {
+        yieldTime(time, TimeUnit.MILLISECONDS);
+    }
+
+    public static void yieldTime(long time, TimeUnit timeUnit) {
+        try {
+            timeUnit.sleep(time);
+        } catch (InterruptedException e) {
+            log.error("", e);
         }
     }
 }

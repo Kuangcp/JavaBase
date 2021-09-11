@@ -4,7 +4,7 @@
  *                实现Runnable接口    来开发线程
  * 
  */
-package com.github.kuangcp.tank.v2;
+package thread.tryone;
 
 public class Thread1 {
 

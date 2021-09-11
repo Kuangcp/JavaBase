@@ -1,4 +1,4 @@
-package com.github.kuangcp.tank.v3;
+package com.github.kuangcp.tank.v3.resource;
 
 /**
  * 1 准备好图片
@@ -11,10 +11,10 @@ package com.github.kuangcp.tank.v3;
  */
 public class Bomb {
 
-    int bx, by;
+    public int bx, by;
     //炸弹的生命
-    int life = 15;
-    boolean isLive = true;
+    public int life = 15;
+    public boolean isLive = true;
 
     public Bomb(int bx, int by) {
         this.bx = bx;
@@ -29,7 +29,6 @@ public class Bomb {
         if (life > 0) {
             life--;
         } else {
-
             this.isLive = false;
         }
     }

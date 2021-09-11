@@ -50,7 +50,7 @@ class MyPanel extends JPanel implements KeyListener {
     Hero hero = null;
     int enSize = 3;  //敌人的数量
     //定义泛型的集合类
-    Vector<Demons> ets = new Vector<Demons>();
+    Vector<EnemyTank> ets = new Vector<EnemyTank>();
     Vector<Brick> bricks = new Vector<Brick>();
 
     //画板的构造函数 放图形的对象
@@ -85,7 +85,7 @@ class MyPanel extends JPanel implements KeyListener {
         }
 
         //画出敌人坦克
-        for (Demons s : ets) {
+        for (EnemyTank s : ets) {
             this.drawTank(s.getX(), s.getY(), g, s.getDirect(), s.getType());
         }
 

@@ -39,6 +39,8 @@ public class Shot implements Runnable {
         do {
             try {
                 Thread.sleep(50); //每个子弹发射的延迟运动的时间
+            } catch (InterruptedException i) {
+                break;
             } catch (Exception e) {
                 log.error("", e);
             }

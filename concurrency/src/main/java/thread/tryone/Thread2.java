@@ -1,4 +1,4 @@
-package com.github.kuangcp.tank.v2;
+package thread.tryone;
 /**
  * 两个线程同时运作
  * @author lenovo

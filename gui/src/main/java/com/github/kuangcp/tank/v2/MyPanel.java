@@ -2,7 +2,7 @@ package com.github.kuangcp.tank.v2;
 
 
 import com.github.kuangcp.tank.v1.Brick;
-import com.github.kuangcp.tank.v1.Demons;
+import com.github.kuangcp.tank.v1.EnemyTank;
 import com.github.kuangcp.tank.v1.Hero;
 
 import javax.swing.*;
@@ -19,7 +19,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     Hero hero = null;
     int enSize = 3;  // 敌人的数量
     //定义一个 泛型的集合类 表示敌人坦克集合
-    Vector<Demons> ets = new Vector<Demons>();
+    Vector<EnemyTank> ets = new Vector<EnemyTank>();
     Vector<Brick> bricks = new Vector<Brick>();
 
 
@@ -72,7 +72,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
 
         //画出敌人坦克
         for (int i = 0; i < ets.size(); i++) {
-            Demons s = ets.get(i);
+            EnemyTank s = ets.get(i);
             this.drawTank(s.getX(), s.getY(), g, s.getDirect(), s.getType());
         }
 

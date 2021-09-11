@@ -4,7 +4,7 @@
  * 
  */
 
-package com.github.kuangcp.tank.v2;
+package thread.tryone;
 
 public class Thread3 {
 

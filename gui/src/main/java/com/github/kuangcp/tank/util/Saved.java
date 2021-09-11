@@ -1,9 +1,7 @@
-
 package com.github.kuangcp.tank.util;
 
-
 import com.github.kuangcp.tank.v1.Brick;
-import com.github.kuangcp.tank.v1.Demons;
+import com.github.kuangcp.tank.v1.EnemyTank;
 import com.github.kuangcp.tank.v1.Hero;
 import com.github.kuangcp.tank.v1.Iron;
 
@@ -32,14 +30,14 @@ import java.util.Vector;
  * 用数据库实现了续上局及其存盘退出，比文件的操作简单多了。。。
  */
 public class Saved {
-    private Vector<Demons> ets;
+    private Vector<EnemyTank> ets;
     private Hero hero;
     private Vector<Iron> irons;
     private Vector<Brick> bricks;
     int[][] ETS;
     int[] myself;
 
-    public Saved(Vector<Demons> ets, Hero hero, Vector<Brick> bricks, Vector<Iron> irons, int[][] ETS, int[] myself) {
+    public Saved(Vector<EnemyTank> ets, Hero hero, Vector<Brick> bricks, Vector<Iron> irons, int[][] ETS, int[] myself) {
         this.ets = ets;
         this.hero = hero;
         this.bricks = bricks;
@@ -50,12 +48,11 @@ public class Saved {
 
     //保存一切的函数
     public void savedAll() {
-
         BufferedWriter bw = null;
         OutputStream out = null;
         OutputStreamWriter os = null;
 
-        Demons s;
+        EnemyTank s;
         Brick b;
         Iron r;
 
@@ -72,7 +69,7 @@ public class Saved {
             bw.write("<             \r\n");
 //			bw.write("写进去了\r\n");
             for (int i = 0; i < ets.size(); i++) {
-                if ((s = ets.get(i)) != null && s.getisLive()) {
+                if ((s = ets.get(i)) != null && s.isAlive()) {
 
                     String qi = "", qx = "", qy = "";//i-2,x-3,y-3
 
@@ -255,8 +252,6 @@ public class Saved {
 
     //	public static void main(String []e){
     public void readDataBase() {
-
-
         PreparedStatement ps = null;
         Connection cn = null;
         ResultSet rs = null;
@@ -337,7 +332,7 @@ public class Saved {
             //2 得到连接
             cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Tank?user=myth&password=ad&userUnicode=true&characterEncoding=UTF8");
             //创建一个preparedStatement对象用于发送
-            Demons s = null;
+            EnemyTank s = null;
             //在写入数据之前就要把表中数据全部删除，不然数据就溢出了
             ps = cn.prepareStatement("delete from demons where x>0");
             int deletes = ps.executeUpdate();
@@ -351,7 +346,7 @@ public class Saved {
             if (ps != null) ps.close();
 
             for (int i = 0; i < ets.size(); i++) {
-                if ((s = ets.get(i)) != null && s.getisLive()) {
+                if ((s = ets.get(i)) != null && s.isAlive()) {
                     ps = cn.prepareStatement("insert into demons values(?,?)");
                     ps.setInt(1, s.getX());
                     ps.setInt(2, s.getY());
@@ -395,6 +390,7 @@ public class Saved {
 
 /**
  * （和src同级）相对路径下的 字节转字符文件 读取操作从同等级的包下读取文件
+ * 从同等级的包下读取文件
  * 从同等级的包下读取文件
  */
 //	public void savedAll(){

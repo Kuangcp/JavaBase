@@ -5,7 +5,7 @@
  *     就会容易发生死锁 要尽量避免
  * 
  */
-package com.github.kuangcp.tank.v2;
+package thread.tryone;
 
 public class Thread4 {
 

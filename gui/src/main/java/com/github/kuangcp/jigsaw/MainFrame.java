@@ -1,9 +1,9 @@
 package com.github.kuangcp.jigsaw;
 
-import java.awt.BorderLayout;
-import java.awt.HeadlessException;
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import com.github.kuangcp.tank.constant.StageCommand;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * created by https://gitee.com/gin9
@@ -21,7 +21,7 @@ public class MainFrame extends JFrame {
     ButtonListener button = new ButtonListener();
     JButton startBtn = new JButton("开始游戏");
     startBtn.addActionListener(button);//注册监听
-    startBtn.setActionCommand("开始");//指定特定的命令
+    startBtn.setActionCommand(StageCommand.START);//指定特定的命令
 
     MainPanel btnPanel = new MainPanel();
     btnPanel.add(startBtn, BorderLayout.SOUTH);

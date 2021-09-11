@@ -1,5 +1,7 @@
 package com.github.kuangcp.tank.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -12,6 +14,7 @@ import java.io.IOException;
  * 类初始化时 把路径传入 播放声音的类
  * 只能播放无损（无压缩的音乐文件）即WAV不能播放MP3
  */
+@Slf4j
 public class Audio extends Thread {
 
     private String filename;
@@ -32,21 +35,20 @@ public class Audio extends Thread {
     }
 
     public void run() {
-
         File soundFile = new File(filename);
 
-        AudioInputStream audioInputStream = null;
+        AudioInputStream audioInputStream;
         try {
             audioInputStream = AudioSystem.getAudioInputStream(soundFile);
-        } catch (Exception e1) {
-            e1.printStackTrace();
+        } catch (Exception e) {
+            log.error("", e);
             return;
         }
 
         AudioFormat format = audioInputStream.getFormat();
-        SourceDataLine auline = null;
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
 
+        SourceDataLine auline;
         try {
             auline = (SourceDataLine) AudioSystem.getLine(info);
             auline.open(format);
@@ -67,14 +69,10 @@ public class Audio extends Thread {
                     auline.write(abData, 0, nBytesRead);
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            return;
+            log.error("", e);
         } finally {
             auline.drain();
             auline.close();
         }
-
     }
-
-
 }

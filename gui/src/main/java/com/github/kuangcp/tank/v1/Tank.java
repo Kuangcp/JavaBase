@@ -10,23 +10,23 @@ public class Tank {
     int direct = 0;   // 初始方向
     int type = 0;     // 坦克的种类
     int speed = 5;      // 前进的步长
-    boolean isLive = true;//是否存活
-    int Life = 1;//生命值
+    boolean alive = true;//是否存活
+    int life = 1;//生命值
 
     public int getLife() {
-        return Life;
+        return life;
     }
 
     public void setLife(int life) {
-        Life = life;
+        this.life = life;
     }
 
-    public boolean getisLive() {
-        return isLive;
+    public boolean isAlive() {
+        return alive;
     }
 
-    public void setLive(boolean isLive) {
-        this.isLive = isLive;
+    public void setAlive(boolean isLive) {
+        this.alive = isLive;
     }
 
     public int getSpeed() {

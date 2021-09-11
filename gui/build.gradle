@@ -2,11 +2,30 @@ plugins {
     id 'application'
 }
 
-application {
-//    mainClass = 'com.github.kuangcp.notepad.Note'
-    mainClass = 'com.github.kuangcp.tank.v3.GameMain'
-}
-
 dependencies {
     implementation libs['kcp-core']
+}
+
+tasks.register('tank') {
+    dependsOn build
+    application.mainClass = 'com.github.kuangcp.tank.v3.MainTankGame'
+    println "Build Tank Game ..."
+}
+
+tasks.register('note') {
+    dependsOn build
+    application.mainClass = 'com.github.kuangcp.notepad.Note'
+    println "Build Note ..."
+}
+
+tasks.register('virus') {
+    dependsOn build
+    application.mainClass = 'com.github.kuangcp.virusbroadcast.VirusBroadcast'
+    println "Build Virus Demo ..."
+}
+
+tasks.register('calc') {
+    dependsOn build
+    application.mainClass = 'com.github.kuangcp.caculator.Calculator'
+    println "Build Calculator ..."
 }
