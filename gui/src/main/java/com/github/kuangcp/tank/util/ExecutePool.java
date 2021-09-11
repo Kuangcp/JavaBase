@@ -13,7 +13,10 @@ public class ExecutePool {
 
     public static final ExecutorService delayPool = ExecutePool.buildFixedPool("enemyDelay", 4);
 
-    public static final ExecutorService shotPool = ExecutePool.buildFixedPool("enemyShot", 30);
+    /**
+     * 敌人全部的子弹线程
+     */
+    public static final ExecutorService shotPool = ExecutePool.buildFixedPool("enemyShot", 5);
 
     public static final AtomicLong totalCounter = new AtomicLong();
 

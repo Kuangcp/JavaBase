@@ -9,6 +9,7 @@ import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Iron;
 import com.github.kuangcp.tank.domain.Shot;
 import com.github.kuangcp.tank.util.Audio;
+import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.Saved;
 import com.github.kuangcp.tank.v3.MainFrame;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
@@ -21,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 用来放按钮的面板
@@ -113,6 +115,13 @@ public class StageActionPanel extends JPanel implements ActionListener {
     }
 
     private void startNewStage() {
+        
+        // 重新设置线程池大小
+        final ThreadPoolExecutor pool = (ThreadPoolExecutor) ExecutePool.shotPool;
+        final int poolSize = (int) Math.max(TankGroundPanel.getEnSize() * EnemyTank.maxLiveShot * 0.7, 10);
+        pool.setCorePoolSize(poolSize);
+        pool.setMaximumPoolSize(poolSize);
+
         if (Objects.nonNull(actionThread) && !actionThread.isInterrupted()) {
             PlayStageMgr.instance.markStopLogic();
             log.info("clean last stage");

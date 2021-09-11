@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -28,13 +27,12 @@ public class EnemyTank extends Tank implements Runnable {
     public List<Shot> shotList = Collections.synchronizedList(new ArrayList<>());//子弹集合
     private long lastShotMs = 0;
     private long shotCDMs = 168;
-    private final ExecutorService shotExecutePool;
 
     public List<EnemyTank> ets;
     public List<Brick> bricks;
     public List<Iron> irons;
     public Shot s = null;
-    public int maxLiveShot = 3; //子弹线程存活的最大数
+    public static int maxLiveShot = 3; //子弹线程存活的最大数
     public boolean delayRemove = false;
 
     Hero hero;
@@ -52,7 +50,6 @@ public class EnemyTank extends Tank implements Runnable {
         this.alive = true;
         this.life = ThreadLocalRandom.current().nextInt(3) + 1;
         this.id = counter.addAndGet(1);
-        this.shotExecutePool = ExecutePool.buildFixedPool("enemyShot-" + id, this.maxLiveShot);
 //        log.info("create new Demons. {}", id);
     }
 
@@ -122,7 +119,7 @@ public class EnemyTank extends Tank implements Runnable {
             }
         }
         //启动子弹线程
-        shotExecutePool.execute(s);
+        ExecutePool.shotPool.execute(s);
         lastShotMs = nowMs;
     }
 
@@ -455,19 +452,7 @@ public class EnemyTank extends Tank implements Runnable {
             for (Shot d : this.shotList) {
                 d.isLive = false;
             }
-            shotExecutePool.shutdown();
         }
-    }
-
-    /**
-     * 必须执行，但是只能推迟到子弹线程结束后回收
-     *
-     * @see com.github.kuangcp.tank.domain.EnemyTank#run 不能置于该方法内
-     */
-    public void cleanResource() {
-        // 回收
-//        log.info("{} clean enemy", id);
-        shotExecutePool.shutdownNow();
     }
 
     // 运动

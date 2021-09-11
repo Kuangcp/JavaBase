@@ -254,7 +254,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
             }
             if (hero.shotList.get(i) != null && hero.shotList.get(i).isLive) {
                 g.setColor(Color.YELLOW);
-                g.draw3DRect(myShot.sx, myShot.sy, 5, 5, false);
+                g.draw3DRect(myShot.sx, myShot.sy, 3, 3, false);
             }
 
             //子弹线程死了 就要把它从集合中删除
