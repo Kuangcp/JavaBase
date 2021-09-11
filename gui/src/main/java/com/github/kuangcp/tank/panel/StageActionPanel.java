@@ -115,17 +115,25 @@ public class StageActionPanel extends JPanel implements ActionListener {
     }
 
     private void startNewStage() {
-        
+
+        final int totalMaxShots = TankGroundPanel.getEnSize() * EnemyTank.maxLiveShot;
+
         // 重新设置线程池大小
         final ThreadPoolExecutor pool = (ThreadPoolExecutor) ExecutePool.shotPool;
-        final int poolSize = (int) Math.max(TankGroundPanel.getEnSize() * EnemyTank.maxLiveShot * 0.7, 10);
+        final int poolSize = (int) Math.max(TankGroundPanel.getEnSize() * EnemyTank.maxLiveShot * 0.4, 10);
         pool.setCorePoolSize(poolSize);
         pool.setMaximumPoolSize(poolSize);
+
+        // 协程
+//        final int poolSize = (int) Math.max(totalMaxShots * 0.4, 10);
+//        ExecutePool.shotScheduler.getForkJoinPool().shutdownNow();
+//        ExecutePool.shotScheduler = new FiberForkJoinScheduler("enemyShot", poolSize, null, false);
 
         if (Objects.nonNull(actionThread) && !actionThread.isInterrupted()) {
             PlayStageMgr.instance.markStopLogic();
             log.info("clean last stage");
             actionThread.interrupt();
+            PlayStageMgr.instance.hero.setAlive(false);
             // TODO clean
             for (EnemyTank et : ets) {
                 et.setAlive(false);
@@ -138,7 +146,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
         Shot.setSpeed(8);
         frame.remove(frame.jsp1);
 
-        log.info("start new stage frame thread");
+        log.info("start new stage frame thread, shot:{}", totalMaxShots);
         actionThread = new Thread(() -> {
             frame.run();
             if (beginAudio != null) {

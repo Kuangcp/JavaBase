@@ -40,7 +40,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     public KeyListener keyListener;
     public static boolean newStage = true;
     // 敌人的数量
-    public static int enSize = 10;
+    public static int enSize = 9;
     //定义一个 泛型的集合ets 表示敌人坦克集合
     public List<EnemyTank> enemyList = Collections.synchronizedList(new ArrayList<>());
 
@@ -378,7 +378,6 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                         log.error("", e);
                     }
                     enemyList.remove(demon);
-                    demon.cleanResource();
                 });
             }
         }

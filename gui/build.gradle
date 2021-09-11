@@ -3,8 +3,21 @@ plugins {
 }
 
 dependencies {
+    implementation libs['junit']
     implementation libs['kcp-core']
+//    implementation libs['quasar-core']
 }
+//configurations {
+//    quasar
+//}
+//task runQuasar {
+//    jvmArgs "-javaagent:${configurations.quasar.iterator().next()}"
+//}
+//run.dependsOn runQuasar
+
+//tasks.withType(JavaExec){
+//    jvmArgs "-javaagent:${configurations.quasar.iterator().next()}"
+//}
 
 tasks.register('tank') {
     dependsOn build

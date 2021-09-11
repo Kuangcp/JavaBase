@@ -100,5 +100,14 @@ ext {
             , "cglib-3.2.4"             : "cglib:cglib:3.2.4"
             , "asm-3.1"                 : "asm:asm:3.1"
             , "asm-5.1"                 : "org.ow2.asm:asm:5.1"
+
+            // only support JDK10
+//            , "quasar-core"             : "co.paralleluniverse:quasar-core:0.8.0"
+//            , "quasar-actors"           : "co.paralleluniverse:quasar-actors:0.8.0"
+//            , "quasar-reactive-streams" : "co.paralleluniverse:quasar-reactive-streams:0.8.0",
+
+            , "quasar-core"             : "co.paralleluniverse:quasar-core:0.7.4:jdk8"
+            , "quasar-actors"           : "co.paralleluniverse:quasar-actors:0.7.4:jdk8"
+            , "quasar-reactive-streams" : "co.paralleluniverse:quasar-reactive-streams:0.7.4:jdk8"
     ]
 }

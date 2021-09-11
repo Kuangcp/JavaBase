@@ -18,6 +18,13 @@ public class ExecutePool {
      */
     public static final ExecutorService shotPool = ExecutePool.buildFixedPool("enemyShot", 5);
 
+    // ForkJoin
+//    public static final ForkJoinPool forkJoinPool = new ForkJoinPool(65);
+
+    // http://docs.paralleluniverse.co/quasar/ 协程池
+    // 在当前场景下，没有优势，底层一样使用 类似JDK的ForkJoinPool实现， 对比50敌人150子弹情况下一样启动了63个真实线程，和上述没区别
+//    public static FiberForkJoinScheduler shotScheduler = new FiberForkJoinScheduler("enemyShot", 20, null, false);
+
     public static final AtomicLong totalCounter = new AtomicLong();
 
     /**

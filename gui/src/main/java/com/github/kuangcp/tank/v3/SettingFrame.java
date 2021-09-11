@@ -116,6 +116,7 @@ public class SettingFrame extends JFrame implements ActionListener {
 
         if (event.getActionCommand().equals(SettingCommand.DEMONS_COUNT_INCREMENT)) {
             TankGroundPanel.setEnSize(TankGroundPanel.getEnSize() + 1);
+            log.info("{}", TankGroundPanel.getEnSize());
         }
         if (event.getActionCommand().equals(SettingCommand.DEMONS_COUNT_DECREMENT)) {
             TankGroundPanel.setEnSize(TankGroundPanel.getEnSize() - 1);

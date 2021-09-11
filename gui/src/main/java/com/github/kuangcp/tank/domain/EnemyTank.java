@@ -120,6 +120,9 @@ public class EnemyTank extends Tank implements Runnable {
         }
         //启动子弹线程
         ExecutePool.shotPool.execute(s);
+//        ExecutePool.forkJoinPool.execute(s);
+//        ExecutePool.shotScheduler.getExecutor().execute(s);
+
         lastShotMs = nowMs;
     }
 
