@@ -2,7 +2,6 @@ package com.github.kuangcp.tank.domain;
 
 
 import com.github.kuangcp.tank.util.ExecutePool;
-import com.github.kuangcp.tank.util.TankTool;
 
 import java.awt.*;
 import java.util.Vector;
@@ -13,29 +12,21 @@ public class Hero extends Tank {
     //子弹集合
     public Vector<Shot> shotList = new Vector<>();
     private final ExecutorService shotExecutePool;
-    private long lastShotNs = 0;
-    private long shotCD = 224_000_000;
+    private long lastShotMs = 0;
+    private long shotCDMs = 268;
 
-    public Shot s = null;//子弹
+    public Shot shot = null;//子弹
     public Graphics g; //画笔不可少
-    public boolean flag = false;//是否击中
-    static int round = 0;
-    public Vector<EnemyTank> ets;//只是一个指针（引用）
-    public Vector<Brick> bricks;
-    public Vector<Iron> irons;
-    public boolean to = true;
     private int prize = 0;//击敌个数
     public int maxLiveShot = 8;//主坦克子弹线程存活的最大数
     int speed = 3;
-    static int Life = 10;
-
 
     public int getLife() {
-        return Life;
+        return life;
     }
 
     public void setLife(int life) {
-        Life = life;
+        this.life = life;
     }
 
     public int getSpeed() {
@@ -63,22 +54,14 @@ public class Hero extends Tank {
     }
 
 
-    public Hero(int x, int y, int speed, Vector<EnemyTank> ets, Vector<Brick> bricks, Vector<Iron> irons) {
+    public Hero(int x, int y, int speed) {
         super(x, y, speed);
-//		this.Life = 10;
-//		要给g分配内存 初始化对象
-//		g = new Graphics();
-//		g.setColor(Color.yellow);
-        this.ets = ets;
-        this.bricks = bricks;
-        this.irons = irons;
-
         this.shotExecutePool = ExecutePool.buildFixedPool("heroShot", maxLiveShot);
     }
 
     public void shotEnemy() {
-        final long curNs = System.nanoTime();
-        if (lastShotNs != 0 && curNs - lastShotNs < shotCD) {
+        final long nowMs = System.currentTimeMillis();
+        if (lastShotMs != 0 && nowMs - lastShotMs < shotCDMs) {
             return;
         }
         if (this.shotList.size() >= this.maxLiveShot || !this.isAlive()) {
@@ -88,97 +71,40 @@ public class Hero extends Tank {
         //判断坦克方向来 初始化子弹的起始发射位置
         switch (this.getDirect()) {
             case 0://0123 代表 上下左右
-                s = new Shot(this.getX() - 1, this.getY() - 15, 0);
-                shotList.add(s);
+                shot = new Shot(this.getX() - 1, this.getY() - 15, 0);
+                shotList.add(shot);
                 break;
             case 1:
-                s = new Shot(this.getX() - 2, this.getY() + 15, 1);
-                shotList.add(s);
+                shot = new Shot(this.getX() - 2, this.getY() + 15, 1);
+                shotList.add(shot);
                 break;
             case 2:
-                s = new Shot(this.getX() - 15 - 2, this.getY(), 2);
-                shotList.add(s);
+                shot = new Shot(this.getX() - 15 - 2, this.getY(), 2);
+                shotList.add(shot);
                 break;
             case 3:
-                s = new Shot(this.getX() + 15 - 2, this.getY() - 1, 3);
-                shotList.add(s);
+                shot = new Shot(this.getX() + 15 - 2, this.getY() - 1, 3);
+                shotList.add(shot);
                 break;
         }
         //启动子弹线程
-        shotExecutePool.execute(s);
-        lastShotNs = curNs;
+        shotExecutePool.execute(shot);
+        lastShotMs = nowMs;
     }
 
-    //移动的函数
-    public void moveup() {
-        to = true;
-        //检测敌方坦克碰撞
-        for (EnemyTank et : ets) {
-            if (!TankTool.ablePass(this, et))
-                to = false;
-        }
-        //检测障碍物
-//        for (Brick brick : bricks) {
-//            if (TankTool.hasHint(this, brick))
-//                to = false;
-//        }
-//        for (Iron iron : irons) {
-//            if (TankTool.hasHint(this, iron))
-//                to = false;
-//        }
-        if (to) {
-            setY(getY() - getSpeed());
-        }
+    public void moveUp() {
+        setY(getY() - getSpeed());
     }
 
-    public void movedown() {
-        to = true;
-        for (EnemyTank et : ets)
-            if (!TankTool.ablePass(this, et))
-                to = false;
-//        for (Brick brick : bricks) {
-//            if (TankTool.hasHint(this, brick))
-//                to = false;
-//        }
-//        for (Iron iron : irons) {
-//            if (TankTool.hasHint(this, iron))
-//                to = false;
-//        }
-        if (to)
-            setY(getY() + getSpeed());
+    public void moveDown() {
+        setY(getY() + getSpeed());
     }
 
-    public void moveleft() {
-        to = true;
-        for (EnemyTank et : ets)
-            if (!TankTool.ablePass(this, et))
-                to = false;
-//        for (Brick brick : bricks) {
-//            if (TankTool.hasHint(this, brick))
-//                to = false;
-//        }
-//        for (Iron iron : irons) {
-//            if (TankTool.hasHint(this, iron))
-//                to = false;
-//        }
-        if (to)
-            setX(getX() - getSpeed());
+    public void moveLeft() {
+        setX(getX() - getSpeed());
     }
 
-    public void moveright() {
-        to = true;
-        for (EnemyTank et : ets)
-            if (!TankTool.ablePass(this, et))
-                to = false;
-//        for (Brick brick : bricks) {
-//            if (TankTool.hasHint(this, brick))
-//                to = false;
-//        }
-//        for (Iron iron : irons) {
-//            if (TankTool.hasHint(this, iron))
-//                to = false;
-//        }
-        if (to)
-            setX(getX() + getSpeed());
+    public void moveRight() {
+        setX(getX() + getSpeed());
     }
 }

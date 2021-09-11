@@ -11,6 +11,7 @@ import com.github.kuangcp.tank.domain.Shot;
 import com.github.kuangcp.tank.util.Audio;
 import com.github.kuangcp.tank.util.Saved;
 import com.github.kuangcp.tank.v3.MainFrame;
+import com.github.kuangcp.tank.v3.PlayStageMgr;
 import com.github.kuangcp.tank.v3.SettingFrame;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,8 +19,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Objects;
-import java.util.Vector;
 
 /**
  * 用来放按钮的面板
@@ -31,9 +32,9 @@ public class StageActionPanel extends JPanel implements ActionListener {
     static Thread actionThread = null;
     MainFrame frame;
     Hero hero;
-    Vector<EnemyTank> ets;
-    Vector<Iron> irons;
-    Vector<Brick> bricks;
+    List<EnemyTank> ets;
+    List<Iron> irons;
+    List<Brick> bricks;
     int[][] ETS;
     int[] myself;
     Audio beginAudio;
@@ -41,6 +42,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         //上面是不合理的，会有隐藏的bug在里面，这种做法要抛弃
+
         if (ae.getActionCommand().equals(StageCommand.START)) {
             this.startNewStage();
         }
@@ -51,7 +53,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
         }
         if (ae.getActionCommand().equals("暂停")) {
             System.out.println("暂停");
-            frame.mp.hero.setSpeed(0);
+            frame.groundPanel.hero.setSpeed(0);
             Shot.setSpeed(0);
             for (EnemyTank et : ets) {
                 et.setSpeed(0);
@@ -60,7 +62,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
         }
         if (ae.getActionCommand().equals("继续")) {
             System.out.println("继续");
-            frame.mp.hero.setSpeed(3);
+            frame.groundPanel.hero.setSpeed(3);
             Shot.setSpeed(8);
             for (EnemyTank et : ets) {
                 et.setSpeed(2);
@@ -112,11 +114,13 @@ public class StageActionPanel extends JPanel implements ActionListener {
 
     private void startNewStage() {
         if (Objects.nonNull(actionThread) && !actionThread.isInterrupted()) {
+            PlayStageMgr.instance.markStopLogic();
             log.info("clean last stage");
             actionThread.interrupt();
             // TODO clean
             for (EnemyTank et : ets) {
                 et.setAlive(false);
+                et.setAbort(true);
             }
         }
 
@@ -124,17 +128,22 @@ public class StageActionPanel extends JPanel implements ActionListener {
         TankGroundPanel.newStage = true;
         Shot.setSpeed(8);
         frame.remove(frame.jsp1);
-        actionThread = new Thread(frame);
+
+        log.info("start new stage frame thread");
+        actionThread = new Thread(() -> {
+            frame.run();
+            if (beginAudio != null) {
+                beginAudio.setLive(false);
+            }
+            beginAudio = new Audio("./src/RE/GameBegin.wav");
+//        beginAudio.start();
+            frame.groundPanel.startNewStage();
+        });
         actionThread.setName("actionThread");
         actionThread.start();//将画板线程开启
-        if (beginAudio != null) {
-            beginAudio.setLive(false);
-        }
-        beginAudio = new Audio("./src/RE/GameBegin.wav");
-//        beginAudio.start();
     }
 
-    public StageActionPanel(MainFrame frame, Hero he, Vector<EnemyTank> ets, Vector<Brick> bricks, Vector<Iron> irons, int[][] ETS, int[] myself) {
+    public StageActionPanel(MainFrame frame, Hero he, java.util.List<EnemyTank> ets, java.util.List<Brick> bricks, List<Iron> irons, int[][] ETS, int[] myself) {
         this.frame = frame;
         this.hero = he;
         this.ets = ets;

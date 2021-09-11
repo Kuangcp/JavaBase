@@ -65,9 +65,7 @@ public class BombMgr {
             //炸弹的生命值为零 移出集合
             if (b.life == 0) {
                 bombs.remove(b);
-
             }
-//			hero.LifeDown();
 //			System.out.println("size = "+bombs.size());
         }
     }
@@ -92,8 +90,13 @@ public class BombMgr {
                         t.getY() - 15 <= s.sy &&
                         t.getY() + 15 >= s.sy) {
                     s.isLive = false;
-                    t.setLife(t.getLife() - 1);//生命值减一
-                    if (t.getLife() == 0) t.setAlive(false);
+
+                    t.setLife(t.getLife() - 1);
+
+                    if (t.getLife() <= 0) {
+                        t.setAlive(false);
+                    }
+
                     //创建一个炸弹，放入集合
                     Bomb b = new Bomb(t.getX() - 10, t.getY() - 15);//敌方的坐标
                     bombs.add(b);

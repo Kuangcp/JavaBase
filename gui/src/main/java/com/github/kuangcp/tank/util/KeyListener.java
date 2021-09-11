@@ -5,6 +5,7 @@ import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.panel.TankGroundPanel;
 import com.github.kuangcp.tank.thread.ExitFlagRunnable;
+import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -39,26 +40,33 @@ public class KeyListener implements ExitFlagRunnable {
             if (eventGroup.hasPressMoveEvent()) {
 //                log.info("eventGroup={}", eventGroup);
             }
+
             if (eventGroup.isLeft()) {
                 hero.setDirect(DirectType.LEFT);
-                if ((hero.getX() - 10) > 20)
-                    hero.moveleft();
+                if ((hero.getX() - 10) > 20 && PlayStageMgr.instance.ableToMove(hero)) {
+                    hero.moveLeft();
+                }
             }
 
             if (eventGroup.isRight()) {
                 hero.setDirect(DirectType.RIGHT);
-                if ((hero.getX() + 15) < 742)
-                    hero.moveright();
+                if ((hero.getX() + 15) < 742 && PlayStageMgr.instance.ableToMove(hero)) {
+                    hero.moveRight();
+                }
             }
+
             if (eventGroup.isDown()) {
                 hero.setDirect(DirectType.DOWN);
-                if ((hero.getY() - 15) < 515)
-                    hero.movedown();
+                if ((hero.getY() - 15) < 515 && PlayStageMgr.instance.ableToMove(hero)) {
+                    hero.moveDown();
+                }
             }
+
             if (eventGroup.isUp()) {
                 hero.setDirect(DirectType.UP);
-                if ((hero.getY() - 13) > 20)
-                    hero.moveup();
+                if ((hero.getY() - 13) > 20 && PlayStageMgr.instance.ableToMove(hero)) {
+                    hero.moveUp();
+                }
             }
 
             if (eventGroup.isShot()) {

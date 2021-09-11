@@ -2,13 +2,15 @@ package com.github.kuangcp.tank.panel;
 
 
 import com.github.kuangcp.tank.domain.EnemyTank;
-import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.thread.ExitFlagRunnable;
+import com.github.kuangcp.tank.util.TankTool;
+import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Vector;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 就是一个用来显示属性的画板
@@ -21,8 +23,7 @@ public class HeroInfoPanel extends JPanel implements ExitFlagRunnable {
 
     JLabel jl1;
     JLabel prizeNo;
-    Hero hero;
-    Vector<EnemyTank> ets;
+    List<EnemyTank> ets;
 
     private volatile boolean exit = false;
 
@@ -30,9 +31,8 @@ public class HeroInfoPanel extends JPanel implements ExitFlagRunnable {
         this.exit = true;
     }
 
-    public HeroInfoPanel(JLabel jl1, Hero hero, Vector<EnemyTank> ets, JLabel prizeNo) {
+    public HeroInfoPanel(JLabel jl1, List<EnemyTank> ets, JLabel prizeNo) {
         this.jl1 = jl1;
-        this.hero = hero;
         this.ets = ets;
         this.prizeNo = prizeNo;
 //		jl1 =new JLabel("生命值： "+Hero.Life/3);
@@ -42,6 +42,10 @@ public class HeroInfoPanel extends JPanel implements ExitFlagRunnable {
 
     public void paint(Graphics g) {
         super.paint(g);
+
+        if (Objects.isNull(PlayStageMgr.instance) || !PlayStageMgr.instance.startLogic) {
+            return;
+        }
 
         int X = 20, Y = 20;
         int x, y;
@@ -83,6 +87,10 @@ public class HeroInfoPanel extends JPanel implements ExitFlagRunnable {
 
     public void run() {
         while (!exit) {
+            TankTool.yieldMsTime(500);
+            if (!PlayStageMgr.hasStart()) {
+                continue;
+            }
             /*
              * 如果是下面的方法的话，来不及设置成0 就退出线程了，所以把设置0放在了退出线程那里更好
              */
@@ -92,21 +100,16 @@ public class HeroInfoPanel extends JPanel implements ExitFlagRunnable {
 //				jl1.setText("生命值：  "+hero.getLife());
 //			}
 
-            if (hero.isAlive()) {//生命值的自动更改
-                jl1.setText("           ：" + hero.getLife() + "                  ：  " + ets.size());
+            if (PlayStageMgr.instance.hero.isAlive()) {//生命值的自动更改
+                jl1.setText("           ：" + PlayStageMgr.instance.hero.getLife() + "                  ：  " + ets.size());
             } else {
                 jl1.setText("           ：0" + "                  :  " + ets.size());
             }
-            prizeNo.setText("战绩：" + hero.getPrize());
+            prizeNo.setText("战绩：" + PlayStageMgr.instance.hero.getPrize());
 //			TankGame3.mp3.add(TankGame3.jl1 );
 //			System.out.println("画板执行了");
             repaint();
 
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                log.error("", e);
-            }
             //不加的话线程没有退出
 //			if(hero.getLife() <= 0){
 //			    jl1.setText("           ：0"+"                  :  "+ets.size());

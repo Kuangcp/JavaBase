@@ -10,8 +10,12 @@ public class Tank {
     int direct = 0;   // 初始方向
     int type = 0;     // 坦克的种类
     int speed = 5;      // 前进的步长
-    boolean alive = true;//是否存活
+    boolean alive = true;// 是否存活
+    boolean abort = false; // 重开一局等外部终止因素
     int life = 1;//生命值
+
+    int halfWidth = 10;
+    int halfHeight = 15;
 
     public int getLife() {
         return life;
@@ -19,6 +23,14 @@ public class Tank {
 
     public void setLife(int life) {
         this.life = life;
+    }
+
+    public boolean isAbort() {
+        return abort;
+    }
+
+    public void setAbort(boolean abort) {
+        this.abort = abort;
     }
 
     public boolean isAlive() {
@@ -55,6 +67,22 @@ public class Tank {
 
     public int getX() {
         return x;
+    }
+
+    public int getHalfWidth() {
+        return halfWidth;
+    }
+
+    public void setHalfWidth(int halfWidth) {
+        this.halfWidth = halfWidth;
+    }
+
+    public int getHalfHeight() {
+        return halfHeight;
+    }
+
+    public void setHalfHeight(int halfHeight) {
+        this.halfHeight = halfHeight;
     }
 
     public void setX(int x) {

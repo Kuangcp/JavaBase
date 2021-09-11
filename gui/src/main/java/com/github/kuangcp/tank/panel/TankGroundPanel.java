@@ -2,18 +2,19 @@
 package com.github.kuangcp.tank.panel;
 
 
-import com.github.kuangcp.tank.util.ExecutePool;
-import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.domain.Brick;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Iron;
 import com.github.kuangcp.tank.domain.Shot;
-import com.github.kuangcp.tank.util.ListenEventGroup;
-import com.github.kuangcp.tank.util.KeyListener;
 import com.github.kuangcp.tank.resource.AvatarMgr;
 import com.github.kuangcp.tank.resource.BombMgr;
 import com.github.kuangcp.tank.thread.ExitFlagRunnable;
+import com.github.kuangcp.tank.util.ExecutePool;
+import com.github.kuangcp.tank.util.KeyListener;
+import com.github.kuangcp.tank.util.ListenEventGroup;
+import com.github.kuangcp.tank.util.TankTool;
+import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
@@ -21,9 +22,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
-import java.util.Vector;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 
@@ -34,21 +36,21 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class TankGroundPanel extends JPanel implements java.awt.event.KeyListener, ExitFlagRunnable {
 
-    public Hero hero;
+    public volatile Hero hero;
     public KeyListener keyListener;
     public static boolean newStage = true;
     // 敌人的数量
     public static int enSize = 10;
     //定义一个 泛型的集合ets 表示敌人坦克集合
-    public Vector<EnemyTank> enemyList = new Vector<>();
+    public List<EnemyTank> enemyList = Collections.synchronizedList(new ArrayList<>());
 
     //定义砖块集合
-    public Vector<Brick> bricks = new Vector<>();
-    public Vector<Iron> irons = new Vector<>();
+    public List<Brick> bricks = Collections.synchronizedList(new ArrayList<>());
+    public List<Iron> irons = Collections.synchronizedList(new ArrayList<>());
+
     //所有按下键的code集合
     public static int[][] enemyTankMap = new int[12][2];
     public static int[] myself = new int[6];
-    private static final ExecutorService delayPool = ExecutePool.buildFixedPool("enemyDelayRemove", 3);
 
     Image overImg = null;
     Image winImg = null;
@@ -63,16 +65,20 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
      * 画板的构造函数 用来初始化对象
      * 多个敌方坦克应该用集合类，而且要考虑线程安全所以不能用ArrayList只能用Vector
      */
-    public TankGroundPanel() {
+    public void startNewStage() {
+//        log.info("start new Stage");
         //创建英雄坦克
         if (newStage) {//正常启动并创建坦克线程
-            hero = new Hero(480, 500, 3, enemyList, bricks, irons);//坐标和步长和敌人坦克集合
+            hero = new Hero(480, 500, 3);//坐标和步长和敌人坦克集合
             hero.setLife(10);//设置生命值
         } else {
-            hero = new Hero(myself[0], myself[1], 3, enemyList, bricks, irons);
+            hero = new Hero(myself[0], myself[1], 3);
             hero.setLife(myself[2]);
             hero.setPrize(myself[3]);
         }
+
+        log.info("hero={}", hero);
+        PlayStageMgr.init(hero, enemyList, bricks, irons);
 
         //多键监听实现
         keyListener = new KeyListener(ListenEventGroup.instance, hero, this);
@@ -136,7 +142,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         //创建砖块
 //		createB(bricks, 40, 40, 200, 400);
 //		createB(bricks, 200, 40, 400, 100);
-//		createB(bricks, 400, 40, 700, 400); 
+//		createB(bricks, 400, 40, 700, 400);
 //		createB(bricks, 200, 300, 400, 400);
 //		createB(bricks, 40, 40, 700, 400);
 
@@ -177,12 +183,17 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         } catch (IOException e) {
             log.error("", e);
         }
+        PlayStageMgr.instance.markStartLogic();
     }
 
     @Override
     public void paint(Graphics g) {
         /*画出坦克运动区域 */
         super.paint(g);
+        if (!PlayStageMgr.hasStart() || Objects.isNull(hero)) {
+            return;
+        }
+
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0, 0, 760, 560);//填满一个黑色矩形，说明了是一整个JPanel在JFrame上的
         g.setColor(Color.green);
@@ -221,14 +232,14 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         /*画出主坦克*/
         if (hero.isAlive()) {
             for (EnemyTank et : enemyList) {
-                BombMgr.instance.checkBong(hero, et.ds);
+                BombMgr.instance.checkBong(hero, et.shotList);
             }
 
             this.drawTank(hero.getX(), hero.getY(), g, hero.getDirect(), hero.getType());
         }
 
-        /*画出自己的子弹*/  //画子弹是可以封装成一个方法的
-        //		从ss 这个子弹集合中 取出每颗子弹，并画出来
+        // 画出自己的子弹画子弹是可以封装成一个方法的
+        // 从ss 这个子弹集合中 取出每颗子弹，并画出来
         for (int i = 0; i < hero.shotList.size(); i++) {
             myShot = hero.shotList.get(i);
             for (Brick brick : bricks) {
@@ -242,7 +253,8 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                 hero.setAlive(false);
             }
             if (hero.shotList.get(i) != null && hero.shotList.get(i).isLive) {
-                g.draw3DRect(myShot.sx, myShot.sy, 1, 1, false);
+                g.setColor(Color.YELLOW);
+                g.draw3DRect(myShot.sx, myShot.sy, 5, 5, false);
             }
 
             //子弹线程死了 就要把它从集合中删除
@@ -253,8 +265,8 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
         /*敌人子弹*/
         for (EnemyTank et : enemyList) {
-            for (int i = 0; i < et.ds.size(); i++) {
-                myShot = et.ds.get(i);
+            for (int i = 0; i < et.shotList.size(); i++) {
+                myShot = et.shotList.get(i);
                 for (Brick brick : bricks) {
                     TankTool.judgeHint(myShot, brick);
                 }
@@ -265,13 +277,13 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                     myShot.isLive = false;
                     hero.setAlive(false);
                 }
-                if (et.ds.get(i) != null && et.ds.get(i).isLive) {
+                if (et.shotList.get(i) != null && et.shotList.get(i).isLive) {
                     g.setColor(Color.cyan);
                     g.draw3DRect(myShot.sx, myShot.sy, 1, 1, false);
 
                 }
                 if (!myShot.isLive) {
-                    et.ds.remove(myShot);
+                    et.shotList.remove(myShot);
                 }
             }
         }
@@ -359,7 +371,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                     continue;
                 }
                 demon.delayRemove = true;
-                delayPool.execute(() -> {
+                ExecutePool.delayPool.execute(() -> {
                     try {
                         TimeUnit.SECONDS.sleep(8);
                     } catch (InterruptedException e) {
@@ -388,7 +400,6 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
      * 画出所有坦克的函数 XY是坦克中心的坐标，不是画图参照点
      */
     public void drawTank(int X, int Y, Graphics g, int direct, int type) {
-
         //判断坦克类型
         //系统画图函数的参照点
         int x, y;
@@ -513,7 +524,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     /**
      * 创建 一块矩形的砖(20*10) 的函数
      */
-    public void createB(Vector<Brick> bricks, int startX, int startY, int endX, int endY) {
+    public void createB(List<Brick> bricks, int startX, int startY, int endX, int endY) {
         for (int i = startX; i < endX; i += 20) {
             for (int j = startY; j < endY; j += 10) {
                 Brick bs = new Brick(i, j);
@@ -526,7 +537,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     /**
      * 创建铁块(20*10)
      */
-    public void createI(Vector<Iron> irons, int startX, int startY, int endX, int endY) {
+    public void createI(List<Iron> irons, int startX, int startY, int endX, int endY) {
         for (int i = startX; i < endX; i += 20) {
             for (int j = startY; j < endY; j += 10) {
                 Iron bs = new Iron(i, j);
@@ -561,7 +572,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
             }
 
             TankTool.yieldTime(fpsTime - waste, TimeUnit.NANOSECONDS);
-            if (!hero.isAlive()) {
+            if (Objects.nonNull(hero) && !hero.isAlive()) {
                 break;
             }
         }

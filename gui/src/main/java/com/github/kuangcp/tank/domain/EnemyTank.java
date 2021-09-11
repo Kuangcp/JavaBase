@@ -7,8 +7,11 @@ import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.TankTool;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -21,20 +24,24 @@ public class EnemyTank extends Tank implements Runnable {
     private static final AtomicLong counter = new AtomicLong();
     // 敌人 id
     public long id;
-    public Vector<Shot> ds = new Vector<>();//子弹集合
+
+    public List<Shot> shotList = Collections.synchronizedList(new ArrayList<>());//子弹集合
+    private long lastShotMs = 0;
+    private long shotCDMs = 168;
     private final ExecutorService shotExecutePool;
-    public Vector<EnemyTank> ets;
-    public Vector<Brick> bricks;
-    public Vector<Iron> irons;
+
+    public List<EnemyTank> ets;
+    public List<Brick> bricks;
+    public List<Iron> irons;
     public Shot s = null;
-    public int maxLiveShot = 10; //子弹线程存活的最大数
+    public int maxLiveShot = 3; //子弹线程存活的最大数
     public boolean delayRemove = false;
 
     Hero hero;
 
-    boolean with = true; //同类之间有无重叠（true是可以往前走）
+    boolean overlap = true; //同类之间允许重叠
     boolean bri = true;
-    boolean to = true;
+    boolean ableMove = true;
 
     //继承了属性，即使直接使用父类的构造器，构造器也一定要显式声明
     public EnemyTank(int x, int y, int speed, int direct) {
@@ -43,24 +50,25 @@ public class EnemyTank extends Tank implements Runnable {
         this.direct = direct;
         this.speed = speed;
         this.alive = true;
+        this.life = ThreadLocalRandom.current().nextInt(3) + 1;
         this.id = counter.addAndGet(1);
-        this.shotExecutePool = ExecutePool.buildFixedPool("enemyShot-" + id, this.maxLiveShot / 2);
+        this.shotExecutePool = ExecutePool.buildFixedPool("enemyShot-" + id, this.maxLiveShot);
 //        log.info("create new Demons. {}", id);
     }
 
-    public void SetInfo(Hero hero, Vector<EnemyTank> ets, Vector<Brick> bricks, Vector<Iron> irons) {
+    public void SetInfo(Hero hero, List<EnemyTank> ets, List<Brick> bricks, List<Iron> irons) {
         this.hero = hero;
         this.ets = ets;
         this.bricks = bricks;
         this.irons = irons;
     }
 
-    public boolean isWith() {
-        return with;
+    public boolean isOverlap() {
+        return overlap;
     }
 
-    public void setWith(boolean with) {
-        this.with = with;
+    public void setOverlap(boolean overlap) {
+        this.overlap = overlap;
     }
 
     public boolean isBri() {
@@ -83,33 +91,39 @@ public class EnemyTank extends Tank implements Runnable {
      */
     public void shotEnemy() {
         //判断坦克方向来 初始化子弹的起始发射位置
-        if (!this.alive || ds.size() >= this.maxLiveShot) {
+        final long nowMs = System.currentTimeMillis();
+        if (lastShotMs != 0 && nowMs - lastShotMs < shotCDMs) {
             return;
         }
+        if (this.shotList.size() >= this.maxLiveShot || !this.isAlive()) {
+            return;
+        }
+
         switch (this.getDirect()) {
             case 0: {//0123 代表 上下左右
                 s = new Shot(this.getX() - 1, this.getY() - 15, 0);
-                ds.add(s);
+                shotList.add(s);
                 break;
             }
             case 1: {
                 s = new Shot(this.getX() - 2, this.getY() + 15, 1);
-                ds.add(s);
+                shotList.add(s);
                 break;
             }
             case 2: {
                 s = new Shot(this.getX() - 15 - 2, this.getY(), 2);
-                ds.add(s);
+                shotList.add(s);
                 break;
             }
             case 3: {
                 s = new Shot(this.getX() + 15 - 2, this.getY() - 1, 3);
-                ds.add(s);
+                shotList.add(s);
                 break;
             }
         }
         //启动子弹线程
         shotExecutePool.execute(s);
+        lastShotMs = nowMs;
     }
 
 //    public void run (){
@@ -301,22 +315,22 @@ public class EnemyTank extends Tank implements Runnable {
     //只是移动一步的函数
     public boolean toUp() {
         if (y > 30) {
-            to = true;
+            ableMove = true;
             for (EnemyTank et : ets) {
                 if (!TankTool.ablePass(this, et)) {
-                    to = (false);
+                    ableMove = (false);
                     break;
                 }
             }
             for (Brick brick : bricks) {
                 if (TankTool.ablePass(this, brick))
-                    to = false;
+                    ableMove = false;
             }
             for (Iron iron : irons) {
                 if (TankTool.ablePass(this, iron))
-                    to = false;
+                    ableMove = false;
             }
-            if (to && TankTool.ablePass(this, hero)) {
+            if (ableMove && TankTool.ablePass(this, hero)) {
                 y -= speed;
                 try {
                     Thread.sleep(100);
@@ -333,22 +347,22 @@ public class EnemyTank extends Tank implements Runnable {
 
     public boolean toDown() {
         if (y < 530) {
-            to = true;
+            ableMove = true;
             for (EnemyTank et : ets) {
                 if (!TankTool.ablePass(this, et)) {
-                    to = (false);
+                    ableMove = (false);
                     break;
                 }
             }
             for (Brick brick : bricks) {
                 if (TankTool.ablePass(this, brick))
-                    to = false;
+                    ableMove = false;
             }
             for (Iron iron : irons) {
                 if (TankTool.ablePass(this, iron))
-                    to = false;
+                    ableMove = false;
             }
-            if (to && TankTool.ablePass(this, hero)) {
+            if (ableMove && TankTool.ablePass(this, hero)) {
                 y += speed;
                 try {
                     Thread.sleep(100);
@@ -366,22 +380,22 @@ public class EnemyTank extends Tank implements Runnable {
 
     public boolean toLeft() {
         if (x > 30) {
-            to = true;
+            ableMove = true;
             for (EnemyTank et : ets) {
                 if (!TankTool.ablePass(this, et)) {
-                    to = false;
+                    ableMove = false;
                     break;
                 }
             }
             for (Brick brick : bricks) {
                 if (TankTool.ablePass(this, brick))
-                    to = false;
+                    ableMove = false;
             }
             for (Iron iron : irons) {
                 if (TankTool.ablePass(this, iron))
-                    to = false;
+                    ableMove = false;
             }
-            if (to && TankTool.ablePass(this, hero)) {
+            if (ableMove && TankTool.ablePass(this, hero)) {
                 x -= speed;
                 try {
                     Thread.sleep(100);
@@ -398,22 +412,22 @@ public class EnemyTank extends Tank implements Runnable {
 
     public boolean toRight() {
         if (x < 710) {
-            to = true;
+            ableMove = true;
             for (EnemyTank et : ets) {
                 if (!TankTool.ablePass(this, et)) {
-                    to = (false);
+                    ableMove = (false);
                     break;
                 }
             }
             for (Brick brick : bricks) {
                 if (TankTool.ablePass(this, brick))
-                    to = false;
+                    ableMove = false;
             }
             for (Iron iron : irons) {
                 if (TankTool.ablePass(this, iron))
-                    to = false;
+                    ableMove = false;
             }
-            if (to && TankTool.ablePass(this, hero)) {
+            if (ableMove && TankTool.ablePass(this, hero)) {
                 x += speed;
                 try {
                     Thread.sleep(100);
@@ -436,6 +450,13 @@ public class EnemyTank extends Tank implements Runnable {
     public void run() {
 //        actionModeRun();
         run2();
+
+        if (this.isAbort()) {
+            for (Shot d : this.shotList) {
+                d.isLive = false;
+            }
+            shotExecutePool.shutdown();
+        }
     }
 
     /**
@@ -510,7 +531,7 @@ public class EnemyTank extends Tank implements Runnable {
                         min++;
 //					if(!bri)this.direct = (int)(Math.random()*4);
                         if (y > 30) {
-                            if (TankTool.ablePass(this, hero) && with) y -= speed;
+                            if (TankTool.ablePass(this, hero) && overlap) y -= speed;
 //						    if(bri)y-=speed;
 //						    else {y+=speed;this.direct = 1;}
 //						else continue;
@@ -534,18 +555,15 @@ public class EnemyTank extends Tank implements Runnable {
 //					if(!bri)this.direct = (int)(Math.random()*4);
 
                         if (y < 530) {
-                            if (TankTool.ablePass(this, hero) && with && bri) y += speed;
+                            if (TankTool.ablePass(this, hero) && overlap && bri) y += speed;
 //						    if(bri) y+=speed;
 //						    else {y-=speed;this.direct = 0;}
 //						else continue;
                             else break;
-                            if (min % 27 == 0)
+                            if (min % 27 == 0) {
                                 this.shotEnemy();
-                            try {
-                                Thread.sleep(50);
-                            } catch (Exception e) {
-                                log.error("", e);
                             }
+                            TankTool.yieldMsTime(50);
                         }
 
                     }
@@ -557,7 +575,7 @@ public class EnemyTank extends Tank implements Runnable {
 //					if(!bri)this.direct = (int)(Math.random()*4);
 
                         if (x > 30) {
-                            if (TankTool.ablePass(this, hero) && with && bri) x -= speed;
+                            if (TankTool.ablePass(this, hero) && overlap && bri) x -= speed;
 //						    if(bri)x-=speed;
 //						    else{x+=speed;this.direct = 3;}
 //						else continue;
@@ -580,7 +598,7 @@ public class EnemyTank extends Tank implements Runnable {
 //					if(!bri)this.direct = (int)(Math.random()*4);
 
                         if (x < 710) {
-                            if (TankTool.ablePass(this, hero) && with && bri) {
+                            if (TankTool.ablePass(this, hero) && overlap && bri) {
                                 x += speed;
                             }
 //						     if(bri)x+=speed;

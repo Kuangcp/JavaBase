@@ -30,14 +30,14 @@ class MyPanel extends JPanel implements KeyListener {
     //重写paint
     public void paint(Graphics g) {
         super.paint(g);
-        hero = new Hero(20,20,4,new Vector<>(), new Vector<>(), new Vector<>());
+        hero = new Hero(20,20,4);
         g.fillRect(0, 0, 500, 400);
 
         //调用函数绘画出主坦克
         this.drawTank(hero.getX(), hero.getY(), g, hero.getDirect(), hero.getType());
         //画出子弹
-        if (hero.s != null) {
-            g.draw3DRect(hero.s.sx, hero.s.sy, 1, 1, false);
+        if (hero.shot != null) {
+            g.draw3DRect(hero.shot.sx, hero.shot.sy, 1, 1, false);
         }
 
         //画出敌人坦克
@@ -124,25 +124,25 @@ class MyPanel extends JPanel implements KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_A) {
             hero.setDirect(2);
             if ((hero.getX() - 10) > 0)
-                hero.moveleft();
+                hero.moveLeft();
 
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
             hero.setDirect(3);
             if ((hero.getX() + 15) < 405)
-                hero.moveright();
+                hero.moveRight();
         }
 
         if (e.getKeyCode() == KeyEvent.VK_W) {
             hero.setDirect(0);
             if ((hero.getY() - 13) > 0)
-                hero.moveup();
+                hero.moveUp();
 
         }
         if (e.getKeyCode() == KeyEvent.VK_S) {
             hero.setDirect(1);
             if ((hero.getY() - 15) < 275)
-                hero.movedown();
+                hero.moveDown();
 
         }
         //必须重新绘制窗口，不然上面的方法不能视觉上动起来

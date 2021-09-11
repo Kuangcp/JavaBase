@@ -23,6 +23,7 @@ public class TankTool {
         if (!me.isAlive() || !you.isAlive()) {
             return true;
         }
+
         boolean flag = true;
         switch (you.getDirect()) {//对方 上下
             case 0:
@@ -168,38 +169,41 @@ public class TankTool {
      */
     public static boolean ablePass(Tank t, Hinder h) {
         int hx = 20, hy = 10;
+        final int halfHeight = t.getHalfHeight();
+        final int halfWidth = t.getHalfWidth();
+
         switch (t.getDirect()) {
             case DirectType.UP:
-                if (t.getX() - 10 >= h.getHx() && t.getX() - 10 <= h.getHx() + hx
-                        && t.getY() - 15 >= h.getHy() && t.getY() - 15 <= h.getHy() + hy
+                if (t.getX() - halfWidth >= h.getHx() && t.getX() - halfWidth <= h.getHx() + hx
+                        && t.getY() - halfHeight >= h.getHy() && t.getY() - halfHeight <= h.getHy() + hy
                         || t.getX() >= h.getHx() && t.getX() <= h.getHx() + hx
-                        && t.getY() - 15 >= h.getHy() && t.getY() - 15 <= h.getHy() + hy
-                        || t.getX() + 10 >= h.getHx() && t.getX() + 10 <= h.getHx() + hx
-                        && t.getY() - 15 >= h.getHy() && t.getY() - 15 <= h.getHy() + hy)
+                        && t.getY() - halfHeight >= h.getHy() && t.getY() - halfHeight <= h.getHy() + hy
+                        || t.getX() + halfWidth >= h.getHx() && t.getX() + halfWidth <= h.getHx() + hx
+                        && t.getY() - halfHeight >= h.getHy() && t.getY() - halfHeight <= h.getHy() + hy)
                     return true;
             case DirectType.DOWN:
-                if (t.getX() - 10 >= h.getHx() && t.getX() - 10 <= h.getHx() + hx
-                        && t.getY() + 15 >= h.getHy() && t.getY() + 15 <= h.getHy() + hy
+                if (t.getX() - halfWidth >= h.getHx() && t.getX() - halfWidth <= h.getHx() + hx
+                        && t.getY() + halfHeight >= h.getHy() && t.getY() + halfHeight <= h.getHy() + hy
                         || t.getX() >= h.getHx() && t.getX() <= h.getHx() + hx
-                        && t.getY() + 15 >= h.getHy() && t.getY() + 15 <= h.getHy() + hy
-                        || t.getX() + 10 >= h.getHx() && t.getX() + 10 <= h.getHx() + hx
-                        && t.getY() + 15 >= h.getHy() && t.getY() + 15 <= h.getHy() + hy)
+                        && t.getY() + halfHeight >= h.getHy() && t.getY() + halfHeight <= h.getHy() + hy
+                        || t.getX() + halfWidth >= h.getHx() && t.getX() + halfWidth <= h.getHx() + hx
+                        && t.getY() + halfHeight >= h.getHy() && t.getY() + halfHeight <= h.getHy() + hy)
                     return true;
             case DirectType.LEFT:
-                if (t.getX() - 15 >= h.getHx() && t.getX() - 15 <= h.getHx() + hx
-                        && t.getY() - 10 >= h.getHy() && t.getY() - 10 <= h.getHy() + hy
-                        || t.getX() - 15 >= h.getHx() && t.getX() - 15 <= h.getHx() + hx
+                if (t.getX() - halfHeight >= h.getHx() && t.getX() - halfHeight <= h.getHx() + hx
+                        && t.getY() - halfWidth >= h.getHy() && t.getY() - halfWidth <= h.getHy() + hy
+                        || t.getX() - halfHeight >= h.getHx() && t.getX() - halfHeight <= h.getHx() + hx
                         && t.getY() >= h.getHy() && t.getY() <= h.getHy() + hy
-                        || t.getX() - 15 >= h.getHx() && t.getX() - 15 <= h.getHx() + hx
-                        && t.getY() + 10 >= h.getHy() && t.getY() + 10 <= h.getHy() + hy)
+                        || t.getX() - halfHeight >= h.getHx() && t.getX() - halfHeight <= h.getHx() + hx
+                        && t.getY() + halfWidth >= h.getHy() && t.getY() + halfWidth <= h.getHy() + hy)
                     return true;
             case DirectType.RIGHT:
-                if (t.getX() + 15 >= h.getHx() - 2 && t.getX() + 15 <= h.getHx() + hx
-                        && t.getY() + 10 >= h.getHy() && t.getY() + 10 <= h.getHy() + hy
-                        || t.getX() + 15 >= h.getHx() - 2 && t.getX() + 15 <= h.getHx() + hx
+                if (t.getX() + halfHeight >= h.getHx() - 2 && t.getX() + halfHeight <= h.getHx() + hx
+                        && t.getY() + halfWidth >= h.getHy() && t.getY() + halfWidth <= h.getHy() + hy
+                        || t.getX() + halfHeight >= h.getHx() - 2 && t.getX() + halfHeight <= h.getHx() + hx
                         && t.getY() >= h.getHy() && t.getY() <= h.getHy() + hy
-                        || t.getX() + 15 >= h.getHx() - 2 && t.getX() + 15 <= h.getHx() + hx
-                        && t.getY() - 10 >= h.getHy() && t.getY() - 10 <= h.getHy() + hy)
+                        || t.getX() + halfHeight >= h.getHx() - 2 && t.getX() + halfHeight <= h.getHx() + hx
+                        && t.getY() - halfWidth >= h.getHy() && t.getY() - halfWidth <= h.getHy() + hy)
                     return true;
         }
         return false;

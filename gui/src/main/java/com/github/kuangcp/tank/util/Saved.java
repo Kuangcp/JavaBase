@@ -18,7 +18,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Vector;
+import java.util.List;
 
 /**
  * 用文件系统实现保存数据的功能，真繁琐
@@ -30,14 +30,14 @@ import java.util.Vector;
  * 用数据库实现了续上局及其存盘退出，比文件的操作简单多了。。。
  */
 public class Saved {
-    private Vector<EnemyTank> ets;
     private Hero hero;
-    private Vector<Iron> irons;
-    private Vector<Brick> bricks;
+    private List<EnemyTank> ets;
+    private List<Iron> irons;
+    private List<Brick> bricks;
     int[][] ETS;
     int[] myself;
 
-    public Saved(Vector<EnemyTank> ets, Hero hero, Vector<Brick> bricks, Vector<Iron> irons, int[][] ETS, int[] myself) {
+    public Saved(List<EnemyTank> ets, Hero hero, List<Brick> bricks, List<Iron> irons, int[][] ETS, int[] myself) {
         this.ets = ets;
         this.hero = hero;
         this.bricks = bricks;

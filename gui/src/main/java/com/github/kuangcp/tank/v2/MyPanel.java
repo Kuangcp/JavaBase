@@ -28,7 +28,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     public void paint(Graphics g) {
         super.paint(g);
 
-        hero = new Hero(20,20,4,new Vector<>(), new Vector<>(), new Vector<>());
+        hero = new Hero(20, 20, 4);
 
         g.fillRect(0, 0, 500, 400);
 
@@ -40,7 +40,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             Shot myShot = hero.shotList.get(i);
             //  以下代码只能画出一颗子弹 不完善
             if (myShot != null) {
-                g.draw3DRect(hero.s.sx, hero.s.sy, 1, 1, false);
+                g.draw3DRect(hero.shot.sx, hero.shot.sy, 1, 1, false);
             }
         }
 
@@ -129,25 +129,25 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         if (e.getKeyCode() == KeyEvent.VK_A) {
             hero.setDirect(2);
             if ((hero.getX() - 10) > 0)
-                hero.moveleft();
+                hero.moveLeft();
 
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
             hero.setDirect(3);
             if ((hero.getX() + 15) < 405)
-                hero.moveright();
+                hero.moveRight();
         }
 
         if (e.getKeyCode() == KeyEvent.VK_W) {
             hero.setDirect(0);
             if ((hero.getY() - 13) > 0)
-                hero.moveup();
+                hero.moveUp();
 
         }
         if (e.getKeyCode() == KeyEvent.VK_S) {
             hero.setDirect(1);
             if ((hero.getY() - 15) < 275)
-                hero.movedown();
+                hero.moveDown();
 
         }
         this.repaint();

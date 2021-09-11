@@ -38,7 +38,7 @@ import java.util.Objects;
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame implements Runnable {
 
-    public TankGroundPanel mp = null;//坦克的主画板
+    public volatile TankGroundPanel groundPanel = null;//坦克的主画板
     public StageActionPanel mp2 = null;//放按钮的画板
     public StageActionPanel mpe1 = null;//对按钮事件监听处理的
     public HeroInfoPanel mp3 = null;  //显示属性的画板
@@ -64,27 +64,27 @@ public class MainFrame extends JFrame implements Runnable {
 
     public void run() {
         final long start = System.currentTimeMillis();
-        if (Objects.nonNull(mp)) {
-            mp.exit();
+        if (Objects.nonNull(groundPanel)) {
+            groundPanel.exit();
         }
         if (Objects.nonNull(mp3)) {
             mp3.exit();
         }
 
-        mp = new TankGroundPanel();
-        mpe1 = new StageActionPanel(this, mp.hero, mp.enemyList, mp.bricks, mp.irons, TankGroundPanel.enemyTankMap, TankGroundPanel.myself);//监听按钮事件的画布对象
-        mp2 = new StageActionPanel(this, mp.hero, mp.enemyList, mp.bricks, mp.irons, TankGroundPanel.enemyTankMap, TankGroundPanel.myself);//放按钮的画布
+        groundPanel = new TankGroundPanel();
+        mpe1 = new StageActionPanel(this, groundPanel.hero, groundPanel.enemyList, groundPanel.bricks, groundPanel.irons, TankGroundPanel.enemyTankMap, TankGroundPanel.myself);//监听按钮事件的画布对象
+        mp2 = new StageActionPanel(this, groundPanel.hero, groundPanel.enemyList, groundPanel.bricks, groundPanel.irons, TankGroundPanel.enemyTankMap, TankGroundPanel.myself);//放按钮的画布
 
         //提示信息
-        jl1 = new JLabel("           : " + mp.hero.getLife() + "                    : " + mp.enemyList.size());
-        prizeNo = new JLabel("已击杀    ：" + mp.hero.getPrize());//战绩的标签
+        jl1 = new JLabel("           :                    : " + groundPanel.enemyList.size());
+        prizeNo = new JLabel("已击杀    ：");//战绩的标签
         me = new JLabel("Myth");
 
-        mp3 = new HeroInfoPanel(jl1, mp.hero, mp.enemyList, prizeNo);//显示一些属性
+        mp3 = new HeroInfoPanel(jl1, groundPanel.enemyList, prizeNo);//显示一些属性
 
         if (!firstStart) {
             //已经成为一个线程 要启动它
-            Thread t = new Thread(mp);
+            Thread t = new Thread(groundPanel);
             t.setName("windowPanel");
             t.start();
             Thread t2 = new Thread(mp3);
@@ -166,7 +166,7 @@ public class MainFrame extends JFrame implements Runnable {
         jsp2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mp2, mp3);//水平
         jsp2.setDividerLocation(150);
         Fir = new StarterPanel();
-        if (!firstStart) jsp1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mp, jsp2);//垂直
+        if (!firstStart) jsp1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, groundPanel, jsp2);//垂直
         else jsp1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, Fir, jsp2);
         jsp1.setDividerLocation(760);
 
@@ -177,7 +177,7 @@ public class MainFrame extends JFrame implements Runnable {
 
         //注册键盘监听
         //下面的语句翻译为 ：当前类的监听者是mp
-        this.addKeyListener(mp);
+        this.addKeyListener(groundPanel);
         this.setJMenuBar(jmb);
         //焦点跳转  tab切换
         this.setFocusable(getFocusTraversalKeysEnabled());
@@ -186,9 +186,11 @@ public class MainFrame extends JFrame implements Runnable {
         this.setTitle("Tank");
         this.setLocation(150, 60);
         this.setSize(1000, 625);
-        log.info("{} pre visible", (System.currentTimeMillis() - start));
+
+        final long beforeVisible = System.currentTimeMillis();
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        log.info("{} total", (System.currentTimeMillis() - start));
+        final long now = System.currentTimeMillis();
+        log.info("total:{} visible:{}", (now - start), (now - beforeVisible));
     }
 }
