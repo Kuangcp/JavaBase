@@ -1,4 +1,4 @@
-package com.github.kuangcp.tank.v3.resource;
+package com.github.kuangcp.tank.resource;
 
 /**
  * 1 准备好图片

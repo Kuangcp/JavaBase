@@ -1,4 +1,4 @@
-package com.github.kuangcp.tank.v1;
+package com.github.kuangcp.tank.domain;
 
 /**
  * 最起初的坦克类
@@ -68,10 +68,6 @@ public class Tank {
     public void setY(int y) {
         this.y = y;
     }
-//	判断子弹是否击中坦克
-//	public void Bong(){
-//		
-//	}
 
     //  构造器
     public Tank(int x, int y, int speed) {

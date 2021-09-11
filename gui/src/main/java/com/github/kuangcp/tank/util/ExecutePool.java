@@ -13,6 +13,10 @@ public class ExecutePool {
 
     public static final AtomicLong totalCounter = new AtomicLong();
 
+    /**
+     * @param prefix   eg: shot
+     * @param coreSize 核心线程数
+     */
     public static ExecutorService buildFixedPool(String prefix, int coreSize) {
         return new ThreadPoolExecutor(coreSize, coreSize, 0L, TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<>(),

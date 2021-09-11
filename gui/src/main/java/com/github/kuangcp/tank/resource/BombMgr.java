@@ -1,9 +1,9 @@
-package com.github.kuangcp.tank.v3.resource;
+package com.github.kuangcp.tank.resource;
 
 import com.github.kuangcp.tank.constant.DirectType;
-import com.github.kuangcp.tank.v1.Hero;
-import com.github.kuangcp.tank.v1.Tank;
-import com.github.kuangcp.tank.v2.Shot;
+import com.github.kuangcp.tank.domain.Hero;
+import com.github.kuangcp.tank.domain.Tank;
+import com.github.kuangcp.tank.domain.Shot;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
@@ -76,7 +76,7 @@ public class BombMgr {
      * 工具类-检测爆炸的函数
      */
     public void checkBong(Tank tank, List<Shot> shots) {
-        shots.forEach(v -> checkBong(tank, v));
+        shots.forEach(v -> this.checkBong(tank, v));
     }
 
     private void checkBong(Tank t, Shot s) {

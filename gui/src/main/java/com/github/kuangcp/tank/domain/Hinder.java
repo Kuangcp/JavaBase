@@ -1,14 +1,14 @@
-package com.github.kuangcp.tank.v1;
+package com.github.kuangcp.tank.domain;
 
 /**
  * 障碍物的最基本类
  */
 public abstract class Hinder {
     int hx, hy;//障碍物坐标  绘图坐标  也就是左上角的坐标
-    boolean Live;//生存状态
+    boolean alive;//生存状态
 
     public Hinder(int hx, int hy) {
-        Live = true;
+        alive = true;
         this.hx = hx;
         this.hy = hy;
 
@@ -17,12 +17,12 @@ public abstract class Hinder {
     public Hinder() {
     }
 
-    public Boolean getLive() {
-        return Live;
+    public Boolean getAlive() {
+        return alive;
     }
 
-    public void setLive(Boolean live) {
-        Live = live;
+    public void setAlive(Boolean alive) {
+        this.alive = alive;
     }
 
     public int getHx() {

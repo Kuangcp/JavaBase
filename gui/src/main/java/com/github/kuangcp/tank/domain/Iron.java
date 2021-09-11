@@ -1,4 +1,4 @@
-package com.github.kuangcp.tank.v1;
+package com.github.kuangcp.tank.domain;
 
 /**
  * 铁块

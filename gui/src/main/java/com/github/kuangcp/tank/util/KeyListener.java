@@ -1,9 +1,10 @@
-package com.github.kuangcp.tank.v3;
+package com.github.kuangcp.tank.util;
 
 
 import com.github.kuangcp.tank.constant.DirectType;
-import com.github.kuangcp.tank.v1.Hero;
-import com.github.kuangcp.tank.v3.thread.ExitFlagRunnable;
+import com.github.kuangcp.tank.domain.Hero;
+import com.github.kuangcp.tank.panel.TankGroundPanel;
+import com.github.kuangcp.tank.thread.ExitFlagRunnable;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -15,17 +16,17 @@ import lombok.extern.slf4j.Slf4j;
  * 实现结果： 一边跑，一边放子弹完全不是事儿，方向的切换也十分流畅
  */
 @Slf4j
-public class PressedTwo implements ExitFlagRunnable {
+public class KeyListener implements ExitFlagRunnable {
 
     Hero hero;
-    MyPanel3 myPanel3;
+    TankGroundPanel tankGroundPanel;
     ListenEventGroup eventGroup;
     private volatile boolean exit = false;
 
-    public PressedTwo(ListenEventGroup eventGroup, Hero hero, MyPanel3 myPanel3) {
+    public KeyListener(ListenEventGroup eventGroup, Hero hero, TankGroundPanel tankGroundPanel) {
         this.eventGroup = eventGroup;
         this.hero = hero;
-        this.myPanel3 = myPanel3;
+        this.tankGroundPanel = tankGroundPanel;
     }
 
     public void exit() {
@@ -64,7 +65,7 @@ public class PressedTwo implements ExitFlagRunnable {
                 hero.shotEnemy();
             }
 
-            myPanel3.repaint();
+            tankGroundPanel.repaint();
 
             try {
                 // 动作的延迟 1000 / 77 fps

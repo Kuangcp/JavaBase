@@ -1,10 +1,12 @@
-package com.github.kuangcp.tank.v3;
+package com.github.kuangcp.tank.util;
+
+import com.github.kuangcp.tank.panel.TankGroundPanel;
 
 import java.awt.event.KeyEvent;
 
 /**
  * @author https://github.com/kuangcp on 2021-09-06 02:58
- * @see MyPanel3#keyPressed
+ * @see TankGroundPanel#keyPressed
  */
 public class ListenEventGroup {
 

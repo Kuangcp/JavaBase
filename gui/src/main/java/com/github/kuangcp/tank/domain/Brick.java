@@ -1,4 +1,4 @@
-package com.github.kuangcp.tank.v1;
+package com.github.kuangcp.tank.domain;
 
 import java.awt.*;
 
@@ -20,7 +20,7 @@ public class Brick extends Hinder {
     public Brick() {
     }
     //被舍弃  不使用
-/**画出砖块  20*10大小 为了便于使用 就直接(x,y)到(x,y)画出矩形  虽然实现了但是不利于控制死亡*/
+    /*画出砖块  20*10大小 为了便于使用 就直接(x,y)到(x,y)画出矩形  虽然实现了但是不利于控制死亡*/
 	/*public  void d(Graphics g,Vector<Brick> bricks,int startX,int startY,int endX,int endY){
 
 //		g.setColor(Color.LIGHT_GRAY);//钢板的颜色

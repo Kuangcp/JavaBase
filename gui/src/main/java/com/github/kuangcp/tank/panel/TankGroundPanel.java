@@ -1,26 +1,29 @@
 
-package com.github.kuangcp.tank.v3;
+package com.github.kuangcp.tank.panel;
 
 
+import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.TankTool;
-import com.github.kuangcp.tank.v1.Brick;
-import com.github.kuangcp.tank.v1.EnemyTank;
-import com.github.kuangcp.tank.v1.Hero;
-import com.github.kuangcp.tank.v1.Iron;
-import com.github.kuangcp.tank.v2.Shot;
-import com.github.kuangcp.tank.v3.resource.AvatarMgr;
-import com.github.kuangcp.tank.v3.resource.BombMgr;
-import com.github.kuangcp.tank.v3.thread.ExitFlagRunnable;
+import com.github.kuangcp.tank.domain.Brick;
+import com.github.kuangcp.tank.domain.EnemyTank;
+import com.github.kuangcp.tank.domain.Hero;
+import com.github.kuangcp.tank.domain.Iron;
+import com.github.kuangcp.tank.domain.Shot;
+import com.github.kuangcp.tank.util.ListenEventGroup;
+import com.github.kuangcp.tank.util.KeyListener;
+import com.github.kuangcp.tank.resource.AvatarMgr;
+import com.github.kuangcp.tank.resource.BombMgr;
+import com.github.kuangcp.tank.thread.ExitFlagRunnable;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Vector;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 
@@ -29,13 +32,13 @@ import java.util.concurrent.TimeUnit;
  */
 @SuppressWarnings("serial")
 @Slf4j
-public class MyPanel3 extends JPanel implements KeyListener, ExitFlagRunnable {
+public class TankGroundPanel extends JPanel implements java.awt.event.KeyListener, ExitFlagRunnable {
 
-    Hero hero;
-    PressedTwo pressedTwo;
-    static boolean resumePlay = true;
+    public Hero hero;
+    public KeyListener keyListener;
+    public static boolean newStage = true;
     // 敌人的数量
-    static int enSize = 10;
+    public static int enSize = 10;
     //定义一个 泛型的集合ets 表示敌人坦克集合
     public Vector<EnemyTank> enemyList = new Vector<>();
 
@@ -45,7 +48,7 @@ public class MyPanel3 extends JPanel implements KeyListener, ExitFlagRunnable {
     //所有按下键的code集合
     public static int[][] enemyTankMap = new int[12][2];
     public static int[] myself = new int[6];
-
+    private static final ExecutorService delayPool = ExecutePool.buildFixedPool("enemyDelayRemove", 3);
 
     Image overImg = null;
     Image winImg = null;
@@ -60,9 +63,9 @@ public class MyPanel3 extends JPanel implements KeyListener, ExitFlagRunnable {
      * 画板的构造函数 用来初始化对象
      * 多个敌方坦克应该用集合类，而且要考虑线程安全所以不能用ArrayList只能用Vector
      */
-    public MyPanel3() {
+    public TankGroundPanel() {
         //创建英雄坦克
-        if (resumePlay) {//正常启动并创建坦克线程
+        if (newStage) {//正常启动并创建坦克线程
             hero = new Hero(480, 500, 3, enemyList, bricks, irons);//坐标和步长和敌人坦克集合
             hero.setLife(10);//设置生命值
         } else {
@@ -72,14 +75,14 @@ public class MyPanel3 extends JPanel implements KeyListener, ExitFlagRunnable {
         }
 
         //多键监听实现
-        pressedTwo = new PressedTwo(ListenEventGroup.instance, hero, this);
-        Thread p = new Thread(pressedTwo);
+        keyListener = new KeyListener(ListenEventGroup.instance, hero, this);
+        Thread p = new Thread(keyListener);
         p.setName("keyEventGroup");
         p.start();
 
         // 创建 敌人的坦克
         EnemyTank ett = null;
-        if (resumePlay) {//正常启动并创建坦克线程
+        if (newStage) {//正常启动并创建坦克线程
             for (int i = 0; i < enSize; i++) {
                 //在四个随机区域产生坦克
                 switch ((int) (Math.random() * 4)) {
@@ -191,7 +194,7 @@ public class MyPanel3 extends JPanel implements KeyListener, ExitFlagRunnable {
         g.setColor(new Color(200, 200, 200));
         for (int i = 0; i < irons.size(); i++) {
             Iron ir = irons.get(i);
-            if (ir.getLive()) {
+            if (ir.getAlive()) {
                 g.fill3DRect(ir.getHx(), ir.getHy(), 20, 10, false);
             } else {
                 irons.remove(ir);
@@ -201,7 +204,7 @@ public class MyPanel3 extends JPanel implements KeyListener, ExitFlagRunnable {
         g.setColor(new Color(190, 60, 50));
         for (int i = 0; i < bricks.size(); i++) {
             Brick bs = bricks.get(i);
-            if (bs.getLive()) {
+            if (bs.getAlive()) {
                 g.fill3DRect(bs.getHx(), bs.getHy(), 20, 10, false);
             } else {
                 bricks.remove(bs);
@@ -226,8 +229,8 @@ public class MyPanel3 extends JPanel implements KeyListener, ExitFlagRunnable {
 
         /*画出自己的子弹*/  //画子弹是可以封装成一个方法的
         //		从ss 这个子弹集合中 取出每颗子弹，并画出来
-        for (int i = 0; i < hero.ss.size(); i++) {
-            myShot = hero.ss.get(i);
+        for (int i = 0; i < hero.shotList.size(); i++) {
+            myShot = hero.shotList.get(i);
             for (Brick brick : bricks) {
                 TankTool.judgeHint(myShot, brick);
             }
@@ -238,15 +241,13 @@ public class MyPanel3 extends JPanel implements KeyListener, ExitFlagRunnable {
                 myShot.isLive = false;
                 hero.setAlive(false);
             }
-            if (hero.ss.get(i) != null && hero.ss.get(i).isLive) {//为什么后面的判断条件 存不存在都会没影响呢
-//				System.out.println("当前是"+i+"个子弹线程");
+            if (hero.shotList.get(i) != null && hero.shotList.get(i).isLive) {
                 g.draw3DRect(myShot.sx, myShot.sy, 1, 1, false);
-
-                //			  g.draw3DRect(Hero.ss.get(i).sx, Hero.ss.get(i).sy, 1, 1, false);
             }
+
+            //子弹线程死了 就要把它从集合中删除
             if (!myShot.isLive) {
-                //子弹线程死了 就要把它从集合中删除
-                hero.ss.remove(myShot);
+                hero.shotList.remove(myShot);
             }
         }
 
@@ -278,7 +279,6 @@ public class MyPanel3 extends JPanel implements KeyListener, ExitFlagRunnable {
         BombMgr.instance.drawBomb(g, this);
 
         /*画出敌人坦克*/
-//		if(Continue){
         //坦克少于5个就自动添加4个
         if (enemyList.size() < 5) {
             for (int i = 0; i < 4; i++) {
@@ -290,7 +290,6 @@ public class MyPanel3 extends JPanel implements KeyListener, ExitFlagRunnable {
                 enemyList.add(d);
             }
         }
-//		}
 //		for(int i=0;i<ets.size();i++){
 //			Demons s = ets.get(i);
 //			if(s.getisLive()){
@@ -302,7 +301,6 @@ public class MyPanel3 extends JPanel implements KeyListener, ExitFlagRunnable {
 //	        	ets.remove(s);
 //			}
 //		}
-//		System.out.println("画板上画坦克时的坦克地址"+ets);
         for (int i = 0; i < enemyList.size(); i++) {
             EnemyTank demon = enemyList.get(i);
             //存活再画出来
@@ -352,28 +350,24 @@ public class MyPanel3 extends JPanel implements KeyListener, ExitFlagRunnable {
 ////				} 
 //				demon.setBri(true);
 
-                BombMgr.instance.checkBong(demon, hero.ss);
+                BombMgr.instance.checkBong(demon, hero.shotList);
 
                 this.drawTank(demon.getX(), demon.getY(), g, demon.getDirect(), demon.getType());
             } else {
-                //因为这句话，没有的话会让敌方坦克不死，占用我的子弹
-                //加了的话 就会出现 敌方坦克死了，他所发射的子弹（是敌方坦克的成员属性）也全都随着坦克的内存回收而消失
-
-                // TODO 延迟删除
+                // 延迟删除 敌人和子弹
                 if (demon.delayRemove) {
                     continue;
                 }
                 demon.delayRemove = true;
-                final Thread thread = new Thread(() -> {
+                delayPool.execute(() -> {
                     try {
-                        TimeUnit.SECONDS.sleep(20);
+                        TimeUnit.SECONDS.sleep(8);
                     } catch (InterruptedException e) {
                         log.error("", e);
                     }
                     enemyList.remove(demon);
+                    demon.cleanResource();
                 });
-                thread.setName("lazyRemove-" + demon.id);
-                thread.start();
             }
         }
 
@@ -545,26 +539,35 @@ public class MyPanel3 extends JPanel implements KeyListener, ExitFlagRunnable {
     //画板做成线程  画布进行刷新
     @Override
     public void run() {
+        int maxFPS = 160;
+        long fpsTime = (long) ((1000.0 / maxFPS) * 1000000);
+
+        long now = System.nanoTime();
         //每隔100ms重绘
         while (!exit) {
-            try {
-                Thread.sleep(10);
-                //里面的数字就是刷新时间的间隔 而且每当按下J键就会拉起MyPanel线程 相当于加快了刷新
-            } catch (Exception e) {
-                log.error("", e);
-            }
+            now = System.nanoTime();
+//            try {
+//                Thread.sleep(10);
+//                //里面的数字就是刷新时间的间隔 而且每当按下J键就会拉起MyPanel线程 相当于加快了刷新
+//            } catch (Exception e) {
+//                log.error("", e);
+//            }
 
             // 进行重绘
             this.repaint();
+            final long waste = System.nanoTime() - now;
+            if (waste > fpsTime) {
+                continue;
+            }
 
-            // 这里的中断，只是关掉了刷新，但是后台的坦克，子弹线程还在跑
-            // if(!hero.getisLive()){
-            // 	break;
-            // }
+            TankTool.yieldTime(fpsTime - waste, TimeUnit.NANOSECONDS);
+            if (!hero.isAlive()) {
+                break;
+            }
         }
 
-        // clean
-        pressedTwo.exit();
+        // clean listener
+        keyListener.exit();
     }
 
     public static int getEnSize() {
@@ -572,6 +575,6 @@ public class MyPanel3 extends JPanel implements KeyListener, ExitFlagRunnable {
     }
 
     public static void setEnSize(int enSize) {
-        MyPanel3.enSize = enSize;
+        TankGroundPanel.enSize = enSize;
     }
 }

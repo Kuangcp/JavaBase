@@ -1,9 +1,8 @@
-package com.github.kuangcp.tank.v1;
+package com.github.kuangcp.tank.domain;
 
 
 import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.TankTool;
-import com.github.kuangcp.tank.v2.Shot;
 
 import java.awt.*;
 import java.util.Vector;
@@ -12,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 public class Hero extends Tank {
 
     //子弹集合
-    public Vector<Shot> ss = new Vector<>();
+    public Vector<Shot> shotList = new Vector<>();
     private final ExecutorService shotExecutePool;
     private long lastShotNs = 0;
     private long shotCD = 224_000_000;
@@ -82,7 +81,7 @@ public class Hero extends Tank {
         if (lastShotNs != 0 && curNs - lastShotNs < shotCD) {
             return;
         }
-        if (this.ss.size() >= this.maxLiveShot || !this.isAlive()) {
+        if (this.shotList.size() >= this.maxLiveShot || !this.isAlive()) {
             return;
         }
 
@@ -90,19 +89,19 @@ public class Hero extends Tank {
         switch (this.getDirect()) {
             case 0://0123 代表 上下左右
                 s = new Shot(this.getX() - 1, this.getY() - 15, 0);
-                ss.add(s);
+                shotList.add(s);
                 break;
             case 1:
                 s = new Shot(this.getX() - 2, this.getY() + 15, 1);
-                ss.add(s);
+                shotList.add(s);
                 break;
             case 2:
                 s = new Shot(this.getX() - 15 - 2, this.getY(), 2);
-                ss.add(s);
+                shotList.add(s);
                 break;
             case 3:
                 s = new Shot(this.getX() + 15 - 2, this.getY() - 1, 3);
-                ss.add(s);
+                shotList.add(s);
                 break;
         }
         //启动子弹线程
@@ -115,7 +114,7 @@ public class Hero extends Tank {
         to = true;
         //检测敌方坦克碰撞
         for (EnemyTank et : ets) {
-            if (!TankTool.hasHint(this, et))
+            if (!TankTool.ablePass(this, et))
                 to = false;
         }
         //检测障碍物
@@ -135,7 +134,7 @@ public class Hero extends Tank {
     public void movedown() {
         to = true;
         for (EnemyTank et : ets)
-            if (!TankTool.hasHint(this, et))
+            if (!TankTool.ablePass(this, et))
                 to = false;
 //        for (Brick brick : bricks) {
 //            if (TankTool.hasHint(this, brick))
@@ -152,7 +151,7 @@ public class Hero extends Tank {
     public void moveleft() {
         to = true;
         for (EnemyTank et : ets)
-            if (!TankTool.hasHint(this, et))
+            if (!TankTool.ablePass(this, et))
                 to = false;
 //        for (Brick brick : bricks) {
 //            if (TankTool.hasHint(this, brick))
@@ -169,7 +168,7 @@ public class Hero extends Tank {
     public void moveright() {
         to = true;
         for (EnemyTank et : ets)
-            if (!TankTool.hasHint(this, et))
+            if (!TankTool.ablePass(this, et))
                 to = false;
 //        for (Brick brick : bricks) {
 //            if (TankTool.hasHint(this, brick))

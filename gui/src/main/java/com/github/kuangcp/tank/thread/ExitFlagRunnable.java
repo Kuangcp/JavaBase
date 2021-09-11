@@ -1,4 +1,4 @@
-package com.github.kuangcp.tank.v3.thread;
+package com.github.kuangcp.tank.thread;
 
 /**
  * @author https://github.com/kuangcp on 2021-09-11 18:33

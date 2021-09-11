@@ -1,12 +1,13 @@
 package com.github.kuangcp.tank.util;
 
 import com.github.kuangcp.tank.constant.DirectType;
-import com.github.kuangcp.tank.v1.Brick;
-import com.github.kuangcp.tank.v1.Hinder;
-import com.github.kuangcp.tank.v1.Tank;
-import com.github.kuangcp.tank.v2.Shot;
+import com.github.kuangcp.tank.domain.Brick;
+import com.github.kuangcp.tank.domain.Hinder;
+import com.github.kuangcp.tank.domain.Shot;
+import com.github.kuangcp.tank.domain.Tank;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -15,7 +16,13 @@ public class TankTool {
     /**
      * 碰撞检测函数 坦克之间
      */
-    public static boolean hasHint(Tank me, Tank you) {
+    public static boolean ablePass(Tank me, Tank you) {
+        if (Objects.isNull(me) || Objects.isNull(you)) {
+            return true;
+        }
+        if (!me.isAlive() || !you.isAlive()) {
+            return true;
+        }
         boolean flag = true;
         switch (you.getDirect()) {//对方 上下
             case 0:
@@ -159,7 +166,7 @@ public class TankTool {
     /**
      * 碰撞检测函数 坦克 和 障碍物
      */
-    public static boolean hasHint(Tank t, Hinder h) {
+    public static boolean ablePass(Tank t, Hinder h) {
         int hx = 20, hy = 10;
         switch (t.getDirect()) {
             case DirectType.UP:
@@ -207,7 +214,7 @@ public class TankTool {
             s.isLive = false;
 
             if (h instanceof Brick) {
-                h.setLive(false);
+                h.setAlive(false);
             }
         }
     }

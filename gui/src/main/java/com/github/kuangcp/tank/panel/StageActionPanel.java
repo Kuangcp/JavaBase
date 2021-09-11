@@ -1,19 +1,21 @@
 
-package com.github.kuangcp.tank.v3;
+package com.github.kuangcp.tank.panel;
 
 
 import com.github.kuangcp.tank.constant.StageCommand;
+import com.github.kuangcp.tank.domain.Brick;
+import com.github.kuangcp.tank.domain.EnemyTank;
+import com.github.kuangcp.tank.domain.Hero;
+import com.github.kuangcp.tank.domain.Iron;
+import com.github.kuangcp.tank.domain.Shot;
 import com.github.kuangcp.tank.util.Audio;
 import com.github.kuangcp.tank.util.Saved;
-import com.github.kuangcp.tank.util.Setting;
-import com.github.kuangcp.tank.v1.Brick;
-import com.github.kuangcp.tank.v1.EnemyTank;
-import com.github.kuangcp.tank.v1.Hero;
-import com.github.kuangcp.tank.v1.Iron;
-import com.github.kuangcp.tank.v2.Shot;
+import com.github.kuangcp.tank.v3.MainFrame;
+import com.github.kuangcp.tank.v3.SettingFrame;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
@@ -27,7 +29,7 @@ import java.util.Vector;
 @Slf4j
 public class StageActionPanel extends JPanel implements ActionListener {
     static Thread actionThread = null;
-    TankFrame frame;
+    MainFrame frame;
     Hero hero;
     Vector<EnemyTank> ets;
     Vector<Iron> irons;
@@ -40,7 +42,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         //上面是不合理的，会有隐藏的bug在里面，这种做法要抛弃
         if (ae.getActionCommand().equals(StageCommand.START)) {
-            this.startGame();
+            this.startNewStage();
         }
 
         if (ae.getActionCommand().equals("结束")) {
@@ -73,7 +75,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
 
         }
         if (ae.getActionCommand().equals("Help")) {
-            Setting se = new Setting(hero);
+            SettingFrame.activeFocus(hero);
         }
         if (ae.getActionCommand().equals("saveExit")) {
             System.out.println("按下了 保存并退出 按钮");
@@ -88,16 +90,18 @@ public class StageActionPanel extends JPanel implements ActionListener {
             //重新开启一个画板
             System.out.println(StageCommand.START);
             frame.firstStart = false;
-            frame.mp.resumePlay = false;
+            TankGroundPanel.newStage = false;
             Shot.setSpeed(8);
             frame.remove(frame.jsp1);
 //				Saved s = new Saved(ets, hero, bricks, irons,ETS,myself);
 //				s.readAll();
             //实现一样的功能还省内存
             new Saved(ets, hero, bricks, irons, ETS, myself).readDataBase();
-            actionThread = new Thread(frame);
 
-            actionThread.start();//将画板线程开启
+            EventQueue.invokeLater(frame);
+//            actionThread = new Thread(frame);
+//            actionThread.start();
+
             //读取
 //			Saved s = new Saved(ets, hero, bricks, irons);
 //			s.readAll();
@@ -106,7 +110,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
         }
     }
 
-    private void startGame() {
+    private void startNewStage() {
         if (Objects.nonNull(actionThread) && !actionThread.isInterrupted()) {
             log.info("clean last stage");
             actionThread.interrupt();
@@ -117,7 +121,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
         }
 
         frame.firstStart = false;
-        MyPanel3.resumePlay = true;
+        TankGroundPanel.newStage = true;
         Shot.setSpeed(8);
         frame.remove(frame.jsp1);
         actionThread = new Thread(frame);
@@ -130,7 +134,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
 //        beginAudio.start();
     }
 
-    public StageActionPanel(TankFrame frame, Hero he, Vector<EnemyTank> ets, Vector<Brick> bricks, Vector<Iron> irons, int[][] ETS, int[] myself) {
+    public StageActionPanel(MainFrame frame, Hero he, Vector<EnemyTank> ets, Vector<Brick> bricks, Vector<Iron> irons, int[][] ETS, int[] myself) {
         this.frame = frame;
         this.hero = he;
         this.ets = ets;

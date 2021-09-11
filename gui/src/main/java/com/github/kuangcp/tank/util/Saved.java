@@ -1,9 +1,9 @@
 package com.github.kuangcp.tank.util;
 
-import com.github.kuangcp.tank.v1.Brick;
-import com.github.kuangcp.tank.v1.EnemyTank;
-import com.github.kuangcp.tank.v1.Hero;
-import com.github.kuangcp.tank.v1.Iron;
+import com.github.kuangcp.tank.domain.Brick;
+import com.github.kuangcp.tank.domain.EnemyTank;
+import com.github.kuangcp.tank.domain.Hero;
+import com.github.kuangcp.tank.domain.Iron;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

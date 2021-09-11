@@ -1,11 +1,10 @@
 
-package com.github.kuangcp.tank.v1;
+package com.github.kuangcp.tank.domain;
 
 
 import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.TankTool;
-import com.github.kuangcp.tank.v2.Shot;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Vector;
@@ -28,7 +27,7 @@ public class EnemyTank extends Tank implements Runnable {
     public Vector<Brick> bricks;
     public Vector<Iron> irons;
     public Shot s = null;
-    public int maxLiveShot = 7; //子弹线程存活的最大数
+    public int maxLiveShot = 10; //子弹线程存活的最大数
     public boolean delayRemove = false;
 
     Hero hero;
@@ -304,20 +303,20 @@ public class EnemyTank extends Tank implements Runnable {
         if (y > 30) {
             to = true;
             for (EnemyTank et : ets) {
-                if (!TankTool.hasHint(this, et)) {
+                if (!TankTool.ablePass(this, et)) {
                     to = (false);
                     break;
                 }
             }
             for (Brick brick : bricks) {
-                if (TankTool.hasHint(this, brick))
+                if (TankTool.ablePass(this, brick))
                     to = false;
             }
             for (Iron iron : irons) {
-                if (TankTool.hasHint(this, iron))
+                if (TankTool.ablePass(this, iron))
                     to = false;
             }
-            if (to && TankTool.hasHint(this, hero)) {
+            if (to && TankTool.ablePass(this, hero)) {
                 y -= speed;
                 try {
                     Thread.sleep(100);
@@ -336,20 +335,20 @@ public class EnemyTank extends Tank implements Runnable {
         if (y < 530) {
             to = true;
             for (EnemyTank et : ets) {
-                if (!TankTool.hasHint(this, et)) {
+                if (!TankTool.ablePass(this, et)) {
                     to = (false);
                     break;
                 }
             }
             for (Brick brick : bricks) {
-                if (TankTool.hasHint(this, brick))
+                if (TankTool.ablePass(this, brick))
                     to = false;
             }
             for (Iron iron : irons) {
-                if (TankTool.hasHint(this, iron))
+                if (TankTool.ablePass(this, iron))
                     to = false;
             }
-            if (to && TankTool.hasHint(this, hero)) {
+            if (to && TankTool.ablePass(this, hero)) {
                 y += speed;
                 try {
                     Thread.sleep(100);
@@ -369,20 +368,20 @@ public class EnemyTank extends Tank implements Runnable {
         if (x > 30) {
             to = true;
             for (EnemyTank et : ets) {
-                if (!TankTool.hasHint(this, et)) {
+                if (!TankTool.ablePass(this, et)) {
                     to = false;
                     break;
                 }
             }
             for (Brick brick : bricks) {
-                if (TankTool.hasHint(this, brick))
+                if (TankTool.ablePass(this, brick))
                     to = false;
             }
             for (Iron iron : irons) {
-                if (TankTool.hasHint(this, iron))
+                if (TankTool.ablePass(this, iron))
                     to = false;
             }
-            if (to && TankTool.hasHint(this, hero)) {
+            if (to && TankTool.ablePass(this, hero)) {
                 x -= speed;
                 try {
                     Thread.sleep(100);
@@ -401,20 +400,20 @@ public class EnemyTank extends Tank implements Runnable {
         if (x < 710) {
             to = true;
             for (EnemyTank et : ets) {
-                if (!TankTool.hasHint(this, et)) {
+                if (!TankTool.ablePass(this, et)) {
                     to = (false);
                     break;
                 }
             }
             for (Brick brick : bricks) {
-                if (TankTool.hasHint(this, brick))
+                if (TankTool.ablePass(this, brick))
                     to = false;
             }
             for (Iron iron : irons) {
-                if (TankTool.hasHint(this, iron))
+                if (TankTool.ablePass(this, iron))
                     to = false;
             }
-            if (to && TankTool.hasHint(this, hero)) {
+            if (to && TankTool.ablePass(this, hero)) {
                 x += speed;
                 try {
                     Thread.sleep(100);
@@ -433,12 +432,20 @@ public class EnemyTank extends Tank implements Runnable {
     //重写
     int min = 0;
 
+    @Override
     public void run() {
 //        actionModeRun();
         run2();
+    }
 
+    /**
+     * 必须执行，但是只能推迟到子弹线程结束后回收
+     *
+     * @see com.github.kuangcp.tank.domain.EnemyTank#run 不能置于该方法内
+     */
+    public void cleanResource() {
         // 回收
-        log.info("{} clean enemy", id);
+//        log.info("{} clean enemy", id);
         shotExecutePool.shutdownNow();
     }
 
@@ -503,7 +510,7 @@ public class EnemyTank extends Tank implements Runnable {
                         min++;
 //					if(!bri)this.direct = (int)(Math.random()*4);
                         if (y > 30) {
-                            if (TankTool.hasHint(this, hero) && with) y -= speed;
+                            if (TankTool.ablePass(this, hero) && with) y -= speed;
 //						    if(bri)y-=speed;
 //						    else {y+=speed;this.direct = 1;}
 //						else continue;
@@ -527,7 +534,7 @@ public class EnemyTank extends Tank implements Runnable {
 //					if(!bri)this.direct = (int)(Math.random()*4);
 
                         if (y < 530) {
-                            if (TankTool.hasHint(this, hero) && with && bri) y += speed;
+                            if (TankTool.ablePass(this, hero) && with && bri) y += speed;
 //						    if(bri) y+=speed;
 //						    else {y-=speed;this.direct = 0;}
 //						else continue;
@@ -550,7 +557,7 @@ public class EnemyTank extends Tank implements Runnable {
 //					if(!bri)this.direct = (int)(Math.random()*4);
 
                         if (x > 30) {
-                            if (TankTool.hasHint(this, hero) && with && bri) x -= speed;
+                            if (TankTool.ablePass(this, hero) && with && bri) x -= speed;
 //						    if(bri)x-=speed;
 //						    else{x+=speed;this.direct = 3;}
 //						else continue;
@@ -573,7 +580,7 @@ public class EnemyTank extends Tank implements Runnable {
 //					if(!bri)this.direct = (int)(Math.random()*4);
 
                         if (x < 710) {
-                            if (TankTool.hasHint(this, hero) && with && bri) {
+                            if (TankTool.ablePass(this, hero) && with && bri) {
                                 x += speed;
                             }
 //						     if(bri)x+=speed;

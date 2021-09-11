@@ -1,9 +1,10 @@
 package com.github.kuangcp.tank.v2;
 
 
-import com.github.kuangcp.tank.v1.Brick;
-import com.github.kuangcp.tank.v1.EnemyTank;
-import com.github.kuangcp.tank.v1.Hero;
+import com.github.kuangcp.tank.domain.Brick;
+import com.github.kuangcp.tank.domain.EnemyTank;
+import com.github.kuangcp.tank.domain.Hero;
+import com.github.kuangcp.tank.domain.Shot;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,8 +54,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
 
 
 //		从ss 这个子弹集合中 取出每颗子弹，并画出来
-        for (int i = 0; i < this.hero.ss.size(); i++) {
-            Shot myShot = hero.ss.get(i);
+        for (int i = 0; i < this.hero.shotList.size(); i++) {
+            Shot myShot = hero.shotList.get(i);
             //  以下代码只能画出一颗子弹 不完善
             if (myShot != null) {
                 g.draw3DRect(hero.s.sx, hero.s.sy, 1, 1, false);

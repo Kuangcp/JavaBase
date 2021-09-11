@@ -1,26 +1,26 @@
-/**
- * 就是一个用来显示属性的画板
- * 不停的刷新
- * JLabel 被add后 就算他发生改变，对之前已经add了的组件 不会有影响
- * 但是可以用setText来进行改变
- */
-package com.github.kuangcp.tank.v3;
+package com.github.kuangcp.tank.panel;
 
 
-import com.github.kuangcp.tank.v1.EnemyTank;
-import com.github.kuangcp.tank.v1.Hero;
-import com.github.kuangcp.tank.v3.thread.ExitFlagRunnable;
+import com.github.kuangcp.tank.domain.EnemyTank;
+import com.github.kuangcp.tank.domain.Hero;
+import com.github.kuangcp.tank.thread.ExitFlagRunnable;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Vector;
 
+/**
+ * 就是一个用来显示属性的画板
+ * JLabel 被add后 就算他发生改变，对之前已经add了的组件 不会有影响
+ * 但是可以用setText来进行改变
+ */
+@Slf4j
 @SuppressWarnings("serial")
-public class MyPanel302 extends JPanel implements ExitFlagRunnable {
+public class HeroInfoPanel extends JPanel implements ExitFlagRunnable {
 
     JLabel jl1;
     JLabel prizeNo;
-    MyPanel302 mp = null;
     Hero hero;
     Vector<EnemyTank> ets;
 
@@ -30,7 +30,7 @@ public class MyPanel302 extends JPanel implements ExitFlagRunnable {
         this.exit = true;
     }
 
-    public MyPanel302(JLabel jl1, Hero hero, Vector<EnemyTank> ets, JLabel prizeNo) {
+    public HeroInfoPanel(JLabel jl1, Hero hero, Vector<EnemyTank> ets, JLabel prizeNo) {
         this.jl1 = jl1;
         this.hero = hero;
         this.ets = ets;
@@ -45,7 +45,7 @@ public class MyPanel302 extends JPanel implements ExitFlagRunnable {
 
         int X = 20, Y = 20;
         int x, y;
-/**主坦克*/
+        /*主坦克*/
         g.setColor(Color.yellow);
         //向上
         x = X - 10;
@@ -58,7 +58,7 @@ public class MyPanel302 extends JPanel implements ExitFlagRunnable {
         g.fillOval(x + 4, y + 10, 10, 10);
         g.drawLine(x + 9, y + 15, x + 9, y);
 
-/**敌人坦克*/
+        /*敌人坦克*/
         g.setColor(Color.cyan);
         X = 100;
         Y = 20;
@@ -103,10 +103,9 @@ public class MyPanel302 extends JPanel implements ExitFlagRunnable {
             repaint();
 
             try {
-                Thread.sleep(20);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                log.error("", e);
             }
             //不加的话线程没有退出
 //			if(hero.getLife() <= 0){

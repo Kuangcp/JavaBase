@@ -5,6 +5,10 @@ package com.github.kuangcp.tank.v1;
  * 3 加上对坦克运动的边界限定
  */
 
+import com.github.kuangcp.tank.domain.Brick;
+import com.github.kuangcp.tank.domain.EnemyTank;
+import com.github.kuangcp.tank.domain.Hero;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;

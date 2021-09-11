@@ -1,5 +1,6 @@
-package com.github.kuangcp.tank.v2;
+package com.github.kuangcp.tank.domain;
 
+import com.github.kuangcp.tank.util.TankTool;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -11,7 +12,7 @@ public class Shot implements Runnable {
     public int sx;
     public int sy;
     public int direct;
-    public static int speed = 8;//如果改动要记得按钮事件里也要改
+    public static int speed = 3;//如果改动要记得按钮事件里也要改
     public boolean isLive = true;//是否还活着
 
     public static int getSpeed() {
@@ -29,21 +30,9 @@ public class Shot implements Runnable {
     }
 
     public void run() {
-        //延迟子弹发射时间
-        try {
-            Thread.sleep(20);
-        } catch (Exception e) {
-            log.error("", e);
-        }
-
         do {
-            try {
-                Thread.sleep(50); //每个子弹发射的延迟运动的时间
-            } catch (InterruptedException i) {
-                break;
-            } catch (Exception e) {
-                log.error("", e);
-            }
+            // 每个子弹发射的延迟运动的时间
+            TankTool.yieldMsTime(55);
 
             switch (direct) {
                 //上下左右
@@ -65,6 +54,7 @@ public class Shot implements Runnable {
             if (sx < 20 || sx > 740 || sy < 20 || sy > 540) {
                 this.isLive = false;
             }
+
             if (sx < 440 && sx > 380 && sy < 540 && sy > 480) {
                 this.isLive = false;
             }
