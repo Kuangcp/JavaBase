@@ -7,8 +7,10 @@ import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Iron;
 import com.github.kuangcp.tank.domain.Shot;
-import com.github.kuangcp.tank.resource.AvatarMgr;
-import com.github.kuangcp.tank.resource.BombMgr;
+import com.github.kuangcp.tank.resource.AvatarImgMgr;
+import com.github.kuangcp.tank.mgr.BombMgr;
+import com.github.kuangcp.tank.resource.OverImgMgr;
+import com.github.kuangcp.tank.resource.WinImgMgr;
 import com.github.kuangcp.tank.thread.ExitFlagRunnable;
 import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.KeyListener;
@@ -17,11 +19,9 @@ import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,9 +51,6 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     //所有按下键的code集合
     public static int[][] enemyTankMap = new int[12][2];
     public static int[] myself = new int[6];
-
-    Image overImg = null;
-    Image winImg = null;
 
     private volatile boolean exit = false;
 
@@ -173,16 +170,6 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
         createI(irons, 330, 410, 480, 430);
 
-        try {
-            BombMgr.instance.initImg();
-
-            overImg = ImageIO.read(getClass().getResourceAsStream("/images/Over4.jpg"));
-
-            AvatarMgr.instance.initImg();
-            winImg = ImageIO.read(getClass().getResourceAsStream("/images/Win2.jpg"));
-        } catch (IOException e) {
-            log.error("", e);
-        }
         PlayStageMgr.instance.markStartLogic();
     }
 
@@ -190,7 +177,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     public void paint(Graphics g) {
         /*画出坦克运动区域 */
         super.paint(g);
-        if (!PlayStageMgr.hasStart() || Objects.isNull(hero)) {
+        if (PlayStageMgr.waitStart() || Objects.isNull(hero)) {
             return;
         }
 
@@ -228,7 +215,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         g.fillRect(560, 120, 40, 40);
         /*画出头像*/
 
-        g.drawImage(AvatarMgr.instance.curImg, 380, 480, 60, 60, this);
+        g.drawImage(AvatarImgMgr.instance.curImg, 380, 480, 60, 60, this);
         /*画出主坦克*/
         if (hero.isAlive()) {
             for (EnemyTank et : enemyList) {
@@ -384,13 +371,13 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
         //游戏结束的画面
         if (!hero.isAlive()) {
-            g.drawImage(overImg, 0, 0, 760, 560, this);
+            g.drawImage(OverImgMgr.instance.curImg, 0, 0, 760, 560, this);
             g.drawString("您的总成绩为：" + hero.getPrize(), 320, 500);
         }
 
         //判断获胜
         if (hero.getPrize() >= 40) {
-            g.drawImage(winImg, 0, 0, 760, 560, this);
+            g.drawImage(WinImgMgr.instance.curImg, 0, 0, 760, 560, this);
             g.drawString("您的总成绩为：" + hero.getPrize(), 320, 500);
         }
     }

@@ -126,52 +126,6 @@ public class EnemyTank extends Tank implements Runnable {
         lastShotMs = nowMs;
     }
 
-//    public void run (){
-////    	synchronized (this) {
-//    		while(true){
-//        		this.direct = ((int)(Math.random()*100))%4;
-////        		System.out.println(this.direct);
-//
-//        		switch(this.getDirect()){
-//            	case 0:{
-//            		for(int i=0;i<8;i++) if(this.toUp());else break;
-////            		System.out.println(this.direct);
-//            		if(this.y%25==0)this.shotEnemy();
-//            		break;
-//            	}
-//            	case 1:{
-//            		for(int i=0;i<8;i++) if(this.toDown());else break;
-//            		if(this.y%25==0)this.shotEnemy();
-//            		break;
-//            	}
-//            	case 2:{
-//            		for(int i=0;i<8;i++) if(this.toLeft());else break;
-//            		if(this.y%25==0)this.shotEnemy();
-//            		break;
-//            	}
-//            	case 3:{
-//            		for(int i=0;i<8;i++) if(this.toRight());else break;
-//            		if(this.y%25==0)this.shotEnemy();
-//            		break;
-//            		
-//            	}
-//            	default:
-//    				break;
-//            	}    		
-//
-////        		this.direct = ((int)(Math.random()*100))%4;
-//
-//            	if (!this.getisLive()){
-//        			//让坦克退出while即退出线程
-//        			hero.setPrize(hero.getPrize()+1);
-//        			break;
-//        		}
-//        	}
-////		} 
-//    	
-//    }
-
-
     //还是没有用，因为坦克太多，会卡住。。。
     public boolean TouchOther() {
         boolean flag = false;//没有碰到

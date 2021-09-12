@@ -26,8 +26,11 @@ public class PlayStageMgr {
     public List<Brick> bricks; // 砖
     public List<Iron> irons; // 铁
 
-    public static boolean hasStart() {
-        return Objects.nonNull(PlayStageMgr.instance) && PlayStageMgr.instance.startLogic;
+    /**
+     * 等待stage启动
+     */
+    public static boolean waitStart() {
+        return Objects.isNull(PlayStageMgr.instance) || !PlayStageMgr.instance.startLogic;
     }
 
     public void markStopLogic() {

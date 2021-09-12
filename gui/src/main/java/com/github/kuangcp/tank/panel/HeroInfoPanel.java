@@ -88,7 +88,7 @@ public class HeroInfoPanel extends JPanel implements ExitFlagRunnable {
     public void run() {
         while (!exit) {
             TankTool.yieldMsTime(500);
-            if (!PlayStageMgr.hasStart()) {
+            if (PlayStageMgr.waitStart()) {
                 continue;
             }
             /*

@@ -1,12 +1,13 @@
-package com.github.kuangcp.tank.resource;
+package com.github.kuangcp.tank.mgr;
 
 import com.github.kuangcp.tank.constant.DirectType;
+import com.github.kuangcp.tank.domain.Bomb;
 import com.github.kuangcp.tank.domain.Hero;
-import com.github.kuangcp.tank.domain.Tank;
 import com.github.kuangcp.tank.domain.Shot;
+import com.github.kuangcp.tank.domain.Tank;
+import com.github.kuangcp.tank.resource.AbstractImgListMgr;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -17,26 +18,17 @@ import java.util.List;
  * @author https://github.com/kuangcp on 2021-09-11 16:28
  */
 @Slf4j
-public class BombMgr {
+public class BombMgr extends AbstractImgListMgr {
 
     public static BombMgr instance = new BombMgr();
 
-    public Image[] bombArr = new Image[3];
+    public String[] imgPathArr = new String[]{"/images/bomb_1.gif", "/images/bomb_2.gif", "/images/bomb_3.gif"};
+
     //定义炸弹爆炸集合
     public List<Bomb> bombs = Collections.synchronizedList(new ArrayList<>());
 
-    public void initImg() {
-        try {
-            // 爆炸三阶段
-            for (int i = 1; i <= 3; i++) {
-                bombArr[i - 1] = ImageIO.read(getClass().getResourceAsStream("/images/bomb_" + i + ".gif"));
-            }
-//            bombArr[0] = ImageIO.read(getClass().getResourceAsStream("/images/bomb_1.gif"));
-//            bombArr[1] = ImageIO.read(getClass().getResourceAsStream("/images/bomb_2.gif"));
-//            bombArr[2] = ImageIO.read(getClass().getResourceAsStream("/images/bomb_3.gif"));
-        } catch (Exception e) {
-            log.error("", e);
-        }
+    public String[] getImgPathArr() {
+        return imgPathArr;
     }
 
     /**
@@ -48,16 +40,16 @@ public class BombMgr {
             Bomb b = bombs.get(i);
 //			System.out.println("size = "+bombs.size());
             if (b.life > 10) {
-                g.drawImage(BombMgr.instance.bombArr[0], b.bx, b.by, 30, 30, panel);
+                g.drawImage(BombMgr.instance.imgArr[0], b.bx, b.by, 30, 30, panel);
 //				if(rr){
 //					Audio B = new Audio("./src/RE/GameBegin.wav");
 //					B.start();
 //					rr = false;
 //				}
             } else if (b.life > 5) {
-                g.drawImage(BombMgr.instance.bombArr[1], b.bx, b.by, 30, 30, panel);
+                g.drawImage(BombMgr.instance.imgArr[1], b.bx, b.by, 30, 30, panel);
             } else {
-                g.drawImage(BombMgr.instance.bombArr[2], b.bx, b.by, 30, 30, panel);
+                g.drawImage(BombMgr.instance.imgArr[2], b.bx, b.by, 30, 30, panel);
             }
             //让b的生命减少
             b.lifeDown();

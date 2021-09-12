@@ -1,4 +1,4 @@
-package com.github.kuangcp.tank.resource;
+package com.github.kuangcp.tank.domain;
 
 /**
  * 1 准备好图片

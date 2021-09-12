@@ -1,10 +1,12 @@
 package com.github.kuangcp.tank.v3;
 
 import com.github.kuangcp.tank.constant.StageCommand;
-import com.github.kuangcp.tank.panel.TankGroundPanel;
 import com.github.kuangcp.tank.panel.HeroInfoPanel;
 import com.github.kuangcp.tank.panel.StageActionPanel;
 import com.github.kuangcp.tank.panel.StarterPanel;
+import com.github.kuangcp.tank.panel.TankGroundPanel;
+import com.github.kuangcp.tank.resource.AvatarImgMgr;
+import com.github.kuangcp.tank.resource.ResourceMgr;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -62,8 +64,13 @@ public class MainFrame extends JFrame implements Runnable {
     //帮助窗口
     JMenuItem Help = null;
 
+    public MainFrame() {
+        ResourceMgr.loadResource();
+    }
+
     public void run() {
         final long start = System.currentTimeMillis();
+
         if (Objects.nonNull(groundPanel)) {
             groundPanel.exit();
         }
@@ -186,6 +193,7 @@ public class MainFrame extends JFrame implements Runnable {
         this.setTitle("Tank");
         this.setLocation(150, 60);
         this.setSize(1000, 625);
+        this.setIconImage(AvatarImgMgr.instance.curImg);
 
         final long beforeVisible = System.currentTimeMillis();
         this.setVisible(true);
