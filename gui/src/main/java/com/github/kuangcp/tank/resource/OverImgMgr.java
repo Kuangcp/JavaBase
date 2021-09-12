@@ -7,10 +7,10 @@ public class OverImgMgr extends AbstractImgListMgr {
 
     public static OverImgMgr instance = new OverImgMgr();
 
-    public String[] imgPathArr = new String[]{"/images/Over2.jpg", "/images/Over4.jpg"};
+    public OverImgMgr() {
+        super.imgPathArr = new String[]{"/images/Over2.jpg", "/images/Over4.jpg"};
 
-    @Override
-    public String[] getImgPathArr() {
-        return imgPathArr;
+        super.width = 760;
+        super.height = 650;
     }
 }

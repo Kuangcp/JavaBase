@@ -16,23 +16,26 @@ public abstract class AbstractImgListMgr {
     public Image curImg = null;
     public Image[] imgArr = null;
 
+    public String[] imgPathArr;
+
+    // 实际渲染大小
+    public int width;
+    public int height;
+
     public void loadImg() {
-        final String[] imgArr = getImgPathArr();
-        if (Objects.isNull(imgArr) || imgArr.length < 1) {
-            log.warn("no image");
+        if (Objects.isNull(imgPathArr) || imgPathArr.length < 1) {
+            log.warn("no image {}", this.getClass().getSimpleName());
             return;
         }
         try {
-            this.imgArr = new Image[imgArr.length];
-            for (int i = 0; i < imgArr.length; i++) {
-                this.imgArr[i] = ImageIO.read(getClass().getResourceAsStream(imgArr[i]));
+            this.imgArr = new Image[imgPathArr.length];
+            for (int i = 0; i < imgPathArr.length; i++) {
+                this.imgArr[i] = ImageIO.read(getClass().getResourceAsStream(imgPathArr[i]));
             }
         } catch (IOException e) {
             log.error("", e);
         }
-        curImg = this.imgArr[(int) (Math.random() * imgArr.length)];
+        curImg = this.imgArr[(int) (Math.random() * imgPathArr.length)];
     }
-
-    public abstract String[] getImgPathArr();
 
 }

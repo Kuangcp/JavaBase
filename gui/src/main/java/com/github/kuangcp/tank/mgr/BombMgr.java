@@ -22,14 +22,12 @@ public class BombMgr extends AbstractImgListMgr {
 
     public static BombMgr instance = new BombMgr();
 
-    public String[] imgPathArr = new String[]{"/images/bomb_1.gif", "/images/bomb_2.gif", "/images/bomb_3.gif"};
+    public BombMgr() {
+        super.imgPathArr = new String[]{"/images/bomb_1.gif", "/images/bomb_2.gif", "/images/bomb_3.gif"};
+    }
 
     //定义炸弹爆炸集合
     public List<Bomb> bombs = Collections.synchronizedList(new ArrayList<>());
-
-    public String[] getImgPathArr() {
-        return imgPathArr;
-    }
 
     /**
      * 画出炸弹

@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 就是一个用来显示属性的画板
@@ -43,7 +42,7 @@ public class HeroInfoPanel extends JPanel implements ExitFlagRunnable {
     public void paint(Graphics g) {
         super.paint(g);
 
-        if (Objects.isNull(PlayStageMgr.instance) || !PlayStageMgr.instance.startLogic) {
+        if (PlayStageMgr.waitStart()) {
             return;
         }
 

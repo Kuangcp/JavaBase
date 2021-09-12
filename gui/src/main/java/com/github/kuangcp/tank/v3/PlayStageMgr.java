@@ -4,9 +4,13 @@ import com.github.kuangcp.tank.domain.Brick;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Iron;
+import com.github.kuangcp.tank.resource.OverImgMgr;
+import com.github.kuangcp.tank.resource.WinImgMgr;
 import com.github.kuangcp.tank.util.TankTool;
 import lombok.extern.slf4j.Slf4j;
 
+import java.awt.*;
+import java.awt.image.ImageObserver;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,6 +24,8 @@ public class PlayStageMgr {
 
     public Hero hero;
     public boolean startLogic = false;
+    public boolean winCurRound = false;
+    public int roundPrize = 0;
 
     static int round = 0;
     public List<EnemyTank> enemyTanks;
@@ -40,11 +46,11 @@ public class PlayStageMgr {
     public void markStartLogic() {
         this.startLogic = true;
         round++;
-        log.info("start round {}", round);
+        log.info("start round:{}", round);
     }
 
-    public static void init(Hero hero, List<EnemyTank> ets, List<Brick> bricks, List<Iron> irons) {
-        instance = new PlayStageMgr(hero, ets, bricks, irons);
+    public static void init(Hero hero, List<EnemyTank> enemyTanks, List<Brick> bricks, List<Iron> irons) {
+        instance = new PlayStageMgr(hero, enemyTanks, bricks, irons);
     }
 
     private PlayStageMgr(Hero hero, List<EnemyTank> enemyTanks, List<Brick> bricks, List<Iron> irons) {
@@ -54,6 +60,53 @@ public class PlayStageMgr {
         this.irons = irons;
     }
 
+    public boolean hasWinCurrentRound() {
+        final Hero hero = instance.hero;
+        if (Objects.isNull(hero)) {
+            winCurRound = false;
+        } else {
+            winCurRound = hero.getPrize() >= 30;
+        }
+        return winCurRound;
+    }
+
+    public void abortStage() {
+        this.winCurRound = false;
+        this.stopStage();
+    }
+
+    public void stopStage() {
+        roundPrize = hero.getPrize();
+        instance.markStopLogic();
+        log.info("clean round:{}", round);
+        instance.hero.setAlive(false);
+        // TODO clean
+        for (EnemyTank et : enemyTanks) {
+            et.setAbort(true);
+            et.setAlive(false);
+        }
+    }
+
+    public static void drawStopIgnore(Graphics g, ImageObserver observer) {
+        if (Objects.isNull(instance)) {
+            return;
+        }
+        instance.drawStop(g, observer);
+    }
+
+    public void drawStop(Graphics g, ImageObserver observer) {
+        g.setColor(Color.YELLOW);
+        if (winCurRound) {
+            g.drawImage(WinImgMgr.instance.curImg, 0, 0,
+                    WinImgMgr.instance.width, WinImgMgr.instance.height, observer);
+        } else {
+            g.drawImage(OverImgMgr.instance.curImg, 0, 0,
+                    OverImgMgr.instance.width, OverImgMgr.instance.height, observer);
+        }
+        g.drawString("您的总成绩为：" + roundPrize, 320, 500);
+    }
+
+    // FIXME
 //    public boolean ableToMove(Hero hero) {
 //        return ets.stream().allMatch(v -> TankTool.ablePass(hero, v))
 //                && bricks.stream().allMatch(v -> TankTool.ablePass(hero, v))

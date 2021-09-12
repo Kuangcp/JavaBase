@@ -441,7 +441,10 @@ public class EnemyTank extends Tank implements Runnable {
                 //判断坦克是否死亡
                 if (!this.isAlive()) {
                     //让坦克退出while即退出线程
-                    hero.addPrize(1);
+
+                    if (!abort) {
+                        hero.addPrize(1);
+                    }
                     break;
                 }
             } catch (Exception e) {
@@ -481,11 +484,7 @@ public class EnemyTank extends Tank implements Runnable {
 //						else this.direct = (int)(Math.random()*4);
                             if (min % 27 == 0)
                                 this.shotEnemy();
-                            try {
-                                Thread.sleep(50);
-                            } catch (Exception e) {
-                                log.error("", e);
-                            }
+                            TankTool.yieldMsTime(50);
                         }
 
                     }
@@ -524,11 +523,7 @@ public class EnemyTank extends Tank implements Runnable {
                             else break;
                             if (min % 27 == 0)
                                 this.shotEnemy();
-                            try {
-                                Thread.sleep(50);
-                            } catch (Exception e) {
-                                log.error("", e);
-                            }
+                            TankTool.yieldMsTime(50);
                         }
 
                     }
@@ -549,11 +544,8 @@ public class EnemyTank extends Tank implements Runnable {
 //						else continue;
                             if (min % 27 == 0)
                                 this.shotEnemy();
-                            try {
-                                Thread.sleep(50);
-                            } catch (Exception e) {
-                                log.error("", e);
-                            }
+
+                            TankTool.yieldMsTime(50);
                         }
 
 
@@ -566,7 +558,9 @@ public class EnemyTank extends Tank implements Runnable {
             //判断坦克是否死亡
             if (!this.isAlive()) {
                 //让坦克退出while即退出线程
-                hero.addPrize(1);
+                if (!abort) {
+                    hero.addPrize(1);
+                }
 
                 break;
             }

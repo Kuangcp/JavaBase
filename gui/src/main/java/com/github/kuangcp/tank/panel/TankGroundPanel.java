@@ -7,10 +7,8 @@ import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Iron;
 import com.github.kuangcp.tank.domain.Shot;
-import com.github.kuangcp.tank.resource.AvatarImgMgr;
 import com.github.kuangcp.tank.mgr.BombMgr;
-import com.github.kuangcp.tank.resource.OverImgMgr;
-import com.github.kuangcp.tank.resource.WinImgMgr;
+import com.github.kuangcp.tank.resource.AvatarImgMgr;
 import com.github.kuangcp.tank.thread.ExitFlagRunnable;
 import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.KeyListener;
@@ -54,6 +52,10 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
     private volatile boolean exit = false;
 
+    public TankGroundPanel() {
+
+    }
+
     public void exit() {
         this.exit = true;
     }
@@ -62,8 +64,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
      * 画板的构造函数 用来初始化对象
      * 多个敌方坦克应该用集合类，而且要考虑线程安全所以不能用ArrayList只能用Vector
      */
-    public void startNewStage() {
-//        log.info("start new Stage");
+    public void startNewRound() {
         //创建英雄坦克
         if (newStage) {//正常启动并创建坦克线程
             hero = new Hero(480, 500, 3);//坐标和步长和敌人坦克集合
@@ -175,12 +176,13 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
     @Override
     public void paint(Graphics g) {
-        /*画出坦克运动区域 */
         super.paint(g);
         if (PlayStageMgr.waitStart() || Objects.isNull(hero)) {
+            PlayStageMgr.drawStopIgnore(g, this);
             return;
         }
 
+        /*画出坦克运动区域 */
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0, 0, 760, 560);//填满一个黑色矩形，说明了是一整个JPanel在JFrame上的
         g.setColor(Color.green);
@@ -213,9 +215,10 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         g.setColor(Color.YELLOW);
         g.fillRect(200, 120, 40, 40);
         g.fillRect(560, 120, 40, 40);
-        /*画出头像*/
 
-        g.drawImage(AvatarImgMgr.instance.curImg, 380, 480, 60, 60, this);
+        /*画出头像*/
+        g.drawImage(AvatarImgMgr.instance.curImg, 380, 480,
+                AvatarImgMgr.instance.width, AvatarImgMgr.instance.height, this);
         /*画出主坦克*/
         if (hero.isAlive()) {
             for (EnemyTank et : enemyList) {
@@ -304,50 +307,6 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
             EnemyTank demon = enemyList.get(i);
             //存活再画出来
             if (demon.isAlive()) {
-                //坦克间的碰撞
-//				for(int k=0;k<ets.size();k++){
-////					demon.setWith(true);
-//					if(!Tool.Rush(demon, ets.get(k))){
-//						demon.setWith(false);
-//					}
-////					else{
-//					demon.setWith(true);
-////					}
-//				}
-//				for(int t=0;t<bricks.size();t++){
-//				    demon.setBri(true);
-//				    if(!Tool.XHinder(demon, bricks.get(t))){
-//					   demon.setWith(false);
-//					}
-//				    demon.setWith(true);
-//				}
-
-                //坦克和障碍物
-//				int count =0;
-//				for(int t=0;t<bricks.size();t++){
-////					demon.setBri(true);
-//					if(!Tool.XHinder(demon, bricks.get(t))){
-////						demon.setBri(false);
-//						count++;
-////						demon.setDirect(3-demon.getDirect());
-////						System.out.println("检测");
-//					}
-////					demon.setBri(true);
-////					if(count ==1){
-////					if(!demon.isBri()){
-//////						demon.setDirect(3-demon.getDirect());
-////						demon.setBri(true);
-////					}
-////					Timer timer = new Timer();
-////			        timer.schedule(new TimerTask() {
-////			            public void run() {
-////			                System.out.println("-------设定要指定任务--------");
-////			                demon.setBri(true);
-////			            }
-////			        }, 0, 300);
-//////					
-////				} 
-//				demon.setBri(true);
 
                 BombMgr.instance.checkBong(demon, hero.shotList);
 
@@ -369,16 +328,8 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
             }
         }
 
-        //游戏结束的画面
-        if (!hero.isAlive()) {
-            g.drawImage(OverImgMgr.instance.curImg, 0, 0, 760, 560, this);
-            g.drawString("您的总成绩为：" + hero.getPrize(), 320, 500);
-        }
-
-        //判断获胜
-        if (hero.getPrize() >= 40) {
-            g.drawImage(WinImgMgr.instance.curImg, 0, 0, 760, 560, this);
-            g.drawString("您的总成绩为：" + hero.getPrize(), 320, 500);
+        if (PlayStageMgr.instance.hasWinCurrentRound() || !hero.isAlive()) {
+            PlayStageMgr.instance.stopStage();
         }
     }
 
@@ -539,16 +490,10 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         int maxFPS = 160;
         long fpsTime = (long) ((1000.0 / maxFPS) * 1000000);
 
-        long now = System.nanoTime();
+        long now;
         //每隔100ms重绘
         while (!exit) {
             now = System.nanoTime();
-//            try {
-//                Thread.sleep(10);
-//                //里面的数字就是刷新时间的间隔 而且每当按下J键就会拉起MyPanel线程 相当于加快了刷新
-//            } catch (Exception e) {
-//                log.error("", e);
-//            }
 
             // 进行重绘
             this.repaint();

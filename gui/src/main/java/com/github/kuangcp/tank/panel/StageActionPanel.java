@@ -96,7 +96,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
             frame.firstStart = false;
             TankGroundPanel.newStage = false;
             Shot.setSpeed(8);
-            frame.remove(frame.jsp1);
+            frame.remove(frame.centerPanel);
 //				Saved s = new Saved(ets, hero, bricks, irons,ETS,myself);
 //				s.readAll();
             //实现一样的功能还省内存
@@ -120,7 +120,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
 
         // 重新设置线程池大小
         final ThreadPoolExecutor pool = (ThreadPoolExecutor) ExecutePool.shotPool;
-        final int poolSize = (int) Math.max(TankGroundPanel.getEnSize() * EnemyTank.maxLiveShot * 0.4, 10);
+        final int poolSize = (int) Math.max(TankGroundPanel.getEnSize() * EnemyTank.maxLiveShot * 0.6, 10);
         pool.setCorePoolSize(poolSize);
         pool.setMaximumPoolSize(poolSize);
 
@@ -130,21 +130,15 @@ public class StageActionPanel extends JPanel implements ActionListener {
 //        ExecutePool.shotScheduler = new FiberForkJoinScheduler("enemyShot", poolSize, null, false);
 
         if (Objects.nonNull(actionThread) && !actionThread.isInterrupted()) {
-            PlayStageMgr.instance.markStopLogic();
             log.info("clean last stage");
             actionThread.interrupt();
-            PlayStageMgr.instance.hero.setAlive(false);
-            // TODO clean
-            for (EnemyTank et : ets) {
-                et.setAlive(false);
-                et.setAbort(true);
-            }
+            PlayStageMgr.instance.abortStage();
         }
 
         frame.firstStart = false;
         TankGroundPanel.newStage = true;
         Shot.setSpeed(8);
-        frame.remove(frame.jsp1);
+        frame.remove(frame.centerPanel);
 
         log.info("start new stage frame thread, shot:{}", totalMaxShots);
         actionThread = new Thread(() -> {
@@ -154,7 +148,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
             }
             beginAudio = new Audio("./src/RE/GameBegin.wav");
 //        beginAudio.start();
-            frame.groundPanel.startNewStage();
+            frame.groundPanel.startNewRound();
         });
         actionThread.setName("actionThread");
         actionThread.start();//将画板线程开启

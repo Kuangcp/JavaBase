@@ -10,10 +10,11 @@ public class AvatarImgMgr extends AbstractImgListMgr {
 
     public static AvatarImgMgr instance = new AvatarImgMgr();
 
-    public String[] imgPathArr = new String[]{"/images/Me.jpg", "/images/Me2.jpg", "/images/Me3.jpg", "/images/Me4.jpg", "/images/Me5.jpg"};
+    public AvatarImgMgr() {
+        super.width = 60;
+        super.height = 60;
 
-    @Override
-    public String[] getImgPathArr() {
-        return imgPathArr;
+        super.imgPathArr = new String[]{"/images/Me.jpg", "/images/Me2.jpg", "/images/Me3.jpg", "/images/Me4.jpg",
+                "/images/Me5.jpg"};
     }
 }

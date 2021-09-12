@@ -10,10 +10,10 @@ public class WinImgMgr extends AbstractImgListMgr {
 
     public static WinImgMgr instance = new WinImgMgr();
 
-    public String[] imgPathArr = new String[]{"/images/Win2.jpg"};
+    public WinImgMgr() {
+        super.width = 760;
+        super.height = 650;
 
-    @Override
-    public String[] getImgPathArr() {
-        return imgPathArr;
+        super.imgPathArr = new String[]{"/images/Win2.jpg"};
     }
 }

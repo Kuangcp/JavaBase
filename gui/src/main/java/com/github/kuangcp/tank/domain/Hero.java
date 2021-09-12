@@ -18,7 +18,7 @@ public class Hero extends Tank {
     public Shot shot = null;//子弹
     public Graphics g; //画笔不可少
     private int prize = 0;//击敌个数
-    public int maxLiveShot = 8;//主坦克子弹线程存活的最大数
+    public int maxLiveShot = 80;//主坦克子弹线程存活的最大数
     int speed = 3;
 
     public int getLife() {
