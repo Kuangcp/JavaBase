@@ -3,7 +3,7 @@ package com.github.kuangcp.tank.mgr;
 import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.domain.Bomb;
 import com.github.kuangcp.tank.domain.Hero;
-import com.github.kuangcp.tank.domain.Shot;
+import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.domain.Tank;
 import com.github.kuangcp.tank.resource.AbstractImgListMgr;
 import lombok.extern.slf4j.Slf4j;
@@ -63,11 +63,11 @@ public class BombMgr extends AbstractImgListMgr {
     /**
      * 工具类-检测爆炸的函数
      */
-    public void checkBong(Tank tank, List<Shot> shots) {
-        shots.forEach(v -> this.checkBong(tank, v));
+    public void checkBong(Tank tank, List<Bullet> bullets) {
+        bullets.forEach(v -> this.checkBong(tank, v));
     }
 
-    private void checkBong(Tank t, Shot s) {
+    private void checkBong(Tank t, Bullet s) {
         if (!s.isLive) {
             return;
         }
@@ -90,10 +90,10 @@ public class BombMgr extends AbstractImgListMgr {
                     //创建一个炸弹，放入集合
                     Bomb b = new Bomb(t.getX() - 10, t.getY() - 15);//敌方的坐标
                     bombs.add(b);
+
+                    // 复活
                     if (t instanceof Hero) {
-                        t.setX(480);
-                        t.setY(500);
-                        t.setDirect(0);
+                        ((Hero) t).resurrect();
                     }
                 }
                 break;
@@ -111,10 +111,10 @@ public class BombMgr extends AbstractImgListMgr {
                     //创建一个炸弹，放入集合
                     Bomb b = new Bomb(t.getX() - 15, t.getY() - 10);//敌方的坐标
                     bombs.add(b);
+
+                    // 复活
                     if (t instanceof Hero) {
-                        t.setX(480);
-                        t.setY(500);
-                        t.setDirect(0);
+                        ((Hero) t).resurrect();
                     }
                 }
                 break;

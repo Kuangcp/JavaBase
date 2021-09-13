@@ -3,7 +3,7 @@ package com.github.kuangcp.tank.v2;
 
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
-import com.github.kuangcp.tank.domain.Shot;
+import com.github.kuangcp.tank.domain.Bullet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,11 +36,11 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         this.drawTank(hero.getX(), hero.getY(), g, hero.getDirect(), hero.getType());
 
         //从ss 这个子弹集合中 取出每颗子弹，并画出来
-        for (int i = 0; i < this.hero.shotList.size(); i++) {
-            Shot myShot = hero.shotList.get(i);
+        for (int i = 0; i < this.hero.bulletList.size(); i++) {
+            Bullet myBullet = hero.bulletList.get(i);
             //  以下代码只能画出一颗子弹 不完善
-            if (myShot != null) {
-                g.draw3DRect(hero.shot.sx, hero.shot.sy, 1, 1, false);
+            if (myBullet != null) {
+                g.draw3DRect(hero.bullet.sx, hero.bullet.sy, 1, 1, false);
             }
         }
 

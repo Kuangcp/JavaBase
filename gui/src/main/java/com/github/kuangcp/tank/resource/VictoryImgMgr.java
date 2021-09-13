@@ -6,11 +6,11 @@ import lombok.extern.slf4j.Slf4j;
  * @author https://github.com/kuangcp on 2021-09-13 01:13
  */
 @Slf4j
-public class WinImgMgr extends AbstractImgListMgr {
+public class VictoryImgMgr extends AbstractImgListMgr {
 
-    public static WinImgMgr instance = new WinImgMgr();
+    public static VictoryImgMgr instance = new VictoryImgMgr();
 
-    public WinImgMgr() {
+    public VictoryImgMgr() {
         super.width = 760;
         super.height = 650;
 

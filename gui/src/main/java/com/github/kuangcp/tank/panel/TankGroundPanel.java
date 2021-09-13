@@ -6,7 +6,7 @@ import com.github.kuangcp.tank.domain.Brick;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Iron;
-import com.github.kuangcp.tank.domain.Shot;
+import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.mgr.BombMgr;
 import com.github.kuangcp.tank.resource.AvatarImgMgr;
 import com.github.kuangcp.tank.thread.ExitFlagRunnable;
@@ -38,7 +38,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     public KeyListener keyListener;
     public static boolean newStage = true;
     // 敌人的数量
-    public static int enSize = 9;
+    public static int enSize = 1;
     //定义一个 泛型的集合ets 表示敌人坦克集合
     public List<EnemyTank> enemyList = Collections.synchronizedList(new ArrayList<>());
 
@@ -125,6 +125,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                 ett = new EnemyTank(enemyTankMap[i][0], enemyTankMap[i][1], 2, i % 4);
                 ett.SetInfo(hero, enemyList, bricks, irons);
                 Thread t = new Thread(ett);
+                // TODO 改造成一个线程或者少数线程 是否使用时间轮
                 t.setName("enemyThreadF-" + ett.id);
                 t.start();
                 //坦克加入集合
@@ -187,7 +188,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         g.fillRect(0, 0, 760, 560);//填满一个黑色矩形，说明了是一整个JPanel在JFrame上的
         g.setColor(Color.green);
         g.drawRect(20, 20, 720, 520);
-        Shot myShot;
+        Bullet myBullet;
 
         /*画出障碍物__砖__ 铁__*/
 
@@ -222,7 +223,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         /*画出主坦克*/
         if (hero.isAlive()) {
             for (EnemyTank et : enemyList) {
-                BombMgr.instance.checkBong(hero, et.shotList);
+                BombMgr.instance.checkBong(hero, et.bulletList);
             }
 
             this.drawTank(hero.getX(), hero.getY(), g, hero.getDirect(), hero.getType());
@@ -230,50 +231,50 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
         // 画出自己的子弹画子弹是可以封装成一个方法的
         // 从ss 这个子弹集合中 取出每颗子弹，并画出来
-        for (int i = 0; i < hero.shotList.size(); i++) {
-            myShot = hero.shotList.get(i);
+        for (int i = 0; i < hero.bulletList.size(); i++) {
+            myBullet = hero.bulletList.get(i);
             for (Brick brick : bricks) {
-                TankTool.judgeHint(myShot, brick);
+                TankTool.judgeHint(myBullet, brick);
             }
             for (Iron iron : irons) {
-                TankTool.judgeHint(myShot, iron);
+                TankTool.judgeHint(myBullet, iron);
             }
-            if (myShot.sx < 440 && myShot.sx > 380 && myShot.sy < 540 && myShot.sy > 480) {
-                myShot.isLive = false;
+            if (myBullet.sx < 440 && myBullet.sx > 380 && myBullet.sy < 540 && myBullet.sy > 480) {
+                myBullet.isLive = false;
                 hero.setAlive(false);
             }
-            if (hero.shotList.get(i) != null && hero.shotList.get(i).isLive) {
+            if (hero.bulletList.get(i) != null && hero.bulletList.get(i).isLive) {
                 g.setColor(Color.YELLOW);
-                g.draw3DRect(myShot.sx, myShot.sy, 3, 3, false);
+                g.draw3DRect(myBullet.sx, myBullet.sy, 3, 3, false);
             }
 
             //子弹线程死了 就要把它从集合中删除
-            if (!myShot.isLive) {
-                hero.shotList.remove(myShot);
+            if (!myBullet.isLive) {
+                hero.bulletList.remove(myBullet);
             }
         }
 
         /*敌人子弹*/
         for (EnemyTank et : enemyList) {
-            for (int i = 0; i < et.shotList.size(); i++) {
-                myShot = et.shotList.get(i);
+            for (int i = 0; i < et.bulletList.size(); i++) {
+                myBullet = et.bulletList.get(i);
                 for (Brick brick : bricks) {
-                    TankTool.judgeHint(myShot, brick);
+                    TankTool.judgeHint(myBullet, brick);
                 }
                 for (Iron iron : irons) {
-                    TankTool.judgeHint(myShot, iron);
+                    TankTool.judgeHint(myBullet, iron);
                 }
-                if (myShot.sx < 440 && myShot.sx > 380 && myShot.sy < 540 && myShot.sy > 480) {
-                    myShot.isLive = false;
+                if (myBullet.sx < 440 && myBullet.sx > 380 && myBullet.sy < 540 && myBullet.sy > 480) {
+                    myBullet.isLive = false;
                     hero.setAlive(false);
                 }
-                if (et.shotList.get(i) != null && et.shotList.get(i).isLive) {
+                if (et.bulletList.get(i) != null && et.bulletList.get(i).isLive) {
                     g.setColor(Color.cyan);
-                    g.draw3DRect(myShot.sx, myShot.sy, 1, 1, false);
+                    g.draw3DRect(myBullet.sx, myBullet.sy, 1, 1, false);
 
                 }
-                if (!myShot.isLive) {
-                    et.shotList.remove(myShot);
+                if (!myBullet.isLive) {
+                    et.bulletList.remove(myBullet);
                 }
             }
         }
@@ -282,16 +283,18 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
         /*画出敌人坦克*/
         //坦克少于5个就自动添加4个
-        if (enemyList.size() < 5) {
-            for (int i = 0; i < 4; i++) {
-                EnemyTank d = new EnemyTank(20 + (int) (Math.random() * 400), 20 + (int) (Math.random() * 300), 2, i % 4);
-                d.SetInfo(hero, enemyList, bricks, irons);
-                Thread fillThread = new Thread(d);
-                fillThread.setName("fillEnemy" + d.id);
-                fillThread.start();
-                enemyList.add(d);
-            }
-        }
+//        if (enemyList.size() < 5) {
+//            for (int i = 0; i < 4; i++) {
+//                EnemyTank d = new EnemyTank(20 + (int) (Math.random() * 400), 20 + (int) (Math.random() * 300), 2, i % 4);
+//                d.SetInfo(hero, enemyList, bricks, irons);
+//                Thread fillThread = new Thread(d);
+//                fillThread.setName("fillEnemy" + d.id);
+//                fillThread.start();
+//                enemyList.add(d);
+//            }
+//        }
+
+
 //		for(int i=0;i<ets.size();i++){
 //			Demons s = ets.get(i);
 //			if(s.getisLive()){
@@ -308,10 +311,13 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
             //存活再画出来
             if (demon.isAlive()) {
 
-                BombMgr.instance.checkBong(demon, hero.shotList);
+                BombMgr.instance.checkBong(demon, hero.bulletList);
 
                 this.drawTank(demon.getX(), demon.getY(), g, demon.getDirect(), demon.getType());
             } else {
+                // TODO 移除 延迟删除逻辑
+//                enemyList.remove(demon);
+
                 // 延迟删除 敌人和子弹
                 if (demon.delayRemove) {
                     continue;

@@ -3,7 +3,7 @@ package com.github.kuangcp.tank.util;
 import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.domain.Brick;
 import com.github.kuangcp.tank.domain.Hinder;
-import com.github.kuangcp.tank.domain.Shot;
+import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.domain.Tank;
 import lombok.extern.slf4j.Slf4j;
 
@@ -212,7 +212,7 @@ public class TankTool {
     /**
      * 子弹和障碍物 碰撞监测
      */
-    public static void judgeHint(Shot s, Hinder h) {
+    public static void judgeHint(Bullet s, Hinder h) {
         if (s.sx >= h.getHx() - 1 && s.sx <= h.getHx() + 20
                 && s.sy >= h.getHy() - 1 && s.sy <= h.getHy() + 10) {
             s.isLive = false;

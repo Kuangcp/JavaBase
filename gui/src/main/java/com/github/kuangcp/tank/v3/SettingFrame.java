@@ -2,7 +2,7 @@ package com.github.kuangcp.tank.v3;
 
 import com.github.kuangcp.tank.constant.SettingCommand;
 import com.github.kuangcp.tank.domain.Hero;
-import com.github.kuangcp.tank.domain.Shot;
+import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.panel.TankGroundPanel;
 import lombok.extern.slf4j.Slf4j;
 
@@ -94,10 +94,10 @@ public class SettingFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent event) {
         if (event.getActionCommand().equals(SettingCommand.SHOT_SPEED_INCREMENT)) {
-            Shot.setSpeed(Shot.getSpeed() + 1);
+            Bullet.setSpeed(Bullet.getSpeed() + 1);
         }
         if (event.getActionCommand().equals(SettingCommand.SHOT_SPEED_DECREMENT)) {
-            Shot.setSpeed(Shot.getSpeed() - 1);
+            Bullet.setSpeed(Bullet.getSpeed() - 1);
         }
 
         if (event.getActionCommand().equals(SettingCommand.TANK_SPEED_INCREMENT)) {

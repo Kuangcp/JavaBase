@@ -13,8 +13,8 @@ public class ResourceMgr {
         log.info("start load resource");
         // image
         BombMgr.instance.loadImg();
-        OverImgMgr.instance.loadImg();
+        DefeatImgMgr.instance.loadImg();
         AvatarImgMgr.instance.loadImg();
-        WinImgMgr.instance.loadImg();
+        VictoryImgMgr.instance.loadImg();
     }
 }

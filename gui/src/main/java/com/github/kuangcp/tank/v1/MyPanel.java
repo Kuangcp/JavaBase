@@ -36,8 +36,8 @@ class MyPanel extends JPanel implements KeyListener {
         //调用函数绘画出主坦克
         this.drawTank(hero.getX(), hero.getY(), g, hero.getDirect(), hero.getType());
         //画出子弹
-        if (hero.shot != null) {
-            g.draw3DRect(hero.shot.sx, hero.shot.sy, 1, 1, false);
+        if (hero.bullet != null) {
+            g.draw3DRect(hero.bullet.sx, hero.bullet.sy, 1, 1, false);
         }
 
         //画出敌人坦克

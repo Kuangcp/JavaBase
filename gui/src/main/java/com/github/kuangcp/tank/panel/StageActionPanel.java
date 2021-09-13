@@ -7,7 +7,7 @@ import com.github.kuangcp.tank.domain.Brick;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Iron;
-import com.github.kuangcp.tank.domain.Shot;
+import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.util.Audio;
 import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.Saved;
@@ -56,7 +56,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
         if (ae.getActionCommand().equals("暂停")) {
             System.out.println("暂停");
             frame.groundPanel.hero.setSpeed(0);
-            Shot.setSpeed(0);
+            Bullet.setSpeed(0);
             for (EnemyTank et : ets) {
                 et.setSpeed(0);
             }
@@ -65,7 +65,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
         if (ae.getActionCommand().equals("继续")) {
             System.out.println("继续");
             frame.groundPanel.hero.setSpeed(3);
-            Shot.setSpeed(8);
+            Bullet.setSpeed(8);
             for (EnemyTank et : ets) {
                 et.setSpeed(2);
             }
@@ -95,7 +95,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
             System.out.println(StageCommand.START);
             frame.firstStart = false;
             TankGroundPanel.newStage = false;
-            Shot.setSpeed(8);
+            Bullet.setSpeed(8);
             frame.remove(frame.centerPanel);
 //				Saved s = new Saved(ets, hero, bricks, irons,ETS,myself);
 //				s.readAll();
@@ -137,7 +137,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
 
         frame.firstStart = false;
         TankGroundPanel.newStage = true;
-        Shot.setSpeed(8);
+        Bullet.setSpeed(8);
         frame.remove(frame.centerPanel);
 
         log.info("start new stage frame thread, shot:{}", totalMaxShots);

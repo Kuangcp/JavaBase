@@ -4,8 +4,8 @@ import com.github.kuangcp.tank.domain.Brick;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Iron;
-import com.github.kuangcp.tank.resource.OverImgMgr;
-import com.github.kuangcp.tank.resource.WinImgMgr;
+import com.github.kuangcp.tank.resource.DefeatImgMgr;
+import com.github.kuangcp.tank.resource.VictoryImgMgr;
 import com.github.kuangcp.tank.util.TankTool;
 import lombok.extern.slf4j.Slf4j;
 
@@ -97,11 +97,11 @@ public class PlayStageMgr {
     public void drawStop(Graphics g, ImageObserver observer) {
         g.setColor(Color.YELLOW);
         if (winCurRound) {
-            g.drawImage(WinImgMgr.instance.curImg, 0, 0,
-                    WinImgMgr.instance.width, WinImgMgr.instance.height, observer);
+            g.drawImage(VictoryImgMgr.instance.curImg, 0, 0,
+                    VictoryImgMgr.instance.width, VictoryImgMgr.instance.height, observer);
         } else {
-            g.drawImage(OverImgMgr.instance.curImg, 0, 0,
-                    OverImgMgr.instance.width, OverImgMgr.instance.height, observer);
+            g.drawImage(DefeatImgMgr.instance.curImg, 0, 0,
+                    DefeatImgMgr.instance.width, DefeatImgMgr.instance.height, observer);
         }
         g.drawString("您的总成绩为：" + roundPrize, 320, 500);
     }

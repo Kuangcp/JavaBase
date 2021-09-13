@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
  * 子弹类  对象做成了线程
  */
 @Slf4j
-public class Shot implements Runnable {
+public class Bullet implements Runnable {
 
     public int sx;
     public int sy;
@@ -23,7 +23,7 @@ public class Shot implements Runnable {
         speed = s;
     }
 
-    public Shot(int sx, int sy, int direct) {
+    public Bullet(int sx, int sy, int direct) {
         this.sx = sx;
         this.sy = sy;
         this.direct = direct;
@@ -59,5 +59,6 @@ public class Shot implements Runnable {
                 this.isLive = false;
             }
         } while (this.isLive);
+        log.info("shot die");
     }
 }
