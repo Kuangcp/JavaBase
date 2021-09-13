@@ -1,10 +1,12 @@
 package com.github.kuangcp.tank.domain;
 
+import java.awt.*;
+
 /**
  * 最起初的坦克类
  * 往后有继承
  */
-public class Tank {
+public abstract class Tank {
     int x;          // 坦克中心的横坐标
     int y;          // 坦克中心的纵坐标
     int direct = 0;   // 初始方向
@@ -97,10 +99,11 @@ public class Tank {
         this.y = y;
     }
 
-    //  构造器
     public Tank(int x, int y, int speed) {
         this.x = x;
         this.y = y;
         this.speed = speed;
     }
+
+    public abstract void drawSelf(Graphics g);
 }

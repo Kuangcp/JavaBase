@@ -10,8 +10,6 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class TankGameV1 extends JFrame {
 
-    MyPanel mp;
-
     @SuppressWarnings("unused")
     public static void main(String[] args) {
         TankGameV1 Tank = new TankGameV1();
@@ -19,15 +17,12 @@ public class TankGameV1 extends JFrame {
 
     //最外层JFrame的构造函数
     public TankGameV1() {
-        mp = new MyPanel();
-
-        this.add(mp);
-        //注册键盘监听
-        //下面的语句翻译为 ：当前类的监；听者是mp
-        this.addKeyListener(mp);
+        MainPanelV1 panel = new MainPanelV1();
+        this.add(panel);
+        this.addKeyListener(panel);
 
         this.setLocation(900, 200);
-        this.setSize(500, 400);
+        this.setSize(405, 333);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }

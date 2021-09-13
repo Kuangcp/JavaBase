@@ -8,6 +8,7 @@ import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -568,4 +569,8 @@ public class EnemyTank extends Tank implements Runnable {
         }
     }
 
+    @Override
+    public void drawSelf(Graphics g) {
+
+    }
 }

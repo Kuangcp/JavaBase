@@ -352,8 +352,6 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                 break;
             case 0:
                 g.setColor(Color.yellow);
-                hero.g = g;
-
                 break;
         }
 

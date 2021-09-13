@@ -4,6 +4,7 @@ package com.github.kuangcp.tank.v2;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Bullet;
+import com.github.kuangcp.tank.util.TankTool;
 
 import javax.swing.*;
 import java.awt.*;
@@ -67,7 +68,6 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                 break;
             case 0:
                 g.setColor(Color.yellow);
-                hero.g = g;
                 break;
         }
 
@@ -173,11 +173,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     public void run() {
         //每隔100ms重绘
         while (true) {
-            try {
-                Thread.sleep(100);
-            } catch (Exception e) {
-            }
-
+            TankTool.yieldMsTime(7);
             //进行重绘
             this.repaint();
         }
