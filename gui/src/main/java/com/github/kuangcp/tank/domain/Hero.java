@@ -3,11 +3,15 @@ package com.github.kuangcp.tank.domain;
 
 import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.util.ExecutePool;
+import com.github.kuangcp.tank.v3.PlayStageMgr;
+import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadLocalRandom;
 
+@Slf4j
 public class Hero extends Tank {
 
     //子弹集合
@@ -21,6 +25,7 @@ public class Hero extends Tank {
     public Bullet bullet = null;//子弹
     private int prize = 0;//击敌个数
     public int maxLiveShot = 7;//主坦克子弹线程存活的最大数
+    private long lastDieMs = 0;
 
     public int getLife() {
         return life;
@@ -61,7 +66,35 @@ public class Hero extends Tank {
         this.shotExecutePool = ExecutePool.buildFixedPool("heroShot", maxLiveShot);
     }
 
+    /**
+     * 画出坦克的函数 XY是坦克中心的坐标，不是画图参照点
+     */
+    @Override
+    public void drawSelf(Graphics g) {
+        g.setColor(Color.yellow);
+        if (this.isInvincible()) {
+            g.setColor(Color.cyan);
+        }
+        super.drawSelf(g);
+    }
+
+    public boolean isInvincible() {
+        // 复活 无敌
+        if (System.currentTimeMillis() - this.lastDieMs < PlayStageMgr.getInvincibleMs()) {
+            return true;
+        }
+        // TODO 道具 无敌
+        return false;
+    }
+
     public void resurrect() {
+        this.lastDieMs = System.currentTimeMillis();
+
+        // 1/10 概率原地复活
+        if (ThreadLocalRandom.current().nextInt(10) == 0) {
+            return;
+        }
+
         this.setX(this.originX);
         this.setY(this.originY);
         this.setDirect(DirectType.UP);
@@ -115,16 +148,6 @@ public class Hero extends Tank {
     public void moveRight() {
         this.x += this.speed;
     }
-
-    /**
-     * 画出坦克的函数 XY是坦克中心的坐标，不是画图参照点
-     */
-    @Override
-    public void drawSelf(Graphics g) {
-        g.setColor(Color.yellow);
-        super.drawSelf(g);
-    }
-
 
     @Override
     public String toString() {

@@ -13,7 +13,7 @@ public class Bullet implements Runnable {
     public int sy;
     public int direct;
     public static int speed = 3;//如果改动要记得按钮事件里也要改
-    public boolean isLive = true;//是否还活着
+    public boolean alive = true;//是否还活着
 
     public static int getSpeed() {
         return speed;
@@ -52,13 +52,13 @@ public class Bullet implements Runnable {
 
             //判断子弹是否碰到边缘
             if (sx < 20 || sx > 740 || sy < 20 || sy > 540) {
-                this.isLive = false;
+                this.alive = false;
             }
 
             if (sx < 440 && sx > 380 && sy < 540 && sy > 480) {
-                this.isLive = false;
+                this.alive = false;
             }
-        } while (this.isLive);
-        log.info("shot die");
+        } while (this.alive);
+//        log.info("bullet die");
     }
 }

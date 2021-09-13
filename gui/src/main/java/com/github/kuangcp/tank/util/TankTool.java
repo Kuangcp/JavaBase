@@ -215,7 +215,7 @@ public class TankTool {
     public static void judgeHint(Bullet s, Hinder h) {
         if (s.sx >= h.getHx() - 1 && s.sx <= h.getHx() + 20
                 && s.sy >= h.getHy() - 1 && s.sy <= h.getHy() + 10) {
-            s.isLive = false;
+            s.alive = false;
 
             if (h instanceof Brick) {
                 h.setAlive(false);

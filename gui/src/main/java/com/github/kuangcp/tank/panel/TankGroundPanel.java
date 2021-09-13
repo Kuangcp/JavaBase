@@ -239,16 +239,16 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                 TankTool.judgeHint(myBullet, iron);
             }
             if (myBullet.sx < 440 && myBullet.sx > 380 && myBullet.sy < 540 && myBullet.sy > 480) {
-                myBullet.isLive = false;
+                myBullet.alive = false;
                 hero.setAlive(false);
             }
-            if (hero.bulletList.get(i) != null && hero.bulletList.get(i).isLive) {
+            if (hero.bulletList.get(i) != null && hero.bulletList.get(i).alive) {
                 g.setColor(Color.YELLOW);
                 g.draw3DRect(myBullet.sx, myBullet.sy, 3, 3, false);
             }
 
             //子弹线程死了 就要把它从集合中删除
-            if (!myBullet.isLive) {
+            if (!myBullet.alive) {
                 hero.bulletList.remove(myBullet);
             }
         }
@@ -264,15 +264,15 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                     TankTool.judgeHint(myBullet, iron);
                 }
                 if (myBullet.sx < 440 && myBullet.sx > 380 && myBullet.sy < 540 && myBullet.sy > 480) {
-                    myBullet.isLive = false;
+                    myBullet.alive = false;
                     hero.setAlive(false);
                 }
-                if (et.bulletList.get(i) != null && et.bulletList.get(i).isLive) {
+                if (et.bulletList.get(i) != null && et.bulletList.get(i).alive) {
                     g.setColor(Color.cyan);
                     g.draw3DRect(myBullet.sx, myBullet.sy, 1, 1, false);
 
                 }
-                if (!myBullet.isLive) {
+                if (!myBullet.alive) {
                     et.bulletList.remove(myBullet);
                 }
             }

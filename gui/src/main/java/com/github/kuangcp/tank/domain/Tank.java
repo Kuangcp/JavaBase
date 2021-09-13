@@ -1,6 +1,7 @@
 package com.github.kuangcp.tank.domain;
 
 import com.github.kuangcp.tank.constant.DirectType;
+import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 
@@ -8,6 +9,7 @@ import java.awt.*;
  * 最起初的坦克类
  * 往后有继承
  */
+@Slf4j
 public abstract class Tank {
     int x;          // 坦克中心的横坐标
     int y;          // 坦克中心的纵坐标
@@ -27,6 +29,11 @@ public abstract class Tank {
 
     public void setLife(int life) {
         this.life = life;
+    }
+
+    public void addLife(int delta){
+        log.info("delta={}", delta);
+        this.life += delta;
     }
 
     public boolean isAbort() {

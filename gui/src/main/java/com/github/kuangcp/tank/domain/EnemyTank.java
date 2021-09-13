@@ -427,11 +427,11 @@ public class EnemyTank extends Tank implements Runnable {
 //        actionModeRun();
         run2();
 
-        log.info("enemy die");
+//        log.info("enemy die");
 
         if (this.isAbort()) {
             for (Bullet d : this.bulletList) {
-                d.isLive = false;
+                d.alive = false;
             }
         }
     }

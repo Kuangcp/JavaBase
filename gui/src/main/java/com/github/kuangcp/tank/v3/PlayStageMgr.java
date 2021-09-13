@@ -28,10 +28,18 @@ public class PlayStageMgr {
     public int roundPrize = 0;
 
     static int round = 0;
+
+    // 游戏参数 配置
     /**
      * 敌人的数量
      */
-    static int enemySize = 14;
+    static int enemySize = 36;
+    /**
+     * 无敌状态 时间
+     */
+    static long invincibleMs = 3000L;
+
+    // 场景 上下文
     public List<EnemyTank> enemyTanks;
     public List<Brick> bricks; // 砖
     public List<Iron> irons; // 铁
@@ -131,5 +139,9 @@ public class PlayStageMgr {
 
     public static void addEnemySize(int delta) {
         PlayStageMgr.enemySize += delta;
+    }
+
+    public static long getInvincibleMs() {
+        return invincibleMs;
     }
 }

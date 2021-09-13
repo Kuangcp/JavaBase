@@ -107,15 +107,15 @@ public class SettingFrame extends JFrame implements ActionListener {
         }
 
         if (event.getActionCommand().equals(SettingCommand.TANK_HP_INCREMENT)) {
-            this.hero.setLife(this.hero.getLife() + 1);
+            this.hero.addLife(1);
         }
         if (event.getActionCommand().equals(SettingCommand.TANK_HP_DECREMENT)) {
-            this.hero.setLife(this.hero.getLife() - 1);
+            this.hero.addLife(-1);
         }
 
         if (event.getActionCommand().equals(SettingCommand.DEMONS_COUNT_INCREMENT)) {
             PlayStageMgr.addEnemySize(1);
-            log.info("{}",  PlayStageMgr.getEnemySize());
+            log.info("{}", PlayStageMgr.getEnemySize());
         }
         if (event.getActionCommand().equals(SettingCommand.DEMONS_COUNT_DECREMENT)) {
             PlayStageMgr.addEnemySize(-1);

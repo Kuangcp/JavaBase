@@ -2,8 +2,8 @@ package com.github.kuangcp.tank.mgr;
 
 import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.domain.Bomb;
-import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Bullet;
+import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Tank;
 import com.github.kuangcp.tank.resource.AbstractImgListMgr;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +13,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author https://github.com/kuangcp on 2021-09-11 16:28
@@ -36,7 +37,6 @@ public class BombMgr extends AbstractImgListMgr {
         for (int i = 0; i < bombs.size(); i++) {
             //取出炸弹
             Bomb b = bombs.get(i);
-//			System.out.println("size = "+bombs.size());
             if (b.life > 10) {
                 g.drawImage(BombMgr.instance.imgArr[0], b.bx, b.by, 30, 30, panel);
 //				if(rr){
@@ -56,7 +56,6 @@ public class BombMgr extends AbstractImgListMgr {
             if (b.life == 0) {
                 bombs.remove(b);
             }
-//			System.out.println("size = "+bombs.size());
         }
     }
 
@@ -67,58 +66,61 @@ public class BombMgr extends AbstractImgListMgr {
         bullets.forEach(v -> this.checkBong(tank, v));
     }
 
-    private void checkBong(Tank t, Bullet s) {
-        if (!s.isLive) {
+    private void checkBong(Tank tank, Bullet bullet) {
+        if (!bullet.alive) {
             return;
         }
 
-        switch (t.getDirect()) {
+        switch (tank.getDirect()) {
             case DirectType.UP:
             case DirectType.DOWN:
-                if (t.getX() - 10 <= s.sx &&
-                        t.getX() + 10 >= s.sx &&
-                        t.getY() - 15 <= s.sy &&
-                        t.getY() + 15 >= s.sy) {
-                    s.isLive = false;
+                if (tank.getX() - 10 <= bullet.sx &&
+                        tank.getX() + 10 >= bullet.sx &&
+                        tank.getY() - 15 <= bullet.sy &&
+                        tank.getY() + 15 >= bullet.sy) {
+                    bullet.alive = false;
+                    final int bx = tank.getX() - tank.getHalfWidth();
+                    final int by = tank.getY() - tank.getHalfHeight();
 
-                    t.setLife(t.getLife() - 1);
-
-                    if (t.getLife() <= 0) {
-                        t.setAlive(false);
-                    }
-
-                    //创建一个炸弹，放入集合
-                    Bomb b = new Bomb(t.getX() - 10, t.getY() - 15);//敌方的坐标
-                    bombs.add(b);
-
-                    // 复活
-                    if (t instanceof Hero) {
-                        ((Hero) t).resurrect();
-                    }
+                    this.handleBombAndTank(tank, bx, by);
                 }
                 break;
             case DirectType.LEFT:
             case DirectType.RIGHT:
-                if (t.getX() - 15 <= s.sx &&
-                        t.getX() + 15 >= s.sx &&
-                        t.getY() - 10 <= s.sy &&
-                        t.getY() + 10 >= s.sy) {
-                    s.isLive = false;
-                    t.setLife(t.getLife() - 1);
+                if (tank.getX() - 15 <= bullet.sx &&
+                        tank.getX() + 15 >= bullet.sx &&
+                        tank.getY() - 10 <= bullet.sy &&
+                        tank.getY() + 10 >= bullet.sy) {
+                    bullet.alive = false;
+                    final int bx = tank.getX() - tank.getHalfHeight();
+                    final int by = tank.getY() - tank.getHalfWidth();
 
-                    if (t.getLife() == 0) t.setAlive(false);
-
-                    //创建一个炸弹，放入集合
-                    Bomb b = new Bomb(t.getX() - 15, t.getY() - 10);//敌方的坐标
-                    bombs.add(b);
-
-                    // 复活
-                    if (t instanceof Hero) {
-                        ((Hero) t).resurrect();
-                    }
+                    this.handleBombAndTank(tank, bx, by);
+                    break;
                 }
                 break;
         }
     }
 
+    private void handleBombAndTank(Tank tank, int bx, int by) {
+        // 复活 或 无敌
+        Hero hero = null;
+        if (tank instanceof Hero) {
+            hero = (Hero) tank;
+            if (hero.isInvincible()) {
+                return;
+            }
+        }
+
+        tank.addLife(-1);
+        if (tank.getLife() <= 0) {
+            tank.setAlive(false);
+        }
+
+        bombs.add(new Bomb(bx, by));
+
+        if (Objects.nonNull(hero)) {
+            hero.resurrect();
+        }
+    }
 }
