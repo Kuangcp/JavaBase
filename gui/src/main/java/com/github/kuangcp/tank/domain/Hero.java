@@ -16,7 +16,7 @@ public class Hero extends Tank {
     private long lastShotMs = 0;
     private long shotCDMs = 268;
 
-    private int originX, originY;
+    private final int originX, originY;
 
     public Bullet bullet = null;//子弹
     private int prize = 0;//击敌个数

@@ -11,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -42,6 +44,20 @@ public class EnemyTank extends Tank implements Runnable {
     boolean bri = true;
     boolean ableMove = true;
 
+    /**
+     * 随机生成 的 最大生命值
+     */
+    private static final int maxLife = 5;
+    private static final Map<Integer, Color> colorMap = new HashMap<>(maxLife);
+
+    static {
+        colorMap.put(1, Color.WHITE);
+        colorMap.put(2, new Color(93, 217, 41));
+        colorMap.put(3, new Color(34, 155, 234));
+        colorMap.put(4, new Color(155, 62, 202));
+        colorMap.put(5, new Color(240, 57, 23));
+    }
+
     //继承了属性，即使直接使用父类的构造器，构造器也一定要显式声明
     public EnemyTank(int x, int y, int speed, int direct) {
         super(x, y, speed);
@@ -49,9 +65,15 @@ public class EnemyTank extends Tank implements Runnable {
         this.direct = direct;
         this.speed = speed;
         this.alive = true;
-        this.life = ThreadLocalRandom.current().nextInt(3) + 1;
+        this.life = ThreadLocalRandom.current().nextInt(maxLife) + 1;
         this.id = counter.addAndGet(1);
 //        log.info("create new Demons. {}", id);
+    }
+
+    @Override
+    public void drawSelf(Graphics g) {
+        g.setColor(colorMap.getOrDefault(this.life, Color.cyan));
+        super.drawSelf(g);
     }
 
     public void SetInfo(Hero hero, List<EnemyTank> ets, List<Brick> bricks, List<Iron> irons) {
@@ -567,11 +589,5 @@ public class EnemyTank extends Tank implements Runnable {
                 break;
             }
         }
-    }
-
-    @Override
-    public void drawSelf(Graphics g) {
-        g.setColor(Color.cyan);
-        super.drawSelf(g);
     }
 }

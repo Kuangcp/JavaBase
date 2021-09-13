@@ -28,6 +28,10 @@ public class PlayStageMgr {
     public int roundPrize = 0;
 
     static int round = 0;
+    /**
+     * 敌人的数量
+     */
+    static int enemySize = 14;
     public List<EnemyTank> enemyTanks;
     public List<Brick> bricks; // 砖
     public List<Iron> irons; // 铁
@@ -115,5 +119,17 @@ public class PlayStageMgr {
 
     public boolean ableToMove(Hero hero) {
         return enemyTanks.stream().allMatch(v -> TankTool.ablePass(hero, v));
+    }
+
+    public static int getEnemySize() {
+        return enemySize;
+    }
+
+    public static void setEnemySize(int enemySize) {
+        PlayStageMgr.enemySize = enemySize;
+    }
+
+    public static void addEnemySize(int delta) {
+        PlayStageMgr.enemySize += delta;
     }
 }

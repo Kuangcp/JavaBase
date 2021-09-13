@@ -116,11 +116,11 @@ public class StageActionPanel extends JPanel implements ActionListener {
 
     private void startNewStage() {
 
-        final int totalMaxShots = TankGroundPanel.getEnSize() * EnemyTank.maxLiveShot;
+        final int totalMaxShots = PlayStageMgr.getEnemySize() * EnemyTank.maxLiveShot;
 
         // 重新设置线程池大小
         final ThreadPoolExecutor pool = (ThreadPoolExecutor) ExecutePool.shotPool;
-        final int poolSize = (int) Math.max(TankGroundPanel.getEnSize() * EnemyTank.maxLiveShot * 0.6, 10);
+        final int poolSize = (int) Math.max(PlayStageMgr.getEnemySize() * EnemyTank.maxLiveShot * 0.6, 10);
         pool.setCorePoolSize(poolSize);
         pool.setMaximumPoolSize(poolSize);
 

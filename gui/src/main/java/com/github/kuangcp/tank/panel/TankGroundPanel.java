@@ -37,8 +37,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     public volatile Hero hero;
     public KeyListener keyListener;
     public static boolean newStage = true;
-    // 敌人的数量
-    public static int enSize = 1;
+
     //定义一个 泛型的集合ets 表示敌人坦克集合
     public List<EnemyTank> enemyList = Collections.synchronizedList(new ArrayList<>());
 
@@ -87,7 +86,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         // 创建 敌人的坦克
         EnemyTank ett = null;
         if (newStage) {//正常启动并创建坦克线程
-            for (int i = 0; i < enSize; i++) {
+            for (int i = 0; i < PlayStageMgr.getEnemySize(); i++) {
                 //在四个随机区域产生坦克
                 switch ((int) (Math.random() * 4)) {
                     case 0:
@@ -435,13 +434,5 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
         // clean listener
         keyListener.exit();
-    }
-
-    public static int getEnSize() {
-        return enSize;
-    }
-
-    public static void setEnSize(int enSize) {
-        TankGroundPanel.enSize = enSize;
     }
 }

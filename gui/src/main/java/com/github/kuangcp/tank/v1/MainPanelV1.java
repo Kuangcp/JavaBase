@@ -2,6 +2,7 @@ package com.github.kuangcp.tank.v1;
 
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
+import com.github.kuangcp.tank.domain.Tank;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -38,6 +39,43 @@ class MainPanelV1 extends JPanel implements KeyListener {
 
         //调用函数绘画出主坦克
         hero.drawSelf(g);
+
+        new Tank(50, 20, 0) {
+            @Override
+            public void drawSelf(Graphics g) {
+                g.setColor(Color.WHITE);
+                super.drawSelf(g);
+            }
+        }.drawSelf(g);
+        new Tank(80, 20, 0) {
+            @Override
+            public void drawSelf(Graphics g) {
+                g.setColor(new Color(93, 217, 41));
+                super.drawSelf(g);
+            }
+        }.drawSelf(g);
+        new Tank(110, 20, 0) {
+            @Override
+            public void drawSelf(Graphics g) {
+                g.setColor(new Color(34, 155, 234));
+                super.drawSelf(g);
+            }
+        }.drawSelf(g);
+        new Tank(140, 20, 0) {
+            @Override
+            public void drawSelf(Graphics g) {
+                g.setColor(new Color(155, 62, 202));
+                super.drawSelf(g);
+            }
+        }.drawSelf(g);
+        new Tank(170, 20, 0) {
+            @Override
+            public void drawSelf(Graphics g) {
+                g.setColor(new Color(240, 57, 23));
+                super.drawSelf(g);
+            }
+        }.drawSelf(g);
+
         //画出子弹
         if (hero.bullet != null) {
             g.draw3DRect(hero.bullet.sx, hero.bullet.sy, 1, 1, false);

@@ -1,9 +1,8 @@
 package com.github.kuangcp.tank.v3;
 
 import com.github.kuangcp.tank.constant.SettingCommand;
-import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Bullet;
-import com.github.kuangcp.tank.panel.TankGroundPanel;
+import com.github.kuangcp.tank.domain.Hero;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
@@ -115,11 +114,11 @@ public class SettingFrame extends JFrame implements ActionListener {
         }
 
         if (event.getActionCommand().equals(SettingCommand.DEMONS_COUNT_INCREMENT)) {
-            TankGroundPanel.setEnSize(TankGroundPanel.getEnSize() + 1);
-            log.info("{}", TankGroundPanel.getEnSize());
+            PlayStageMgr.addEnemySize(1);
+            log.info("{}",  PlayStageMgr.getEnemySize());
         }
         if (event.getActionCommand().equals(SettingCommand.DEMONS_COUNT_DECREMENT)) {
-            TankGroundPanel.setEnSize(TankGroundPanel.getEnSize() - 1);
+            PlayStageMgr.addEnemySize(-1);
         }
 
     }
