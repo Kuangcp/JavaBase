@@ -184,7 +184,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         }
 
         /*画出坦克运动区域 */
-        g.setColor(new Color(0, 0, 0));
+        g.setColor(new Color(8, 8, 8, 237));
         g.fillRect(0, 0, 760, 560);//填满一个黑色矩形，说明了是一整个JPanel在JFrame上的
         g.setColor(Color.green);
         g.drawRect(20, 20, 720, 520);
@@ -226,7 +226,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                 BombMgr.instance.checkBong(hero, et.bulletList);
             }
 
-            this.drawTank(hero.getX(), hero.getY(), g, hero.getDirect(), hero.getType());
+            hero.drawSelf(g);
         }
 
         // 画出自己的子弹画子弹是可以封装成一个方法的
@@ -283,16 +283,16 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
         /*画出敌人坦克*/
         //坦克少于5个就自动添加4个
-//        if (enemyList.size() < 5) {
-//            for (int i = 0; i < 4; i++) {
-//                EnemyTank d = new EnemyTank(20 + (int) (Math.random() * 400), 20 + (int) (Math.random() * 300), 2, i % 4);
-//                d.SetInfo(hero, enemyList, bricks, irons);
-//                Thread fillThread = new Thread(d);
-//                fillThread.setName("fillEnemy" + d.id);
-//                fillThread.start();
-//                enemyList.add(d);
-//            }
-//        }
+        if (enemyList.size() < 5) {
+            for (int i = 0; i < 4; i++) {
+                EnemyTank d = new EnemyTank(20 + (int) (Math.random() * 400), 20 + (int) (Math.random() * 300), 2, i % 4);
+                d.SetInfo(hero, enemyList, bricks, irons);
+                Thread fillThread = new Thread(d);
+                fillThread.setName("fillEnemy" + d.id);
+                fillThread.start();
+                enemyList.add(d);
+            }
+        }
 
 
 //		for(int i=0;i<ets.size();i++){
@@ -313,7 +313,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
                 BombMgr.instance.checkBong(demon, hero.bulletList);
 
-                this.drawTank(demon.getX(), demon.getY(), g, demon.getDirect(), demon.getType());
+                demon.drawSelf(g);
             } else {
                 // TODO 移除 延迟删除逻辑
 //                enemyList.remove(demon);
@@ -336,85 +336,6 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
         if (PlayStageMgr.instance.hasWinCurrentRound() || !hero.isAlive()) {
             PlayStageMgr.instance.stopStage();
-        }
-    }
-
-    /**
-     * 画出所有坦克的函数 XY是坦克中心的坐标，不是画图参照点
-     */
-    public void drawTank(int X, int Y, Graphics g, int direct, int type) {
-        //判断坦克类型
-        //系统画图函数的参照点
-        int x, y;
-        switch (type) {
-            case 1:
-                g.setColor(Color.cyan);
-                break;
-            case 0:
-                g.setColor(Color.yellow);
-                break;
-        }
-
-        //判断方向
-        switch (direct) {//上下左右
-
-            case 0: {//向上VK_UP
-
-                x = X - 10;
-                y = Y - 15;//把坦克中心坐标换算成系统用来画坦克的坐标
-                //（并且全是取的左上角）
-
-                //1.左边的矩形
-                g.fill3DRect(x, y, 5, 30, false);
-                //2.画出右边矩形
-                g.fill3DRect(x + 15, y, 5, 30, false);
-                //3.画出中间矩形
-                g.fill3DRect(x + 5, y + 5, 10, 20, false);
-                //4.画出圆形
-                g.fillOval(x + 4, y + 10, 10, 10);
-                //5.画出线
-                g.drawLine(x + 9, y + 15, x + 9, y);
-//				for(int i=0;i<10;i++){
-////					g.setColor(Color.BLACK);
-//					g.fill3DRect(x,y+3*i, 5, 2,false);
-//				}
-//				for(int i=0;i<10;i++){
-////					g.setColor(Color.BLACK);
-//					g.fill3DRect(x+15,y+3*i, 5, 2,false);
-//				}
-////				g.setColor(Color.yellow);
-                break;
-            }
-            case 1: {//向下 VK_DOWN
-                x = X - 10;
-                y = Y - 15;
-                g.fill3DRect(x, y, 5, 30, false);
-                g.fill3DRect(x + 15, y, 5, 30, false);
-                g.fill3DRect(x + 5, y + 5, 10, 20, false);
-                g.fillOval(x + 4, y + 10, 10, 10);
-                g.drawLine(x + 9, y + 15, x + 9, y + 30);
-                break;
-            }
-            case 2: {//向左 VK_LEFT
-                x = X - 15;
-                y = Y - 10;
-                g.fill3DRect(x, y, 30, 5, false);
-                g.fill3DRect(x, y + 15, 30, 5, false);
-                g.fill3DRect(x + 5, y + 5, 20, 10, false);
-                g.fillOval(x + 10, y + 4, 10, 10);
-                g.drawLine(x + 15, y + 9, x, y + 9);
-                break;
-            }
-            case 3: {//向右VK_RIGHT
-                x = X - 15;
-                y = Y - 10;
-                g.fill3DRect(x, y, 30, 5, false);
-                g.fill3DRect(x, y + 15, 30, 5, false);
-                g.fill3DRect(x + 5, y + 5, 20, 10, false);
-                g.fillOval(x + 10, y + 4, 10, 10);
-                g.drawLine(x + 15, y + 9, x + 30, y + 9);
-                break;
-            }
         }
     }
 

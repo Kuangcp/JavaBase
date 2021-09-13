@@ -571,6 +571,7 @@ public class EnemyTank extends Tank implements Runnable {
 
     @Override
     public void drawSelf(Graphics g) {
-
+        g.setColor(Color.cyan);
+        super.drawSelf(g);
     }
 }

@@ -121,91 +121,10 @@ public class Hero extends Tank {
      */
     @Override
     public void drawSelf(Graphics g) {
-        //系统画图函数的参照点 （全是取的左上角）
-        int topX, topY;
         g.setColor(Color.yellow);
-
-        this.halfHeight = 30;
-        this.halfWidth = 20;
-        switch (direct) {
-            case DirectType.UP: {
-                topX = this.x - this.halfWidth;
-                topY = this.y - this.halfHeight;
-
-                this.drawVerBorder(g, topX, topY);
-                //5.画出炮管
-                g.fill3DRect(topX + this.halfWidth - 1, topY - 1, 2, this.halfWidth + 1, false);
-                break;
-            }
-            case DirectType.DOWN: {
-                topX = this.x - this.halfWidth;
-                topY = this.y - this.halfHeight;
-
-                this.drawVerBorder(g, topX, topY);
-                //5.画出炮管
-                g.fill3DRect(topX + this.halfWidth - 1, topY + this.halfWidth * 2 + 1, 2, this.halfWidth + 1, false);
-                break;
-            }
-            case DirectType.LEFT: {
-                topX = this.x - this.halfHeight;
-                topY = this.y - this.halfWidth;
-
-                this.drawHorBorder(g, topX, topY);
-
-                //5.画出炮管
-                g.fill3DRect(topX - 1, topY + this.halfWidth - 1, this.halfWidth + 1, 2, false);
-                break;
-            }
-            case DirectType.RIGHT: {
-                topX = this.x - this.halfHeight;
-                topY = this.y - this.halfWidth;
-
-                this.drawHorBorder(g, topX, topY);
-
-                //5.画出炮管
-                g.fill3DRect(topX + this.halfHeight + 2, topY + this.halfWidth - 1, this.halfWidth + 1, 2, false);
-                break;
-            }
-        }
+        super.drawSelf(g);
     }
 
-    /**
-     * 水平方向
-     */
-    private void drawHorBorder(Graphics g, int topX, int topY) {
-        final int quarterWidth = this.halfWidth / 2;
-        final int tap = this.halfHeight * 2 / 7;
-
-        for (int i = 0; i < 7; i++) {
-            g.fill3DRect(topX + tap * i + 1, topY, tap - 1, quarterWidth, false);
-        }
-
-        g.fill3DRect(topX + quarterWidth * 2, topY + quarterWidth, this.halfHeight * 2 - 4 * quarterWidth, this.halfWidth, false);
-
-        for (int i = 0; i < 7; i++) {
-            g.fill3DRect(topX + tap * i + 1, topY + this.halfHeight, tap - 1, quarterWidth, false);
-        }
-    }
-
-    /**
-     * 竖直方向
-     */
-    private void drawVerBorder(Graphics g, int topX, int topY) {
-        final int quarterWidth = this.halfWidth / 2;
-        //1.左边的矩形
-        final int tap = this.halfHeight * 2 / 7;
-        for (int i = 0; i < 7; i++) {
-            g.fill3DRect(topX, topY + tap * i + 1, quarterWidth, tap - 1, false);
-        }
-
-        //2.画出右边矩形
-        for (int i = 0; i < 7; i++) {
-            g.fill3DRect(topX + quarterWidth * 3, topY + tap * i + 1, quarterWidth, tap - 1, false);
-        }
-
-        //3.画出中间矩形
-        g.fill3DRect(topX + quarterWidth, topY + quarterWidth * 2, this.halfWidth, this.halfHeight * 2 - 4 * quarterWidth, false);
-    }
 
     @Override
     public String toString() {

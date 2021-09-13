@@ -2,6 +2,7 @@ package com.github.kuangcp.tank.panel;
 
 
 import com.github.kuangcp.tank.domain.EnemyTank;
+import com.github.kuangcp.tank.domain.Tank;
 import com.github.kuangcp.tank.thread.ExitFlagRunnable;
 import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
@@ -24,6 +25,21 @@ public class HeroInfoPanel extends JPanel implements ExitFlagRunnable {
     JLabel prizeNo;
     List<EnemyTank> ets;
 
+    final Tank heroIcon = new Tank(20, 20, 0) {
+        @Override
+        public void drawSelf(Graphics g) {
+            g.setColor(Color.yellow);
+            super.drawSelf(g);
+        }
+    };
+    final Tank enemyIcon = new Tank(100, 20, 0) {
+        @Override
+        public void drawSelf(Graphics g) {
+            g.setColor(Color.cyan);
+            super.drawSelf(g);
+        }
+    };
+
     private volatile boolean exit = false;
 
     public void exit() {
@@ -42,46 +58,8 @@ public class HeroInfoPanel extends JPanel implements ExitFlagRunnable {
     public void paint(Graphics g) {
         super.paint(g);
 
-        if (PlayStageMgr.waitStart()) {
-            return;
-        }
-
-        int X = 20, Y = 20;
-        int x, y;
-        /*主坦克*/
-        g.setColor(Color.yellow);
-        //向上
-        x = X - 10;
-        y = Y - 15;//把坦克中心坐标换算成系统用来画坦克的坐标
-        //（并且全是取的左上角）
-
-        g.fill3DRect(x, y, 5, 30, false);
-        g.fill3DRect(x + 15, y, 5, 30, false);
-        g.fill3DRect(x + 5, y + 5, 10, 20, false);
-        g.fillOval(x + 4, y + 10, 10, 10);
-        g.drawLine(x + 9, y + 15, x + 9, y);
-
-        /*敌人坦克*/
-        g.setColor(Color.cyan);
-        X = 100;
-        Y = 20;
-        x = X - 10;
-        y = Y - 15;//把坦克中心坐标换算成系统用来画坦克的坐标
-        //（并且全是取的左上角）
-
-        g.fill3DRect(x, y, 5, 30, false);
-        g.fill3DRect(x + 15, y, 5, 30, false);
-        g.fill3DRect(x + 5, y + 5, 10, 20, false);
-        g.fillOval(x + 4, y + 10, 10, 10);
-        g.drawLine(x + 9, y + 15, x + 9, y);
-
-//		MyPanel3 tank = new MyPanel3();//因为原本的MyPanel是做成了线程  莫名其妙就被调用到了
-//		//主坦克：
-//		g.setColor(Color.yellow);
-//		tank.drawTank(0, 0, g, 0, 0);
-//		//敌人坦克：
-//		g.setColor(Color.cyan);
-//		tank.drawTank(0, 40, g, 0, 1);
+        heroIcon.drawSelf(g);
+        enemyIcon.drawSelf(g);
     }
 
     public void run() {
