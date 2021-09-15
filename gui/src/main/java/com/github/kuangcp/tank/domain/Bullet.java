@@ -4,9 +4,6 @@ import com.github.kuangcp.tank.util.AbstractLoopEvent;
 import com.github.kuangcp.tank.util.TankTool;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
 /**
  * 子弹类  对象做成了线程
  */
@@ -19,8 +16,8 @@ public class Bullet extends AbstractLoopEvent {
     public static int speed = 3;//如果改动要记得按钮事件里也要改
     public boolean alive = true;//是否还活着
 
-    public static long fixedDelayTime = 50;
-    public static long delayStartTime = 50;
+    public static final long fixedDelayTime = 50;
+    public static final long delayStartTime = 50;
 
     public static int getSpeed() {
         return speed;
@@ -31,18 +28,11 @@ public class Bullet extends AbstractLoopEvent {
     }
 
     public Bullet(int sx, int sy, int direct) {
-        super(UUID.randomUUID().toString(), fixedDelayTime, delayStartTime, TimeUnit.MILLISECONDS);
-
         this.sx = sx;
         this.sy = sy;
         this.direct = direct;
-    }
 
-    public Bullet(String id, int sx, int sy, int direct) {
-        super(id, fixedDelayTime, delayStartTime, TimeUnit.MILLISECONDS);
-        this.sx = sx;
-        this.sy = sy;
-        this.direct = direct;
+        this.setFixedDelayTime(fixedDelayTime);
     }
 
     @Override

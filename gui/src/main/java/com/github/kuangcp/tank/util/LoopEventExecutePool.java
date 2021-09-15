@@ -33,6 +33,19 @@ public class LoopEventExecutePool {
         for (int i = 0; i < ExecutePool.EVENT_POOL_SIZE; i++) {
             ExecutePool.loopEventPool.execute(mainLoop);
         }
+
+        final Thread thread = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(10_000);
+                    log.info("eventSize: {}", queue.size());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.setName("eventPoolMonitor");
+        thread.start();
     }
 
     public static void addLoopEvent(AbstractLoopEvent loopEvent) {

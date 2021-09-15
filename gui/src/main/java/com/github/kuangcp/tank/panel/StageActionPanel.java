@@ -4,12 +4,11 @@ package com.github.kuangcp.tank.panel;
 
 import com.github.kuangcp.tank.constant.StageCommand;
 import com.github.kuangcp.tank.domain.Brick;
+import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Iron;
-import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.util.Audio;
-import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.Saved;
 import com.github.kuangcp.tank.v3.MainFrame;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
@@ -22,7 +21,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 用来放按钮的面板
@@ -119,10 +117,10 @@ public class StageActionPanel extends JPanel implements ActionListener {
         final int totalMaxShots = PlayStageMgr.getEnemySize() * EnemyTank.maxLiveShot;
 
         // 重新设置线程池大小
-        final ThreadPoolExecutor pool = (ThreadPoolExecutor) ExecutePool.shotPool;
-        final int poolSize = (int) Math.max(PlayStageMgr.getEnemySize() * EnemyTank.maxLiveShot * 0.6, 10);
-        pool.setCorePoolSize(poolSize);
-        pool.setMaximumPoolSize(poolSize);
+//        final ThreadPoolExecutor pool = (ThreadPoolExecutor) ExecutePool.shotPool;
+//        final int poolSize = (int) Math.max(PlayStageMgr.getEnemySize() * EnemyTank.maxLiveShot * 0.6, 10);
+//        pool.setCorePoolSize(poolSize);
+//        pool.setMaximumPoolSize(poolSize);
 
         // 协程
 //        final int poolSize = (int) Math.max(totalMaxShots * 0.4, 10);

@@ -46,12 +46,22 @@ class MainPanelV1 extends JPanel implements KeyListener {
                 g.setColor(Color.WHITE);
                 super.drawSelf(g);
             }
+
+            @Override
+            public void run() {
+
+            }
         }.drawSelf(g);
         new Tank(80, 20, 0) {
             @Override
             public void drawSelf(Graphics g) {
                 g.setColor(new Color(93, 217, 41));
                 super.drawSelf(g);
+            }
+
+            @Override
+            public void run() {
+
             }
         }.drawSelf(g);
         new Tank(110, 20, 0) {
@@ -60,6 +70,11 @@ class MainPanelV1 extends JPanel implements KeyListener {
                 g.setColor(new Color(34, 155, 234));
                 super.drawSelf(g);
             }
+
+            @Override
+            public void run() {
+
+            }
         }.drawSelf(g);
         new Tank(140, 20, 0) {
             @Override
@@ -67,12 +82,22 @@ class MainPanelV1 extends JPanel implements KeyListener {
                 g.setColor(new Color(155, 62, 202));
                 super.drawSelf(g);
             }
+
+            @Override
+            public void run() {
+
+            }
         }.drawSelf(g);
         new Tank(170, 20, 0) {
             @Override
             public void drawSelf(Graphics g) {
                 g.setColor(new Color(240, 57, 23));
                 super.drawSelf(g);
+            }
+
+            @Override
+            public void run() {
+
             }
         }.drawSelf(g);
 

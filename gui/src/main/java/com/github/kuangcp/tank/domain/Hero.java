@@ -31,6 +31,11 @@ public class Hero extends Tank {
         this.originY = y;
     }
 
+    @Override
+    public void run() {
+
+    }
+
     /**
      * 画出坦克的函数 XY是坦克中心的坐标，不是画图参照点
      */

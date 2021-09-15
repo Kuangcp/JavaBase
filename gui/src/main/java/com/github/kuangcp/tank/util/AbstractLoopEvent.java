@@ -2,6 +2,7 @@ package com.github.kuangcp.tank.util;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
@@ -13,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public abstract class AbstractLoopEvent implements LoopEvent {
 
-    private static final long defaultDelay = 50;
+    private static final long defaultDelay = 20;
     /**
      * 时间id
      */
@@ -23,30 +24,29 @@ public abstract class AbstractLoopEvent implements LoopEvent {
      */
     long nextTickTime;
 
-    long fixedDelayTime;
+    long fixedDelayTime = 40;
+
+    Runnable stopHook;
 
     public AbstractLoopEvent() {
         this.id = UUID.randomUUID().toString();
         this.nextTickTime = System.currentTimeMillis() + defaultDelay;
     }
 
-    public AbstractLoopEvent(String id, long fixedDelay) {
+    // 构建任务的补充参数
+    public void setId(String id) {
         this.id = id;
-        this.fixedDelayTime = fixedDelay;
-        this.nextTickTime = System.currentTimeMillis();
     }
 
-    public AbstractLoopEvent(String id, long delayStart, TimeUnit timeUnit) {
-        this.id = id;
-        this.nextTickTime = System.currentTimeMillis() + timeUnit.toMillis(delayStart);
+    public void setFixedDelayTime(long fixedDelayTime) {
+        this.fixedDelayTime = fixedDelayTime;
     }
 
-    public AbstractLoopEvent(String id, long fixedDelay, long delayStart, TimeUnit timeUnit) {
-        this.id = id;
-        this.fixedDelayTime = fixedDelay;
-        this.nextTickTime = System.currentTimeMillis() + timeUnit.toMillis(delayStart);
+    public void setDelayStart(long delayStart, TimeUnit timeUnit) {
+        this.nextTickTime += timeUnit.toMillis(delayStart);
     }
 
+    // 业务动作
     @Override
     public void addDelay(long delay) {
         this.nextTickTime += delay;
@@ -75,6 +75,14 @@ public abstract class AbstractLoopEvent implements LoopEvent {
     public void stop() {
 //        log.info("{} stop", this);
         this.nextTickTime = 0;
+
+        if (Objects.nonNull(this.stopHook)) {
+            stopHook.run();
+        }
+    }
+
+    public void registerHook(Runnable stopHook) {
+        this.stopHook = stopHook;
     }
 
     @Override

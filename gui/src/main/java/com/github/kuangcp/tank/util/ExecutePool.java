@@ -16,9 +16,9 @@ public class ExecutePool {
     /**
      * 敌人全部的子弹线程
      */
-    public static final ExecutorService shotPool = ExecutePool.buildFixedPool("enemyShot", 5);
+//    public static final ExecutorService shotPool = ExecutePool.buildFixedPool("enemyShot", 5);
 
-    public static final int EVENT_POOL_SIZE = 5;
+    public static final int EVENT_POOL_SIZE = 6;
 
     /**
      * 循环事件线程池

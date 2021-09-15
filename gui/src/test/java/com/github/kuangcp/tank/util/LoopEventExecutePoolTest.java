@@ -1,8 +1,13 @@
 package com.github.kuangcp.tank.util;
 
+import com.github.kuangcp.tank.constant.DirectType;
+import com.github.kuangcp.tank.domain.EnemyTank;
+import com.github.kuangcp.tank.domain.Hero;
+import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
@@ -60,9 +65,12 @@ public class LoopEventExecutePoolTest {
         public static int speed = 3;//如果改动要记得按钮事件里也要改
 
         public EventTask(String id, long fixedDelay, long delayStart, TimeUnit timeUnit, int x, int y) {
-            super(id, fixedDelay, delayStart, timeUnit);
             this.sx = x;
             this.sy = y;
+
+            this.setId(id);
+            this.setFixedDelayTime(fixedDelay);
+            this.setDelayStart(delayStart, timeUnit);
         }
 
         @Override
@@ -130,8 +138,12 @@ public class LoopEventExecutePoolTest {
     @Test
     public void testShotBullet() throws Exception {
         BlockingQueue<EventTask> delayQueue = new DelayQueue<>();
-        delayQueue.add(new EventTask("xx", 55, 55, TimeUnit.MILLISECONDS, 60, 120));
-        while (true) {
+        final EventTask originTask = new EventTask("xx", 55, 55, TimeUnit.MILLISECONDS, 60, 120);
+        originTask.registerHook(() -> {
+            System.out.println("end");
+        });
+        delayQueue.add(originTask);
+        while (!delayQueue.isEmpty()) {
             final EventTask task = delayQueue.take();
             task.run();
             if (task.isContinue()) {
@@ -141,9 +153,14 @@ public class LoopEventExecutePoolTest {
         }
     }
 
+
     @Test
-    public void testTime() throws Exception {
-        System.out.println(TimeUnit.SECONDS.toMillis(20));
+    public void testEnemyTank() throws Exception {
+        final EnemyTank enemyTank = new EnemyTank(30, 30, 2, DirectType.RIGHT);
+        LoopEventExecutePool.init();
+        PlayStageMgr.init(new Hero(240, 50, 1), Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
+        LoopEventExecutePool.addLoopEvent(enemyTank);
+        Thread.sleep(1000000);
     }
 
 }

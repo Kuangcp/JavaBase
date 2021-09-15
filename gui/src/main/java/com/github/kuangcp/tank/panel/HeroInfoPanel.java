@@ -31,12 +31,22 @@ public class HeroInfoPanel extends JPanel implements ExitFlagRunnable {
             g.setColor(Color.yellow);
             super.drawSelf(g);
         }
+
+        @Override
+        public void run() {
+
+        }
     };
     final Tank enemyIcon = new Tank(100, 20, 0) {
         @Override
         public void drawSelf(Graphics g) {
             g.setColor(Color.cyan);
             super.drawSelf(g);
+        }
+
+        @Override
+        public void run() {
+
         }
     };
 

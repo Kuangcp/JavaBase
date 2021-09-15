@@ -33,7 +33,7 @@ public class EnemyTank extends Tank implements Runnable {
     public List<Bullet> bulletList = Collections.synchronizedList(new ArrayList<>());//子弹集合
     private long lastShotMs = 0;
     private long shotCDMs = 168;
-    public static int maxLiveShot = 3; //子弹线程存活的最大数
+    public static int maxLiveShot = 30; //子弹线程存活的最大数
     public boolean delayRemove = false; // 延迟回收内存，避免子弹线程执行中断
 
     public List<EnemyTank> ets;
@@ -68,6 +68,20 @@ public class EnemyTank extends Tank implements Runnable {
         this.life = ThreadLocalRandom.current().nextInt(maxLife) + 1;
         this.id = counter.addAndGet(1);
 //        log.info("create new Demons. {}", id);
+
+        //TODO 动机算法 调整后的刷新率
+//        this.setFixedDelayTime(320);
+        this.setFixedDelayTime(90);
+
+        this.registerHook(() -> {
+            if (this.isAbort()) {
+                for (Bullet d : this.bulletList) {
+                    d.alive = false;
+                }
+            } else {
+                PlayStageMgr.instance.hero.addPrize(1);
+            }
+        });
     }
 
     @Override
@@ -426,18 +440,24 @@ public class EnemyTank extends Tank implements Runnable {
     //重写
     int min = 0;
 
+//    @Override
+//    public void run() {
+////        actionModeRun();
+//        run2();
+//
+////        log.info("enemy die");
+//
+//        if (this.isAbort()) {
+//            for (Bullet d : this.bulletList) {
+//                d.alive = false;
+//            }
+//        }
+//    }
+
+
     @Override
     public void run() {
-//        actionModeRun();
-        run2();
-
-//        log.info("enemy die");
-
-        if (this.isAbort()) {
-            for (Bullet d : this.bulletList) {
-                d.alive = false;
-            }
-        }
+        newEventRun();
     }
 
     // 运动
@@ -592,6 +612,109 @@ public class EnemyTank extends Tank implements Runnable {
 
                 break;
             }
+        }
+    }
+
+
+    public void newEventRun() {
+        //判断坦克是否死亡
+        if (!this.isAlive()) {
+            this.stop();
+            return;
+        }
+
+        //子弹发射的（时间）坐标间隔
+        min++;
+        if (min > 10000) min -= 10000;
+//			System.out.println("x = "+this.x+" y = "+this.y);
+//			System.out.println(speed);  终于找出错误，speed没有初始化
+
+        //让坦克随机产生一个随机方向
+        if (this.speed != 0) this.direct = (int) (Math.random() * 4);
+
+        switch (this.direct) {//上下左右
+            case 0://说明坦克正在向上移动
+                for (int i = 0; i < 5; i++) {
+                    min++;
+//					if(!bri)this.direct = (int)(Math.random()*4);
+                    if (y > 30) {
+                        if (TankTool.ablePass(this, PlayStageMgr.instance.hero) && overlap) y -= speed;
+//						    if(bri)y-=speed;
+//						    else {y+=speed;this.direct = 1;}
+//						else continue;
+                        else break;//这样才不会有敌人坦克凑在你附近不动
+//						else this.direct = (int)(Math.random()*4);
+                        if (min % 27 == 0)
+                            this.shotEnemy();
+//                        TankTool.yieldMsTime(50);
+                    }
+
+                }
+
+                break;
+            case 1:
+                for (int i = 0; i < 5; i++) {
+                    min++;
+//					if(!bri)this.direct = (int)(Math.random()*4);
+
+                    if (y < 530) {
+                        if (TankTool.ablePass(this, PlayStageMgr.instance.hero) && overlap && bri) y += speed;
+//						    if(bri) y+=speed;
+//						    else {y-=speed;this.direct = 0;}
+//						else continue;
+                        else break;
+                        if (min % 27 == 0) {
+                            this.shotEnemy();
+                        }
+//                        TankTool.yieldMsTime(50);
+                    }
+
+                }
+
+                break;
+            case 2:
+                for (int i = 0; i < 5; i++) {
+                    min++;
+//					if(!bri)this.direct = (int)(Math.random()*4);
+
+                    if (x > 30) {
+                        if (TankTool.ablePass(this, PlayStageMgr.instance.hero) && overlap && bri) x -= speed;
+//						    if(bri)x-=speed;
+//						    else{x+=speed;this.direct = 3;}
+//						else continue;
+                        else break;
+                        if (min % 27 == 0)
+                            this.shotEnemy();
+//                        TankTool.yieldMsTime(50);
+                    }
+
+                }
+
+                break;
+            case 3:
+                for (int i = 0; i < 5; i++) {
+                    min++;
+//					if(!bri)this.direct = (int)(Math.random()*4);
+
+                    if (x < 710) {
+                        if (TankTool.ablePass(this, PlayStageMgr.instance.hero) && overlap && bri) {
+                            x += speed;
+                        }
+//						     if(bri)x+=speed;
+//						     else{x-=speed;this.direct = 2;}
+                        else break;
+//						else continue;
+                        if (min % 27 == 0)
+                            this.shotEnemy();
+
+//                        TankTool.yieldMsTime(50);
+                    }
+
+
+                }
+                break;
+            default:
+                break;
         }
     }
 }

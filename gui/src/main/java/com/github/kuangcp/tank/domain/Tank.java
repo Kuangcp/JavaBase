@@ -1,6 +1,7 @@
 package com.github.kuangcp.tank.domain;
 
 import com.github.kuangcp.tank.constant.DirectType;
+import com.github.kuangcp.tank.util.AbstractLoopEvent;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
@@ -10,7 +11,7 @@ import java.awt.*;
  * 往后有继承
  */
 @Slf4j
-public abstract class Tank {
+public abstract class Tank extends AbstractLoopEvent {
     int x;          // 坦克中心的横坐标
     int y;          // 坦克中心的纵坐标
     int direct = 0;   // 初始方向

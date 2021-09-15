@@ -13,6 +13,7 @@ import com.github.kuangcp.tank.thread.ExitFlagRunnable;
 import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.KeyListener;
 import com.github.kuangcp.tank.util.ListenEventGroup;
+import com.github.kuangcp.tank.util.LoopEventExecutePool;
 import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
@@ -110,9 +111,10 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                 if (Objects.isNull(ett)) {
                     continue;
                 }
-                Thread t = new Thread(ett);
-                t.setName("enemyThread-" + ett.id);
-                t.start();
+                LoopEventExecutePool.addLoopEvent(ett);
+//                Thread t = new Thread(ett);
+//                t.setName("enemyThread-" + ett.id);
+//                t.start();
                 //坦克加入集合
                 enemyList.add(ett);
             }
@@ -123,10 +125,12 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
                 ett = new EnemyTank(enemyTankMap[i][0], enemyTankMap[i][1], 2, i % 4);
                 ett.SetInfo(hero, enemyList, bricks, irons);
-                Thread t = new Thread(ett);
-                // TODO 改造成一个线程或者少数线程 是否使用时间轮
-                t.setName("enemyThreadF-" + ett.id);
-                t.start();
+
+                LoopEventExecutePool.addLoopEvent(ett);
+
+//                Thread t = new Thread(ett);
+//                t.setName("enemyThreadF-" + ett.id);
+//                t.start();
                 //坦克加入集合
                 enemyList.add(ett);
 //				System.out.print("创建单个坦克地址："+ett);
@@ -254,6 +258,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         }
 
         /*敌人子弹*/
+        // FIXME ConcurrentModificationException
         for (EnemyTank et : enemyList) {
             for (int i = 0; i < et.bulletList.size(); i++) {
                 Bullet myBullet = et.bulletList.get(i);
@@ -286,9 +291,11 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
             for (int i = 0; i < 4; i++) {
                 EnemyTank d = new EnemyTank(20 + (int) (Math.random() * 400), 20 + (int) (Math.random() * 300), 2, i % 4);
                 d.SetInfo(hero, enemyList, bricks, irons);
-                Thread fillThread = new Thread(d);
-                fillThread.setName("fillEnemy" + d.id);
-                fillThread.start();
+
+                LoopEventExecutePool.addLoopEvent(d);
+//                Thread fillThread = new Thread(d);
+//                fillThread.setName("fillEnemy" + d.id);
+//                fillThread.start();
                 enemyList.add(d);
             }
         }
