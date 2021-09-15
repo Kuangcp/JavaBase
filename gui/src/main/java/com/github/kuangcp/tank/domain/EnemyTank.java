@@ -3,7 +3,7 @@ package com.github.kuangcp.tank.domain;
 
 
 import com.github.kuangcp.tank.constant.DirectType;
-import com.github.kuangcp.tank.util.ExecutePool;
+import com.github.kuangcp.tank.util.LoopEventExecutePool;
 import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
@@ -140,9 +140,13 @@ public class EnemyTank extends Tank implements Runnable {
                 break;
             }
         }
-        //启动子弹线程
-        ExecutePool.shotPool.execute(s);
+        LoopEventExecutePool.addLoopEvent(s);
+
+        // 常规线程池
+//        ExecutePool.shotPool.execute(s);
+        // ForkJoin
 //        ExecutePool.forkJoinPool.execute(s);
+        // 协程池
 //        ExecutePool.shotScheduler.getExecutor().execute(s);
 
         lastShotMs = nowMs;

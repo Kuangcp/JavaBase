@@ -1,19 +1,26 @@
 package com.github.kuangcp.tank.domain;
 
+import com.github.kuangcp.tank.util.AbstractLoopEvent;
 import com.github.kuangcp.tank.util.TankTool;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 子弹类  对象做成了线程
  */
 @Slf4j
-public class Bullet implements Runnable {
+public class Bullet extends AbstractLoopEvent {
 
     public int sx;
     public int sy;
     public int direct;
     public static int speed = 3;//如果改动要记得按钮事件里也要改
     public boolean alive = true;//是否还活着
+
+    public static long fixedDelayTime = 50;
+    public static long delayStartTime = 50;
 
     public static int getSpeed() {
         return speed;
@@ -24,12 +31,56 @@ public class Bullet implements Runnable {
     }
 
     public Bullet(int sx, int sy, int direct) {
+        super(UUID.randomUUID().toString(), fixedDelayTime, delayStartTime, TimeUnit.MILLISECONDS);
+
         this.sx = sx;
         this.sy = sy;
         this.direct = direct;
     }
 
+    public Bullet(String id, int sx, int sy, int direct) {
+        super(id, fixedDelayTime, delayStartTime, TimeUnit.MILLISECONDS);
+        this.sx = sx;
+        this.sy = sy;
+        this.direct = direct;
+    }
+
+    @Override
     public void run() {
+        newRun();
+    }
+
+    private void newRun() {
+        switch (direct) {
+            //上下左右
+            case 0:
+                sy -= speed;
+                break;
+            case 1:
+                sy += speed;
+                break;
+            case 2:
+                sx -= speed;
+                break;
+            case 3:
+                sx += speed;
+                break;
+        }
+
+        //判断子弹是否碰到边缘
+        if (sx < 20 || sx > 740 || sy < 20 || sy > 540) {
+            this.alive = false;
+            this.stop();
+        }
+
+        if (sx < 440 && sx > 380 && sy < 540 && sy > 480) {
+            this.alive = false;
+            this.stop();
+        }
+        //        log.info("bullet die");
+    }
+
+    private void originRun() {
         do {
             // 每个子弹发射的延迟运动的时间
             TankTool.yieldMsTime(55);

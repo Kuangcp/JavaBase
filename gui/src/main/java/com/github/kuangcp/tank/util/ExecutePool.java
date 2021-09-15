@@ -17,7 +17,13 @@ public class ExecutePool {
      * 敌人全部的子弹线程
      */
     public static final ExecutorService shotPool = ExecutePool.buildFixedPool("enemyShot", 5);
-//    public static final ExecutorService eventPool = ExecutePool.buildFixedPool("event", 2);
+
+    public static final int EVENT_POOL_SIZE = 5;
+
+    /**
+     * 循环事件线程池
+     */
+    public static final ExecutorService loopEventPool = ExecutePool.buildFixedPool("loopEvent", EVENT_POOL_SIZE);
 
     // ForkJoin
 //    public static final ForkJoinPool forkJoinPool = new ForkJoinPool(65);

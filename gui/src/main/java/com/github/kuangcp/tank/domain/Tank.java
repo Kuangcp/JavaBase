@@ -15,10 +15,10 @@ public abstract class Tank {
     int y;          // 坦克中心的纵坐标
     int direct = 0;   // 初始方向
     int type = 0;     // 坦克的种类
-    int speed = 5;      // 前进的步长
+    int speed;      // 前进的步长
     boolean alive = true;// 是否存活
     boolean abort = false; // 重开一局等外部终止因素
-    int life = 1;//生命值
+    int life = 1;       //生命值
 
     int halfWidth = 10;
     int halfHeight = 15;
@@ -31,8 +31,7 @@ public abstract class Tank {
         this.life = life;
     }
 
-    public void addLife(int delta){
-        log.info("delta={}", delta);
+    public void addLife(int delta) {
         this.life += delta;
     }
 
@@ -117,7 +116,7 @@ public abstract class Tank {
     /**
      * 画出坦克的函数 XY是坦克中心的坐标，不是画图参照点
      */
-    public void drawSelf(Graphics g){
+    public void drawSelf(Graphics g) {
         //系统画图函数的参照点 （全是取的左上角）
         int topX, topY;
 
@@ -162,6 +161,7 @@ public abstract class Tank {
             }
         }
     }
+
     /**
      * 水平方向
      */

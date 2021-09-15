@@ -187,7 +187,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         g.fillRect(0, 0, 760, 560);//填满一个黑色矩形，说明了是一整个JPanel在JFrame上的
         g.setColor(Color.green);
         g.drawRect(20, 20, 720, 520);
-        Bullet myBullet;
+
 
         /*画出障碍物__砖__ 铁__*/
 
@@ -231,7 +231,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         // 画出自己的子弹画子弹是可以封装成一个方法的
         // 从ss 这个子弹集合中 取出每颗子弹，并画出来
         for (int i = 0; i < hero.bulletList.size(); i++) {
-            myBullet = hero.bulletList.get(i);
+            Bullet myBullet = hero.bulletList.get(i);
             for (Brick brick : bricks) {
                 TankTool.judgeHint(myBullet, brick);
             }
@@ -256,7 +256,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         /*敌人子弹*/
         for (EnemyTank et : enemyList) {
             for (int i = 0; i < et.bulletList.size(); i++) {
-                myBullet = et.bulletList.get(i);
+                Bullet myBullet = et.bulletList.get(i);
                 for (Brick brick : bricks) {
                     TankTool.judgeHint(myBullet, brick);
                 }
@@ -314,7 +314,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
                 demon.drawSelf(g);
             } else {
-                // TODO 移除 延迟删除逻辑
+                // TODO 去掉 延迟删除逻辑
 //                enemyList.remove(demon);
 
                 // 延迟删除 敌人和子弹

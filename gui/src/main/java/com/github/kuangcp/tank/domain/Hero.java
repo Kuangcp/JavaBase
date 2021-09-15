@@ -2,13 +2,12 @@ package com.github.kuangcp.tank.domain;
 
 
 import com.github.kuangcp.tank.constant.DirectType;
-import com.github.kuangcp.tank.util.ExecutePool;
+import com.github.kuangcp.tank.util.LoopEventExecutePool;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 import java.util.Vector;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
@@ -16,7 +15,6 @@ public class Hero extends Tank {
 
     //子弹集合
     public Vector<Bullet> bulletList = new Vector<>();
-    private final ExecutorService shotExecutePool;
     private long lastShotMs = 0;
     private long shotCDMs = 268;
 
@@ -27,43 +25,10 @@ public class Hero extends Tank {
     public int maxLiveShot = 7;//主坦克子弹线程存活的最大数
     private long lastDieMs = 0;
 
-    public int getLife() {
-        return life;
-    }
-
-    public void setLife(int life) {
-        this.life = life;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    public void addSpeed(int delta) {
-        this.speed += delta;
-    }
-
-    public int getPrize() {
-        return prize;
-    }
-
-    public void setPrize(int prize) {
-        this.prize = prize;
-    }
-
-    public void addPrize(int delta) {
-        this.prize += delta;
-    }
-
     public Hero(int x, int y, int speed) {
         super(x, y, speed);
         this.originX = x;
         this.originY = y;
-        this.shotExecutePool = ExecutePool.buildFixedPool("heroShot", maxLiveShot);
     }
 
     /**
@@ -91,7 +56,7 @@ public class Hero extends Tank {
         this.lastDieMs = System.currentTimeMillis();
 
         // 1/10 概率原地复活
-        if (ThreadLocalRandom.current().nextInt(10) == 0) {
+        if (ThreadLocalRandom.current().nextInt(1) == 0) {
             return;
         }
 
@@ -129,7 +94,8 @@ public class Hero extends Tank {
                 break;
         }
         //启动子弹线程
-        shotExecutePool.execute(bullet);
+//        shotExecutePool.execute(bullet);
+        LoopEventExecutePool.addLoopEvent(bullet);
         lastShotMs = nowMs;
     }
 
@@ -148,6 +114,40 @@ public class Hero extends Tank {
     public void moveRight() {
         this.x += this.speed;
     }
+
+
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public void addSpeed(int delta) {
+        this.speed += delta;
+    }
+
+    public int getPrize() {
+        return prize;
+    }
+
+    public void setPrize(int prize) {
+        this.prize = prize;
+    }
+
+    public void addPrize(int delta) {
+        this.prize += delta;
+    }
+
 
     @Override
     public String toString() {

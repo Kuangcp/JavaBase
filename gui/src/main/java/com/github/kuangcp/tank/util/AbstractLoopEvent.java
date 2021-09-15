@@ -1,0 +1,98 @@
+package com.github.kuangcp.tank.util;
+
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.UUID;
+import java.util.concurrent.Delayed;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * @author https://github.com/kuangcp on 2021-09-16 01:44
+ * 均以 ms 驱动
+ */
+@Slf4j
+public abstract class AbstractLoopEvent implements LoopEvent {
+
+    private static final long defaultDelay = 50;
+    /**
+     * 时间id
+     */
+    public String id;
+    /**
+     * 下次事件触发时机
+     */
+    long nextTickTime;
+
+    long fixedDelayTime;
+
+    public AbstractLoopEvent() {
+        this.id = UUID.randomUUID().toString();
+        this.nextTickTime = System.currentTimeMillis() + defaultDelay;
+    }
+
+    public AbstractLoopEvent(String id, long fixedDelay) {
+        this.id = id;
+        this.fixedDelayTime = fixedDelay;
+        this.nextTickTime = System.currentTimeMillis();
+    }
+
+    public AbstractLoopEvent(String id, long delayStart, TimeUnit timeUnit) {
+        this.id = id;
+        this.nextTickTime = System.currentTimeMillis() + timeUnit.toMillis(delayStart);
+    }
+
+    public AbstractLoopEvent(String id, long fixedDelay, long delayStart, TimeUnit timeUnit) {
+        this.id = id;
+        this.fixedDelayTime = fixedDelay;
+        this.nextTickTime = System.currentTimeMillis() + timeUnit.toMillis(delayStart);
+    }
+
+    @Override
+    public void addDelay(long delay) {
+        this.nextTickTime += delay;
+    }
+
+    @Override
+    public boolean addFixedDelay() {
+        if (fixedDelayTime <= 0) {
+            return false;
+        }
+        this.addDelay(fixedDelayTime);
+        return isContinue();
+    }
+
+    @Override
+    public boolean isStop() {
+        return this.nextTickTime <= 0;
+    }
+
+    @Override
+    public boolean isContinue() {
+        return !isStop();
+    }
+
+    @Override
+    public void stop() {
+//        log.info("{} stop", this);
+        this.nextTickTime = 0;
+    }
+
+    @Override
+    public int compareTo(Delayed o) {
+        return Long.compare(this.getDelay(TimeUnit.MILLISECONDS), o.getDelay(TimeUnit.MILLISECONDS));
+    }
+
+    @Override
+    public long getDelay(TimeUnit unit) {
+        return unit.convert(nextTickTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractLoopEvent{" +
+                "id='" + id + '\'' +
+                ", nextTickTime=" + nextTickTime +
+                ", fixedDelayTime=" + fixedDelayTime +
+                '}';
+    }
+}
