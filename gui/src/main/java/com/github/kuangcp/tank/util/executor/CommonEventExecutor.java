@@ -3,6 +3,7 @@ package com.github.kuangcp.tank.util.executor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * TODO 消费任务时，延迟情况告警
@@ -16,6 +17,10 @@ public class CommonEventExecutor {
         while (true) {
             try {
                 final AbstractLoopEvent event = queue.take();
+                final long delay = event.getDelay(TimeUnit.MILLISECONDS);
+                if (delay < -200) {
+                    log.info("delay {}", delay);
+                }
                 event.run();
                 if (event.isContinue() && event.addFixedDelay()) {
                     queue.add(event);

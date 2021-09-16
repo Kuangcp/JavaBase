@@ -82,7 +82,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         //多键监听实现
         keyListener = new KeyListener(ListenEventGroup.instance, hero, this);
         Thread p = new Thread(keyListener);
-        p.setName("keyEventGroup");
+        p.setName("playerKeyEventListener");
         p.start();
 
         // 创建 敌人的坦克
@@ -452,6 +452,8 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         }
 
         // clean listener
-        keyListener.exit();
+        if (Objects.nonNull(keyListener)) {
+            keyListener.exit();
+        }
     }
 }

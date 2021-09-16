@@ -38,4 +38,8 @@ public class MonitorExecutor {
         loopEventMonitor.setFixedDelayTime(5_000);
         queue.add(loopEventMonitor);
     }
+
+    public static void addLoopEvent(AbstractLoopEvent loopEvent) {
+        queue.add(loopEvent);
+    }
 }

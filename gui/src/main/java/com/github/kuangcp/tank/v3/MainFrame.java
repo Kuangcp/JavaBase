@@ -5,8 +5,10 @@ import com.github.kuangcp.tank.panel.HeroInfoPanel;
 import com.github.kuangcp.tank.panel.StageActionPanel;
 import com.github.kuangcp.tank.panel.StarterPanel;
 import com.github.kuangcp.tank.panel.TankGroundPanel;
+import com.github.kuangcp.tank.panel.event.HeroInfoPanelRefreshEvent;
 import com.github.kuangcp.tank.resource.AvatarImgMgr;
 import com.github.kuangcp.tank.resource.ResourceMgr;
+import com.github.kuangcp.tank.util.executor.MonitorExecutor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -42,11 +44,15 @@ public class MainFrame extends JFrame implements Runnable {
 
     public volatile TankGroundPanel groundPanel = null;//坦克的主画板
     public StageActionPanel actionPanel = null;//放按钮的画板
+
     public HeroInfoPanel heroInfoPanel = null;  //显示属性的画板
+    private HeroInfoPanelRefreshEvent loopEvent = null;
+
+
     public StarterPanel starterPanel;
     public JButton startBtn = null, jb2 = null, jb3, jb4;  //按钮
     public JSplitPane centerPanel, rightAreaPanel;//拆分窗格
-    public JLabel jl1 = null, jl2 = null, jl3 = null, me = null, prizeNo = null;
+    public JLabel tankCounter = null, jl2 = null, jl3 = null, me = null, prizeNo = null;
     public boolean firstStart = true;  //判断是否首次运行, 通过开始按钮触发
 
     //作出我需要的菜单
@@ -72,29 +78,36 @@ public class MainFrame extends JFrame implements Runnable {
 
         if (Objects.nonNull(groundPanel)) {
             groundPanel.exit();
-        }
-        if (Objects.nonNull(heroInfoPanel)) {
-            heroInfoPanel.exit();
+        } else {
+            groundPanel = new TankGroundPanel();
         }
 
-        groundPanel = new TankGroundPanel();
+        if (Objects.nonNull(heroInfoPanel)) {
+            loopEvent.stop();
+            heroInfoPanel.setEts(groundPanel.enemyList);
+        } else {
+            //提示信息
+            tankCounter = new JLabel("           :                    : " + groundPanel.enemyList.size());
+            prizeNo = new JLabel("已击杀    ：");//战绩的标签
+            me = new JLabel("Myth");
+
+            heroInfoPanel = new HeroInfoPanel(tankCounter, groundPanel.enemyList, prizeNo);
+        }
+
         actionPanel = new StageActionPanel(this, groundPanel.hero, groundPanel.enemyList, groundPanel.bricks, groundPanel.irons, TankGroundPanel.enemyTankMap, TankGroundPanel.myself);//放按钮的画布
 
-        //提示信息
-        jl1 = new JLabel("           :                    : " + groundPanel.enemyList.size());
-        prizeNo = new JLabel("已击杀    ：");//战绩的标签
-        me = new JLabel("Myth");
-
-        heroInfoPanel = new HeroInfoPanel(jl1, groundPanel.enemyList, prizeNo);//显示一些属性
+        loopEvent = new HeroInfoPanelRefreshEvent(heroInfoPanel);
+        heroInfoPanel.setRefreshEvent(loopEvent);
+        MonitorExecutor.addLoopEvent(loopEvent);
 
         if (!firstStart) {
             //已经成为一个线程 要启动它
             Thread t = new Thread(groundPanel);
             t.setName("windowPanel");
             t.start();
-            Thread t2 = new Thread(heroInfoPanel);
-            t2.setName("heroInfoPanel");
-            t2.start();
+//            Thread t2 = new Thread(heroInfoPanel);
+//            t2.setName("heroInfoPanel");
+//            t2.start();
         }
 
         //创建菜单及菜单选项
@@ -162,7 +175,7 @@ public class MainFrame extends JFrame implements Runnable {
         //显示属性的窗体：
         heroInfoPanel.setLayout(new GridLayout(6, 1, 0, 0));
 
-        heroInfoPanel.add(jl1);//网格布局
+        heroInfoPanel.add(tankCounter);//网格布局
         heroInfoPanel.add(prizeNo);
 //		mp3.add(jl2);
 //		mp3.add(jl3);

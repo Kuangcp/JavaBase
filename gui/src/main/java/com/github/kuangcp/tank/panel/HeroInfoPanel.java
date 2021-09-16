@@ -3,14 +3,14 @@ package com.github.kuangcp.tank.panel;
 
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Tank;
-import com.github.kuangcp.tank.thread.ExitFlagRunnable;
-import com.github.kuangcp.tank.util.TankTool;
+import com.github.kuangcp.tank.panel.event.HeroInfoPanelRefreshEvent;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 就是一个用来显示属性的画板
@@ -19,13 +19,14 @@ import java.util.List;
  */
 @Slf4j
 @SuppressWarnings("serial")
-public class HeroInfoPanel extends JPanel implements ExitFlagRunnable {
+public class HeroInfoPanel extends JPanel {
 
-    JLabel jl1;
+    JLabel tankCounter;
     JLabel prizeNo;
     List<EnemyTank> ets;
+    HeroInfoPanelRefreshEvent refreshEvent;
 
-    final Tank heroIcon = new Tank(20, 20, 0) {
+    static final Tank heroIcon = new Tank(20, 20, 0) {
         @Override
         public void drawSelf(Graphics g) {
             g.setColor(Color.yellow);
@@ -37,7 +38,7 @@ public class HeroInfoPanel extends JPanel implements ExitFlagRunnable {
 
         }
     };
-    final Tank enemyIcon = new Tank(100, 20, 0) {
+    static final Tank enemyIcon = new Tank(100, 20, 0) {
         @Override
         public void drawSelf(Graphics g) {
             g.setColor(Color.cyan);
@@ -50,14 +51,18 @@ public class HeroInfoPanel extends JPanel implements ExitFlagRunnable {
         }
     };
 
-    private volatile boolean exit = false;
-
     public void exit() {
-        this.exit = true;
+        if (Objects.nonNull(refreshEvent)) {
+            this.refreshEvent.stop();
+        }
     }
 
-    public HeroInfoPanel(JLabel jl1, List<EnemyTank> ets, JLabel prizeNo) {
-        this.jl1 = jl1;
+    public void setEts(List<EnemyTank> ets) {
+        this.ets = ets;
+    }
+
+    public HeroInfoPanel(JLabel tankCounter, List<EnemyTank> ets, JLabel prizeNo) {
+        this.tankCounter = tankCounter;
         this.ets = ets;
         this.prizeNo = prizeNo;
 //		jl1 =new JLabel("生命值： "+Hero.Life/3);
@@ -72,37 +77,24 @@ public class HeroInfoPanel extends JPanel implements ExitFlagRunnable {
         enemyIcon.drawSelf(g);
     }
 
-    public void run() {
-        while (!exit) {
-            TankTool.yieldMsTime(500);
-            if (PlayStageMgr.waitStart()) {
-                continue;
-            }
-            /*
-             * 如果是下面的方法的话，来不及设置成0 就退出线程了，所以把设置0放在了退出线程那里更好
-             */
-//			if(!hero.getisLive()){
-//				jl1.setText("生命值：   0");
-//			}else {
-//				jl1.setText("生命值：  "+hero.getLife());
-//			}
-
-            if (PlayStageMgr.instance.hero.isAlive()) {//生命值的自动更改
-                jl1.setText("           ：" + PlayStageMgr.instance.hero.getLife() + "                  ：  " + ets.size());
-            } else {
-                jl1.setText("           ：0" + "                  :  " + ets.size());
-            }
-            prizeNo.setText("战绩：" + PlayStageMgr.instance.hero.getPrize());
-//			TankGame3.mp3.add(TankGame3.jl1 );
-//			System.out.println("画板执行了");
-            repaint();
-
-            //不加的话线程没有退出
-//			if(hero.getLife() <= 0){
-//			    jl1.setText("           ：0"+"                  :  "+ets.size());
-//				break;//退出线程
-//			}
+    public void refreshData() {
+        if (PlayStageMgr.waitStart() || PlayStageMgr.pause) {
+            return;
         }
+
+        final String format = "           ：%d" + "                  :  %d";
+        final String txt;
+        if (PlayStageMgr.instance.hero.isAlive()) {
+            txt = String.format(format, PlayStageMgr.instance.hero.getLife(), ets.size());
+        } else {
+            txt = String.format(format, 0, ets.size());
+        }
+        tankCounter.setText(txt);
+
+        prizeNo.setText("战绩：" + PlayStageMgr.instance.hero.getPrize());
     }
 
+    public void setRefreshEvent(HeroInfoPanelRefreshEvent refreshEvent) {
+        this.refreshEvent = refreshEvent;
+    }
 }
