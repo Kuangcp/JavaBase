@@ -330,16 +330,8 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                     continue;
                 }
                 demon.delayRemove = true;
-//                ExecutePool.delayPool.execute(() -> {
-//                    try {
-//                        TimeUnit.SECONDS.sleep(8);
-//                    } catch (InterruptedException e) {
-//                        log.error("", e);
-//                    }
-//                    enemyList.remove(demon);
-//                });
 
-                DelayExecutor.addEvent(new AbstractDelayEvent(8_000) {
+                DelayExecutor.addEvent(new AbstractDelayEvent(7_000) {
                     @Override
                     public void run() {
                         enemyList.remove(demon);

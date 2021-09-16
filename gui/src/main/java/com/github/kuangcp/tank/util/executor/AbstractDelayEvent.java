@@ -14,7 +14,7 @@ public abstract class AbstractDelayEvent implements DelayEvent {
     long delayTime;
 
     public AbstractDelayEvent(long delayTime) {
-        this.delayTime = delayTime;
+        this.delayTime = delayTime + System.currentTimeMillis();
     }
 
 
