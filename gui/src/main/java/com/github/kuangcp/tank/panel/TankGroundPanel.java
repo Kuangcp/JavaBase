@@ -206,7 +206,8 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
             }
         }
 
-        g.setColor(new Color(190, 60, 50));
+//        g.setColor(new Color(190, 60, 50));
+        g.setColor(new Color(188, 112, 50));
         for (int i = 0; i < bricks.size(); i++) {
             Brick bs = bricks.get(i);
             if (bs.getAlive()) {

@@ -78,9 +78,13 @@ public class MainFrame extends JFrame implements Runnable {
 
         if (Objects.nonNull(groundPanel)) {
             groundPanel.exit();
-        } else {
-            groundPanel = new TankGroundPanel();
         }
+        // FIXME 复用对象导致性能缓慢
+//        else {
+//            groundPanel = new TankGroundPanel();
+//        }
+
+        groundPanel = new TankGroundPanel();
 
         if (Objects.nonNull(heroInfoPanel)) {
             loopEvent.stop();
@@ -94,20 +98,17 @@ public class MainFrame extends JFrame implements Runnable {
             heroInfoPanel = new HeroInfoPanel(tankCounter, groundPanel.enemyList, prizeNo);
         }
 
-        actionPanel = new StageActionPanel(this, groundPanel.hero, groundPanel.enemyList, groundPanel.bricks, groundPanel.irons, TankGroundPanel.enemyTankMap, TankGroundPanel.myself);//放按钮的画布
+        actionPanel = new StageActionPanel(this, groundPanel.hero, groundPanel.enemyList, groundPanel.bricks,
+                groundPanel.irons, TankGroundPanel.enemyTankMap, TankGroundPanel.myself);//放按钮的画布
 
         loopEvent = new HeroInfoPanelRefreshEvent(heroInfoPanel);
         heroInfoPanel.setRefreshEvent(loopEvent);
         MonitorExecutor.addLoopEvent(loopEvent);
 
         if (!firstStart) {
-            //已经成为一个线程 要启动它
             Thread t = new Thread(groundPanel);
-            t.setName("windowPanel");
+            t.setName("tankGroundPanel");
             t.start();
-//            Thread t2 = new Thread(heroInfoPanel);
-//            t2.setName("heroInfoPanel");
-//            t2.start();
         }
 
         //创建菜单及菜单选项
@@ -214,6 +215,6 @@ public class MainFrame extends JFrame implements Runnable {
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         final long now = System.currentTimeMillis();
-        log.info("[init] total:{} visible:{}", (now - start), (now - beforeVisible));
+        log.info("[init] mainFrame. total:{} visible:{}", (now - start), (now - beforeVisible));
     }
 }
