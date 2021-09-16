@@ -2,7 +2,7 @@
 package com.github.kuangcp.tank.panel;
 
 
-import com.github.kuangcp.tank.constant.StageCommand;
+import com.github.kuangcp.tank.constant.ButtonCommand;
 import com.github.kuangcp.tank.domain.Brick;
 import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.domain.EnemyTank;
@@ -43,42 +43,39 @@ public class StageActionPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         //上面是不合理的，会有隐藏的bug在里面，这种做法要抛弃
 
-        if (ae.getActionCommand().equals(StageCommand.START)) {
+        if (ae.getActionCommand().equals(ButtonCommand.START)) {
             this.startNewStage();
         }
 
-        if (ae.getActionCommand().equals("结束")) {
+        if (ae.getActionCommand().equals(ButtonCommand.EXIT)) {
             System.out.println("结束");
             System.exit(0);
         }
-        if (ae.getActionCommand().equals("暂停")) {
+
+        if (ae.getActionCommand().equals(ButtonCommand.PAUSE)) {
             System.out.println("暂停");
-            frame.groundPanel.hero.setSpeed(0);
-            Bullet.setSpeed(0);
-            for (EnemyTank et : ets) {
-                et.setSpeed(0);
-            }
+            PlayStageMgr.pause = true;
             frame.requestFocus();
         }
-        if (ae.getActionCommand().equals("继续")) {
+
+        if (ae.getActionCommand().equals(ButtonCommand.RESUME)) {
             System.out.println("继续");
-            frame.groundPanel.hero.setSpeed(3);
-            Bullet.setSpeed(8);
-            for (EnemyTank et : ets) {
-                et.setSpeed(2);
-            }
-            frame.requestFocus();//把焦点还给JFrame
+            PlayStageMgr.pause = false;
+            frame.requestFocus();
         }
-        if (ae.getActionCommand().equals("exit")) {
+
+        if (ae.getActionCommand().equals(ButtonCommand.ABORT)) {
             //不能把下面的saveExit口令放到这里来或，会出现先后顺序的一些错误
             //口令与口令之间应该独立，不要有或，与这样的复杂逻辑结构
             System.out.println("退出游戏");
             System.exit(0);
 
         }
-        if (ae.getActionCommand().equals("Help")) {
+
+        if (ae.getActionCommand().equals(ButtonCommand.SETTING_FRAME)) {
             SettingFrame.activeFocus(hero);
         }
+
         if (ae.getActionCommand().equals("saveExit")) {
             System.out.println("按下了 保存并退出 按钮");
             Saved s = new Saved(ets, hero, bricks, irons, ETS, myself);
@@ -88,9 +85,10 @@ public class StageActionPanel extends JPanel implements ActionListener {
             System.out.println("已经退出游戏");
             System.exit(0);
         }
+
         if (ae.getActionCommand().equals("Continue")) {
             //重新开启一个画板
-            System.out.println(StageCommand.START);
+            System.out.println(ButtonCommand.START);
             frame.firstStart = false;
             TankGroundPanel.newStage = false;
             Bullet.setSpeed(8);

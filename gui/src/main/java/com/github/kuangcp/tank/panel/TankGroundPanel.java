@@ -13,7 +13,7 @@ import com.github.kuangcp.tank.thread.ExitFlagRunnable;
 import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.KeyListener;
 import com.github.kuangcp.tank.util.ListenEventGroup;
-import com.github.kuangcp.tank.util.LoopEventExecutePool;
+import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
@@ -75,7 +75,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
             hero.setPrize(myself[3]);
         }
 
-        log.info("hero={}", hero);
+//        log.info("hero={}", hero);
         PlayStageMgr.init(hero, enemyList, bricks, irons);
 
         //多键监听实现
@@ -111,7 +111,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                 if (Objects.isNull(ett)) {
                     continue;
                 }
-                LoopEventExecutePool.addLoopEvent(ett);
+                LoopEventExecutor.addLoopEvent(ett);
 //                Thread t = new Thread(ett);
 //                t.setName("enemyThread-" + ett.id);
 //                t.start();
@@ -126,7 +126,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                 ett = new EnemyTank(enemyTankMap[i][0], enemyTankMap[i][1], 2, i % 4);
                 ett.SetInfo(hero, enemyList, bricks, irons);
 
-                LoopEventExecutePool.addLoopEvent(ett);
+                LoopEventExecutor.addLoopEvent(ett);
 
 //                Thread t = new Thread(ett);
 //                t.setName("enemyThreadF-" + ett.id);
@@ -292,7 +292,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                 EnemyTank d = new EnemyTank(20 + (int) (Math.random() * 400), 20 + (int) (Math.random() * 300), 2, i % 4);
                 d.SetInfo(hero, enemyList, bricks, irons);
 
-                LoopEventExecutePool.addLoopEvent(d);
+                LoopEventExecutor.addLoopEvent(d);
 //                Thread fillThread = new Thread(d);
 //                fillThread.setName("fillEnemy" + d.id);
 //                fillThread.start();
@@ -352,6 +352,10 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
      */
     @Override
     public void keyPressed(KeyEvent e) {
+        if (PlayStageMgr.pause) {
+            return;
+        }
+
         //加了if（内层的）限制后 实现了墙的限制（如果是游戏中的道具，该怎么办）
         if (e.getKeyChar() == KeyEvent.VK_SPACE) {
             ListenEventGroup.instance.setShot(true);

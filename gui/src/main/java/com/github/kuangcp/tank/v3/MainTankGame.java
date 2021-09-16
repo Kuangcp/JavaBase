@@ -1,6 +1,7 @@
 package com.github.kuangcp.tank.v3;
 
-import com.github.kuangcp.tank.util.LoopEventExecutePool;
+import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
+import com.github.kuangcp.tank.util.executor.MonitorExecutor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
@@ -14,7 +15,8 @@ public class MainTankGame {
      * https://stackoverflow.com/questions/6736906/why-does-java-swings-setvisible-take-so-long
      */
     public static void main(String[] args) {
-        LoopEventExecutePool.init();
+        MonitorExecutor.init();
+        LoopEventExecutor.init();
 
         EventQueue.invokeLater(new MainFrame());
     }

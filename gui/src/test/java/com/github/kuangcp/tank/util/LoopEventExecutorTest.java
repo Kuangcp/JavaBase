@@ -3,6 +3,8 @@ package com.github.kuangcp.tank.util;
 import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
+import com.github.kuangcp.tank.util.executor.AbstractLoopEvent;
+import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -20,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  * @author https://github.com/kuangcp on 2021-09-16 01:28
  */
 @Slf4j
-public class LoopEventExecutePoolTest {
+public class LoopEventExecutorTest {
 
     static class SampleTask implements Delayed {
         String id;
@@ -157,9 +159,9 @@ public class LoopEventExecutePoolTest {
     @Test
     public void testEnemyTank() throws Exception {
         final EnemyTank enemyTank = new EnemyTank(30, 30, 2, DirectType.RIGHT);
-        LoopEventExecutePool.init();
+        LoopEventExecutor.init();
         PlayStageMgr.init(new Hero(240, 50, 1), Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
-        LoopEventExecutePool.addLoopEvent(enemyTank);
+        LoopEventExecutor.addLoopEvent(enemyTank);
         Thread.sleep(1000000);
     }
 

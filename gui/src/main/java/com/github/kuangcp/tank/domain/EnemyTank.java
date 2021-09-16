@@ -3,7 +3,7 @@ package com.github.kuangcp.tank.domain;
 
 
 import com.github.kuangcp.tank.constant.DirectType;
-import com.github.kuangcp.tank.util.LoopEventExecutePool;
+import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
@@ -154,7 +154,7 @@ public class EnemyTank extends Tank implements Runnable {
                 break;
             }
         }
-        LoopEventExecutePool.addLoopEvent(s);
+        LoopEventExecutor.addLoopEvent(s);
 
         // 常规线程池
 //        ExecutePool.shotPool.execute(s);
@@ -617,6 +617,9 @@ public class EnemyTank extends Tank implements Runnable {
 
 
     public void newEventRun() {
+        if (PlayStageMgr.pause) {
+            return;
+        }
         //判断坦克是否死亡
         if (!this.isAlive()) {
             this.stop();

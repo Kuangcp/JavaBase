@@ -1,4 +1,4 @@
-package com.github.kuangcp.tank.util;
+package com.github.kuangcp.tank.util.executor;
 
 import lombok.extern.slf4j.Slf4j;
 

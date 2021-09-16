@@ -11,19 +11,13 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class ExecutePool {
 
+    // TODO replace by event pool
     public static final ExecutorService delayPool = ExecutePool.buildFixedPool("enemyDelay", 4);
 
     /**
      * 敌人全部的子弹线程
      */
 //    public static final ExecutorService shotPool = ExecutePool.buildFixedPool("enemyShot", 5);
-
-    public static final int EVENT_POOL_SIZE = 6;
-
-    /**
-     * 循环事件线程池
-     */
-    public static final ExecutorService loopEventPool = ExecutePool.buildFixedPool("loopEvent", EVENT_POOL_SIZE);
 
     // ForkJoin
 //    public static final ForkJoinPool forkJoinPool = new ForkJoinPool(65);

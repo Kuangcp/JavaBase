@@ -1,4 +1,4 @@
-package com.github.kuangcp.tank.util;
+package com.github.kuangcp.tank.util.executor;
 
 import java.util.concurrent.Delayed;
 

@@ -1,6 +1,6 @@
 package com.github.kuangcp.tank.v3;
 
-import com.github.kuangcp.tank.constant.StageCommand;
+import com.github.kuangcp.tank.constant.ButtonCommand;
 import com.github.kuangcp.tank.panel.HeroInfoPanel;
 import com.github.kuangcp.tank.panel.StageActionPanel;
 import com.github.kuangcp.tank.panel.StarterPanel;
@@ -61,7 +61,7 @@ public class MainFrame extends JFrame implements Runnable {
     JMenuItem jmi3 = null;
     JMenuItem jmi4 = null;
     //帮助窗口
-    JMenuItem Help = null;
+    JMenuItem setting = null;
 
     public MainFrame() {
         ResourceMgr.loadResource();
@@ -109,11 +109,11 @@ public class MainFrame extends JFrame implements Runnable {
         jmi2 = new JMenuItem("Pause");
         jmi3 = new JMenuItem("Save & Exit(C)");
         jmi4 = new JMenuItem("ContinueLast(S)");
-        Help = new JMenuItem("Setting");
+        setting = new JMenuItem("Setting");
 
         //
-        Help.addActionListener(actionPanel);
-        Help.setActionCommand("Help");
+        setting.addActionListener(actionPanel);
+        setting.setActionCommand(ButtonCommand.SETTING_FRAME);
         //注册监听
         jmi4.addActionListener(actionPanel);
         jmi4.setActionCommand("Continue");
@@ -126,32 +126,33 @@ public class MainFrame extends JFrame implements Runnable {
         jmi2.setMnemonic('E');
         //对jmil相应
         jmil.addActionListener(actionPanel);
-        jmil.setActionCommand(StageCommand.START);
+        jmil.setActionCommand(ButtonCommand.START);
 
         jm1.add(jmil);
 //				jm1.add(jmi2);
         jm1.add(jmi3);
         jm1.add(jmi4);
 
-        jm2.add(Help);
+        jm2.add(setting);
 
         jmb.add(jm1);
         jmb.add(jm2);
 
         jb3 = new JButton("暂停游戏");
         jb3.addActionListener(actionPanel); //注册监听
-        jb3.setActionCommand("暂停");
+        jb3.setActionCommand(ButtonCommand.PAUSE);
+
         jb4 = new JButton("继续游戏");
         jb4.addActionListener(actionPanel); //注册监听
-        jb4.setActionCommand("继续");
+        jb4.setActionCommand(ButtonCommand.RESUME);
 
         jb2 = new JButton("退出游戏");
         jb2.addActionListener(actionPanel); //注册监听
-        jb2.setActionCommand("结束");
+        jb2.setActionCommand(ButtonCommand.EXIT);
 
         startBtn = new JButton(firstStart ? "游戏开始" : "重新开始");
         startBtn.addActionListener(actionPanel);
-        startBtn.setActionCommand(StageCommand.START);
+        startBtn.setActionCommand(ButtonCommand.START);
 
         actionPanel.add(startBtn);
         actionPanel.add(jb2);
@@ -200,6 +201,6 @@ public class MainFrame extends JFrame implements Runnable {
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         final long now = System.currentTimeMillis();
-        log.info("total:{} visible:{}", (now - start), (now - beforeVisible));
+        log.info("[init] total:{} visible:{}", (now - start), (now - beforeVisible));
     }
 }

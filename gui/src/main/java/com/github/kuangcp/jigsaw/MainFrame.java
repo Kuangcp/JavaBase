@@ -1,6 +1,6 @@
 package com.github.kuangcp.jigsaw;
 
-import com.github.kuangcp.tank.constant.StageCommand;
+import com.github.kuangcp.tank.constant.ButtonCommand;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +21,7 @@ public class MainFrame extends JFrame {
     ButtonListener button = new ButtonListener();
     JButton startBtn = new JButton("开始游戏");
     startBtn.addActionListener(button);//注册监听
-    startBtn.setActionCommand(StageCommand.START);//指定特定的命令
+    startBtn.setActionCommand(ButtonCommand.START);//指定特定的命令
 
     MainPanel btnPanel = new MainPanel();
     btnPanel.add(startBtn, BorderLayout.SOUTH);

@@ -28,6 +28,10 @@ public class PlayStageMgr {
     public int roundPrize = 0;
 
     static int round = 0;
+    /**
+     * 全局游戏暂停
+     */
+    public static volatile boolean pause = false;
 
     // 游戏参数 配置
     /**

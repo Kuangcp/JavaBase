@@ -2,7 +2,7 @@ package com.github.kuangcp.tank.domain;
 
 
 import com.github.kuangcp.tank.constant.DirectType;
-import com.github.kuangcp.tank.util.LoopEventExecutePool;
+import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
@@ -100,7 +100,7 @@ public class Hero extends Tank {
         }
         //启动子弹线程
 //        shotExecutePool.execute(bullet);
-        LoopEventExecutePool.addLoopEvent(bullet);
+        LoopEventExecutor.addLoopEvent(bullet);
         lastShotMs = nowMs;
     }
 

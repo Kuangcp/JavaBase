@@ -1,7 +1,8 @@
 package com.github.kuangcp.tank.domain;
 
-import com.github.kuangcp.tank.util.AbstractLoopEvent;
+import com.github.kuangcp.tank.util.executor.AbstractLoopEvent;
 import com.github.kuangcp.tank.util.TankTool;
+import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -41,6 +42,9 @@ public class Bullet extends AbstractLoopEvent {
     }
 
     private void newRun() {
+        if (PlayStageMgr.pause) {
+            return;
+        }
         switch (direct) {
             //上下左右
             case 0:
