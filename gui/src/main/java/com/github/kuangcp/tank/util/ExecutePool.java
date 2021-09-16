@@ -11,18 +11,14 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class ExecutePool {
 
-    // TODO replace by event pool
-    public static final ExecutorService delayPool = ExecutePool.buildFixedPool("enemyDelay", 4);
-
-    /**
-     * 敌人全部的子弹线程
-     */
+    // 敌人全部的子弹线程实现并发，目前选用事件延迟队列。原有方案：
+    // 1. 线程池
 //    public static final ExecutorService shotPool = ExecutePool.buildFixedPool("enemyShot", 5);
 
-    // ForkJoin
+    // 2. ForkJoin
 //    public static final ForkJoinPool forkJoinPool = new ForkJoinPool(65);
 
-    // http://docs.paralleluniverse.co/quasar/ 协程池
+    // 3. 协程池 http://docs.paralleluniverse.co/quasar/
     // 在当前场景下，没有优势，底层一样使用 类似JDK的ForkJoinPool实现， 对比50敌人150子弹情况下一样启动了63个真实线程，和上述没区别
 //    public static FiberForkJoinScheduler shotScheduler = new FiberForkJoinScheduler("enemyShot", 20, null, false);
 

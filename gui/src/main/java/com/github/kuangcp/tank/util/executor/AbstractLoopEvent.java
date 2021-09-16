@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author https://github.com/kuangcp on 2021-09-16 01:44
- * 均以 ms 驱动
  */
 @Slf4j
 public abstract class AbstractLoopEvent implements LoopEvent {

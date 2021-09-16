@@ -24,21 +24,8 @@ public class LoopEventExecutor {
 
     public static void init() {
         for (int i = 0; i < EVENT_POOL_SIZE; i++) {
-            loopEventPool.execute(() -> CommonEventExecutor.simpleMainLoop(queue));
+            loopEventPool.execute(() -> CommonEventExecutor.loopEventSpin(queue));
         }
-
-//        final Thread thread = new Thread(() -> {
-//            while (true) {
-//                try {
-//                    Thread.sleep(10_000);
-//                    log.info("eventSize: {}", queue.size());
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//        thread.setName("eventPoolMonitor");
-//        thread.start();
     }
 
     public static void addLoopEvent(AbstractLoopEvent loopEvent) {

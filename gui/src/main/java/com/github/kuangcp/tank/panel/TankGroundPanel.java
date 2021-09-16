@@ -3,18 +3,19 @@ package com.github.kuangcp.tank.panel;
 
 
 import com.github.kuangcp.tank.domain.Brick;
+import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Iron;
-import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.mgr.BombMgr;
 import com.github.kuangcp.tank.resource.AvatarImgMgr;
 import com.github.kuangcp.tank.thread.ExitFlagRunnable;
-import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.KeyListener;
 import com.github.kuangcp.tank.util.ListenEventGroup;
-import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import com.github.kuangcp.tank.util.TankTool;
+import com.github.kuangcp.tank.util.executor.AbstractDelayEvent;
+import com.github.kuangcp.tank.util.executor.DelayExecutor;
+import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
@@ -329,13 +330,20 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                     continue;
                 }
                 demon.delayRemove = true;
-                ExecutePool.delayPool.execute(() -> {
-                    try {
-                        TimeUnit.SECONDS.sleep(8);
-                    } catch (InterruptedException e) {
-                        log.error("", e);
+//                ExecutePool.delayPool.execute(() -> {
+//                    try {
+//                        TimeUnit.SECONDS.sleep(8);
+//                    } catch (InterruptedException e) {
+//                        log.error("", e);
+//                    }
+//                    enemyList.remove(demon);
+//                });
+
+                DelayExecutor.addEvent(new AbstractDelayEvent(8_000) {
+                    @Override
+                    public void run() {
+                        enemyList.remove(demon);
                     }
-                    enemyList.remove(demon);
                 });
             }
         }
