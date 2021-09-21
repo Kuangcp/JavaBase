@@ -73,7 +73,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
         }
 
         if (ae.getActionCommand().equals(ButtonCommand.SETTING_FRAME)) {
-            SettingFrame.activeFocus(hero);
+            SettingFrame.activeFocus();
         }
 
         if (ae.getActionCommand().equals("saveExit")) {

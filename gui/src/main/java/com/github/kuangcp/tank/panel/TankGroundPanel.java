@@ -182,7 +182,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        if (PlayStageMgr.waitStart() || Objects.isNull(hero)) {
+        if (PlayStageMgr.stageNoneStart() || Objects.isNull(hero)) {
             PlayStageMgr.drawStopIgnore(g, this);
             return;
         }

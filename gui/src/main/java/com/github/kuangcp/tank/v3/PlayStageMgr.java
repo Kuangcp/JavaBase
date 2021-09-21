@@ -51,7 +51,7 @@ public class PlayStageMgr {
     /**
      * 等待stage启动
      */
-    public static boolean waitStart() {
+    public static boolean stageNoneStart() {
         return Objects.isNull(PlayStageMgr.instance) || !PlayStageMgr.instance.startLogic;
     }
 

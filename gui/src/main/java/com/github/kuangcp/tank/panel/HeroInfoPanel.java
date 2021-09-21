@@ -78,7 +78,7 @@ public class HeroInfoPanel extends JPanel {
     }
 
     public void refreshData() {
-        if (PlayStageMgr.waitStart() || PlayStageMgr.pause) {
+        if (PlayStageMgr.stageNoneStart() || PlayStageMgr.pause) {
             return;
         }
 

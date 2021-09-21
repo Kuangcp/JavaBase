@@ -5,68 +5,57 @@ import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.domain.Hero;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 public class SettingFrame extends JFrame implements ActionListener {
 
     public static SettingFrame instance = null;
 
-    JPanel up, ss;
-    JLabel U;
+    JPanel buttonArea;
     JButton[] incrArr = new JButton[4];
     JButton[] decrArr = new JButton[4];
     JLabel[] labelArr = new JLabel[4];
-    Hero hero;
+    JLabel[] valArr = new JLabel[]{new JLabel(), new JLabel(), new JLabel(), new JLabel()};
 
-    public static synchronized void activeFocus(Hero hero) {
-        final SettingFrame frame = getInstance(hero);
+    public static synchronized void activeFocus() {
+        final SettingFrame frame = getInstance();
         frame.setVisible(true);
     }
 
-    private static synchronized SettingFrame getInstance(Hero hero) {
+    private static synchronized SettingFrame getInstance() {
         if (Objects.isNull(instance)) {
-            instance = new SettingFrame(hero);
+            instance = new SettingFrame();
         }
-        instance.hero = hero;
         return instance;
     }
 
-    public SettingFrame(Hero hero) {
-        this.hero = hero;
-        try {
-            final BufferedImage iconImg = ImageIO.read(getClass().getResourceAsStream("/images/Me4.jpg"));
-            U = new JLabel(new ImageIcon(iconImg));
-        } catch (IOException e) {
-            log.error("", e);
-        }
-
+    public SettingFrame() {
         for (int i = 0; i < 4; i++) {
             incrArr[i] = new JButton("+");
             decrArr[i] = new JButton("-");
         }
         labelArr[0] = new JLabel("子弹速度");//+Shot.getSpeed()
-        labelArr[1] = new JLabel("̹坦克速度");//+hero.getSpeed()
-        labelArr[2] = new JLabel("坦克生命");//+this.hero.getLife()
         labelArr[3] = new JLabel("敌人数量");//+MyPanel3.getEnSize()
+        labelArr[1] = new JLabel("玩家速度");//+hero.getSpeed()
+        labelArr[2] = new JLabel("玩家生命");//+this.hero.getLife()
 
-        up = new JPanel();
-        ss = new JPanel();
+        buttonArea = new JPanel();
 
-        up.add(U);
-
-        ss.setLayout(new GridLayout(4, 3, 0, 0));
+        buttonArea.setLayout(new GridLayout(4, 4, 0, 0));
+        // 四行
         for (int i = 0; i < 4; i++) {
-            ss.add(labelArr[i]);
-            ss.add(incrArr[i]);
-            ss.add(decrArr[i]);
+            // 四列
+            buttonArea.add(labelArr[i]);
+            buttonArea.add(valArr[i]);
+            buttonArea.add(incrArr[i]);
+            buttonArea.add(decrArr[i]);
+
             incrArr[i].addActionListener(this);
             decrArr[i].addActionListener(this);
         }
@@ -81,17 +70,29 @@ public class SettingFrame extends JFrame implements ActionListener {
         decrArr[2].setActionCommand(SettingCommand.TANK_HP_DECREMENT);
         decrArr[3].setActionCommand(SettingCommand.DEMONS_COUNT_DECREMENT);
 
-        this.add(up, BorderLayout.NORTH);
-        this.add(ss, BorderLayout.CENTER);
+        this.refreshValLabel();
+
+        this.add(buttonArea, BorderLayout.CENTER);
         this.setLocation(800, 300);
         this.setSize(260, 280);
         this.setTitle("Setting");
-//		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+    }
+
+    public void refreshValLabel() {
+        final Optional<Hero> heroOpt = Optional.ofNullable(PlayStageMgr.instance).map(v -> v.hero);
+        this.valArr[0].setText(Bullet.getSpeed() + "");
+        this.valArr[1].setText(heroOpt.map(v -> v.getSpeed() + "").orElse(""));
+        this.valArr[2].setText(heroOpt.map(v -> v.getLife() + "").orElse(""));
+        this.valArr[3].setText(PlayStageMgr.enemySize + "");
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
+        if (PlayStageMgr.stageNoneStart()) {
+            return;
+        }
+
         if (event.getActionCommand().equals(SettingCommand.SHOT_SPEED_INCREMENT)) {
             Bullet.setSpeed(Bullet.getSpeed() + 1);
         }
@@ -100,26 +101,26 @@ public class SettingFrame extends JFrame implements ActionListener {
         }
 
         if (event.getActionCommand().equals(SettingCommand.TANK_SPEED_INCREMENT)) {
-            hero.addSpeed(1);
+            PlayStageMgr.instance.hero.addSpeed(1);
         }
         if (event.getActionCommand().equals(SettingCommand.TANK_SPEED_DECREMENT)) {
-            hero.addSpeed(-1);
+            PlayStageMgr.instance.hero.addSpeed(-1);
         }
 
         if (event.getActionCommand().equals(SettingCommand.TANK_HP_INCREMENT)) {
-            this.hero.addLife(1);
+            PlayStageMgr.instance.hero.addLife(1);
         }
         if (event.getActionCommand().equals(SettingCommand.TANK_HP_DECREMENT)) {
-            this.hero.addLife(-1);
+            PlayStageMgr.instance.hero.addLife(-1);
         }
 
         if (event.getActionCommand().equals(SettingCommand.DEMONS_COUNT_INCREMENT)) {
             PlayStageMgr.addEnemySize(1);
-            log.info("{}", PlayStageMgr.getEnemySize());
         }
         if (event.getActionCommand().equals(SettingCommand.DEMONS_COUNT_DECREMENT)) {
             PlayStageMgr.addEnemySize(-1);
         }
 
+        this.refreshValLabel();
     }
 }
