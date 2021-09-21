@@ -4,6 +4,7 @@ import com.github.kuangcp.tank.domain.Brick;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Iron;
+import com.github.kuangcp.tank.domain.Tank;
 import com.github.kuangcp.tank.resource.DefeatImgMgr;
 import com.github.kuangcp.tank.resource.VictoryImgMgr;
 import com.github.kuangcp.tank.util.TankTool;
@@ -37,7 +38,7 @@ public class PlayStageMgr {
     /**
      * 敌人的数量
      */
-    static int enemySize = 36;
+    static int enemySize = 8;
     /**
      * 无敌状态 时间
      */
@@ -147,5 +148,13 @@ public class PlayStageMgr {
 
     public static long getInvincibleMs() {
         return invincibleMs;
+    }
+
+    public static boolean hasTouchHero(Tank t) {
+        if (Objects.isNull(instance) || Objects.isNull(instance.hero) || !instance.hero.isAlive()) {
+            return true;
+        }
+
+        return TankTool.ablePass(t, instance.hero);
     }
 }

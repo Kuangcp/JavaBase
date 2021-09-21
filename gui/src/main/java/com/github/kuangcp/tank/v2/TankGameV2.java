@@ -1,5 +1,7 @@
 package com.github.kuangcp.tank.v2;
 
+import com.github.kuangcp.tank.util.executor.MonitorExecutor;
+
 import javax.swing.*;
 
 /**
@@ -24,6 +26,10 @@ public class TankGameV2 extends JFrame {
         this.setLocation(900, 200);
         this.setSize(405, 333);
         this.setVisible(true);
+
+        MonitorExecutor.init();
+        final Thread panelThread = new Thread(panel);
+        panelThread.start();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }

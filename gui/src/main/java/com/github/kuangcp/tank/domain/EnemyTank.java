@@ -641,7 +641,7 @@ public class EnemyTank extends Tank implements Runnable {
                     min++;
 //					if(!bri)this.direct = (int)(Math.random()*4);
                     if (y > 30) {
-                        if (TankTool.ablePass(this, PlayStageMgr.instance.hero) && overlap) y -= speed;
+                        if (PlayStageMgr.hasTouchHero(this) && overlap) y -= speed;
 //						    if(bri)y-=speed;
 //						    else {y+=speed;this.direct = 1;}
 //						else continue;
@@ -661,7 +661,7 @@ public class EnemyTank extends Tank implements Runnable {
 //					if(!bri)this.direct = (int)(Math.random()*4);
 
                     if (y < 530) {
-                        if (TankTool.ablePass(this, PlayStageMgr.instance.hero) && overlap && bri) y += speed;
+                        if (PlayStageMgr.hasTouchHero(this) && overlap && bri) y += speed;
 //						    if(bri) y+=speed;
 //						    else {y-=speed;this.direct = 0;}
 //						else continue;
@@ -681,7 +681,7 @@ public class EnemyTank extends Tank implements Runnable {
 //					if(!bri)this.direct = (int)(Math.random()*4);
 
                     if (x > 30) {
-                        if (TankTool.ablePass(this, PlayStageMgr.instance.hero) && overlap && bri) x -= speed;
+                        if (PlayStageMgr.hasTouchHero(this) && overlap && bri) x -= speed;
 //						    if(bri)x-=speed;
 //						    else{x+=speed;this.direct = 3;}
 //						else continue;
@@ -700,7 +700,7 @@ public class EnemyTank extends Tank implements Runnable {
 //					if(!bri)this.direct = (int)(Math.random()*4);
 
                     if (x < 710) {
-                        if (TankTool.ablePass(this, PlayStageMgr.instance.hero) && overlap && bri) {
+                        if (PlayStageMgr.hasTouchHero(this) && overlap && bri) {
                             x += speed;
                         }
 //						     if(bri)x+=speed;
@@ -712,8 +712,6 @@ public class EnemyTank extends Tank implements Runnable {
 
 //                        TankTool.yieldMsTime(50);
                     }
-
-
                 }
                 break;
             default:
