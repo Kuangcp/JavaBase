@@ -29,7 +29,7 @@ public class BombMgr extends AbstractImgListMgr {
     }
 
     public String getConfigKey(){
-        return PropertiesMgr.Key.Img.bomb;
+        return PropertiesMgr.Key.Img.ANIMATION_BOMB;
     }
 
     //定义炸弹爆炸集合

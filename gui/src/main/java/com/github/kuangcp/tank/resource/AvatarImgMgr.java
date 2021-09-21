@@ -16,6 +16,6 @@ public class AvatarImgMgr extends AbstractImgListMgr {
     }
 
     public String getConfigKey(){
-        return PropertiesMgr.Key.Img.avatar;
+        return PropertiesMgr.Key.Img.ROUND_AVATAR;
     }
 }

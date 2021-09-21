@@ -13,6 +13,6 @@ public class DefeatImgMgr extends AbstractImgListMgr {
     }
     
     public String getConfigKey(){
-        return PropertiesMgr.Key.Img.defeat;
+        return PropertiesMgr.Key.Img.ROUND_DEFEAT;
     }
 }

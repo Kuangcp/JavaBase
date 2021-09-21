@@ -18,6 +18,6 @@ public class VictoryImgMgr extends AbstractImgListMgr {
     }
 
     public String getConfigKey(){
-        return PropertiesMgr.Key.Img.victory;
+        return PropertiesMgr.Key.Img.ROUND_VICTORY;
     }
 }

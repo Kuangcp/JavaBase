@@ -11,19 +11,20 @@ import java.util.Properties;
 @Slf4j
 public class PropertiesMgr {
 
-    public static class Key {
+    public interface Key {
 
-        public static interface Img {
-            String avatar = "round.avatar";
-            String defeat = "round.defeat";
-            String victory = "round.victory";
-            String bomb = "animation.bomb";
+        interface Img {
+            String ROUND_AVATAR = "round.avatar";
+            String ROUND_DEFEAT = "round.defeat";
+            String ROUND_VICTORY = "round.victory";
+
+            String ANIMATION_BOMB = "animation.bomb";
         }
     }
 
     public static Properties imgProperties = null;
 
-    public static void init(){
+    public static void init() {
         imgProperties = new Properties();
         try {
             imgProperties.load(PropertiesMgr.class.getResourceAsStream("/tank/conf/img.properties"));
