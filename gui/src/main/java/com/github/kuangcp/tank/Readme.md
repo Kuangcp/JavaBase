@@ -7,6 +7,8 @@
 
  -javaagent:/path/to/quasar-core-0.7.4-jdk8.jar
 
+direct run: `ge tank -x test && cp out/build/distributions/gui.tar . && tar xf gui.tar && ./gui/bin/gui`
+
 ## TODO
 1. 碰撞监测
 1. 对方运动算法

@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ResourceMgr {
 
     public static void loadResource() {
+        PropertiesMgr.init();
+
         log.info("[init] start load resource");
         // image
         BombMgr.instance.loadImg();

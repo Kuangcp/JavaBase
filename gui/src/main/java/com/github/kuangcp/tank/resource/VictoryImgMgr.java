@@ -14,6 +14,10 @@ public class VictoryImgMgr extends AbstractImgListMgr {
         super.width = 760;
         super.height = 650;
 
-        super.imgPathArr = new String[]{"/images/Win2.jpg"};
+        // super.imgPathArr = new String[]{"/images/Win2.jpg"};
+    }
+
+    public String getConfigKey(){
+        return PropertiesMgr.Key.Img.victory;
     }
 }

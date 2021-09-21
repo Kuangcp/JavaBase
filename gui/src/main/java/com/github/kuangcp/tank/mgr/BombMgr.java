@@ -6,6 +6,8 @@ import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Tank;
 import com.github.kuangcp.tank.resource.AbstractImgListMgr;
+import com.github.kuangcp.tank.resource.PropertiesMgr;
+
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -24,7 +26,10 @@ public class BombMgr extends AbstractImgListMgr {
     public static BombMgr instance = new BombMgr();
 
     public BombMgr() {
-        super.imgPathArr = new String[]{"/images/bomb_1.gif", "/images/bomb_2.gif", "/images/bomb_3.gif"};
+    }
+
+    public String getConfigKey(){
+        return PropertiesMgr.Key.Img.bomb;
     }
 
     //定义炸弹爆炸集合

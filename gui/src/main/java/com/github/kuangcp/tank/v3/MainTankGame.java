@@ -1,5 +1,6 @@
 package com.github.kuangcp.tank.v3;
 
+import com.github.kuangcp.tank.resource.ResourceMgr;
 import com.github.kuangcp.tank.util.executor.MonitorExecutor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +16,7 @@ public class MainTankGame {
      */
     public static void main(String[] args) {
         MonitorExecutor.init();
+        ResourceMgr.loadResource();
 
         EventQueue.invokeLater(new MainFrame());
     }

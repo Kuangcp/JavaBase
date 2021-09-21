@@ -70,7 +70,7 @@ public class MainFrame extends JFrame implements Runnable {
     JMenuItem setting = null;
 
     public MainFrame() {
-        ResourceMgr.loadResource();
+
     }
 
     public void run() {

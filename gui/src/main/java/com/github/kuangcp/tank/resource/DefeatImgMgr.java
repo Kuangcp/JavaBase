@@ -8,9 +8,11 @@ public class DefeatImgMgr extends AbstractImgListMgr {
     public static DefeatImgMgr instance = new DefeatImgMgr();
 
     public DefeatImgMgr() {
-        super.imgPathArr = new String[]{"/images/Over2.jpg", "/images/Over4.jpg"};
-
         super.width = 760;
         super.height = 650;
+    }
+    
+    public String getConfigKey(){
+        return PropertiesMgr.Key.Img.defeat;
     }
 }
