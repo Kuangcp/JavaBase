@@ -43,28 +43,28 @@ public class KeyListener implements ExitFlagRunnable {
 
             if (eventGroup.isLeft()) {
                 hero.setDirect(DirectType.LEFT);
-                if ((hero.getX() - 10) > 20 && PlayStageMgr.instance.ableToMove(hero)) {
+                if (PlayStageMgr.instance.willInBorder(hero) && PlayStageMgr.instance.ableToMove(hero)) {
                     hero.moveLeft();
                 }
             }
 
             if (eventGroup.isRight()) {
                 hero.setDirect(DirectType.RIGHT);
-                if ((hero.getX() + 15) < 742 && PlayStageMgr.instance.ableToMove(hero)) {
+                if (PlayStageMgr.instance.willInBorder(hero) && PlayStageMgr.instance.ableToMove(hero)) {
                     hero.moveRight();
                 }
             }
 
             if (eventGroup.isDown()) {
                 hero.setDirect(DirectType.DOWN);
-                if ((hero.getY() - 15) < 515 && PlayStageMgr.instance.ableToMove(hero)) {
+                if (PlayStageMgr.instance.willInBorder(hero) && PlayStageMgr.instance.ableToMove(hero)) {
                     hero.moveDown();
                 }
             }
 
             if (eventGroup.isUp()) {
                 hero.setDirect(DirectType.UP);
-                if ((hero.getY() - 13) > 20 && PlayStageMgr.instance.ableToMove(hero)) {
+                if (PlayStageMgr.instance.willInBorder(hero) && PlayStageMgr.instance.ableToMove(hero)) {
                     hero.moveUp();
                 }
             }
@@ -75,12 +75,8 @@ public class KeyListener implements ExitFlagRunnable {
 
             tankGroundPanel.repaint();
 
-            try {
-                // 动作的延迟 1000 / 77 fps
-                Thread.sleep(29);
-            } catch (InterruptedException e) {
-                log.error("", e);
-            }
+            // 动作的延迟 1000 / 77 fps
+            TankTool.yieldMsTime(33);
         }
     }
 }

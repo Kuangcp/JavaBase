@@ -1,5 +1,6 @@
 package com.github.kuangcp.tank.v3;
 
+import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.domain.Brick;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
@@ -24,6 +25,7 @@ public class PlayStageMgr {
     public static PlayStageMgr instance = null;
 
     public Hero hero;
+    public StageBorder border = null;
     public boolean startLogic = false;
     public boolean winCurRound = false;
     public int roundPrize = 0;
@@ -66,8 +68,13 @@ public class PlayStageMgr {
         log.info("start round:{}", round);
     }
 
+    /**
+     * start new stage
+     */
     public static void init(Hero hero, List<EnemyTank> enemyTanks, List<Brick> bricks, List<Iron> irons) {
         instance = new PlayStageMgr(hero, enemyTanks, bricks, irons);
+
+        instance.border = new StageBorder(20, 742, 20, 545);
     }
 
     private PlayStageMgr(Hero hero, List<EnemyTank> enemyTanks, List<Brick> bricks, List<Iron> irons) {
@@ -132,6 +139,23 @@ public class PlayStageMgr {
 
     public boolean ableToMove(Hero hero) {
         return enemyTanks.stream().allMatch(v -> TankTool.ablePass(hero, v));
+    }
+
+    public boolean willInBorder(Tank tank) {
+        if (Objects.isNull(tank)) {
+            return false;
+        }
+        switch (tank.getDirect()) {
+            case DirectType.UP:
+                return tank.getY() - tank.getHalfHeight() - tank.getSpeed() > border.getMinY();
+            case DirectType.DOWN:
+                return tank.getY() + tank.getHalfHeight() + tank.getSpeed() < border.getMaxY();
+            case DirectType.LEFT:
+                return tank.getX() - tank.getHalfHeight() - tank.getSpeed() > border.getMinX();
+            case DirectType.RIGHT:
+                return tank.getX() + tank.getHalfHeight() + tank.getSpeed() < border.getMaxX();
+        }
+        return false;
     }
 
     public static int getEnemySize() {

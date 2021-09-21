@@ -105,7 +105,7 @@ class MainPanelV2 extends JPanel implements KeyListener, Runnable {
     @Override
     public void run() {
         int maxFPS = 60;
-        long fpsTime = (long) ((1000.0 / maxFPS) * 1000000);
+        long fpsTime = (long) ((1000.0 / maxFPS) * 1_000_000);
 
         long now;
         //每隔100ms重绘
