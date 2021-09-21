@@ -111,12 +111,14 @@ class MainPanelV1 extends JPanel implements KeyListener {
             s.drawSelf(g);
         }
 
-        //		画出砖块
+        //画出砖块
+        g.setColor(new Color(188, 112, 50));
+        for (int i = 0; i < 9; i++) {
+            g.fill3DRect(60, 60 + 10 * i, 20, 10, false);
+        }
+
         g.setColor(Color.yellow);
         g.drawRect(0, 0, 400, 300);
-        for (int j = 0; j < 20; j++) {
-            g.draw3DRect(60 + 8 * j, 50, 5, 10, false);
-        }
 
     }
 
