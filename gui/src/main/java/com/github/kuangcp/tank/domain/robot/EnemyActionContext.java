@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class EnemyActionContext {
 
-    public static final int MAX_DIRECT_STEP = 40;
+    public static final int MAX_DIRECT_STEP = 20;
     public static final int MIN_DIRECT_STEP = 3;
 
     private long lastShotTime;
@@ -38,11 +38,13 @@ public class EnemyActionContext {
         final long round = this.getAndAddCount();
         if (round % rate.getMoveRate() == rate.getMoveRate() - 1) {
             return RoundActionEnum.MOVE;
-        } else if (round % rate.getShotRate() == rate.getShotRate() - 1) {
-            return RoundActionEnum.SHOT;
-        } else {
-            return RoundActionEnum.STAY;
         }
+
+        if (round % rate.getShotRate() == rate.getShotRate() - 1) {
+            return RoundActionEnum.SHOT;
+        }
+
+        return RoundActionEnum.STAY;
     }
 
     public boolean isShotRound() {

@@ -2,6 +2,7 @@ package com.github.kuangcp.tank.v3;
 
 import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.domain.Brick;
+import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Iron;
@@ -75,6 +76,7 @@ public class PlayStageMgr {
         instance = new PlayStageMgr(hero, enemyTanks, bricks, irons);
 
         instance.border = new StageBorder(20, 742, 20, 545);
+//        instance.border = new StageBorder(20, 1600, 20, 900);
     }
 
     private PlayStageMgr(Hero hero, List<EnemyTank> enemyTanks, List<Brick> bricks, List<Iron> irons) {
@@ -156,6 +158,14 @@ public class PlayStageMgr {
                 return tank.getX() + tank.getHalfHeight() + tank.getSpeed() < border.getMaxX();
         }
         return false;
+    }
+
+    public boolean willInBorder(Bullet bullet) {
+        if (Objects.isNull(bullet)) {
+            return false;
+        }
+        return bullet.sx <= border.getMinX() || bullet.sx >= border.getMaxX()
+                || bullet.sy <= border.getMinY() || bullet.sy >= border.getMaxY();
     }
 
     public static int getEnemySize() {

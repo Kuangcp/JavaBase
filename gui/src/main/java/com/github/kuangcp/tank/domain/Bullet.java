@@ -1,7 +1,7 @@
 package com.github.kuangcp.tank.domain;
 
-import com.github.kuangcp.tank.util.executor.AbstractLoopEvent;
 import com.github.kuangcp.tank.util.TankTool;
+import com.github.kuangcp.tank.util.executor.AbstractLoopEvent;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,7 +10,7 @@ import java.awt.*;
 /**
  * 子弹
  * <p>
- *     TODO 对象池（弹夹） 复用对象
+ * TODO 对象池（弹夹） 复用对象
  * TODO 抽象类，多种子弹
  */
 @Slf4j
@@ -66,13 +66,9 @@ public class Bullet extends AbstractLoopEvent implements VisualItem {
                 break;
         }
 
-        //判断子弹是否碰到边缘
-        if (sx < 20 || sx > 740 || sy < 20 || sy > 540) {
-            this.alive = false;
-            this.stop();
-        }
-
-        if (sx < 440 && sx > 380 && sy < 540 && sy > 480) {
+        final boolean hitHome = sx < 440 && sx > 380 && sy < 540 && sy > 480;
+        //判断子弹是否碰到边缘 或者命中基地
+        if (PlayStageMgr.instance.willInBorder(this) || hitHome) {
             this.alive = false;
             this.stop();
         }

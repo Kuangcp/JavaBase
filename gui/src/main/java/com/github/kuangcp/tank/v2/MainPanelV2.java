@@ -45,6 +45,10 @@ class MainPanelV2 extends JPanel implements KeyListener, Runnable {
         ets.add(new EnemyTank(250, 90, DirectType.UP));
         ets.add(new EnemyTank(250, 100, DirectType.UP));
 
+        for (int i = 0; i < 700; i++) {
+            ets.add(new EnemyTank(20 + i * 40 % PlayStageMgr.instance.border.getMaxX(), 100 + i * 5 % PlayStageMgr.instance.border.getMaxY(), DirectType.UP));
+        }
+
         for (EnemyTank et : ets) {
             LoopEventExecutor.addLoopEvent(et);
         }
@@ -78,11 +82,6 @@ class MainPanelV2 extends JPanel implements KeyListener, Runnable {
                 g.setColor(Color.cyan);
                 next.drawSelf(g);
             }
-            for (Bullet bullet : s.bulletList) {
-                g.setColor(Color.cyan);
-                bullet.drawSelf(g);
-            }
-
         }
 
         //画出砖块

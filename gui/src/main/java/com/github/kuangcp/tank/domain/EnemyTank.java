@@ -74,8 +74,8 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
         this.speed = maxLife - life + 1;
         this.id = counter.addAndGet(1);
 
-        this.setFixedDelayTime(60);
-        this.moveRate = 1;
+        this.setFixedDelayTime(40);
+        this.moveRate = 2;
         this.shotRate = 17;
 
         this.afterBuild();
@@ -91,8 +91,8 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
         this.life = ThreadLocalRandom.current().nextInt(maxLife) + 1;
         this.id = counter.addAndGet(1);
 
-        this.setFixedDelayTime(60);
-        this.moveRate = 1;
+        this.setFixedDelayTime(40);
+        this.moveRate = 2;
         this.shotRate = 17;
 
         this.afterBuild();
@@ -146,6 +146,12 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
 
     public void setBri(boolean bri) {
         this.bri = bri;
+    }
+
+    @Override
+    public void addLife(int delta) {
+        super.addLife(delta);
+        this.speed = maxLife - this.life + 1;
     }
 
     /**
@@ -569,7 +575,7 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
     private void finalMoveAction() {
         if (actionContext.getSameDirectCounter() > actionContext.getCurRoundStep()
                 || !PlayStageMgr.instance.willInBorder(this)) {
-            this.direct = (int) (Math.random() * 4);
+            this.direct = DirectType.turnSelection(this.direct)[ThreadLocalRandom.current().nextInt(3)];
             actionContext.reset();
             return;
         }

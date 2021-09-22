@@ -23,18 +23,18 @@ public class TankGameV2 extends JFrame {
 
     //最外层JFrame的构造函数
     public TankGameV2() {
+        MonitorExecutor.init();
+        PlayStageMgr.init(new Hero(50, 20, 5), Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
+
         MainPanelV2 panel = new MainPanelV2();
         this.add(panel);
         this.addKeyListener(panel);
-
-        MonitorExecutor.init();
-        PlayStageMgr.init(new Hero(50, 20, 5), Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
         final Thread panelThread = new Thread(panel);
         panelThread.start();
 
         final StageBorder border = PlayStageMgr.instance.border;
 
-        this.setLocation(900, 200);
+        this.setLocation(200, 50);
         this.setSize(border.getMaxX() + border.getMinX(), border.getMaxY() + border.getMinY() * 2);
         this.setVisible(true);
 
