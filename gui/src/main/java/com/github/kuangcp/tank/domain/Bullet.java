@@ -5,11 +5,16 @@ import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
+import java.awt.*;
+
 /**
- * 子弹类  对象做成了线程
+ * 子弹
+ * <p>
+ *     TODO 对象池（弹夹） 复用对象
+ * TODO 抽象类，多种子弹
  */
 @Slf4j
-public class Bullet extends AbstractLoopEvent {
+public class Bullet extends AbstractLoopEvent implements VisualItem {
 
     public int sx;
     public int sy;
@@ -105,5 +110,10 @@ public class Bullet extends AbstractLoopEvent {
             }
         } while (this.alive);
 //        log.info("bullet die");
+    }
+
+    @Override
+    public void drawSelf(Graphics g) {
+        g.draw3DRect(this.sx, this.sy, 1, 1, false);
     }
 }

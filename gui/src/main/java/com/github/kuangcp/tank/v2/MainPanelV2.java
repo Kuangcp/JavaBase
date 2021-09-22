@@ -1,16 +1,20 @@
 package com.github.kuangcp.tank.v2;
 
 import com.github.kuangcp.tank.constant.DirectType;
+import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
+import com.github.kuangcp.tank.v3.PlayStageMgr;
+import com.github.kuangcp.tank.v3.StageBorder;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
@@ -23,23 +27,36 @@ import java.util.concurrent.TimeUnit;
 class MainPanelV2 extends JPanel implements KeyListener, Runnable {
 
     //定义我的坦克
-    Hero hero = null;
+    Hero hero;
     //定义泛型的集合类
     Vector<EnemyTank> ets = new Vector<>();
 
     //画板的构造函数 放图形的对象
     public MainPanelV2() {
-        ets.add(new EnemyTank(250, 60, 4, DirectType.UP));
+//        ets.add(new EnemyTank(250, 60, 1, DirectType.UP));
+//        ets.add(new EnemyTank(250, 60, 2, DirectType.UP));
+//        ets.add(new EnemyTank(250, 60, 3, DirectType.UP));
+//        ets.add(new EnemyTank(250, 260, 4, DirectType.UP));
+//        ets.add(new EnemyTank(250, 260, 6, DirectType.UP));
+
+        ets.add(new EnemyTank(250, 60, DirectType.UP));
+        ets.add(new EnemyTank(250, 70, DirectType.UP));
+        ets.add(new EnemyTank(250, 80, DirectType.UP));
+        ets.add(new EnemyTank(250, 90, DirectType.UP));
+        ets.add(new EnemyTank(250, 100, DirectType.UP));
+
+        for (EnemyTank et : ets) {
+            LoopEventExecutor.addLoopEvent(et);
+        }
+        hero = new Hero(160, 160, 4);
     }
 
     //重写paint
     public void paint(Graphics g) {
         super.paint(g);
 
-        if (Objects.isNull(hero)) {
-            hero = new Hero(20, 20, 4);
-        }
-        g.fillRect(0, 0, 500, 400);
+        final StageBorder border = PlayStageMgr.instance.border;
+        g.fillRect(0, 0, border.getMaxX() + border.getMinX(), border.getMaxY() + border.getMinY());
 
         //调用函数绘画出主坦克
         hero.drawSelf(g);
@@ -52,7 +69,20 @@ class MainPanelV2 extends JPanel implements KeyListener, Runnable {
         //画出敌人坦克
         for (EnemyTank s : ets) {
             s.drawSelf(g);
-            LoopEventExecutor.addLoopEvent(s);
+            final Iterator<Bullet> iterator = s.bulletList.iterator();
+            while (iterator.hasNext()) {
+                final Bullet next = iterator.next();
+                if (!next.alive) {
+                    iterator.remove();
+                }
+                g.setColor(Color.cyan);
+                next.drawSelf(g);
+            }
+            for (Bullet bullet : s.bulletList) {
+                g.setColor(Color.cyan);
+                bullet.drawSelf(g);
+            }
+
         }
 
         //画出砖块
@@ -61,8 +91,10 @@ class MainPanelV2 extends JPanel implements KeyListener, Runnable {
             g.fill3DRect(60, 60 + 10 * i, 20, 10, false);
         }
 
+        // border
         g.setColor(Color.yellow);
-        g.drawRect(0, 0, 400, 300);
+        g.drawRect(border.getMinX(), border.getMinY(),
+                border.getMaxX() - border.getMinX(), border.getMaxY() - border.getMinY());
     }
 
     //当按下键盘上的键时监听者的处理函数
@@ -70,25 +102,25 @@ class MainPanelV2 extends JPanel implements KeyListener, Runnable {
         //加了if条件后 实现了墙的限制（如果是游戏中的道具，该怎么办）
         if (e.getKeyCode() == KeyEvent.VK_A) {
             hero.setDirect(2);
-            if ((hero.getX() - 10) > 0)
+            if (PlayStageMgr.instance.willInBorder(hero))
                 hero.moveLeft();
 
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
             hero.setDirect(3);
-            if ((hero.getX() + 15) < 405)
+            if (PlayStageMgr.instance.willInBorder(hero))
                 hero.moveRight();
         }
 
         if (e.getKeyCode() == KeyEvent.VK_W) {
             hero.setDirect(0);
-            if ((hero.getY() - 13) > 0)
+            if (PlayStageMgr.instance.willInBorder(hero))
                 hero.moveUp();
 
         }
         if (e.getKeyCode() == KeyEvent.VK_S) {
             hero.setDirect(1);
-            if ((hero.getY() - 15) < 275)
+            if (PlayStageMgr.instance.willInBorder(hero))
                 hero.moveDown();
 
         }

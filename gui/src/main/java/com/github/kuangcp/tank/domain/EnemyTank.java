@@ -3,8 +3,11 @@ package com.github.kuangcp.tank.domain;
 
 
 import com.github.kuangcp.tank.constant.DirectType;
-import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
+import com.github.kuangcp.tank.domain.robot.EnemyActionContext;
+import com.github.kuangcp.tank.domain.robot.RobotRate;
+import com.github.kuangcp.tank.domain.robot.RoundActionEnum;
 import com.github.kuangcp.tank.util.TankTool;
+import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +25,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * 可以继续延伸做出多样化的坦克
  */
 @Slf4j
-public class EnemyTank extends Tank implements Runnable {
+public class EnemyTank extends Tank implements Runnable, RobotRate {
 
     private static final AtomicLong counter = new AtomicLong();
     // 敌人 id
@@ -33,8 +36,12 @@ public class EnemyTank extends Tank implements Runnable {
     public List<Bullet> bulletList = Collections.synchronizedList(new ArrayList<>());//子弹集合
     private long lastShotMs = 0;
     private long shotCDMs = 168;
-    public static int maxLiveShot = 30; //子弹线程存活的最大数
+
+
+    public static int maxLiveShot = 30; // 活跃子弹 最大数
     public boolean delayRemove = false; // 延迟回收内存，避免子弹线程执行中断
+    public int moveRate;
+    public int shotRate;
 
     public List<EnemyTank> ets;
     public List<Brick> bricks;
@@ -58,6 +65,22 @@ public class EnemyTank extends Tank implements Runnable {
         colorMap.put(5, new Color(240, 57, 23));
     }
 
+    public EnemyTank(int x, int y, int direct) {
+        super(x, y, 2);
+        type = 1;
+        this.direct = direct;
+        this.alive = true;
+        this.life = ThreadLocalRandom.current().nextInt(maxLife) + 1;
+        this.speed = maxLife - life + 1;
+        this.id = counter.addAndGet(1);
+
+        this.setFixedDelayTime(60);
+        this.moveRate = 1;
+        this.shotRate = 17;
+
+        this.afterBuild();
+    }
+
     //继承了属性，即使直接使用父类的构造器，构造器也一定要显式声明
     public EnemyTank(int x, int y, int speed, int direct) {
         super(x, y, speed);
@@ -67,12 +90,15 @@ public class EnemyTank extends Tank implements Runnable {
         this.alive = true;
         this.life = ThreadLocalRandom.current().nextInt(maxLife) + 1;
         this.id = counter.addAndGet(1);
-//        log.info("create new Demons. {}", id);
 
-        //TODO 动机算法 调整后的刷新率
-//        this.setFixedDelayTime(320);
-        this.setFixedDelayTime(90);
+        this.setFixedDelayTime(60);
+        this.moveRate = 1;
+        this.shotRate = 17;
 
+        this.afterBuild();
+    }
+
+    private void afterBuild() {
         this.registerHook(() -> {
             if (this.isAbort()) {
                 for (Bullet d : this.bulletList) {
@@ -82,6 +108,16 @@ public class EnemyTank extends Tank implements Runnable {
                 PlayStageMgr.instance.hero.addPrize(1);
             }
         });
+    }
+
+    @Override
+    public int getMoveRate() {
+        return this.moveRate;
+    }
+
+    @Override
+    public int getShotRate() {
+        return this.shotRate;
     }
 
     @Override
@@ -122,13 +158,13 @@ public class EnemyTank extends Tank implements Runnable {
     /**
      * 发射子弹    函数
      */
-    public void shotEnemy() {
+    public void finalShotAction() {
         //判断坦克方向来 初始化子弹的起始发射位置
         final long nowMs = System.currentTimeMillis();
         if (lastShotMs != 0 && nowMs - lastShotMs < shotCDMs) {
             return;
         }
-        if (this.bulletList.size() >= this.maxLiveShot || !this.isAlive()) {
+        if (this.bulletList.size() >= maxLiveShot || !this.isAlive()) {
             return;
         }
 
@@ -457,7 +493,8 @@ public class EnemyTank extends Tank implements Runnable {
 
     @Override
     public void run() {
-        newEventRun();
+//        newEventRun();
+        moveOrShot();
     }
 
     // 运动
@@ -501,9 +538,63 @@ public class EnemyTank extends Tank implements Runnable {
         }
     }
 
-    // 攻击
-    public void actionModeAttack() {
+    private final EnemyActionContext actionContext = new EnemyActionContext();
 
+    public void moveOrShot() {
+        if (!this.isAlive()) {
+            this.stop();
+            return;
+        }
+
+        if (PlayStageMgr.pause || this.speed <= 0) {
+            return;
+        }
+
+        final RoundActionEnum roundActionEnum = actionContext.roundAction(this);
+//        log.info("mode={}", roundActionEnum);
+        switch (roundActionEnum) {
+            case MOVE:
+                this.finalMoveAction();
+                return;
+            case SHOT:
+                this.finalShotAction();
+                return;
+            case STAY:
+                return;
+            default:
+                log.warn("not support");
+        }
+    }
+
+    private void finalMoveAction() {
+        if (actionContext.getSameDirectCounter() > actionContext.getCurRoundStep()
+                || !PlayStageMgr.instance.willInBorder(this)) {
+            this.direct = (int) (Math.random() * 4);
+            actionContext.reset();
+            return;
+        }
+
+        switch (this.direct) {
+            case DirectType.UP:
+                y -= this.speed;
+                actionContext.addCount();
+                break;
+            case DirectType.DOWN:
+                y += this.speed;
+                actionContext.addCount();
+                break;
+            case DirectType.LEFT:
+                x -= this.speed;
+                actionContext.addCount();
+                break;
+            case DirectType.RIGHT:
+                x += this.speed;
+                actionContext.addCount();
+                break;
+            default:
+                log.warn("not exist direct");
+                break;
+        }
     }
 
     public void run2() {
@@ -531,7 +622,7 @@ public class EnemyTank extends Tank implements Runnable {
                             else break;//这样才不会有敌人坦克凑在你附近不动
 //						else this.direct = (int)(Math.random()*4);
                             if (min % 27 == 0)
-                                this.shotEnemy();
+                                this.finalShotAction();
                             TankTool.yieldMsTime(50);
                         }
 
@@ -550,7 +641,7 @@ public class EnemyTank extends Tank implements Runnable {
 //						else continue;
                             else break;
                             if (min % 27 == 0) {
-                                this.shotEnemy();
+                                this.finalShotAction();
                             }
                             TankTool.yieldMsTime(50);
                         }
@@ -570,7 +661,7 @@ public class EnemyTank extends Tank implements Runnable {
 //						else continue;
                             else break;
                             if (min % 27 == 0)
-                                this.shotEnemy();
+                                this.finalShotAction();
                             TankTool.yieldMsTime(50);
                         }
 
@@ -591,7 +682,7 @@ public class EnemyTank extends Tank implements Runnable {
                             else break;
 //						else continue;
                             if (min % 27 == 0)
-                                this.shotEnemy();
+                                this.finalShotAction();
 
                             TankTool.yieldMsTime(50);
                         }
@@ -641,14 +732,14 @@ public class EnemyTank extends Tank implements Runnable {
                     min++;
 //					if(!bri)this.direct = (int)(Math.random()*4);
                     if (y > 30) {
-                        if (PlayStageMgr.hasTouchHero(this) && overlap) y -= speed;
+                        if (PlayStageMgr.ablePassByHero(this) && overlap) y -= speed;
 //						    if(bri)y-=speed;
 //						    else {y+=speed;this.direct = 1;}
 //						else continue;
                         else break;//这样才不会有敌人坦克凑在你附近不动
 //						else this.direct = (int)(Math.random()*4);
                         if (min % 27 == 0)
-                            this.shotEnemy();
+                            this.finalShotAction();
 //                        TankTool.yieldMsTime(50);
                     }
 
@@ -661,13 +752,13 @@ public class EnemyTank extends Tank implements Runnable {
 //					if(!bri)this.direct = (int)(Math.random()*4);
 
                     if (y < 530) {
-                        if (PlayStageMgr.hasTouchHero(this) && overlap && bri) y += speed;
+                        if (PlayStageMgr.ablePassByHero(this) && overlap && bri) y += speed;
 //						    if(bri) y+=speed;
 //						    else {y-=speed;this.direct = 0;}
 //						else continue;
                         else break;
                         if (min % 27 == 0) {
-                            this.shotEnemy();
+                            this.finalShotAction();
                         }
 //                        TankTool.yieldMsTime(50);
                     }
@@ -681,13 +772,13 @@ public class EnemyTank extends Tank implements Runnable {
 //					if(!bri)this.direct = (int)(Math.random()*4);
 
                     if (x > 30) {
-                        if (PlayStageMgr.hasTouchHero(this) && overlap && bri) x -= speed;
+                        if (PlayStageMgr.ablePassByHero(this) && overlap && bri) x -= speed;
 //						    if(bri)x-=speed;
 //						    else{x+=speed;this.direct = 3;}
 //						else continue;
                         else break;
                         if (min % 27 == 0)
-                            this.shotEnemy();
+                            this.finalShotAction();
 //                        TankTool.yieldMsTime(50);
                     }
 
@@ -700,7 +791,7 @@ public class EnemyTank extends Tank implements Runnable {
 //					if(!bri)this.direct = (int)(Math.random()*4);
 
                     if (x < 710) {
-                        if (PlayStageMgr.hasTouchHero(this) && overlap && bri) {
+                        if (PlayStageMgr.ablePassByHero(this) && overlap && bri) {
                             x += speed;
                         }
 //						     if(bri)x+=speed;
@@ -708,7 +799,7 @@ public class EnemyTank extends Tank implements Runnable {
                         else break;
 //						else continue;
                         if (min % 27 == 0)
-                            this.shotEnemy();
+                            this.finalShotAction();
 
 //                        TankTool.yieldMsTime(50);
                     }

@@ -1,8 +1,12 @@
 package com.github.kuangcp.tank.v2;
 
+import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.util.executor.MonitorExecutor;
+import com.github.kuangcp.tank.v3.PlayStageMgr;
+import com.github.kuangcp.tank.v3.StageBorder;
 
 import javax.swing.*;
+import java.util.Collections;
 
 /**
  * 1 绘画出坦克 并且能做到对它的移动操作
@@ -23,13 +27,17 @@ public class TankGameV2 extends JFrame {
         this.add(panel);
         this.addKeyListener(panel);
 
-        this.setLocation(900, 200);
-        this.setSize(405, 333);
-        this.setVisible(true);
-
         MonitorExecutor.init();
+        PlayStageMgr.init(new Hero(50, 20, 5), Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
         final Thread panelThread = new Thread(panel);
         panelThread.start();
+
+        final StageBorder border = PlayStageMgr.instance.border;
+
+        this.setLocation(900, 200);
+        this.setSize(border.getMaxX() + border.getMinX(), border.getMaxY() + border.getMinY() * 2);
+        this.setVisible(true);
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }

@@ -20,7 +20,7 @@ public class StarterPanel extends JPanel {
 
     public StarterPanel() {
         try {
-            First = ImageIO.read(getClass().getResource("/images/Tank.jpg"));
+            First = ImageIO.read(getClass().getResource("/tank/img/Tank.jpg"));
         } catch (IOException e) {
             log.error("", e);
         }

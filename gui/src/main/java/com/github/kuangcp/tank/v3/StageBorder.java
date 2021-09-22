@@ -5,10 +5,10 @@ package com.github.kuangcp.tank.v3;
  */
 
 public class StageBorder {
-    private int minX;
-    private int maxX;
-    private int minY;
-    private int maxY;
+    private final int minX;
+    private final int maxX;
+    private final int minY;
+    private final int maxY;
 
     public StageBorder(int minX, int maxX, int minY, int maxY) {
         this.minX = minX;

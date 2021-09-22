@@ -19,9 +19,14 @@ public class CommonEventExecutor {
                 final AbstractLoopEvent event = queue.take();
                 final long delay = event.getDelay(TimeUnit.MILLISECONDS);
                 if (delay < -200) {
-                    log.info("delay {}", delay);
+                    log.info("delay {}ms", delay);
                 }
+                final long start = System.nanoTime();
                 event.run();
+                final long taskWaste = System.nanoTime() - start;
+                if (taskWaste > event.fixedDelayTime * 1000_000) {
+                    log.warn("task run out of fixed delay. waste:{}ns, fixed:{}ms", taskWaste, event.fixedDelayTime);
+                }
                 if (event.isContinue() && event.addFixedDelay()) {
                     queue.add(event);
                 }

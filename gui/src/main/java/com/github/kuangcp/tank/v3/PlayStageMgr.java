@@ -174,7 +174,7 @@ public class PlayStageMgr {
         return invincibleMs;
     }
 
-    public static boolean hasTouchHero(Tank t) {
+    public static boolean ablePassByHero(Tank t) {
         if (Objects.isNull(instance) || Objects.isNull(instance.hero) || !instance.hero.isAlive()) {
             return true;
         }

@@ -11,7 +11,7 @@ import java.awt.*;
  * 往后有继承
  */
 @Slf4j
-public abstract class Tank extends AbstractLoopEvent {
+public abstract class Tank extends AbstractLoopEvent implements VisualItem {
     int x;          // 坦克中心的横坐标
     int y;          // 坦克中心的纵坐标
     int direct = 0;   // 初始方向
@@ -107,6 +107,7 @@ public abstract class Tank extends AbstractLoopEvent {
     public void setY(int y) {
         this.y = y;
     }
+
 
     public Tank(int x, int y, int speed) {
         this.x = x;
