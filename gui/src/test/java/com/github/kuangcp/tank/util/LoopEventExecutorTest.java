@@ -15,6 +15,8 @@ import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -165,4 +167,14 @@ public class LoopEventExecutorTest {
         Thread.sleep(1000000);
     }
 
+    @Test
+    public void testSchedule() throws Exception {
+        final EnemyTank enemyTank = new EnemyTank(30, 30, 2, DirectType.RIGHT);
+        final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
+        scheduledExecutorService.scheduleAtFixedRate(()->{
+            System.out.println("run");
+        }, 200, 1000, TimeUnit.MILLISECONDS);
+//        scheduledExecutorService.scheduleWithFixedDelay(enemyTank, 2000, 1000, TimeUnit.MILLISECONDS);
+        Thread.sleep(1000000);
+    }
 }

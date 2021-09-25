@@ -28,9 +28,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class EnemyTank extends Tank implements Runnable, RobotRate {
 
     private static final AtomicLong counter = new AtomicLong();
-    // 敌人 id
-    public long id;
-
+    public final long id;
 
     public Bullet s = null;
     public List<Bullet> bulletList = Collections.synchronizedList(new ArrayList<>());//子弹集合
@@ -38,7 +36,7 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
     private long shotCDMs = 168;
 
 
-    public static int maxLiveShot = 30; // 活跃子弹 最大数
+    public static int maxLiveShot = 3; // 活跃子弹 最大数
     public boolean delayRemove = false; // 延迟回收内存，避免子弹线程执行中断
     public int moveRate;
     public int shotRate;
@@ -52,26 +50,31 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
     boolean ableMove = true;
 
     /**
-     * 随机生成 的 最大生命值
+     * 随机生成 的 最大生命值, 每个生命值都有对应的颜色
+     *
+     * @see EnemyTank#COLOR_HASH_MAP
+     * @see EnemyTank#drawSelf
      */
-    private static final int maxLife = 5;
-    private static final Map<Integer, Color> colorMap = new HashMap<>(maxLife);
+    private static final int MAX_LIFE = 7;
+    private static final Map<Integer, Color> COLOR_HASH_MAP = new HashMap<>(MAX_LIFE);
 
     static {
-        colorMap.put(1, Color.WHITE);
-        colorMap.put(2, new Color(93, 217, 41));
-        colorMap.put(3, new Color(34, 155, 234));
-        colorMap.put(4, new Color(155, 62, 202));
-        colorMap.put(5, new Color(240, 57, 23));
+        COLOR_HASH_MAP.put(1, Color.WHITE);
+        COLOR_HASH_MAP.put(2, new Color(93, 217, 41));
+        COLOR_HASH_MAP.put(3, new Color(34, 155, 234));
+        COLOR_HASH_MAP.put(4, new Color(155, 62, 202));
+        COLOR_HASH_MAP.put(5, new Color(240, 57, 23));
+        COLOR_HASH_MAP.put(6, new Color(240, 57, 23));
+        COLOR_HASH_MAP.put(7, new Color(240, 57, 23));
     }
 
     public EnemyTank(int x, int y, int direct) {
-        super(x, y, 2);
+        super(x, y, 0);
         type = 1;
         this.direct = direct;
         this.alive = true;
-        this.life = ThreadLocalRandom.current().nextInt(maxLife) + 1;
-        this.speed = maxLife - life + 1;
+        this.life = ThreadLocalRandom.current().nextInt(MAX_LIFE) + 1;
+        this.speed = MAX_LIFE - life + 1;
         this.id = counter.addAndGet(1);
 
         this.setFixedDelayTime(40);
@@ -81,14 +84,13 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
         this.afterBuild();
     }
 
-    //继承了属性，即使直接使用父类的构造器，构造器也一定要显式声明
     public EnemyTank(int x, int y, int speed, int direct) {
         super(x, y, speed);
         type = 1;
         this.direct = direct;
         this.speed = speed;
         this.alive = true;
-        this.life = ThreadLocalRandom.current().nextInt(maxLife) + 1;
+        this.life = ThreadLocalRandom.current().nextInt(MAX_LIFE) + 1;
         this.id = counter.addAndGet(1);
 
         this.setFixedDelayTime(40);
@@ -122,7 +124,7 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
 
     @Override
     public void drawSelf(Graphics g) {
-        g.setColor(colorMap.getOrDefault(this.life, Color.cyan));
+        g.setColor(COLOR_HASH_MAP.getOrDefault(this.life, Color.white));
         super.drawSelf(g);
     }
 
@@ -151,15 +153,8 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
     @Override
     public void addLife(int delta) {
         super.addLife(delta);
-        this.speed = maxLife - this.life + 1;
+        this.speed = MAX_LIFE - this.life + 1;
     }
-
-    /**
-     * 视频上的思想是 在panel上写一个工具函数 形参是 子弹和坦克
-     * 把函数放在 Run函数内跑
-     * 遮掩更显得逻辑性强一些，代码复用率高一点
-     * @param hero
-     */
 
     /**
      * 发射子弹    函数
