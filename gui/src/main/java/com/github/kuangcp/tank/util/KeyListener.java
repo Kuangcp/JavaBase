@@ -73,8 +73,6 @@ public class KeyListener implements ExitFlagRunnable {
                 hero.shotEnemy();
             }
 
-            tankGroundPanel.repaint();
-
             // 动作的延迟 1000 / 77 fps
             TankTool.yieldMsTime(33);
         }
