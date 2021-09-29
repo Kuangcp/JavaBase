@@ -7,7 +7,6 @@ import com.github.kuangcp.tank.panel.StarterPanel;
 import com.github.kuangcp.tank.panel.TankGroundPanel;
 import com.github.kuangcp.tank.panel.event.HeroInfoPanelRefreshEvent;
 import com.github.kuangcp.tank.resource.AvatarImgMgr;
-import com.github.kuangcp.tank.resource.ResourceMgr;
 import com.github.kuangcp.tank.util.executor.MonitorExecutor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,7 +51,7 @@ public class MainFrame extends JFrame implements Runnable {
     public StarterPanel starterPanel;
     public JButton startBtn = null, jb2 = null, jb3, jb4;  //按钮
     public JSplitPane centerPanel, rightAreaPanel;//拆分窗格
-    public JLabel tankCounter = null, jl2 = null, jl3 = null, me = null, prizeNo = null;
+    public JLabel tankCounter = null, me = null, prizeNo = null;
     public boolean firstStart = true;  //判断是否首次运行, 通过开始按钮触发
 
     //作出我需要的菜单
@@ -90,9 +89,8 @@ public class MainFrame extends JFrame implements Runnable {
             loopEvent.stop();
             heroInfoPanel.setEts(groundPanel.enemyList);
         } else {
-            //提示信息
-            tankCounter = new JLabel("           :                    : " + groundPanel.enemyList.size());
-            prizeNo = new JLabel("已击杀    ：");//战绩的标签
+            tankCounter = new JLabel("");
+            prizeNo = new JLabel("");
             me = new JLabel("Myth");
 
             heroInfoPanel = new HeroInfoPanel(tankCounter, groundPanel.enemyList, prizeNo);
@@ -174,17 +172,14 @@ public class MainFrame extends JFrame implements Runnable {
         actionPanel.add(jb4);
 
         //显示属性的窗体：
-        heroInfoPanel.setLayout(new GridLayout(6, 1, 0, 0));
+        heroInfoPanel.setLayout(new GridLayout(3, 1, 0, 0));
 
         heroInfoPanel.add(tankCounter);//网格布局
         heroInfoPanel.add(prizeNo);
-//		mp3.add(jl2);
-//		mp3.add(jl3);
         heroInfoPanel.add(me);
-//		jl1 =new JLabel("898908098");//不会对上面造成任何影响
 
         rightAreaPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, actionPanel, heroInfoPanel);//水平
-        rightAreaPanel.setDividerLocation(150);
+        rightAreaPanel.setDividerLocation(550);
 
         starterPanel = new StarterPanel();
         if (!firstStart) {

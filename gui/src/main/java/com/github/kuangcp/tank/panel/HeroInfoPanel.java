@@ -26,7 +26,7 @@ public class HeroInfoPanel extends JPanel {
     List<EnemyTank> ets;
     HeroInfoPanelRefreshEvent refreshEvent;
 
-    static final Tank heroIcon = new Tank(20, 20, 0) {
+    static final Tank heroIcon = new Tank(15, 20, 0) {
         @Override
         public void drawSelf(Graphics g) {
             g.setColor(Color.yellow);
@@ -38,7 +38,7 @@ public class HeroInfoPanel extends JPanel {
 
         }
     };
-    static final Tank enemyIcon = new Tank(100, 20, 0) {
+    static final Tank enemyIcon = new Tank(70, 20, 0) {
         @Override
         public void drawSelf(Graphics g) {
             g.setColor(Color.cyan);
@@ -65,9 +65,8 @@ public class HeroInfoPanel extends JPanel {
         this.tankCounter = tankCounter;
         this.ets = ets;
         this.prizeNo = prizeNo;
-//		jl1 =new JLabel("生命值： "+Hero.Life/3);
-//		MyPanel302 mp = new MyPanel302();
-//		mp.add(jl1,BorderLayout.SOUTH);
+
+        tankCounter.setLocation(15, -20);
     }
 
     public void paint(Graphics g) {
@@ -82,7 +81,7 @@ public class HeroInfoPanel extends JPanel {
             return;
         }
 
-        final String format = "           ：%d" + "                  :  %d";
+        final String format = "      : %d        : %d";
         final String txt;
         if (PlayStageMgr.instance.hero.isAlive()) {
             txt = String.format(format, PlayStageMgr.instance.hero.getLife(), ets.size());
@@ -91,7 +90,7 @@ public class HeroInfoPanel extends JPanel {
         }
         tankCounter.setText(txt);
 
-        prizeNo.setText("战绩：" + PlayStageMgr.instance.hero.getPrize());
+        prizeNo.setText("战绩: " + PlayStageMgr.instance.hero.getPrize());
     }
 
     public void setRefreshEvent(HeroInfoPanelRefreshEvent refreshEvent) {
