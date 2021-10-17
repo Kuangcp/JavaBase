@@ -74,23 +74,7 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
         this.direct = direct;
         this.alive = true;
         this.life = ThreadLocalRandom.current().nextInt(MAX_LIFE) + 1;
-        this.speed = MAX_LIFE - life + 1;
-        this.id = counter.addAndGet(1);
-
-        this.setFixedDelayTime(40);
-        this.moveRate = 2;
-        this.shotRate = 17;
-
-        this.afterBuild();
-    }
-
-    public EnemyTank(int x, int y, int speed, int direct) {
-        super(x, y, speed);
-        type = 1;
-        this.direct = direct;
-        this.speed = speed;
-        this.alive = true;
-        this.life = ThreadLocalRandom.current().nextInt(MAX_LIFE) + 1;
+        this.speed = (MAX_LIFE - life + 1) / 2 + 1;
         this.id = counter.addAndGet(1);
 
         this.setFixedDelayTime(40);

@@ -11,9 +11,9 @@ import java.util.Optional;
  * @author https://github.com/kuangcp on 2021-09-06 02:58
  * @see TankGroundPanel#keyPressed
  */
-public class ListenEventGroup {
+public class HoldingKeyEventMgr {
 
-    public static ListenEventGroup instance = new ListenEventGroup();
+    public static HoldingKeyEventMgr instance = new HoldingKeyEventMgr();
 
     private volatile boolean up;
     private volatile boolean down;
@@ -21,18 +21,29 @@ public class ListenEventGroup {
     private volatile boolean right;
     private volatile boolean shot;
 
-    private final Map<Integer, Runnable> actionMap = new HashMap<>();
+    private volatile boolean ctrl;
 
-    public ListenEventGroup() {
-        actionMap.put(KeyEvent.VK_A, () -> this.left = false);
-        actionMap.put(KeyEvent.VK_D, () -> this.right = false);
-        actionMap.put(KeyEvent.VK_S, () -> this.down = false);
-        actionMap.put(KeyEvent.VK_W, () -> this.up = false);
-        actionMap.put(KeyEvent.VK_SPACE, () -> this.shot = false);
+    private final Map<Integer, Runnable> releaseMap = new HashMap<>();
+    private final Map<Integer, Runnable> pressMap = new HashMap<>();
+
+    public HoldingKeyEventMgr() {
+        releaseMap.put(KeyEvent.VK_A, () -> this.left = false);
+        releaseMap.put(KeyEvent.VK_D, () -> this.right = false);
+        releaseMap.put(KeyEvent.VK_S, () -> this.down = false);
+        releaseMap.put(KeyEvent.VK_W, () -> this.up = false);
+        releaseMap.put(KeyEvent.VK_J, () -> this.shot = false);
+
+        pressMap.put(KeyEvent.VK_A, () -> this.left = true);
+        pressMap.put(KeyEvent.VK_D, () -> this.right = true);
+        pressMap.put(KeyEvent.VK_S, () -> this.down = true);
+        pressMap.put(KeyEvent.VK_W, () -> this.up = true);
     }
 
+    public void handleDirectPress(KeyEvent re){
+        Optional.ofNullable(pressMap.get(re.getKeyCode())).ifPresent(Runnable::run);
+    }
     public void handleRelease(KeyEvent re) {
-        Optional.ofNullable(actionMap.get(re.getKeyCode())).ifPresent(Runnable::run);
+        Optional.ofNullable(releaseMap.get(re.getKeyCode())).ifPresent(Runnable::run);
     }
 
     public boolean isUp() {

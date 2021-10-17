@@ -21,10 +21,10 @@ public class KeyListener implements ExitFlagRunnable {
 
     Hero hero;
     TankGroundPanel tankGroundPanel;
-    ListenEventGroup eventGroup;
+    HoldingKeyEventMgr eventGroup;
     private volatile boolean exit = false;
 
-    public KeyListener(ListenEventGroup eventGroup, Hero hero, TankGroundPanel tankGroundPanel) {
+    public KeyListener(HoldingKeyEventMgr eventGroup, Hero hero, TankGroundPanel tankGroundPanel) {
         this.eventGroup = eventGroup;
         this.hero = hero;
         this.tankGroundPanel = tankGroundPanel;
@@ -46,23 +46,17 @@ public class KeyListener implements ExitFlagRunnable {
                 if (PlayStageMgr.instance.willInBorder(hero) && PlayStageMgr.instance.ableToMove(hero)) {
                     hero.moveLeft();
                 }
-            }
-
-            if (eventGroup.isRight()) {
+            } else if (eventGroup.isRight()) {
                 hero.setDirect(DirectType.RIGHT);
                 if (PlayStageMgr.instance.willInBorder(hero) && PlayStageMgr.instance.ableToMove(hero)) {
                     hero.moveRight();
                 }
-            }
-
-            if (eventGroup.isDown()) {
+            } else if (eventGroup.isDown()) {
                 hero.setDirect(DirectType.DOWN);
                 if (PlayStageMgr.instance.willInBorder(hero) && PlayStageMgr.instance.ableToMove(hero)) {
                     hero.moveDown();
                 }
-            }
-
-            if (eventGroup.isUp()) {
+            } else if (eventGroup.isUp()) {
                 hero.setDirect(DirectType.UP);
                 if (PlayStageMgr.instance.willInBorder(hero) && PlayStageMgr.instance.ableToMove(hero)) {
                     hero.moveUp();

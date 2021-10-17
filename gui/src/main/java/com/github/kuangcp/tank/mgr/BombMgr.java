@@ -28,7 +28,7 @@ public class BombMgr extends AbstractImgListMgr {
     public BombMgr() {
     }
 
-    public String getConfigKey(){
+    public String getConfigKey() {
         return PropertiesMgr.Key.Img.ANIMATION_BOMB;
     }
 
@@ -72,7 +72,7 @@ public class BombMgr extends AbstractImgListMgr {
     }
 
     private void checkBong(Tank tank, Bullet bullet) {
-        if (!bullet.alive) {
+        if (!bullet.alive || !tank.isAlive()) {
             return;
         }
 

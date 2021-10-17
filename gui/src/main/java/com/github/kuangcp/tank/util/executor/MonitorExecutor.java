@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutorService;
 @Slf4j
 public class MonitorExecutor {
 
+    public static final Info info = new Info();
     private static final BlockingQueue<AbstractLoopEvent> queue = new DelayQueue<>();
     private static final ExecutorService monitorEventPool = ExecutePool.buildFixedPool("monitorEvent", 1);
 
@@ -27,12 +28,22 @@ public class MonitorExecutor {
         monitorEventPool.execute(() -> CommonEventExecutor.loopEventSpin(queue));
     }
 
+    public static class Info {
+        int loopEventCount;
+        int monitorEventCount;
+
+        @Override
+        public String toString() {
+            return "loop:" + loopEventCount + " monitor:" + monitorEventCount;
+        }
+    }
+
     private static void registerEventMonitor() {
-        // TODO 更新到主背景图上
         final AbstractLoopEvent loopEventMonitor = new AbstractLoopEvent() {
             @Override
             public void run() {
-                log.info("loopEvent:{} monitor:{}", LoopEventExecutor.queue.size(), queue.size());
+                info.loopEventCount = LoopEventExecutor.queue.size();
+                info.monitorEventCount = queue.size();
             }
         };
         loopEventMonitor.setFixedDelayTime(5_000);

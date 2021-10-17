@@ -13,6 +13,7 @@ public class ResourceMgr {
         PropertiesMgr.init();
 
         log.info("[init] start load resource");
+
         // image
         BombMgr.instance.loadImg();
         DefeatImgMgr.instance.loadImg();

@@ -41,7 +41,7 @@ public class PlayStageMgr {
     /**
      * 敌人的数量
      */
-    static int enemySize = 8;
+    static int enemySize = 10;
     /**
      * 无敌状态 时间
      */
@@ -75,7 +75,7 @@ public class PlayStageMgr {
     public static void init(Hero hero, List<EnemyTank> enemyTanks, List<Brick> bricks, List<Iron> irons) {
         instance = new PlayStageMgr(hero, enemyTanks, bricks, irons);
 
-        instance.border = new StageBorder(20, 742, 20, 545);
+        instance.border = new StageBorder(20, 740, 20, 540);
 //        instance.border = new StageBorder(20, 1600, 20, 900);
     }
 
@@ -190,5 +190,16 @@ public class PlayStageMgr {
         }
 
         return TankTool.ablePass(t, instance.hero);
+    }
+
+    public int getLiveEnemy() {
+        int result = 0;
+        for (int i = 0; i < this.enemyTanks.size(); i++) {
+            final EnemyTank enemyTank = enemyTanks.get(i);
+            if (enemyTank.isAlive()) {
+                result++;
+            }
+        }
+        return result;
     }
 }

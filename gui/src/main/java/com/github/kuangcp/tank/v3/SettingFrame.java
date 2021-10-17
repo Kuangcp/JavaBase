@@ -1,5 +1,6 @@
 package com.github.kuangcp.tank.v3;
 
+import com.github.kuangcp.tank.constant.ButtonCommand;
 import com.github.kuangcp.tank.constant.SettingCommand;
 import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.domain.Hero;
@@ -91,6 +92,10 @@ public class SettingFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         if (PlayStageMgr.stageNoneStart()) {
             return;
+        }
+
+        if (event.getActionCommand().equals(ButtonCommand.SETTING_FRAME)) {
+            SettingFrame.activeFocus();
         }
 
         if (event.getActionCommand().equals(SettingCommand.SHOT_SPEED_INCREMENT)) {

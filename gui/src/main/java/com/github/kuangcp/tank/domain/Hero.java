@@ -1,7 +1,7 @@
 package com.github.kuangcp.tank.domain;
 
-
 import com.github.kuangcp.tank.constant.DirectType;
+import com.github.kuangcp.tank.resource.ColorMgr;
 import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,8 @@ public class Hero extends Tank {
     public Bullet bullet = null;//子弹
     private int prize = 0;//击敌个数
     public int maxLiveShot = 7;//主坦克子弹线程存活的最大数
-    private long lastDieMs = 0;
+    private long lastDieMs = System.currentTimeMillis();
+    private int normalColor = 0;
 
     public Hero(int x, int y, int speed) {
         super(x, y, speed);
@@ -41,9 +42,14 @@ public class Hero extends Tank {
      */
     @Override
     public void drawSelf(Graphics g) {
-        g.setColor(Color.yellow);
+        g.setColor(Color.YELLOW);
         if (this.isInvincible()) {
-            g.setColor(Color.cyan);
+            g.setColor(Color.CYAN);
+            normalColor++;
+            normalColor %= 28;
+            if (normalColor % 14 < 3) {
+                g.setColor(ColorMgr.instance.bgColor);
+            }
         }
         super.drawSelf(g);
     }
@@ -61,7 +67,7 @@ public class Hero extends Tank {
         this.lastDieMs = System.currentTimeMillis();
 
         // 1/10 概率原地复活
-        if (ThreadLocalRandom.current().nextInt(1) == 0) {
+        if (ThreadLocalRandom.current().nextInt(10) == 0) {
             return;
         }
 

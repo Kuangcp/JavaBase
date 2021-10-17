@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AvatarImgMgr extends AbstractImgListMgr {
 
-    public static AvatarImgMgr instance = new AvatarImgMgr();
+    public static final AvatarImgMgr instance = new AvatarImgMgr();
 
     public AvatarImgMgr() {
         super.width = 60;
