@@ -162,8 +162,9 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     private void drawHeroInfo(Graphics g) {
         g.setColor(Color.GREEN);
 //        g.setFont(Font.getFont("IBM Plex Mono"));
-        final String lifeInfo = "Life:" + PlayStageMgr.instance.hero.getLife()
-                + " enemy: " + PlayStageMgr.instance.getLiveEnemy();
+        final String lifeInfo = "Life:" + hero.getLife()
+                + " Enemy: " + PlayStageMgr.instance.getLiveEnemy()
+                + " Prize: " + hero.getPrize();
         g.drawString(lifeInfo, PlayStageMgr.instance.border.getMinX(), 15);
     }
 

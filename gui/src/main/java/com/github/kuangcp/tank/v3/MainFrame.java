@@ -1,7 +1,5 @@
 package com.github.kuangcp.tank.v3;
 
-import com.github.kuangcp.tank.constant.ButtonCommand;
-import com.github.kuangcp.tank.panel.HeroInfoPanel;
 import com.github.kuangcp.tank.panel.StageActionPanel;
 import com.github.kuangcp.tank.panel.StarterPanel;
 import com.github.kuangcp.tank.panel.TankGroundPanel;
@@ -10,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Objects;
 
 /**
  * 坦克3.0 版本：
@@ -39,31 +36,28 @@ import java.util.Objects;
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame implements Runnable {
 
-    public volatile TankGroundPanel groundPanel = null;//坦克的主画板
+    public volatile TankGroundPanel groundPanel;//坦克的主画板
     public static StageActionPanel actionPanel = null;//放按钮的画板
 
-    public HeroInfoPanel heroInfoPanel = null;  //显示属性的画板
-//    private HeroInfoPanelRefreshEvent loopEvent = null;
-
     public StarterPanel starterPanel;
-    public JLabel tankCounter = null, me = null, prizeNo = null;
     public boolean firstStart = true;  //判断是否首次运行, 通过开始按钮触发
 
     //作出我需要的菜单
-    JMenuBar menuBar = null;
+//    JMenuBar menuBar = null;
     //开始游戏
-    JMenu gameMenu = null;
-    JMenu helpMenu = null;
-    JMenuItem jmil = null;
+//    JMenu gameMenu = null;
+//    JMenu helpMenu = null;
+//    JMenuItem jmil = null;
     //退出系统
-    JMenuItem jmi2 = null;
+//    JMenuItem jmi2 = null;
     //存盘退出
-    JMenuItem jmi3 = null;
-    JMenuItem jmi4 = null;
+//    JMenuItem jmi3 = null;
+//    JMenuItem jmi4 = null;
     //帮助窗口
-    JMenuItem setting = null;
+//    JMenuItem setting = null;
 
     public MainFrame() {
+        starterPanel = new StarterPanel();
         groundPanel = new TankGroundPanel();
         actionPanel = new StageActionPanel(this);
 
@@ -75,7 +69,7 @@ public class MainFrame extends JFrame implements Runnable {
         this.setLocation(680, 290);
         this.setSize(760, 590);
 
-//        this.setUndecorated(true);
+        this.setUndecorated(true);
     }
 
     public void run() {
@@ -86,111 +80,58 @@ public class MainFrame extends JFrame implements Runnable {
 //            groundPanel = new TankGroundPanel();
 //        }
 
-        if (Objects.nonNull(heroInfoPanel)) {
-//            loopEvent.stop();
-            heroInfoPanel.setEts(groundPanel.enemyList);
-        } else {
-            tankCounter = new JLabel("");
-            prizeNo = new JLabel("");
-            me = new JLabel("Myth");
-
-            heroInfoPanel = new HeroInfoPanel(tankCounter, groundPanel.enemyList, prizeNo);
-        }
-
-//        loopEvent = new HeroInfoPanelRefreshEvent(heroInfoPanel);
-//        heroInfoPanel.setRefreshEvent(loopEvent);
-//        MonitorExecutor.addLoopEvent(loopEvent);
-
-
         //创建菜单及菜单选项
-        menuBar = new JMenuBar();
-        gameMenu = new JMenu("Game(G)");
-        helpMenu = new JMenu("Help(H)");
-        //设置快捷方式
-        gameMenu.setMnemonic('G');
-        helpMenu.setMnemonic('H');
+//        menuBar = new JMenuBar();
+//        gameMenu = new JMenu("Game(G)");
+//        helpMenu = new JMenu("Help(H)");
+//        //设置快捷方式
+//        gameMenu.setMnemonic('G');
+//        helpMenu.setMnemonic('H');
 
-        jmil = new JMenuItem("New Game(N)");
-        jmi2 = new JMenuItem("Pause");
-        jmi3 = new JMenuItem("Save & Exit(C)");
-        jmi4 = new JMenuItem("ContinueLast(S)");
+//        jmil = new JMenuItem("New Game(N)");
+//        jmi2 = new JMenuItem("Pause");
+//        jmi3 = new JMenuItem("Save & Exit(C)");
+//        jmi4 = new JMenuItem("ContinueLast(S)");
 
-        setting = new JMenuItem("Setting");
-        setting.addActionListener(SettingFrame.instance);
-        setting.setActionCommand(ButtonCommand.SETTING_FRAME);
-        helpMenu.add(setting);
+//        setting = new JMenuItem("Setting");
+//        setting.addActionListener(SettingFrame.instance);
+//        setting.setActionCommand(ButtonCommand.SETTING_FRAME);
+//        helpMenu.add(setting);
 
-        jmi4.addActionListener(actionPanel);
-        jmi4.setActionCommand("Continue");
-
-        jmi3.addActionListener(actionPanel);
-        jmi3.setActionCommand("saveExit");
-
-        jmi2.addActionListener(actionPanel);
-        jmi2.setActionCommand("暂停");
-        jmi2.setMnemonic('E');
-
-        jmil.addActionListener(actionPanel);
-        jmil.setActionCommand(ButtonCommand.START);
-
-        gameMenu.add(jmil);
-
-        final JMenuItem exitItem = new JMenuItem("Exit");
-        exitItem.addActionListener(actionPanel);
-        exitItem.setActionCommand(ButtonCommand.EXIT);
-        gameMenu.add(exitItem);
-
-        gameMenu.add(jmi3);
-        gameMenu.add(jmi4);
-
-        menuBar.add(gameMenu);
-        menuBar.add(helpMenu);
-
-//        jb3 = new JButton("暂停游戏");
-//        jb3.addActionListener(actionPanel); //注册监听
-//        jb3.setActionCommand(ButtonCommand.PAUSE);
+//        jmi4.addActionListener(actionPanel);
+//        jmi4.setActionCommand("Continue");
 //
-//        jb4 = new JButton("继续游戏");
-//        jb4.addActionListener(actionPanel); //注册监听
-//        jb4.setActionCommand(ButtonCommand.RESUME);
+//        jmi3.addActionListener(actionPanel);
+//        jmi3.setActionCommand("saveExit");
 //
-//        jb2 = new JButton("退出游戏");
-//        jb2.addActionListener(actionPanel); //注册监听
-//        jb2.setActionCommand(ButtonCommand.EXIT);
+//        jmi2.addActionListener(actionPanel);
+//        jmi2.setActionCommand("暂停");
+//        jmi2.setMnemonic('E');
 //
-//        startBtn = new JButton(firstStart ? "游戏开始" : "重新开始");
-//        startBtn.addActionListener(actionPanel);
-//        startBtn.setActionCommand(ButtonCommand.START);
+//        jmil.addActionListener(actionPanel);
+//        jmil.setActionCommand(ButtonCommand.START);
+
+//        gameMenu.add(jmil);
 //
-//        actionPanel.add(startBtn);
-//        actionPanel.add(jb2);
-//        actionPanel.add(jb3);
-//        actionPanel.add(jb4);
+//        final JMenuItem exitItem = new JMenuItem("Exit");
+//        exitItem.addActionListener(actionPanel);
+//        exitItem.setActionCommand(ButtonCommand.EXIT);
+//        gameMenu.add(exitItem);
+//
+//        gameMenu.add(jmi3);
+//        gameMenu.add(jmi4);
+//
+//        menuBar.add(gameMenu);
+//        menuBar.add(helpMenu);
 
-        //显示属性的窗体：
-        heroInfoPanel.setLayout(new GridLayout(3, 1, 0, 0));
-
-        heroInfoPanel.add(tankCounter);//网格布局
-        heroInfoPanel.add(prizeNo);
-        heroInfoPanel.add(me);
-
-//        rightAreaPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, actionPanel, heroInfoPanel);//水平
-//        rightAreaPanel.setDividerLocation(150);
-
-        starterPanel = new StarterPanel();
         if (!firstStart) {
             this.add(groundPanel, BorderLayout.CENTER);
-//            centerPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, groundPanel, rightAreaPanel);
         } else {
-//            centerPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, starterPanel, rightAreaPanel);
             this.add(starterPanel, BorderLayout.CENTER);
         }
-//        centerPanel.setDividerLocation(760);
-//        this.add(centerPanel, BorderLayout.CENTER);
 
         this.addKeyListener(groundPanel);
 
-//        this.setJMenuBar(menuBar);
         // 焦点跳转  tab切换
         this.setFocusable(getFocusTraversalKeysEnabled());
 
