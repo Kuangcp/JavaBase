@@ -7,6 +7,7 @@ import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
+import com.github.kuangcp.tank.v3.RoundMapMgr;
 import com.github.kuangcp.tank.v3.StageBorder;
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,7 +47,7 @@ class MainPanelV2 extends JPanel implements KeyListener, Runnable {
         ets.add(new EnemyTank(250, 100, DirectType.UP));
 
         for (int i = 0; i < 700; i++) {
-            ets.add(new EnemyTank(20 + i * 40 % PlayStageMgr.instance.border.getMaxX(), 100 + i * 5 % PlayStageMgr.instance.border.getMaxY(), DirectType.UP));
+            ets.add(new EnemyTank(20 + i * 40 % RoundMapMgr.instance.border.getMaxX(), 100 + i * 5 % RoundMapMgr.instance.border.getMaxY(), DirectType.UP));
         }
 
         for (EnemyTank et : ets) {
@@ -59,7 +60,7 @@ class MainPanelV2 extends JPanel implements KeyListener, Runnable {
     public void paint(Graphics g) {
         super.paint(g);
 
-        final StageBorder border = PlayStageMgr.instance.border;
+        final StageBorder border = RoundMapMgr.instance.border;
         g.fillRect(0, 0, border.getMaxX() + border.getMinX(), border.getMaxY() + border.getMinY());
 
         //调用函数绘画出主坦克

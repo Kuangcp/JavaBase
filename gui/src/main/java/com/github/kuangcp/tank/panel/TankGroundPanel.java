@@ -19,6 +19,7 @@ import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import com.github.kuangcp.tank.util.executor.MonitorExecutor;
 import com.github.kuangcp.tank.v3.MainFrame;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
+import com.github.kuangcp.tank.v3.RoundMapMgr;
 import com.github.kuangcp.tank.v3.SettingFrame;
 import com.github.kuangcp.tank.v3.StageBorder;
 import lombok.extern.slf4j.Slf4j;
@@ -152,7 +153,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
     private void drawBg(Graphics g) {
         g.setColor(ColorMgr.instance.bgColor);
-        final StageBorder border = PlayStageMgr.instance.border;
+        final StageBorder border = RoundMapMgr.instance.border;
         g.fillRect(0, 0, border.getMinX() + border.getMaxX(), border.getMinY() + border.getMaxY());
         g.setColor(Color.green);
         g.drawRect(border.getMinX(), border.getMinY(),
@@ -165,12 +166,12 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         final String lifeInfo = "Life:" + hero.getLife()
                 + " Enemy: " + PlayStageMgr.instance.getLiveEnemy()
                 + " Prize: " + hero.getPrize();
-        g.drawString(lifeInfo, PlayStageMgr.instance.border.getMinX(), 15);
+        g.drawString(lifeInfo, RoundMapMgr.instance.border.getMinX(), 15);
     }
 
     private void drawMonitorInfo(Graphics g) {
         g.setColor(Color.LIGHT_GRAY);
-        g.drawString(MonitorExecutor.info.toString(), PlayStageMgr.instance.border.getMinX(), 555);
+        g.drawString(MonitorExecutor.info.toString(), RoundMapMgr.instance.border.getMinX(), 555);
     }
 
     @Override

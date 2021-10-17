@@ -32,4 +32,12 @@ public class StageBorder {
     public int getMaxY() {
         return maxY;
     }
+
+    public int getTotalX() {
+        return minX + maxX;
+    }
+
+    public int getTotalY() {
+        return minY + maxY;
+    }
 }

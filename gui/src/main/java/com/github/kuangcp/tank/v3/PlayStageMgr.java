@@ -26,7 +26,6 @@ public class PlayStageMgr {
     public static PlayStageMgr instance = null;
 
     public Hero hero;
-    public StageBorder border = null;
     public boolean startLogic = false;
     public boolean winCurRound = false;
     public int roundPrize = 0;
@@ -74,9 +73,6 @@ public class PlayStageMgr {
      */
     public static void init(Hero hero, List<EnemyTank> enemyTanks, List<Brick> bricks, List<Iron> irons) {
         instance = new PlayStageMgr(hero, enemyTanks, bricks, irons);
-
-        instance.border = new StageBorder(20, 740, 20, 540);
-//        instance.border = new StageBorder(20, 1600, 20, 900);
     }
 
     private PlayStageMgr(Hero hero, List<EnemyTank> enemyTanks, List<Brick> bricks, List<Iron> irons) {
@@ -149,13 +145,13 @@ public class PlayStageMgr {
         }
         switch (tank.getDirect()) {
             case DirectType.UP:
-                return tank.getY() - tank.getHalfHeight() - tank.getSpeed() > border.getMinY();
+                return tank.getY() - tank.getHalfHeight() - tank.getSpeed() > RoundMapMgr.instance.border.getMinY();
             case DirectType.DOWN:
-                return tank.getY() + tank.getHalfHeight() + tank.getSpeed() < border.getMaxY();
+                return tank.getY() + tank.getHalfHeight() + tank.getSpeed() < RoundMapMgr.instance.border.getMaxY();
             case DirectType.LEFT:
-                return tank.getX() - tank.getHalfHeight() - tank.getSpeed() > border.getMinX();
+                return tank.getX() - tank.getHalfHeight() - tank.getSpeed() > RoundMapMgr.instance.border.getMinX();
             case DirectType.RIGHT:
-                return tank.getX() + tank.getHalfHeight() + tank.getSpeed() < border.getMaxX();
+                return tank.getX() + tank.getHalfHeight() + tank.getSpeed() < RoundMapMgr.instance.border.getMaxX();
         }
         return false;
     }
@@ -164,8 +160,8 @@ public class PlayStageMgr {
         if (Objects.isNull(bullet)) {
             return false;
         }
-        return bullet.sx <= border.getMinX() || bullet.sx >= border.getMaxX()
-                || bullet.sy <= border.getMinY() || bullet.sy >= border.getMaxY();
+        return bullet.sx <= RoundMapMgr.instance.border.getMinX() || bullet.sx >= RoundMapMgr.instance.border.getMaxX()
+                || bullet.sy <= RoundMapMgr.instance.border.getMinY() || bullet.sy >= RoundMapMgr.instance.border.getMaxY();
     }
 
     public static int getEnemySize() {

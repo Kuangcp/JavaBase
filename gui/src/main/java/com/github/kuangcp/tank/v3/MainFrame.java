@@ -8,6 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 /**
  * 坦克3.0 版本：
@@ -45,7 +48,7 @@ public class MainFrame extends JFrame implements Runnable {
 
         this.setTitle("Tank");
         this.setLocation(680, 290);
-        this.setSize(760, 590);
+        this.setSize(RoundMapMgr.instance.border.getTotalX(), RoundMapMgr.instance.border.getTotalY());
 
         this.setUndecorated(true);
     }
@@ -64,6 +67,7 @@ public class MainFrame extends JFrame implements Runnable {
             this.add(starterPanel, BorderLayout.CENTER);
         }
 
+        this.supportMouseMoveWindow();
         this.addKeyListener(groundPanel);
 
         // 焦点跳转  tab切换
@@ -76,5 +80,33 @@ public class MainFrame extends JFrame implements Runnable {
         this.setVisible(true);
         final long now = System.currentTimeMillis();
         log.info("[init] mainFrame. total:{} visible:{}", (now - start), (now - beforeVisible));
+    }
+
+    private void supportMouseMoveWindow() {
+        class DeltaLocation {
+            int xOld = 0;
+            int yOld = 0;
+        }
+
+        final DeltaLocation deltaLocation = new DeltaLocation();
+        //处理拖动事件
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                deltaLocation.xOld = e.getX();
+                deltaLocation.yOld = e.getY();
+            }
+        });
+        final MainFrame mainFrame = this;
+        this.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                int xOnScreen = e.getXOnScreen();
+                int yOnScreen = e.getYOnScreen();
+                int xx = xOnScreen - deltaLocation.xOld;
+                int yy = yOnScreen - deltaLocation.yOld;
+                mainFrame.setLocation(xx, yy);
+            }
+        });
     }
 }

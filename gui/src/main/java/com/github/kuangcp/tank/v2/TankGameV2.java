@@ -3,6 +3,7 @@ package com.github.kuangcp.tank.v2;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.util.executor.MonitorExecutor;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
+import com.github.kuangcp.tank.v3.RoundMapMgr;
 import com.github.kuangcp.tank.v3.StageBorder;
 
 import javax.swing.*;
@@ -32,7 +33,7 @@ public class TankGameV2 extends JFrame {
         final Thread panelThread = new Thread(panel);
         panelThread.start();
 
-        final StageBorder border = PlayStageMgr.instance.border;
+        final StageBorder border = RoundMapMgr.instance.border;
 
         this.setLocation(200, 50);
         this.setSize(border.getMaxX() + border.getMinX(), border.getMaxY() + border.getMinY() * 2);
