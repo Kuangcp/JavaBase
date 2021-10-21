@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
  */
 class CalculateBtnIncreaseActionAdapter implements ActionListener {
 
-  private Calculator adapter;
+  private final Calculator adapter;
 
   CalculateBtnIncreaseActionAdapter(Calculator adapter) {
     this.adapter = adapter;
