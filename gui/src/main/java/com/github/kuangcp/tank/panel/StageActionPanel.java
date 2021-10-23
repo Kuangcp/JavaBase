@@ -4,7 +4,6 @@ package com.github.kuangcp.tank.panel;
 
 import com.github.kuangcp.tank.constant.ButtonCommand;
 import com.github.kuangcp.tank.domain.Bullet;
-import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.util.Audio;
 import com.github.kuangcp.tank.v3.MainFrame;
 import com.github.kuangcp.tank.v3.PlayStageMgr;
@@ -84,9 +83,6 @@ public class StageActionPanel extends JPanel implements ActionListener {
     }
 
     public void startNewStage() {
-        log.warn("new stage");
-        final int totalMaxShots = PlayStageMgr.getEnemySize() * EnemyTank.maxLiveShot;
-
         // 重新设置线程池大小
 //        final ThreadPoolExecutor pool = (ThreadPoolExecutor) ExecutePool.shotPool;
 //        final int poolSize = (int) Math.max(PlayStageMgr.getEnemySize() * EnemyTank.maxLiveShot * 0.6, 10);
@@ -99,7 +95,6 @@ public class StageActionPanel extends JPanel implements ActionListener {
 //        ExecutePool.shotScheduler = new FiberForkJoinScheduler("enemyShot", poolSize, null, false);
 
         if (Objects.nonNull(actionThread) && !actionThread.isInterrupted()) {
-            log.info("clean last stage");
             actionThread.interrupt();
             PlayStageMgr.instance.abortStage();
         }
@@ -109,7 +104,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
         Bullet.setSpeed(8);
         frame.remove(frame.getContentPane());
 
-        log.info("start new stage frame thread, shot:{}", totalMaxShots);
+//        log.info("start new stage frame thread");
         actionThread = new Thread(() -> {
             frame.run();
             if (beginAudio != null) {

@@ -1,13 +1,9 @@
 package com.github.kuangcp.tank.domain;
 
-import java.awt.*;
-
 /**
  * 砖块
  */
 public class Brick extends Hinder {
-
-    Graphics g;
 
     public Brick(int hx, int hy) {
         super(hx, hy);

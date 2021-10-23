@@ -65,7 +65,7 @@ public class PlayStageMgr {
     public void markStartLogic() {
         this.startLogic = true;
         round++;
-        log.info("start round:{}", round);
+        log.warn("start round:{}", round);
     }
 
     /**

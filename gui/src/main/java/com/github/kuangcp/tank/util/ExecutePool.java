@@ -24,6 +24,8 @@ public class ExecutePool {
 
     public static final AtomicLong totalCounter = new AtomicLong();
 
+    public static final ExecutorService exclusiveLoopPool = ExecutePool.buildFixedPool("exclusiveLoopPool", 2);
+
     /**
      * @param prefix   eg: shot
      * @param coreSize 核心线程数

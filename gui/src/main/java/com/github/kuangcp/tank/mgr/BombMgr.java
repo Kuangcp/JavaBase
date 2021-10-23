@@ -68,7 +68,9 @@ public class BombMgr extends AbstractImgListMgr {
      * 工具类-检测爆炸的函数
      */
     public void checkBong(Tank tank, List<Bullet> bullets) {
-        bullets.forEach(v -> this.checkBong(tank, v));
+        for (Bullet bullet : bullets) {
+            this.checkBong(tank, bullet);
+        }
     }
 
     private void checkBong(Tank tank, Bullet bullet) {

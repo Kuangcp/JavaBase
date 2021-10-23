@@ -1,6 +1,4 @@
-
 package com.github.kuangcp.tank.panel;
-
 
 import com.github.kuangcp.tank.domain.Brick;
 import com.github.kuangcp.tank.domain.Bullet;
@@ -10,6 +8,7 @@ import com.github.kuangcp.tank.domain.Iron;
 import com.github.kuangcp.tank.mgr.BombMgr;
 import com.github.kuangcp.tank.resource.AvatarImgMgr;
 import com.github.kuangcp.tank.resource.ColorMgr;
+import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.HoldingKeyEventMgr;
 import com.github.kuangcp.tank.util.KeyListener;
 import com.github.kuangcp.tank.util.TankTool;
@@ -27,16 +26,11 @@ import lombok.extern.slf4j.Slf4j;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
-
-/**
- * (20, 20, 720, 520) 该画板坦克运动区域
- */
 @SuppressWarnings("serial")
 @Slf4j
 public class TankGroundPanel extends JPanel implements java.awt.event.KeyListener, Runnable {
@@ -46,12 +40,9 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     public static boolean newStage = true;
     private volatile boolean invokeNewStage = false;
 
-    //定义一个 泛型的集合ets 表示敌人坦克集合
-    public List<EnemyTank> enemyList = Collections.synchronizedList(new ArrayList<>());
-
-    //定义砖块集合
-    public List<Brick> bricks = Collections.synchronizedList(new ArrayList<>());
-    public List<Iron> irons = Collections.synchronizedList(new ArrayList<>());
+    public List<EnemyTank> enemyList = new CopyOnWriteArrayList<>();
+    public List<Brick> bricks = new CopyOnWriteArrayList<>();
+    public List<Iron> irons = new CopyOnWriteArrayList<>();
 
     //所有按下键的code集合
     public static int[][] enemyTankMap = new int[12][2];
@@ -61,29 +52,26 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
     }
 
-    /**
-     * 画板的构造函数 用来初始化对象
-     * 多个敌方坦克应该用集合类，而且要考虑线程安全所以不能用ArrayList只能用Vector
-     */
     public void startNewRound() {
+        enemyList = new CopyOnWriteArrayList<>();
+        bricks = new CopyOnWriteArrayList<>();
+        irons = new CopyOnWriteArrayList<>();
+
         //创建英雄坦克
-        if (newStage) {//正常启动并创建坦克线程
-            hero = new Hero(480, 500, 3);//坐标和步长和敌人坦克集合
-            hero.setLife(10);//设置生命值
+        if (newStage) {
+            hero = new Hero(480, 500, 3);
+            hero.setLife(10);
         } else {
             hero = new Hero(myself[0], myself[1], 3);
             hero.setLife(myself[2]);
             hero.setPrize(myself[3]);
         }
 
-//        log.info("hero={}", hero);
         PlayStageMgr.init(hero, enemyList, bricks, irons);
 
         //多键监听实现
         keyListener = new KeyListener(HoldingKeyEventMgr.instance, hero, this);
-        Thread p = new Thread(keyListener);
-        p.setName("playerKeyEventListener");
-        p.start();
+        ExecutePool.exclusiveLoopPool.execute(keyListener);
 
         // 创建 敌人的坦克
         EnemyTank ett = null;
@@ -93,19 +81,15 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                 switch ((int) (Math.random() * 4)) {
                     case 0:
                         ett = new EnemyTank(20 + (int) (Math.random() * 30), 20 + (int) (Math.random() * 30), i % 4);
-                        ett.SetInfo(hero, enemyList, bricks, irons);
                         break;
                     case 1:
                         ett = new EnemyTank(700 - (int) (Math.random() * 30), 20 + (int) (Math.random() * 30), i % 4);
-                        ett.SetInfo(hero, enemyList, bricks, irons);
                         break;
                     case 2:
                         ett = new EnemyTank(20 + (int) (Math.random() * 30), 200 + (int) (Math.random() * 30), i % 4);
-                        ett.SetInfo(hero, enemyList, bricks, irons);
                         break;
                     case 3:
                         ett = new EnemyTank(700 - (int) (Math.random() * 30), 200 + (int) (Math.random() * 30), i % 4);
-                        ett.SetInfo(hero, enemyList, bricks, irons);
                         break;
                 }
 
@@ -113,26 +97,16 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                     continue;
                 }
                 LoopEventExecutor.addLoopEvent(ett);
-//                Thread t = new Thread(ett);
-//                t.setName("enemyThread-" + ett.id);
-//                t.start();
-                //坦克加入集合
                 enemyList.add(ett);
             }
         } else {
             /*进入读取文件步骤*/
             for (int i = 0; i < enemyTankMap.length; i++) {
-                if (enemyTankMap[i][0] == 0) break;
-
+                if (enemyTankMap[i][0] == 0) {
+                    break;
+                }
                 ett = new EnemyTank(enemyTankMap[i][0], enemyTankMap[i][1], i % 4);
-                ett.SetInfo(hero, enemyList, bricks, irons);
-
                 LoopEventExecutor.addLoopEvent(ett);
-
-//                Thread t = new Thread(ett);
-//                t.setName("enemyThreadF-" + ett.id);
-//                t.start();
-                //坦克加入集合
                 enemyList.add(ett);
             }
         }
@@ -162,7 +136,6 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
     private void drawHeroInfo(Graphics g) {
         g.setColor(Color.GREEN);
-//        g.setFont(Font.getFont("IBM Plex Mono"));
         final String lifeInfo = "Life:" + hero.getLife()
                 + " Enemy: " + PlayStageMgr.instance.getLiveEnemy()
                 + " Prize: " + hero.getPrize();
@@ -296,8 +269,6 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         if (enemyList.size() < 5) {
             for (int i = 0; i < 4; i++) {
                 EnemyTank d = new EnemyTank(20 + (int) (Math.random() * 400), 20 + (int) (Math.random() * 300), i % 4);
-                d.SetInfo(hero, enemyList, bricks, irons);
-
                 LoopEventExecutor.addLoopEvent(d);
 //                Thread fillThread = new Thread(d);
 //                fillThread.setName("fillEnemy" + d.id);
@@ -381,6 +352,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
             PlayStageMgr.pause = true;
         }
         if (e.getKeyCode() == KeyEvent.VK_O) {
+            PlayStageMgr.pause = true;
             SettingFrame.activeFocus();
         }
 
@@ -415,7 +387,6 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
             for (int j = startY; j < endY; j += 10) {
                 Brick bs = new Brick(i, j);
                 bricks.add(bs);
-
             }
         }
     }
