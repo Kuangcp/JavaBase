@@ -19,6 +19,7 @@ public class PropertiesMgr {
             String ROUND_VICTORY = "round.victory";
 
             String ANIMATION_BOMB = "animation.bomb";
+            String START_BG = "round.start";
         }
     }
 

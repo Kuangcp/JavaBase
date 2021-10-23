@@ -1,6 +1,7 @@
 package com.github.kuangcp.tank.panel;
 
 import lombok.extern.slf4j.Slf4j;
+import com.github.kuangcp.tank.resource.PropertiesMgr;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,7 +18,8 @@ public class StarterPanel extends JPanel {
 
     public StarterPanel() {
         try {
-            firstInfoImg = ImageIO.read(getClass().getResource("/tank/img/Tank.jpg"));
+            String imgPath = PropertiesMgr.imgProperties.getProperty(PropertiesMgr.Key.Img.START_BG);
+            firstInfoImg = ImageIO.read(getClass().getResource(imgPath));
         } catch (IOException e) {
             log.error("", e);
         }
