@@ -144,7 +144,8 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
     private void drawMonitorInfo(Graphics g) {
         g.setColor(Color.LIGHT_GRAY);
-        g.drawString(MonitorExecutor.info.toString(), RoundMapMgr.instance.border.getMinX(), 555);
+        g.drawString(MonitorExecutor.info.toString(),
+                RoundMapMgr.instance.border.getMinX(), RoundMapMgr.instance.border.getTotalY() - 3);
     }
 
     @Override
