@@ -1,13 +1,18 @@
 package com.github.kuangcp.tank.constant;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  * @author https://github.com/kuangcp on 2021-09-06 03:08
  */
 public interface DirectType {
+
     int UP = 0;
     int DOWN = 1;
     int LEFT = 2;
     int RIGHT = 3;
+
+    int MAX = RIGHT;
 
     int[] UP_SELECT = new int[]{UP, LEFT, RIGHT};
     int[] DOWN_SELECT = new int[]{DOWN, LEFT, RIGHT};
@@ -27,5 +32,22 @@ public interface DirectType {
             default:
                 return UP_SELECT;
         }
+    }
+
+    static boolean isUp(int direct){
+        return direct == UP;
+    }
+    static boolean isDown(int direct){
+        return direct == DOWN;
+    }
+    static boolean isLeft(int direct){
+        return direct == LEFT;
+    }
+    static boolean isRight(int direct){
+        return direct == RIGHT;
+    }
+
+    static int rollDirect(int curDirect) {
+        return DirectType.turnSelection(curDirect)[ThreadLocalRandom.current().nextInt(DirectType.MAX)];
     }
 }

@@ -15,7 +15,7 @@ public class LoopEventExecutor {
 
     static final BlockingQueue<AbstractLoopEvent> queue = new DelayQueue<>();
 
-    private static final int EVENT_POOL_SIZE = 6;
+    private static final int EVENT_POOL_SIZE = 8;
 
     /**
      * 循环事件线程池
@@ -24,7 +24,7 @@ public class LoopEventExecutor {
 
     public static void init() {
         for (int i = 0; i < EVENT_POOL_SIZE; i++) {
-            loopEventPool.execute(() -> CommonEventExecutor.loopEventSpin(queue));
+            loopEventPool.execute(() -> CommonEventExecutor.loopEventSpin(LoopEventExecutor.class.getSimpleName(), queue));
         }
     }
 

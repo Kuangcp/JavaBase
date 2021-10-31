@@ -110,10 +110,10 @@ public class BombMgr extends AbstractImgListMgr {
     }
 
     private void handleBombAndTank(Tank tank, int bx, int by) {
-        // 复活 或 无敌
         Hero hero = null;
         if (tank instanceof Hero) {
             hero = (Hero) tank;
+            // 无敌
             if (hero.isInvincible()) {
                 return;
             }
@@ -126,6 +126,7 @@ public class BombMgr extends AbstractImgListMgr {
 
         bombs.add(new Bomb(bx, by));
 
+        // 复活
         if (Objects.nonNull(hero)) {
             hero.resurrect();
         }

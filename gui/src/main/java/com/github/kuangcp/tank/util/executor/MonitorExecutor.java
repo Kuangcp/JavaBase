@@ -25,7 +25,7 @@ public class MonitorExecutor {
         // 2. 注册管理任务
         registerEventMonitor();
 
-        monitorEventPool.execute(() -> CommonEventExecutor.loopEventSpin(queue));
+        monitorEventPool.execute(() -> CommonEventExecutor.loopEventSpin(MonitorExecutor.class.getSimpleName(), queue));
     }
 
     public static class Info {

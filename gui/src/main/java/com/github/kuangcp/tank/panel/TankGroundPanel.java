@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 public class TankGroundPanel extends JPanel implements java.awt.event.KeyListener, Runnable {
 
     public volatile Hero hero;
-    public KeyListener keyListener;
+    public HeroKeyListener heroKeyListener;
     public static boolean newStage = true;
     private volatile boolean invokeNewStage = false;
 
@@ -70,8 +70,8 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         PlayStageMgr.init(hero, enemyList, bricks, irons);
 
         //多键监听实现
-        keyListener = new KeyListener(HoldingKeyEventMgr.instance, hero, this);
-        ExecutePool.exclusiveLoopPool.execute(keyListener);
+        heroKeyListener = new HeroKeyListener(HoldingKeyEventMgr.instance, hero, this);
+        ExecutePool.exclusiveLoopPool.execute(heroKeyListener);
 
         // 创建 敌人的坦克
         EnemyTank ett = null;
@@ -336,7 +336,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     @Override
     public void keyPressed(KeyEvent e) {
         // 启动关闭流程
-        if (e.getKeyCode() == KeyEvent.VK_Q) {
+        if (e.getKeyCode() == KeyEvent.VK_Q && HoldingKeyEventMgr.instance.isCtrl()) {
             System.exit(0);
         } else if (e.getKeyCode() == KeyEvent.VK_T && !invokeNewStage) {
             invokeNewStage = true;

@@ -14,14 +14,14 @@ public class CommonEventExecutor {
     /**
      * 事件循环任务
      */
-    public static void loopEventSpin(BlockingQueue<AbstractLoopEvent> queue) {
+    public static void loopEventSpin(String type, BlockingQueue<AbstractLoopEvent> queue) {
         while (true) {
             try {
                 final AbstractLoopEvent event = queue.take();
                 final long delay = event.getDelay(TimeUnit.MILLISECONDS);
                 // 事件延迟调度警告，且过滤掉初次运行任务
                 if (delay < -200 && delay > -1000_000) {
-                    log.info("delay {}ms", delay);
+                    log.info("[{}] delay {}ms", type, delay);
                 }
                 final long start = System.nanoTime();
                 event.run();
@@ -33,7 +33,7 @@ public class CommonEventExecutor {
                     queue.add(event);
                 }
             } catch (InterruptedException e) {
-                log.error("invoke loop event error", e);
+                log.error("[{}]invoke loop event error", type, e);
                 break;
             }
         }

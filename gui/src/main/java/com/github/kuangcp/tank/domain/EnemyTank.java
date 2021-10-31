@@ -33,6 +33,8 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
     public int INIT_MAX_LIVE_BULLET = 4;
     public int maxLiveBullet = INIT_MAX_LIVE_BULLET + 1; // 活跃子弹 最大数
 
+    private final EnemyActionContext actionContext = new EnemyActionContext();
+
     /**
      * 延迟回收内存（标记使用一次）
      * 避免子弹线程执行中断，突然消失
@@ -75,9 +77,6 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
         this.randomLife();
         this.resetPropByLife();
 
-//        this.life = ThreadLocalRandom.current().nextInt(MAX_LIFE) + 1;
-//        this.speed = Math.max((MAX_LIFE - life + 1) / 2, 1);
-//        log.info(": life={} speed={}", life, speed);
         this.id = counter.addAndGet(1);
 
         this.setFixedDelayTime(40);
@@ -107,7 +106,7 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
     }
 
     /**
-     * 依据生命值重置属性
+     * 依据生命值重置属性(速度，子弹数)
      */
     private void resetPropByLife() {
         this.speed = Math.max((MAX_LIFE - life + 1) / 2, 1);
@@ -521,8 +520,6 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
 //        }
 //    }
 
-    private final EnemyActionContext actionContext = new EnemyActionContext();
-
     public void moveOrShot() {
         if (!this.isAlive()) {
             this.stop();
@@ -550,10 +547,14 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
     }
 
     private void finalMoveAction() {
-        if (actionContext.getSameDirectCounter() > actionContext.getCurRoundStep()
-                || !PlayStageMgr.instance.willInBorder(this)) {
-            this.direct = DirectType.turnSelection(this.direct)[ThreadLocalRandom.current().nextInt(3)];
-            actionContext.reset();
+        final boolean sameDirect = actionContext.getSameDirectCounter() > actionContext.getCurRoundStep();
+        final boolean ablePassHero = PlayStageMgr.ablePassByHero(this);
+        final boolean ablePassHinder = PlayStageMgr.ablePassByHinder(this);
+
+        // 重定向
+        if (sameDirect || !ablePassHero || !ablePassHinder || !PlayStageMgr.instance.willInBorder(this)) {
+            this.direct = DirectType.rollDirect(this.direct);
+            actionContext.resetDirectCount();
             return;
         }
 
@@ -573,9 +574,6 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
             case DirectType.RIGHT:
                 x += this.speed;
                 actionContext.addCount();
-                break;
-            default:
-                log.warn("not exist direct");
                 break;
         }
     }

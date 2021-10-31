@@ -7,6 +7,8 @@ public abstract class Hinder {
 
     int hx, hy;//障碍物绘图坐标  左上角顶点 的坐标
     boolean alive;//存活状态
+    int width = 20;
+    int height = 10;
 
     public Hinder(int hx, int hy) {
         alive = true;
@@ -41,5 +43,11 @@ public abstract class Hinder {
         this.hy = hy;
     }
 
+    public int getWidth() {
+        return width;
+    }
 
+    public int getHeight() {
+        return height;
+    }
 }

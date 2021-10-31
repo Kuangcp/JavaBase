@@ -8,7 +8,7 @@ import java.awt.*;
 public class ColorMgr {
     public static final ColorMgr instance = new ColorMgr();
 
-    public final Color bgColor = new Color(8, 8, 8, 237);
+    public final Color bgColor = new Color(25, 25, 25, 255);
     public final Color ironColor = new Color(200, 200, 200);
     public final Color brickColor = new Color(188, 112, 50);
 }

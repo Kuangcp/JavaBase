@@ -55,7 +55,7 @@ public class EnemyActionContext {
         this.sameDirectCounter += 1;
     }
 
-    public void reset() {
+    public void resetDirectCount() {
         this.sameDirectCounter = 0;
         final ThreadLocalRandom random = ThreadLocalRandom.current();
         final int curRoundStep = random.nextInt(EnemyActionContext.MIN_DIRECT_STEP, EnemyActionContext.MAX_DIRECT_STEP);

@@ -44,7 +44,7 @@ public class PlayStageMgr {
     /**
      * 无敌状态 时间
      */
-    static long invincibleMs = 3000L;
+    static long invincibleMs = 5000L;
 
     // 场景 上下文
     public List<EnemyTank> enemyTanks;
@@ -186,6 +186,28 @@ public class PlayStageMgr {
         }
 
         return TankTool.ablePass(t, instance.hero);
+    }
+
+    public static boolean ablePassByHinder(Tank t) {
+        if (Objects.isNull(instance) || Objects.isNull(instance.hero) || !instance.hero.isAlive()) {
+            return true;
+        }
+
+        for (int i = 0; i < instance.bricks.size(); i++) {
+            final boolean pass = TankTool.ablePass(t, instance.bricks.get(i));
+            if (!pass) {
+                return false;
+            }
+        }
+
+        for (int i = 0; i < instance.irons.size(); i++) {
+            final boolean pass = TankTool.ablePass(t, instance.irons.get(i));
+            if (!pass) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public int getLiveEnemy() {

@@ -15,6 +15,7 @@ public class HoldingKeyEventMgr {
 
     public static HoldingKeyEventMgr instance = new HoldingKeyEventMgr();
 
+    // 允许多键同时被触发
     private volatile boolean up;
     private volatile boolean down;
     private volatile boolean left;
@@ -32,16 +33,19 @@ public class HoldingKeyEventMgr {
         releaseMap.put(KeyEvent.VK_S, () -> this.down = false);
         releaseMap.put(KeyEvent.VK_W, () -> this.up = false);
         releaseMap.put(KeyEvent.VK_J, () -> this.shot = false);
+        releaseMap.put(KeyEvent.VK_CONTROL, () -> this.ctrl = false);
 
         pressMap.put(KeyEvent.VK_A, () -> this.left = true);
         pressMap.put(KeyEvent.VK_D, () -> this.right = true);
         pressMap.put(KeyEvent.VK_S, () -> this.down = true);
         pressMap.put(KeyEvent.VK_W, () -> this.up = true);
+        pressMap.put(KeyEvent.VK_CONTROL, () -> this.ctrl = true);
     }
 
-    public void handleDirectPress(KeyEvent re){
+    public void handleDirectPress(KeyEvent re) {
         Optional.ofNullable(pressMap.get(re.getKeyCode())).ifPresent(Runnable::run);
     }
+
     public void handleRelease(KeyEvent re) {
         Optional.ofNullable(releaseMap.get(re.getKeyCode())).ifPresent(Runnable::run);
     }
@@ -84,6 +88,14 @@ public class HoldingKeyEventMgr {
 
     public void setShot(boolean shot) {
         this.shot = shot;
+    }
+
+    public boolean isCtrl() {
+        return ctrl;
+    }
+
+    public void setCtrl(boolean ctrl) {
+        this.ctrl = ctrl;
     }
 
     public boolean hasPressMoveEvent() {
