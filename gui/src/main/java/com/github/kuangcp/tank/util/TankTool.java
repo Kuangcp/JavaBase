@@ -228,8 +228,8 @@ public class TankTool {
      * 子弹和障碍物 碰撞监测
      */
     public static void judgeHint(Bullet s, Hinder h) {
-        if (s.sx >= h.getHx() - 1 && s.sx <= h.getHx() + 20
-                && s.sy >= h.getHy() - 1 && s.sy <= h.getHy() + 10) {
+        if (s.sx >= h.getHx() - 1 && s.sx <= h.getHx() + h.getWidth()
+                && s.sy >= h.getHy() - 1 && s.sy <= h.getHy() + h.getHeight()) {
             s.alive = false;
 
             if (h instanceof Brick) {

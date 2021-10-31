@@ -9,6 +9,16 @@ public class Brick extends Hinder {
         super(hx, hy);
     }
 
+    @Override
+    public int getWidth() {
+        return 5;
+    }
+
+    @Override
+    public int getHeight() {
+        return 5;
+    }
+
     /**
      * 构造器全是沿用父类的，父类要是没有无参构造器，子类有了就属于非法
      * 并且 父类有了含参构造器，子类必须也要有，显式的super一下

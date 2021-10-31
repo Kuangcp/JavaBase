@@ -10,7 +10,7 @@ import com.github.kuangcp.tank.resource.AvatarImgMgr;
 import com.github.kuangcp.tank.resource.ColorMgr;
 import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.HoldingKeyEventMgr;
-import com.github.kuangcp.tank.util.KeyListener;
+import com.github.kuangcp.tank.util.HeroKeyListener;
 import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.util.executor.AbstractDelayEvent;
 import com.github.kuangcp.tank.util.executor.DelayExecutor;
@@ -167,7 +167,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         for (int i = 0; i < irons.size(); i++) {
             Iron ir = irons.get(i);
             if (ir.getAlive()) {
-                g.fill3DRect(ir.getHx(), ir.getHy(), 20, 10, false);
+                g.fill3DRect(ir.getHx(), ir.getHy(), ir.getWidth(), ir.getHeight(), false);
             } else {
                 irons.remove(ir);
             }
@@ -177,7 +177,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         for (int i = 0; i < bricks.size(); i++) {
             Brick bs = bricks.get(i);
             if (bs.getAlive()) {
-                g.fill3DRect(bs.getHx(), bs.getHy(), 20, 10, false);
+                g.fill3DRect(bs.getHx(), bs.getHy(), bs.getWidth(), bs.getHeight(), false);
             } else {
                 bricks.remove(bs);
             }
@@ -381,11 +381,12 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     }
 
     /**
-     * 创建 一块矩形的砖(20*10) 的函数
+     * 创建砖
      */
     public void createB(List<Brick> bricks, int startX, int startY, int endX, int endY) {
-        for (int i = startX; i < endX; i += 20) {
-            for (int j = startY; j < endY; j += 10) {
+        Brick template = new Brick(0, 0);
+        for (int i = startX; i < endX; i += template.getWidth()) {
+            for (int j = startY; j < endY; j += template.getHeight()) {
                 Brick bs = new Brick(i, j);
                 bricks.add(bs);
             }
@@ -393,14 +394,14 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     }
 
     /**
-     * 创建铁块(20*10)
+     * 创建铁块
      */
     public void createI(List<Iron> irons, int startX, int startY, int endX, int endY) {
-        for (int i = startX; i < endX; i += 20) {
-            for (int j = startY; j < endY; j += 10) {
+        Iron template = new Iron(0, 0);
+        for (int i = startX; i < endX; i += template.getWidth()) {
+            for (int j = startY; j < endY; j += template.getHeight()) {
                 Iron bs = new Iron(i, j);
                 irons.add(bs);
-
             }
         }
     }
