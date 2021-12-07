@@ -49,13 +49,14 @@ public class BlockTest {
     }
 
     /**
-     * TODO 为什么会阻塞后，还能有部分event被消费
+     * TODO 从日志上看为什么会阻塞后，还能有部分event被消费
      *
-     * @see com.google.common.eventbus.Subscriber#invokeSubscriberMethod(java.lang.Object) 使用注解 @AllowConcurrentEvents 后
+     * @see com.google.common.eventbus.Subscriber#invokeSubscriberMethod(java.lang.Object) 使用注解 @AllowConcurrentEvents 后 消费事件的方式
      * @see com.google.common.eventbus.Subscriber.SynchronizedSubscriber#invokeSubscriberMethod(java.lang.Object)
      */
     @Test
     public void testBlockAsync() throws Exception {
+        // TODO 陷入 一个线程 Park，其他线程 Monitor，表现为：整个线程池无法消费任务，队列阻塞满
         final ExecutorService pool = Executors.newFixedThreadPool(3);
         final AsyncEventBus asyncEventBus = new AsyncEventBus(pool);
         // TODO 注册顺序也会影响结果
