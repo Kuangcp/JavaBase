@@ -69,8 +69,7 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
 
     // 判断是否ping消息
     if (frame instanceof PingWebSocketFrame) {
-      ctx.channel().write(
-          new PongWebSocketFrame(frame.content().retain()));
+      ctx.channel().write(new PongWebSocketFrame(frame.content().retain()));
       return;
     }
 

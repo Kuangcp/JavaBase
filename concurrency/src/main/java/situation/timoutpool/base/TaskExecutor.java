@@ -1,5 +1,6 @@
 package situation.timoutpool.base;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**

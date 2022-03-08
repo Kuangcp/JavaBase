@@ -24,14 +24,15 @@ public class CreateNewPool implements TaskExecutor<Param, Result> {
     @Override
     public Result execute(Param param, long timeout, TimeUnit timeUnit) {
         final LinkedBlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>(1000);
-        final Result result = Result.builder().dataList(Collections.synchronizedList(new ArrayList<>())).build();
+        final Result result = Result.builder().dataList(Collections.synchronizedList(new ArrayList<>()))
+                .build();
         final ThreadPoolExecutor pool = new ThreadPoolExecutor(3, 3, 1, TimeUnit.SECONDS,
                 workQueue, new ThreadPoolExecutor.DiscardPolicy());
         for (int i = 0; i < param.getTotal(); i++) {
             final Param tmpParam = Param.builder().start(i).build();
             pool.execute(() -> {
                 try {
-                    TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(600) + 200);
+                    TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(600) + 60);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -43,14 +44,14 @@ public class CreateNewPool implements TaskExecutor<Param, Result> {
         try {
             pool.shutdown();
             final boolean complete = pool.awaitTermination(timeout, timeUnit);
-            log.info("complete={}", complete);
-            if (!complete) {
-                log.info("workQueue={}", workQueue.size());
+            if (complete) {
+                log.info("complete");
+            } else {
+                log.info("not complete. workQueue={}", workQueue.size());
             }
         } catch (Exception e) {
             log.error("", e);
         }
-
 
         return result;
     }

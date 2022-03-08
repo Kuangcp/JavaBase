@@ -33,21 +33,21 @@ public class Calculator extends JFrame {
   private boolean numFlag = false;//用于判断是否输入了数字
   private boolean calculateFlag = false;//用于判断是否按下了等号运算符
 
-  private JTextField txtResult = new JTextField("0");
-  private JTextField inputCache = new JTextField("");
-  private JButton btnNull = new JButton("  ");
+  private final JTextField txtResult = new JTextField("0");
+  private final JTextField inputCache = new JTextField("");
+  private final JButton btnNull = new JButton("  ");
 
-  private JButton btnDecrease = new JButton("-");
-  private JButton btnBegin = new JButton("C");
+  private final JButton btnDecrease = new JButton("-");
+  private final JButton btnBegin = new JButton("C");
 
-  private JButton btnMultiply = new JButton("*");
-  private JButton btnCancel = new JButton("←");
+  private final JButton btnMultiply = new JButton("*");
+  private final JButton btnCancel = new JButton("←");
 
-  private JButton btnMinus = new JButton("+/-");
-  private JButton btnPoint = new JButton(".");
-  private JButton btnDivide = new JButton("/");
-  private JButton btnEqual = new JButton("=");
-  private JButton btnIncrease = new JButton("+");
+  private final JButton btnMinus = new JButton("+/-");
+  private final JButton btnPoint = new JButton(".");
+  private final JButton btnDivide = new JButton("/");
+  private final JButton btnEqual = new JButton("=");
+  private final JButton btnIncrease = new JButton("+");
 
   private Calculator() {
     try {

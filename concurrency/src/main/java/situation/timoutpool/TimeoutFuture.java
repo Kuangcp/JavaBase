@@ -4,6 +4,7 @@ import situation.timoutpool.base.Param;
 import situation.timoutpool.base.Result;
 import situation.timoutpool.base.TaskExecutor;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
