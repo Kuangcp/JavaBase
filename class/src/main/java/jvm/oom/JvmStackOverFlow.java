@@ -12,27 +12,27 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JvmStackOverFlow {
 
-  private int count = 1;
+    private int count = 1;
 
-  private void stackLeak() {
-    int a = 0;
-    int b = 0;
-    int c = 0;
-    int d = 0;
+    private void stackLeak() {
+        int a = 0;
+        int b = 0;
+        int c = 0;
+        int d = 0;
 
-    count++;
-    stackLeak();
-  }
-
-  public static void main(String[] args) {
-    JvmStackOverFlow overFlow = new JvmStackOverFlow();
-    try {
-      overFlow.stackLeak();
-
-      // 不能用 Exception 因为 Error 和 Exception 是两个体系...
-    } catch (Throwable e) {
-      log.info("count={}", overFlow.count);
-//      log.error(e.getMessage(), e);
+        count++;
+        stackLeak();
     }
-  }
+
+    public static void main(String[] args) {
+        JvmStackOverFlow overFlow = new JvmStackOverFlow();
+        try {
+            overFlow.stackLeak();
+
+            // 不能用 Exception 因为 Error 和 Exception 是两个体系...
+        } catch (Throwable e) {
+            log.info("count={}", overFlow.count);
+//      log.error(e.getMessage(), e);
+        }
+    }
 }
