@@ -20,6 +20,6 @@ class Apple {
   @Override
   protected void finalize() throws Throwable {
     super.finalize();
-    log.info("Apply: finalize={}", name);
+//    log.info("Apple: finalize={}", name);
   }
 }
