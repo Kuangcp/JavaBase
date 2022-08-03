@@ -17,5 +17,13 @@ dependencies {
     implementation libs['jedis']
     implementation libs['groovy']
     implementation libs['common-lang']
+
+    implementation "io.github.resilience4j:resilience4j-circuitbreaker:$ver.resilience4j"
+    implementation "io.github.resilience4j:resilience4j-ratelimiter:$ver.resilience4j"
+    implementation "io.github.resilience4j:resilience4j-retry:$ver.resilience4j"
+    implementation "io.github.resilience4j:resilience4j-bulkhead:$ver.resilience4j"
+    implementation "io.github.resilience4j:resilience4j-cache:$ver.resilience4j"
+    implementation "io.github.resilience4j:resilience4j-timelimiter:$ver.resilience4j"
+
     testImplementation(libs['testng'])
 }
