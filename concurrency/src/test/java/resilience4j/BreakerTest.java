@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 
 /**
- * @author KuangChengPing@51peiq.com on 2022-08-03 19:20
+ * @author https://github.com/kuangcp on 2022-08-03 19:20
  */
 public class BreakerTest {
 

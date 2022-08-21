@@ -26,7 +26,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * @author KuangChengPing@51peiq.com on 2022-06-30 10:07
+ * @author https://github.com/kuangcp on 2022-06-30 10:07
  */
 @Slf4j
 public class CommonRelationTest {
@@ -81,7 +81,7 @@ public class CommonRelationTest {
         for (int i = 0; i < 100; i++) {
             Map<String, Set<String>> result = loopCodeMap(parts);
             log.info("finish {}", i);
-//            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.SECONDS.sleep(5);
         }
 
         TimeUnit.SECONDS.sleep(100000);
@@ -166,7 +166,7 @@ public class CommonRelationTest {
     }
 
     private List<Parts> readData() throws IOException {
-        Path path = Paths.get("b.json");
+        Path path = Paths.get("30w.json");
         byte[] bytes = Files.readAllBytes(path);
         Gson gson = new Gson();
         Type type = new TypeToken<List<Parts>>() {
