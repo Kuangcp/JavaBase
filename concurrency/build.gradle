@@ -9,7 +9,7 @@ application {
 }
 
 dependencies {
-    implementation project(":common-config")
+
     implementation libs['kcp-tuple']
 
     implementation libs['blade-mvc']

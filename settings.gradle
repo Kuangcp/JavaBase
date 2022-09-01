@@ -1,7 +1,6 @@
 rootProject.name = 'JavaBase'
 include(
-    'common-config'
-    , 'io'
+    'io'
     , 'generic'
     , 'collection'
     , 'class'
@@ -16,9 +15,5 @@ include(
     , 'guava'
     , 'netty'
     , 'spring'
-    , 'kafka'
-    , 'hadoop'
-    , 'flink'
-    , 'mybatis'
     , 'web'
 )

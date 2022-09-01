@@ -1,5 +1,5 @@
 dependencies {
-  implementation project(":common-config")
+
   implementation libs['MySQL']
   implementation libs['cglib']
 

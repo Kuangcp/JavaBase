@@ -1,5 +1,5 @@
 dependencies {
-  implementation project(":common-config")
+
 
   implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
   implementation group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.2.0.Final'
