@@ -43,3 +43,9 @@ tasks.register('calc') {
     application.mainClass = 'com.github.kuangcp.caculator.Calculator'
     println "Build Calculator ..."
 }
+
+tasks.register('gomoku') {
+    dependsOn build
+    application.mainClass = 'com.github.kuangcp.gomoku.Gomoku'
+    println "Build Gomoku ..."
+}
