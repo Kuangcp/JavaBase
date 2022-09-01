@@ -1,6 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:mysql://127.0.0.1:3360/mybatis?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false
-    username: root
-    password: jiushi
-    maximum-pool-size: 30
