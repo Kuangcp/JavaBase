@@ -21,11 +21,11 @@
         <module>concurrency</module>
         <module>generic</module>
         <module>guava</module>
-<!--        <module>gui</module>-->
-<!--        <module>io</module>-->
+        <!--        <module>gui</module>-->
+        <module>io</module>
         <module>java8</module>
-<!--        <module>netty</module>-->
-<!--        <module>network</module>-->
+        <module>netty</module>
+        <module>network</module>
         <module>pattern</module>
 <!--        <module>question</module>-->
         <module>spring</module>
@@ -46,6 +46,10 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
     </dependencies>
 
 
@@ -62,24 +66,24 @@
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.4.11</version>
+                <version>1.2.5</version>
             </dependency>
 
-<!--            <dependency>-->
-<!--                <groupId>com.github.kuangcp</groupId>-->
-<!--                <artifactId>kcp-tool</artifactId>-->
-<!--                <version>1.0.8</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.github.kuangcp</groupId>-->
-<!--                <artifactId>kcp-tuple</artifactId>-->
-<!--                <version>1.0.8</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.github.kuangcp</groupId>-->
-<!--                <artifactId>kcp-core</artifactId>-->
-<!--                <version>1.0.8</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.github.kuangcp</groupId>-->
+            <!--                <artifactId>kcp-tool</artifactId>-->
+            <!--                <version>1.0.8</version>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.github.kuangcp</groupId>-->
+            <!--                <artifactId>kcp-tuple</artifactId>-->
+            <!--                <version>1.0.8</version>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.github.kuangcp</groupId>-->
+            <!--                <artifactId>kcp-core</artifactId>-->
+            <!--                <version>1.0.8</version>-->
+            <!--            </dependency>-->
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
@@ -330,11 +334,7 @@
                 <version>2.2.6</version>
             </dependency>
 
-<!--            <dependency>-->
-<!--                <groupId>cglib</groupId>-->
-<!--                <artifactId>cglib</artifactId>-->
-<!--                <version>3.2.4</version>-->
-<!--            </dependency>-->
+
             <dependency>
                 <groupId>asm</groupId>
                 <artifactId>asm</artifactId>
