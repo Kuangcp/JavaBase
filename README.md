@@ -31,3 +31,14 @@
 > [Java 学习笔记](https://github.com/brianway/java-learning)    
 > [demo](https://gitee.com/code4everything/demo)   
 > [sparrow](https://github.com/david1228/sparrow)
+
+
+## 构建
+> .m2/settings.xml
+```xml
+   <mirror>
+       <id>mygrid-restlet</id>
+       <url>https://maven.restlet.talend.com</url>
+       <mirrorOf>maven-restlet</mirrorOf>
+     </mirror>
+```

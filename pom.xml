@@ -21,13 +21,13 @@
         <module>concurrency</module>
         <module>generic</module>
         <module>guava</module>
-        <module>gui</module>
-        <module>io</module>
+<!--        <module>gui</module>-->
+<!--        <module>io</module>-->
         <module>java8</module>
-        <module>netty</module>
-        <module>network</module>
+<!--        <module>netty</module>-->
+<!--        <module>network</module>-->
         <module>pattern</module>
-        <module>question</module>
+<!--        <module>question</module>-->
         <module>spring</module>
         <module>test</module>
         <module>web</module>
@@ -65,38 +65,21 @@
                 <version>1.4.11</version>
             </dependency>
 
-            <dependency>
-                <groupId>cglib</groupId>
-                <artifactId>cglib</artifactId>
-                <version>3.2.9</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.7</version>
-            </dependency>
-
-
-            <dependency>
-                <groupId>com.github.kuangcp</groupId>
-                <artifactId>kcp-tool</artifactId>
-                <version>1.0.8</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.kuangcp</groupId>
-                <artifactId>kcp-tuple</artifactId>
-                <version>1.0.8</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.kuangcp</groupId>
-                <artifactId>kcp-core</artifactId>
-                <version>1.0.8</version>
-            </dependency>
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>1.18.2</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.github.kuangcp</groupId>-->
+<!--                <artifactId>kcp-tool</artifactId>-->
+<!--                <version>1.0.8</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>com.github.kuangcp</groupId>-->
+<!--                <artifactId>kcp-tuple</artifactId>-->
+<!--                <version>1.0.8</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>com.github.kuangcp</groupId>-->
+<!--                <artifactId>kcp-core</artifactId>-->
+<!--                <version>1.0.8</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
@@ -108,10 +91,11 @@
                 <version>4.4</version>
             </dependency>
             <dependency>
-                <groupId>org.codehaus.groovy</groupId>
+                <groupId>org.apache.groovy</groupId>
                 <artifactId>groovy-all</artifactId>
-                <version>3.0.8</version>
+                <version>4.0.14</version>
             </dependency>
+
             <dependency>
                 <groupId>cglib</groupId>
                 <artifactId>cglib</artifactId>
@@ -166,6 +150,7 @@
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
                 <version>6.14.3</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.squareup.okhttp3</groupId>
@@ -278,6 +263,17 @@
                 <version>3.1.2</version>
             </dependency>
             <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>5.3.7.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-dbcp</groupId>
+                <artifactId>commons-dbcp</artifactId>
+                <version>1.4</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>
                 <version>2.3.1</version>
@@ -312,11 +308,33 @@
                 <artifactId>hadoop-hdfs</artifactId>
                 <version>2.7.2</version>
             </dependency>
+
             <dependency>
-                <groupId>cglib</groupId>
-                <artifactId>cglib</artifactId>
-                <version>3.2.4</version>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>2.0.1.Final</version>
             </dependency>
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>6.2.0.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.el</groupId>
+                <artifactId>javax.el-api</artifactId>
+                <version>3.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.web</groupId>
+                <artifactId>javax.el</artifactId>
+                <version>2.2.6</version>
+            </dependency>
+
+<!--            <dependency>-->
+<!--                <groupId>cglib</groupId>-->
+<!--                <artifactId>cglib</artifactId>-->
+<!--                <version>3.2.4</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>asm</groupId>
                 <artifactId>asm</artifactId>
@@ -342,6 +360,44 @@
                 <artifactId>quasar-reactive-streams</artifactId>
                 <version>0.7.4</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.github.jsonzou</groupId>
+                <artifactId>jmockdata</artifactId>
+                <version>4.1.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.resilience4j</groupId>
+                <artifactId>resilience4j-circuitbreaker</artifactId>
+                <version>1.7.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.resilience4j</groupId>
+                <artifactId>resilience4j-ratelimiter</artifactId>
+                <version>1.7.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.resilience4j</groupId>
+                <artifactId>resilience4j-retry</artifactId>
+                <version>1.7.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.resilience4j</groupId>
+                <artifactId>resilience4j-bulkhead</artifactId>
+                <version>1.7.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.resilience4j</groupId>
+                <artifactId>resilience4j-cache</artifactId>
+                <version>1.7.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.resilience4j</groupId>
+                <artifactId>resilience4j-timelimiter</artifactId>
+                <version>1.7.0</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <build>
@@ -361,9 +417,22 @@
 
     <repositories>
         <repository>
+            <id>maven-restlet</id>
+            <name>Public online Restlet repository</name>
+            <url>https://maven.restlet.talend.com</url>
+        </repository>
+        <repository>
             <id>public</id>
             <name>aliyun nexus</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>gitee</id>
+            <name>kuangcp gitee</name>
+            <url>https://gitee.com/gin9/MavenRepos/raw/master</url>
             <releases>
                 <enabled>true</enabled>
             </releases>

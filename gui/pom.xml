@@ -19,6 +19,10 @@
     </properties>
     <dependencies>
 
+<!--        <dependency>-->
+<!--            <groupId>com.github.kuangcp</groupId>-->
+<!--            <artifactId>kcp-core</artifactId>-->
+<!--        </dependency>-->
     </dependencies>
 
 </project>
