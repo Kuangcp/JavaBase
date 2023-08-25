@@ -6,9 +6,12 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
+
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import sun.misc.BASE64Decoder;
 
+@Slf4j
 public class AES {
 
   //密钥 (需要前端和后端保持一致)
@@ -25,7 +28,7 @@ public class AES {
     try {
       return aesDecrypt(encrypt, KEY);
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("", e);
       return "";
     }
   }
