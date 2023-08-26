@@ -21,7 +21,7 @@ public class VirusBroadcast {
         frame.setSize(1000, 800);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         executors.submit(panel);
         executors.submit(City.getInstance());

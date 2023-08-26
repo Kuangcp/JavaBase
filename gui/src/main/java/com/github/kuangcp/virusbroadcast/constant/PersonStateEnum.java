@@ -1,40 +1,39 @@
 package com.github.kuangcp.virusbroadcast.constant;
 
+import com.github.kuangcp.virusbroadcast.domain.City;
+import lombok.Getter;
+
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 /**
  * @author https://github.com/kuangcp on 2020-02-14 12:43
  */
+@Getter
 public enum PersonStateEnum {
 
-  NORMAL(PersonState.NORMAL, "normal"),
-  SHADOW(PersonState.SHADOW, "shadow"),
-  CONFIRMED(PersonState.CONFIRMED, "confirmed"),
-  FREEZE(PersonState.FREEZE, "freeze"),
-  DEAD(PersonState.DEAD, "dead");
+    NORMAL(PersonState.NORMAL, "normal", City.Status::setNormal),
+    SHADOW(PersonState.SHADOW, "shadow", City.Status::setShadow),
+    CONFIRMED(PersonState.CONFIRMED, "confirmed", City.Status::setConfirmed),
+    FREEZE(PersonState.FREEZE, "freeze", City.Status::setFreeze),
+    DEAD(PersonState.DEAD, "dead", City.Status::setDead);
 
-  private int value;
-  private String desc;
+    private final int value;
+    private final String desc;
+    private BiConsumer<City.Status, Integer> val;
 
-  public int getValue() {
-    return value;
-  }
-
-  public String getDesc() {
-    return desc;
-  }
-
-  PersonStateEnum(int value, String desc) {
-    this.value = value;
-    this.desc = desc;
-  }
-
-  public static Optional<PersonStateEnum> getByValue(int value) {
-    for (PersonStateEnum stateEnum : values()) {
-      if (stateEnum.value == value) {
-        return Optional.of(stateEnum);
-      }
+    PersonStateEnum(int value, String desc, BiConsumer<City.Status, Integer> val) {
+        this.value = value;
+        this.desc = desc;
+        this.val = val;
     }
-    return Optional.empty();
-  }
+
+    public static Optional<PersonStateEnum> getByValue(int value) {
+        for (PersonStateEnum stateEnum : values()) {
+            if (stateEnum.value == value) {
+                return Optional.of(stateEnum);
+            }
+        }
+        return Optional.empty();
+    }
 }
