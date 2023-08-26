@@ -21,13 +21,13 @@
         <module>concurrency</module>
         <module>generic</module>
         <module>guava</module>
-        <!--        <module>gui</module>-->
+        <module>gui</module>
         <module>io</module>
         <module>java8</module>
         <module>netty</module>
         <module>network</module>
         <module>pattern</module>
-<!--        <module>question</module>-->
+        <module>question</module>
         <module>spring</module>
         <module>test</module>
         <module>web</module>
@@ -76,24 +76,24 @@
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.2.5</version>
+                <version>1.2.9</version>
             </dependency>
 
-            <!--            <dependency>-->
-            <!--                <groupId>com.github.kuangcp</groupId>-->
-            <!--                <artifactId>kcp-tool</artifactId>-->
-            <!--                <version>1.0.8</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>com.github.kuangcp</groupId>-->
-            <!--                <artifactId>kcp-tuple</artifactId>-->
-            <!--                <version>1.0.8</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>com.github.kuangcp</groupId>-->
-            <!--                <artifactId>kcp-core</artifactId>-->
-            <!--                <version>1.0.8</version>-->
-            <!--            </dependency>-->
+            <dependency>
+                <groupId>com.github.kuangcp</groupId>
+                <artifactId>kcp-tool</artifactId>
+                <version>1.0.8</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.kuangcp</groupId>
+                <artifactId>kcp-tuple</artifactId>
+                <version>1.0.8</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.kuangcp</groupId>
+                <artifactId>kcp-core</artifactId>
+                <version>1.0.8</version>
+            </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>

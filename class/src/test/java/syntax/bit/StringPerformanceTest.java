@@ -10,54 +10,54 @@ import org.junit.Test;
 @Slf4j
 public class StringPerformanceTest {
 
-  private int repeat = 10000;
-  private String strData = "1100101010100111110101001011";
-  private int length = strData.length();
-  private int intData = 212499787;
+    private int repeat = 10000;
+    private String strData = "1100101010100111110101001011";
+    private int length = strData.length();
+    private int intData = 212499787;
 
-  @Test
-  public void testReadString() {
-    GetRunTime getRunTime = new GetRunTime().startCount();
-    for (int i = 0; i < repeat; i++) {
-      readString();
+    @Test
+    public void testReadString() {
+        GetRunTime getRunTime = new GetRunTime().startCount();
+        for (int i = 0; i < repeat; i++) {
+            readString();
+        }
+        getRunTime.endCount("string");
     }
-    getRunTime.endCount("string");
-  }
 
-  @Test
-  public void testReadBit() {
-    GetRunTime getRunTime = new GetRunTime().startCount();
-    for (int i = 0; i < repeat; i++) {
-      readBit();
+    @Test
+    public void testReadBit() {
+        GetRunTime getRunTime = new GetRunTime().startCount();
+        for (int i = 0; i < repeat; i++) {
+            readBit();
+        }
+        getRunTime.endCount("bit");
     }
-    getRunTime.endCount("bit");
-  }
 
-  private void readBit() {
-    int temp = intData;
-    for (int i = 0; i < length; i++) {
-      if (temp % 2 == 1) {
-        logic(true);
-      } else {
-        logic(false);
-      }
-      temp >>= 1;
+    private void readBit() {
+        int temp = intData;
+        for (int i = 0; i < length; i++) {
+            if (temp % 2 == 1) {
+                logic(true);
+            } else {
+                logic(false);
+            }
+            temp >>= 1;
+        }
     }
-  }
 
-  private void readString() {
-    char[] chars = strData.toCharArray();
-    for (int i = 0; i < length; i++) {
-      char c = chars[i];
-      if ('1' == c) {
-        logic(true);
-      } else if ('0' == c) {
-        logic(false);
-      }
+    private void readString() {
+        char[] chars = strData.toCharArray();
+        for (int i = 0; i < length; i++) {
+            char c = chars[i];
+            if ('1' == c) {
+                logic(true);
+            } else if ('0' == c) {
+                logic(false);
+            }
+        }
     }
-  }
 
-  private void logic(boolean result) {
+    private void logic(boolean result) {
 //    log.info("result {}", result);
-  }
+    }
 }

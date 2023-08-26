@@ -57,6 +57,11 @@
             <artifactId>cglib</artifactId>
             <version>3.2.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.kuangcp</groupId>
+            <artifactId>kcp-tool</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
