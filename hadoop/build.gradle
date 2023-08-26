@@ -1,0 +1,12 @@
+dependencies {
+    implementation project(":common-config")
+    implementation (libs["hadoop-common"]) {
+        exclude group: 'org.slf4j'
+    }
+    implementation (libs["hadoop-client"]){
+        exclude group: 'org.slf4j'
+    }
+    implementation (libs["hadoop-hdfs"]){
+        exclude group: 'org.slf4j'
+    }
+}

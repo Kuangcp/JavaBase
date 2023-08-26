@@ -1,0 +1,28 @@
+version = '1.0.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+dependencies {
+  implementation project(":common-config")
+  implementation libs['flink-java']
+  implementation libs['flink-clients']
+  implementation libs['flink-streaming-java']
+}
+
+application {
+  mainClassName = "com.github.kuangcp.hi.SimpleStatistic"
+}
+
+task uberJar(type: Jar) {
+  archiveClassifier = 'all-dependency'
+
+  from sourceSets.main.output
+  dependsOn configurations.runtimeClasspath
+  from {
+    configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+  }
+  manifest {
+    attributes 'Main-Class': 'com.github.kuangcp.hi.SimpleStatistic'
+  }
+}
