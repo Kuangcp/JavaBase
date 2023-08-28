@@ -62,8 +62,6 @@
             <artifactId>jackson-dataformat-smile</artifactId>
         </dependency>
 
-
-
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-core</artifactId>
