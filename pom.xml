@@ -82,17 +82,17 @@
             <dependency>
                 <groupId>com.github.kuangcp</groupId>
                 <artifactId>kcp-tool</artifactId>
-                <version>1.0.8</version>
+                <version>1.0.7</version>
             </dependency>
             <dependency>
                 <groupId>com.github.kuangcp</groupId>
                 <artifactId>kcp-tuple</artifactId>
-                <version>1.0.8</version>
+                <version>1.0.7</version>
             </dependency>
             <dependency>
                 <groupId>com.github.kuangcp</groupId>
                 <artifactId>kcp-core</artifactId>
-                <version>1.0.8</version>
+                <version>1.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -427,6 +427,11 @@
 
     <repositories>
         <repository>
+            <id>gitee</id>
+            <name>kuangcp gitee</name>
+            <url>https://gitee.com/gin9/MavenRepos/raw/master</url>
+        </repository>
+        <repository>
             <id>maven-restlet</id>
             <name>Public online Restlet repository</name>
             <url>https://maven.restlet.talend.com</url>
@@ -435,14 +440,6 @@
             <id>public</id>
             <name>aliyun nexus</name>
             <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-        <repository>
-            <id>gitee</id>
-            <name>kuangcp gitee</name>
-            <url>https://gitee.com/gin9/MavenRepos/raw/master</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
