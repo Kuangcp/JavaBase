@@ -1,5 +1,0 @@
-
-dependencies {
-
-  implementation rootProject.libs['guava']
-}

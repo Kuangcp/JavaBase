@@ -1,4 +1,0 @@
-dependencies{
-
-  implementation rootProject.libs['common-math']
-}
