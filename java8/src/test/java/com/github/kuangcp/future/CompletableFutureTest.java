@@ -106,4 +106,5 @@ public class CompletableFutureTest {
         return value + 2;
     }
 
+    // TODO 理解 lettuce 中 Future 的使用
 }
