@@ -18,26 +18,26 @@ list.add(134)
 
 Callable<String> callable = new Callable<String>() {
 
-  @Override
-  String call() throws Exception {
-    return list.toString()
-  }
+    @Override
+    String call() throws Exception {
+        return list.toString()
+    }
 }
 println("result = " + callable.call())
 
 def executor
 try {
-  executor = Executors.newSingleThreadExecutor()
-  Future<String> future = executor.submit(callable)
+    executor = Executors.newSingleThreadExecutor()
+    Future<String> future = executor.submit(callable)
 
-  def result = future.get(60, TimeUnit.MILLISECONDS)
-  println("future: " + result)
+    def result = future.get(60, TimeUnit.MILLISECONDS)
+    println("future: " + result)
 } catch (TimeoutException e) {
-  println("timeout" + e)
+    println("timeout" + e)
 } finally {
-  if (executor != null) {
-    executor.shutdown()
-  }
+    if (executor != null) {
+        executor.shutdown()
+    }
 }
 
 

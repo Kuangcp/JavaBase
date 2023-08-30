@@ -8,25 +8,25 @@ import java.util.concurrent.locks.ReentrantLock;
  * Created by https://github.com/kuangcp on 17-8-15  上午10:12
  * 普通的这个数组对象，也是和那个并发包的类一样的效果，完全是因为锁的原因，
  * 因为锁的存在，第一个线程和第二个线程的运行是有时效先后的，所以就会出现一个线程和另一个线程的结果是不一样的
- *      如果把锁去掉，就会有异常抛出：
-
-
- *  这个类iterator 和 listIterator 方法返回的的迭代器 都是快速失败的，也就是说
- *      在创建迭代器之后，除非通过迭代器自身的 remove( 或 add 方法 1.8没有了)从结构上 （除了更新元素值的其他操作都是）对列表进行修改，
- *      否则在任何时间以任何方式对列表进行修改，迭代器都会抛出 ConcurrentModificationException。
- *  快速失败并不总是可靠的，因为线程的不确定性，快速失败是尽量的做到抛出这个异常
- *
- *       注意，这个类的实现不是同步的。使用这个封装就是同步的
- *      List list = Collections.synchronizedList(new ArrayList(...));
- *
- *  同样的，这里出现别的结果也是因为获得了同一个迭代器， 然后又因为加锁，数据同步了，所以结果是好多个，
- *  例如这样的，5没有加入进去 6 却进去了
- *  a: null, Element{phone='1'}, Element{phone='6'}, Element{phone='2'}, Element{phone='3'},
-    a:
+ * 如果把锁去掉，就会有异常抛出：
+ * <p>
+ * <p>
+ * 这个类iterator 和 listIterator 方法返回的的迭代器 都是快速失败的，也就是说
+ * 在创建迭代器之后，除非通过迭代器自身的 remove( 或 add 方法 1.8没有了)从结构上 （除了更新元素值的其他操作都是）对列表进行修改，
+ * 否则在任何时间以任何方式对列表进行修改，迭代器都会抛出 ConcurrentModificationException。
+ * 快速失败并不总是可靠的，因为线程的不确定性，快速失败是尽量的做到抛出这个异常
+ * <p>
+ * 注意，这个类的实现不是同步的。使用这个封装就是同步的
+ * List list = Collections.synchronizedList(new ArrayList(...));
+ * <p>
+ * 同样的，这里出现别的结果也是因为获得了同一个迭代器， 然后又因为加锁，数据同步了，所以结果是好多个，
+ * 例如这样的，5没有加入进去 6 却进去了
+ * a: null, Element{phone='1'}, Element{phone='6'}, Element{phone='2'}, Element{phone='3'},
+ * a:
  */
 public class ArrayListDemo {
 
-    public static void main(String []s){
+    public static void main(String[] s) {
         ArrayList<Element> elements = new ArrayList<>();
         ReentrantLock lock = new ReentrantLock();
         String name = "a";

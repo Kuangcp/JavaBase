@@ -18,7 +18,7 @@ public class RateLimiterTest {
         rateLimiter.acquire();
 
         // SmoothRateLimiter
-        new Thread(() -> {
+        Runnable action = () -> {
             for (int i = 0; i < 1000; i++) {
                 try {
                     TimeUnit.MILLISECONDS.sleep(100);
@@ -28,7 +28,13 @@ public class RateLimiterTest {
                     log.error("", e);
                 }
             }
-        }).start();
+        };
+        Thread first = new Thread(action);
+        first.setName("first");
+        first.start();
+        Thread second = new Thread(action);
+        second.setName("second");
+        second.start();
 
         TimeUnit.HOURS.sleep(1);
     }
