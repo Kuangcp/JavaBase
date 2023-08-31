@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Stack;
 
 /**
- * https://github.com/simplewz/Expression
+ * <a href="https://github.com/simplewz/Expression">Github: simplewz/Expression</a>
  * <p>
  * 四则运算表达式解析
  * <p>
@@ -66,28 +66,12 @@ public class Expression {
                 }
             } else if (('a' <= exChar[i] && exChar[i] <= 'z') || ('A' <= exChar[i] && exChar[i] <= 'Z') || exChar[i] == '_') {
                 StringBuilder sb = new StringBuilder();
-                while (('a' <= exChar[i] && exChar[i] <= 'z') || ('A' <= exChar[i] && exChar[i] <= 'Z') || exChar[i] == '_' || ('0' <= exChar[i] && exChar[i] <= '9')) {
-                    if (i == exChar.length - 1) {
-                        sb.append(exChar[i]);
-                        break;
-                    } else {
-                        sb.append(exChar[i]);
-                        i++;
-                    }
-                }
+                i = getI(exChar, i, sb);
                 if (exChar[i] == '.') {
                     ++i;
                     if (('a' <= exChar[i] && exChar[i] <= 'z') || ('A' <= exChar[i] && exChar[i] <= 'Z') || exChar[i] == '_' || ('0' <= exChar[i] && exChar[i] <= '9')) {
                         sb.append('.');
-                        while (('a' <= exChar[i] && exChar[i] <= 'z') || ('A' <= exChar[i] && exChar[i] <= 'Z') || exChar[i] == '_' || ('0' <= exChar[i] && exChar[i] <= '9')) {
-                            if (i == exChar.length - 1) {
-                                sb.append(exChar[i]);
-                                break;
-                            } else {
-                                sb.append(exChar[i]);
-                                i++;
-                            }
-                        }
+                        i = getI(exChar, i, sb);
                     } else {
                         throw new RuntimeException("词法错误!");
                     }
@@ -123,29 +107,13 @@ public class Expression {
 
             } else if ('0' <= exChar[i] && exChar[i] <= '9') {
                 StringBuilder sb = new StringBuilder();
-                while ('0' <= exChar[i] && exChar[i] <= '9') {
-                    if (i == exChar.length - 1) {
-                        sb.append(exChar[i]);
-                        break;
-                    } else {
-                        sb.append(exChar[i]);
-                        i++;
-                    }
-                }
+                i = getA(exChar, i, sb, '0' <= exChar[i]);
 
                 if (exChar[i] == '.') {
                     ++i;
                     if (exChar[i] >= '0' && exChar[i] <= '9') {
                         sb.append('.');
-                        while (exChar[i] >= '0' && exChar[i] <= '9') {
-                            if (i == exChar.length - 1) {
-                                sb.append(exChar[i]);
-                                break;
-                            } else {
-                                sb.append(exChar[i]);
-                                i++;
-                            }
-                        }
+                        i = getA(exChar, i, sb, exChar[i] >= '0');
                     } else {
                         throw new RuntimeException("词法错误!");
                     }
@@ -183,6 +151,32 @@ public class Expression {
             }
         }
         return expressionWord;
+    }
+
+    private static int getA(char[] exChar, int i, StringBuilder sb, boolean b) {
+        while (b && exChar[i] <= '9') {
+            if (i == exChar.length - 1) {
+                sb.append(exChar[i]);
+                break;
+            } else {
+                sb.append(exChar[i]);
+                i++;
+            }
+        }
+        return i;
+    }
+
+    private static int getI(char[] exChar, int i, StringBuilder sb) {
+        while (('a' <= exChar[i] && exChar[i] <= 'z') || ('A' <= exChar[i] && exChar[i] <= 'Z') || exChar[i] == '_' || ('0' <= exChar[i] && exChar[i] <= '9')) {
+            if (i == exChar.length - 1) {
+                sb.append(exChar[i]);
+                break;
+            } else {
+                sb.append(exChar[i]);
+                i++;
+            }
+        }
+        return i;
     }
 
     private static String remove(String srcStr, char ch) {
