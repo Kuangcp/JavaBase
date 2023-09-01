@@ -42,7 +42,6 @@
         </dependency>
     </dependencies>
 
-<!--    https://github.com/antlr/antlr4/issues/2738-->
     <build>
         <plugins>
             <plugin>
@@ -50,13 +49,8 @@
                 <artifactId>antlr4-maven-plugin</artifactId>
                 <version>4.7.1</version>
                 <configuration>
-<!--                    <sourceDirectory>${basedir}/target/generated-sources/antlr4/com/github/kuangcp/antlr4</sourceDirectory>-->
                     <listener>true</listener>
                     <visitor>true</visitor>
-<!--                    <arguments>-->
-                    <!--                        <argument>-package</argument>-->
-                    <!--                        <argument>antlr4</argument>-->
-                    <!--                    </arguments>-->
                 </configuration>
                 <executions>
                     <execution>

@@ -1,25 +1,15 @@
-
 grammar Expr;
-
-prog : stat+;
-
-stat: expr NEWLINE          # printExpr
-    | ID '=' expr NEWLINE   # assign
-    | NEWLINE               # blank
+prog:	expr NEWLINE ;
+expr:	expr op=('*'|'/') expr # MulDiv
+    |	expr op=('+'|'-') expr # AddSub
+    |	INT					# int
+    |	'(' expr ')'		# parens
     ;
+NEWLINE : [\r\n]+ ;
+INT     : [0-9]+ ;
 
-expr: expr op=('*'|'/') expr    # MulDiv
-| expr op=('+'|'-') expr        # AddSub
-| INT                           # int
-| ID                            # id
-| '(' expr ')'                  # parens
-;
-
-MUL : '*' ; // assigns token name to '*' used above in grammar
-DIV : '/' ;
-ADD : '+' ;
-SUB : '-' ;
-ID : [a-zA-Z]+ ;
-INT : [0-9]+ ;
-NEWLINE:'\r'? '\n' ;
-WS : [ \t]+ -> skip;
+/*创建常量方便引入*/
+MUL: '*';
+DIV: '/';
+Add: '+';
+SUB: '-';
