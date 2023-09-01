@@ -53,10 +53,10 @@
 <!--                    <sourceDirectory>${basedir}/target/generated-sources/antlr4/com/github/kuangcp/antlr4</sourceDirectory>-->
                     <listener>true</listener>
                     <visitor>true</visitor>
-                    <arguments>
-                        <argument>-package</argument>
-                        <argument>antlr4</argument>
-                    </arguments>
+<!--                    <arguments>-->
+                    <!--                        <argument>-package</argument>-->
+                    <!--                        <argument>antlr4</argument>-->
+                    <!--                    </arguments>-->
                 </configuration>
                 <executions>
                     <execution>
