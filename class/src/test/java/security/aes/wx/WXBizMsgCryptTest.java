@@ -1,8 +1,11 @@
-package security.aes;
+package security.aes.wx;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.*;
 import org.xml.sax.SAXException;
+import security.aes.wx.AesException;
+import security.aes.wx.SHA1;
+import security.aes.wx.WXBizMsgCrypt;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;

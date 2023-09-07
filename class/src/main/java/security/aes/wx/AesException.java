@@ -1,4 +1,4 @@
-package security.aes;
+package security.aes.wx;
 
 public class AesException extends Exception {
 

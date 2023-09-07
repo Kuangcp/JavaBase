@@ -1,4 +1,4 @@
-package security.aes;
+package security.aes.wx;
 
 import org.junit.Test;
 
@@ -24,7 +24,7 @@ public class AESTest {
             System.out.println(provider);
         }
         final String text = "123456";
-        String target = AES.encrypt(aesKey,  text);
+        String target = AES.encrypt(aesKey, text);
 
         System.out.println("密文： " + target);
 

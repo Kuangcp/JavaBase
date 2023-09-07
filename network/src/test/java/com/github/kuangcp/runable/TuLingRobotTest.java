@@ -1,9 +1,11 @@
 package com.github.kuangcp.runable;
 
 import com.github.kuangcp.time.GetRunTime;
+
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Optional;
+
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -12,7 +14,7 @@ import org.junit.Test;
 
 /**
  * created by https://gitee.com/gin9
- *
+ * <p>
  * 调用图灵机器人平台接口 适合使用js来做
  * http://www.java2s.com/Code/Jar/h/Downloadhttpclient423jar.htm
  *
@@ -21,31 +23,31 @@ import org.junit.Test;
 @Slf4j
 public class TuLingRobotTest {
 
-  private final static OkHttpClient client = new OkHttpClient();
+    private final static OkHttpClient client = new OkHttpClient();
 
-  static Optional<String> get(String url) throws IOException {
-    Request request = new Request.Builder()
-        .url(url).build();
+    static Optional<String> get(String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url).build();
 
-    try (Response response = client.newCall(request).execute()) {
-      if (response.body() != null) {
-        return Optional.of(response.body().string());
-      }
-      return Optional.empty();
+        try (Response response = client.newCall(request).execute()) {
+            if (response.body() != null) {
+                return Optional.of(response.body().string());
+            }
+            return Optional.empty();
+        }
     }
-  }
 
-  @Test
-  public void testGet() throws IOException {
-    GetRunTime getRunTime = new GetRunTime().startCount();
-    String baseURL = "http://www.tuling123.com/openapi/api?key=c8d9f9fd7a4f46609686020354745f25&info=";
-    String input = "翻译 appropriate 详情";
-    String INFO = URLEncoder.encode(input, "utf-8");
+    @Test
+    public void testGet() throws IOException {
+        GetRunTime getRunTime = new GetRunTime().startCount();
+        String baseURL = "http://www.tuling123.com/openapi/api?key=c8d9f9fd7a4f46609686020354745f25&info=";
+        String input = "翻译 appropriate 详情";
+        String INFO = URLEncoder.encode(input, "utf-8");
 
-    Optional<String> result = get(baseURL + INFO);
-    assert result.isPresent();
+        Optional<String> result = get(baseURL + INFO);
+        assert result.isPresent();
 
-    System.out.println(result.get());
-    getRunTime.endCountOneLine("");
-  }
+        System.out.println(result.get());
+        getRunTime.endCountOneLine("");
+    }
 }

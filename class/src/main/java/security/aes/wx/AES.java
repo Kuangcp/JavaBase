@@ -1,4 +1,4 @@
-package security.aes;
+package security.aes.wx;
 
 import lombok.extern.slf4j.Slf4j;
 
