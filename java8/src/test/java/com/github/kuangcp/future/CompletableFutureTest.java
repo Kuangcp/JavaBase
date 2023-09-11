@@ -86,7 +86,7 @@ public class CompletableFutureTest {
 
         // 只会在两个函数都完成计算后进行 避免get() 产生阻塞，并发的损失和死锁问题
         // CompletableFuture 和 结合器 一起使用
-        CompletableFuture<Integer> resultFuture = func1Future.thenCombine(func2Future, (a, b) -> a + b);
+        CompletableFuture<Integer> resultFuture = func1Future.thenCombine(func2Future, Integer::sum);
 
         executorService.submit(() -> func1Future.complete(func1(num)));
         executorService.submit(() -> func2Future.complete(func2(num)));

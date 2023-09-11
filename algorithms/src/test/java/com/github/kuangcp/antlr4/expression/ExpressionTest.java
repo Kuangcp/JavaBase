@@ -35,7 +35,7 @@ public class ExpressionTest {
     @Test
     public void testEval() throws Exception {
         try {
-            ExprLexer lexer = new ExprLexer(CharStreams.fromString("1 + 3\n"));
+            ExprLexer lexer = new ExprLexer(CharStreams.fromString("(1+3)*124+(9/3 + 4)\n"));
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             ExprParser parser = new ExprParser(tokens);
             ExprParser.ProgContext tree = parser.prog();
@@ -45,6 +45,16 @@ public class ExpressionTest {
         } catch (Exception e) {
             log.error("", e);
         }
+    }
 
+    @Test
+    public void testTokenHandle() throws Exception {
+        ExprLexer lexer = new ExprLexer(CharStreams.fromString("9/3*(6+7)\n"));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        ExprParser parser = new ExprParser(tokens);
+        ExprParser.ProgContext tree = parser.prog();
+        TokenVisitor eval = new TokenVisitor();
+        String result = eval.visit(tree);
+        log.info("result={}", result);
     }
 }
