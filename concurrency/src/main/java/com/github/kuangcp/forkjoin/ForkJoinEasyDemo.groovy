@@ -7,8 +7,9 @@ import java.util.concurrent.ForkJoinPool
  */
 
 // 生成数据
-List lu = new ArrayList<Element>()
-for (int i = 0; i < 12; i++) {
+def total = 1000
+List lu = new ArrayList<Element>(total)
+for (int i = 0; i < total; i++) {
     Element element = new Element(i + 1)
     lu.add(element)
     sleep(2)
@@ -16,19 +17,21 @@ for (int i = 0; i < 12; i++) {
 
 // 打乱顺序
 Collections.shuffle(lu)
-for (Element el : lu) {
-    println(el.toString())
-}
 
 elements = lu.toArray(new Element[0])// 传入空数组，省掉空间分配
 ElementSorter sorter = new ElementSorter(elements as Element[])
 
+println("开始排序")
 // 使用任务池封装一层再调用，或者直接运行方法都可以
 //sorter.compute()
 ForkJoinPool pool = new ForkJoinPool(4)
 pool.invoke(sorter)
 
-println("排序后")
-for (Element element : sorter.getResult()) {
-    println(element.toString())
+for (i in 0..<total) {
+    def element = sorter.getResult()[i]
+    if (element.getId() != i + 1) {
+        println("error " + element.toString())
+    }
 }
+
+println("排序完成")
