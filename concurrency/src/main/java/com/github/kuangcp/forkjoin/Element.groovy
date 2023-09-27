@@ -6,19 +6,19 @@ package com.github.kuangcp.forkjoin
  */
 class Element implements Comparable {
 
-  Long id
+    Long id
 
-  Element(Long id) {
-    this.id = id
-  }
+    Element(Long id) {
+        this.id = id
+    }
 
-  @Override
-  int compareTo(Object other) {
-    return this.id - ((Element) other).id
-  }
+    @Override
+    int compareTo(Object other) {
+        return this.id - ((Element) other).id
+    }
 
-  @Override
-  String toString() {
-    return "Element{" + "id=" + id + '}'
-  }
+    @Override
+    String toString() {
+        return "Element{" + "id=" + id + '}'
+    }
 }

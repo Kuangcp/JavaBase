@@ -25,7 +25,7 @@ class ElementSorter extends RecursiveAction {
         this.end = end
         this.result = new Element[elements.length]
     }
-    // 合并排序
+    // 归并排序
     void merge(ElementSorter left, ElementSorter right) {
         int i = 0
         int lCt = 0
