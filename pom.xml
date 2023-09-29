@@ -187,9 +187,9 @@
                 <version>4.1.67.Final</version>
             </dependency>
             <dependency>
-                <groupId>com.bladejava</groupId>
-                <artifactId>blade-mvc</artifactId>
-                <version>2.0.15.RELEASE</version>
+                <groupId>com.hellokaton</groupId>
+                <artifactId>blade-core</artifactId>
+                <version>2.1.2.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>javax.mail</groupId>

@@ -29,9 +29,19 @@
             <artifactId>jedis</artifactId>
         </dependency>
 
+        <!--        <dependency>-->
+        <!--            <groupId>com.bladejava</groupId>-->
+        <!--            <artifactId>blade-mvc</artifactId>-->
+        <!--            <exclusions>-->
+        <!--                <exclusion>-->
+        <!--                    <artifactId>blade-log</artifactId>-->
+        <!--                    <groupId>com.bladejava</groupId>-->
+        <!--                </exclusion>-->
+        <!--            </exclusions>-->
+        <!--        </dependency>-->
         <dependency>
-            <groupId>com.bladejava</groupId>
-            <artifactId>blade-mvc</artifactId>
+            <groupId>com.hellokaton</groupId>
+            <artifactId>blade-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.groovy</groupId>
