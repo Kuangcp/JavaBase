@@ -1,13 +1,13 @@
 package security.aes;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.BadPaddingException;
 import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKeyFactory;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SealedObject;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -44,9 +44,12 @@ public class AESUtil {
         return new String(plainText);
     }
 
-    public static SecretKey generateKey(int n) throws NoSuchAlgorithmException {
+    /**
+     * @see  com.sun.crypto.provider.AESCrypt#isKeySizeValid 16 24 32 字节
+     */
+    public static SecretKey generateKey(int bit) throws NoSuchAlgorithmException {
         KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-        keyGenerator.init(n);
+        keyGenerator.init(bit);
         return keyGenerator.generateKey();
     }
 
@@ -57,6 +60,21 @@ public class AESUtil {
         return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
     }
 
+    public static String generateIvByte() {
+        byte[] iv = new byte[16];
+        new SecureRandom().nextBytes(iv);
+        final byte[] encode = Base64.getEncoder().encode(iv);
+        return new String(encode);
+    }
+
+    public static IvParameterSpec generateIv(String base64) {
+        final byte[] iv = Base64.getDecoder().decode(base64);
+        return new IvParameterSpec(iv);
+    }
+
+    /**
+     * 初始向量长度必须等于16字节
+     */
     public static IvParameterSpec generateIv() {
         byte[] iv = new byte[16];
         new SecureRandom().nextBytes(iv);

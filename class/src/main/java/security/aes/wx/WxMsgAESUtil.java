@@ -11,26 +11,9 @@ import java.util.Arrays;
 import java.util.Base64;
 
 @Slf4j
-public class AES {
+public class WxMsgAESUtil {
 
     static Charset CHARSET = StandardCharsets.UTF_8;
-
-    static byte[] getNetworkBytesOrder(int sourceNumber) {
-        byte[] orderBytes = new byte[4];
-        orderBytes[3] = (byte) (sourceNumber & 0xFF);
-        orderBytes[2] = (byte) (sourceNumber >> 8 & 0xFF);
-        orderBytes[1] = (byte) (sourceNumber >> 16 & 0xFF);
-        orderBytes[0] = (byte) (sourceNumber >> 24 & 0xFF);
-        return orderBytes;
-    }
-    static int recoverNetworkBytesOrder(byte[] orderBytes) {
-        int sourceNumber = 0;
-        for (int i = 0; i < 4; i++) {
-            sourceNumber <<= 8;
-            sourceNumber |= orderBytes[i] & 0xff;
-        }
-        return sourceNumber;
-    }
 
     /**
      * 对明文进行加密.
@@ -55,6 +38,7 @@ public class AES {
             // 设置加密模式为AES的CBC模式
             Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
             SecretKeySpec keySpec = new SecretKeySpec(aesKey, "AES");
+            // 取密钥的前16字节作为 iv 初始化向量
             IvParameterSpec iv = new IvParameterSpec(aesKey, 0, 16);
             cipher.init(Cipher.ENCRYPT_MODE, keySpec, iv);
 

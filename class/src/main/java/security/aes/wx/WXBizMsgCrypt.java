@@ -51,7 +51,9 @@ public class WXBizMsgCrypt {
         aesKey = Base64.getDecoder().decode(encodingAesKey + "=");
     }
 
-    // 生成4个字节的网络字节序
+    /**
+     * 生成4个字节的网络字节序. 用意：4字节存储一个Int值（消息长度）增加密文消息被篡改的难度
+     */
     byte[] getNetworkBytesOrder(int sourceNumber) {
         byte[] orderBytes = new byte[4];
         orderBytes[3] = (byte) (sourceNumber & 0xFF);
@@ -97,6 +99,8 @@ public class WXBizMsgCrypt {
         byte[] networkBytesOrder = getNetworkBytesOrder(textBytes.length);
         byte[] appidBytes = appId.getBytes(CHARSET);
 
+
+        // 注意：随机字符串 + 消息长度 + 原文 + appid, 尽量规避解密
         // randomStr + networkBytesOrder + text + appid
         byteCollector.addBytes(randomStrBytes);
         byteCollector.addBytes(networkBytesOrder);
@@ -195,7 +199,6 @@ public class WXBizMsgCrypt {
      * @throws AesException 执行失败，请查看该异常的错误码和具体的错误信息
      */
     public String encryptMsg(String replyMsg) throws AesException {
-        //加密
         return encrypt(getRandomStr(), replyMsg);
     }
 
