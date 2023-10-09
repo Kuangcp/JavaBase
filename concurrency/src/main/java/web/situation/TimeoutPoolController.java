@@ -1,8 +1,8 @@
 package web.situation;
 
-import com.blade.mvc.annotation.GetRoute;
-import com.blade.mvc.annotation.Path;
-import com.blade.mvc.http.Response;
+import com.hellokaton.blade.annotation.Path;
+import com.hellokaton.blade.annotation.route.GET;
+import com.hellokaton.blade.mvc.http.Response;
 import lombok.extern.slf4j.Slf4j;
 import situation.timoutpool.CreateNewPool;
 import situation.timoutpool.base.Param;
@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class TimeoutPoolController {
 
-    @GetRoute("/situation/timeout/createNew")
+    @GET("/situation/timeout/createNew")
     public void createNew(Response response) throws InterruptedException {
         int loop = 60;
         final CountDownLatch latch = new CountDownLatch(loop);

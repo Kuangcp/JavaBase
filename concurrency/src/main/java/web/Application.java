@@ -1,6 +1,7 @@
 package web;
 
-import com.blade.Blade;
+
+import com.hellokaton.blade.Blade;
 
 /**
  * @author https://github.com/kuangcp on 2021-09-05 00:18
@@ -8,6 +9,8 @@ import com.blade.Blade;
 public class Application {
 
     public static void main(String[] args) {
-        Blade.of().get("/", ctx -> ctx.text("Hello Blade")).start();
+        Blade.create()
+                .listen(32993)
+                .get("/", ctx -> ctx.text("Hello Blade")).start(Application.class, args);
     }
 }

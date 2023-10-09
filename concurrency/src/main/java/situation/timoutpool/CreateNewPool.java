@@ -34,7 +34,7 @@ public class CreateNewPool implements TaskExecutor<Param, Result> {
                 try {
                     TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(600) + 60);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    log.error("", e);
                 }
 //                log.info("tmpParam={}", tmpParam);
                 result.getDataList().add(tmpParam.toString());

@@ -22,6 +22,12 @@
         <dependency>
             <groupId>com.github.kuangcp</groupId>
             <artifactId>kcp-tool</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>kcp-aop</artifactId>
+                    <groupId>com.github.kuangcp</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
