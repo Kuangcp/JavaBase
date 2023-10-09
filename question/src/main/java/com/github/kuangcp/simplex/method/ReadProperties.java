@@ -1,9 +1,11 @@
 package com.github.kuangcp.simplex.method;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -17,6 +19,7 @@ import java.util.Properties;
  * 例如 Gradle 编译目录： ./out/build
  * java -classpath ./classes/java/main/:./resources/main/ com.github.kuangcp.simplex.method.ReadProperties
  */
+@Slf4j
 public class ReadProperties {
 
   private Properties cfg = new Properties();
@@ -31,9 +34,9 @@ public class ReadProperties {
         throw new RuntimeException("file not exist");
       }
       File f = new File(resource.getPath());
-      cfg.load(new FileInputStream(f));
+      cfg.load(Files.newInputStream(f.toPath()));
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("", e);
       throw new RuntimeException(e);
     }
   }
@@ -58,7 +61,7 @@ public class ReadProperties {
       System.out.println(new String(result.getBytes(StandardCharsets.ISO_8859_1),
           StandardCharsets.UTF_8));
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("", e);
     }
   }
 }

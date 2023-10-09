@@ -102,7 +102,7 @@ public class CursorSessionSpringBootTest extends SpringBootTestStarter {
 //            try {
 //                TimeUnit.NANOSECONDS.sleep(100);
 //            } catch (InterruptedException e) {
-//                e.printStackTrace();
+//                log.error("", e);
 //            }
             result.add(val);
         });

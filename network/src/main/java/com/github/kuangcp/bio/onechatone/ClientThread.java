@@ -1,19 +1,24 @@
 package com.github.kuangcp.bio.onechatone;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.BufferedReader;
 
 /**
  * Created by Myth on 2017/4/3 0003
  */
-public class ClientThread extends Thread{
-    BufferedReader br = null;
-    public ClientThread(BufferedReader br){
+@Slf4j
+public class ClientThread extends Thread {
+    final BufferedReader br;
+
+    public ClientThread(BufferedReader br) {
         this.br = br;
     }
-    public void run(){
-        try{
-            String line = null;
-            while((line=br.readLine())!=null){
+
+    public void run() {
+        try {
+            String line;
+            while ((line = br.readLine()) != null) {
                 //显示服务器读取到的内容
                 System.out.println(line);
                /*
@@ -23,13 +28,13 @@ public class ClientThread extends Thread{
                需求总是提不尽的
                 */
             }
-        }catch (Exception r){
-            r.printStackTrace();
-        }finally {
-            try{
-                if(br!=null) br.close();
-            }catch (Exception e){
-                e.printStackTrace();
+        } catch (Exception r) {
+            log.error("", r);
+        } finally {
+            try {
+                if (br != null) br.close();
+            } catch (Exception e) {
+                log.error("", e);
             }
         }
     }

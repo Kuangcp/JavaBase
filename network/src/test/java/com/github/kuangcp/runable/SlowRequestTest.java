@@ -27,7 +27,7 @@ public class SlowRequestTest {
           assert result.isPresent();
 //          log.info(result.get());
         } catch (Exception e) {
-          e.printStackTrace();
+          log.error("", e);
         }
       });
     }

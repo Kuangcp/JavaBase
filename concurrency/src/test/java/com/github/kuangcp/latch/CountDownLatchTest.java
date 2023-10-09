@@ -27,7 +27,7 @@ public class CountDownLatchTest {
                     log.info("fin: {}", finalI);
                     latch.countDown();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    log.error("", e);
                 }
             });
         }

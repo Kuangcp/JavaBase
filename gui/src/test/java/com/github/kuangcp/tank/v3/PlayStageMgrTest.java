@@ -30,7 +30,7 @@
 //                    try {
 //                        TimeUnit.SECONDS.sleep(3);
 //                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
+//                        log.error("", e);
 //                    }
 //                    System.out.println("Inside fiber coroutine..." + finalI);
 //                    latch.countDown();

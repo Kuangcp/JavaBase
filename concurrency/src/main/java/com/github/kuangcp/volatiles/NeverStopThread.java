@@ -33,7 +33,7 @@ class NeverStopThread {
       try {
         TimeUnit.MILLISECONDS.sleep(300);
       } catch (InterruptedException e) {
-        e.printStackTrace();
+        log.error("", e);
       }
       log.info("run with sleep");
     }

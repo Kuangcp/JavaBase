@@ -84,7 +84,7 @@ class CopyFile {
         outputStream.write(buffer);
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("", e);
     } finally {
       try {
         ResourceTool.close(inputStream, outputStream);
@@ -115,7 +115,7 @@ class CopyFile {
       }
 
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("", e);
     } finally {
       try {
         ResourceTool.close(fileReader, fileWriter);

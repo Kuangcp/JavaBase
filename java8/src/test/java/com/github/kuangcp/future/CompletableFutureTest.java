@@ -24,7 +24,7 @@ public class CompletableFutureTest {
             try {
                 TimeUnit.SECONDS.sleep(2);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error("", e);
             }
             log.info("temp");
         });
@@ -48,7 +48,7 @@ public class CompletableFutureTest {
                 try {
                     TimeUnit.SECONDS.sleep(2);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    log.error("", e);
                 }
                 log.info("temp");
             });

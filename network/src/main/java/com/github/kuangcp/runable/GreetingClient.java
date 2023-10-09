@@ -1,20 +1,17 @@
 package com.github.kuangcp.runable;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.util.Scanner;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.net.Socket;
+import java.util.Scanner;
 
 /**
  * 客户端
  */
+@Slf4j
 public class GreetingClient {
 
   private static Logger logger = LoggerFactory.getLogger(GreetingClient.class);
@@ -58,7 +55,7 @@ public class GreetingClient {
       client.close();
 
     } catch (IOException e) {
-      e.printStackTrace();
+      log.error("", e);
     }
   }
 
@@ -71,7 +68,7 @@ public class GreetingClient {
     try {
       logger.info(sin.readLine());
     } catch (IOException e) {
-      e.printStackTrace();
+      log.error("", e);
     }
   }
 }

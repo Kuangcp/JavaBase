@@ -63,7 +63,7 @@ public class InvokeWithInheritParamTest {
             runParam.setScore(108);
             verifyInvoke(method, runParam, true);
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            log.error("", e);
         }
     }
 
@@ -74,7 +74,7 @@ public class InvokeWithInheritParamTest {
             Method method = Logic.class.getDeclaredMethod("isFailed", CommonParam.class);
             verifySuite(method);
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            log.error("", e);
         }
     }
 
@@ -131,7 +131,7 @@ public class InvokeWithInheritParamTest {
         try {
             result = (boolean) method.invoke(new Logic(), param);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            log.error("", e);
         }
         assertThat(result, equalTo(expect));
     }

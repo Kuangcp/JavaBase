@@ -28,7 +28,7 @@ public class MapTest {
     try {
       return target.newInstance();
     } catch (InstantiationException | IllegalAccessException e) {
-      e.printStackTrace();
+      log.error("", e);
     }
     return null;
   }

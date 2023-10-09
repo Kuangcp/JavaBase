@@ -1,17 +1,20 @@
 package com.github.kuangcp.bio.onechatone;
 
 import com.github.kuangcp.io.ResourceTool;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import javax.swing.JOptionPane;
 
 /**
  * Created by Myth on 2017/4/3 0003
  */
+@Slf4j
 public class Client {
 
   private Socket socket;
@@ -88,7 +91,7 @@ public class Client {
 
       ResourceTool.close(keyIn, brServer, ps, socket);
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("", e);
     }
   }
 

@@ -56,7 +56,7 @@ public class OrderDaoSpringBootTest extends SpringBootTestStarter {
                 v.start();
                 v.join();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error("", e);
             }
         });
 

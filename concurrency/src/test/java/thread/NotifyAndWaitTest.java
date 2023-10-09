@@ -49,7 +49,7 @@ public class NotifyAndWaitTest {
           Thread.sleep(4000);
           ele.back(System.currentTimeMillis() + "");
         } catch (InterruptedException e) {
-          e.printStackTrace();
+          log.error("", e);
         }
       }).start();
     }

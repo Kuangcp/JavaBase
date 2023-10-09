@@ -36,7 +36,7 @@ public class GeneralFileActionDemoTest {
       try {
         GeneralFileActionDemo.deleteByURL(v);
       } catch (IOException e) {
-        e.printStackTrace();
+        log.error("", e);
       }
     });
   }

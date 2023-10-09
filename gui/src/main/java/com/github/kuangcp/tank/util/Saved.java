@@ -4,6 +4,7 @@ import com.github.kuangcp.tank.domain.Brick;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Iron;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -29,6 +30,7 @@ import java.util.List;
  * <p>
  * 用数据库实现了续上局及其存盘退出，比文件的操作简单多了。。。
  */
+@Slf4j
 public class Saved {
     private Hero hero;
     private List<EnemyTank> ets;
@@ -121,7 +123,7 @@ public class Saved {
 
             bw.flush();//一定要清除缓存./src/RE/File.txt
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("", e);
         } finally {
             try {
                 //后打开，先关闭
@@ -214,7 +216,7 @@ public class Saved {
                 //读取砖块
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("", e);
             System.out.println("读取数据有异常");
         } finally {
             try {
@@ -367,7 +369,7 @@ public class Saved {
             else System.out.println("Hero 保存失败");
             //
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("", e);
         } finally {
             //关闭资源
             try {
@@ -379,7 +381,7 @@ public class Saved {
                     cn.close();
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                log.error("", e);
             }
 
         }

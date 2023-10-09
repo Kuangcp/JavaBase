@@ -53,7 +53,7 @@ public class Audio extends Thread {
             auline = (SourceDataLine) AudioSystem.getLine(info);
             auline.open(format);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("", e);
             return;
         }
 

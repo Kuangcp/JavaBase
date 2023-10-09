@@ -43,7 +43,7 @@ public class TimeoutExecPool<P, R> implements TimeoutExecutor<P, R> {
                 try {
                     Thread.sleep(200);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    log.error("", e);
                 }
 //                log.info("{} ", pool.getQueue().size());
                 if (pool.getQueue().size() == 0) {

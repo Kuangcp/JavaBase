@@ -1,5 +1,7 @@
 package com.github.kuangcp.bio.onechatone;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -8,6 +10,7 @@ import java.net.Socket;
 /**
  * Created by Myth on 2017/4/3 0003
  */
+@Slf4j
 public class ServerThread extends Thread{
     private Socket socket;
     BufferedReader br = null;
@@ -64,7 +67,7 @@ public class ServerThread extends Thread{
             }catch (Exception es){
                 es.printStackTrace();
             }
-            e.printStackTrace();
+            log.error("", e);
         }
     }
 

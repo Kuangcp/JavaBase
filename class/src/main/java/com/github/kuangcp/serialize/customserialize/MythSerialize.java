@@ -76,7 +76,7 @@ class MythSerialize<T> {
       byteOutput.write(result.getBytes());
       return byteOutput;
     } catch (IOException | IllegalAccessException | InvocationTargetException e) {
-      e.printStackTrace();
+      log.error("", e);
     }
     return null;
   }

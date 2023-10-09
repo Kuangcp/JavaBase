@@ -1,5 +1,7 @@
 package com.github.kuangcp.runable;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -7,18 +9,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.Scanner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 服务器端
  * 输入线程阻塞的原因，不能同时收发，怎么处理？多线程？
  * 服务器不应该发出，而是做中转站
  */
+@Slf4j
 public class GreetingServer extends Thread {
 
   private ServerSocket serverSocket;
-  private static Logger logger = LoggerFactory.getLogger(GreetingServer.class);
 
   public GreetingServer(int port) throws IOException {
     serverSocket = new ServerSocket(port);
@@ -28,19 +28,19 @@ public class GreetingServer extends Thread {
   public void run() {
     while (true) {
       try {
-        logger.info("#####  Waiting for client on port " + serverSocket.getLocalPort() + "...");
+        log.info("#####  Waiting for client on port " + serverSocket.getLocalPort() + "...");
         Socket server = serverSocket.accept();
         Scanner scanner = new Scanner(System.in);
 
-        logger.info("Just connected to " + server.getRemoteSocketAddress());
+        log.info("Just connected to " + server.getRemoteSocketAddress());
         DataInputStream in = new DataInputStream(server.getInputStream());
-        logger.info("接收到的：" + in.readUTF());
+        log.info("接收到的：" + in.readUTF());
         // 对客户端发出的消息
         DataOutputStream out = new DataOutputStream(server.getOutputStream());
 
         while (true) {
           String temp = scanner.nextLine();
-          logger.info("input:" + temp);
+          log.info("input:" + temp);
           out.writeUTF(temp);
           if ("90".equals(temp)) {
             break;
@@ -52,10 +52,10 @@ public class GreetingServer extends Thread {
 
         server.close();
       } catch (SocketTimeoutException s) {
-        logger.info("Socket timed out!");
+        log.info("Socket timed out!");
         break;
       } catch (IOException e) {
-        e.printStackTrace();
+        log.error("", e);
         break;
       }
     }
@@ -68,7 +68,7 @@ public class GreetingServer extends Thread {
       Thread t = new GreetingServer(port);
       t.start();
     } catch (IOException e) {
-      e.printStackTrace();
+      log.error("", e);
     }
   }
 }
