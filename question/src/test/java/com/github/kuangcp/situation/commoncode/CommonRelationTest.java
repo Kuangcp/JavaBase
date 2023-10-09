@@ -288,7 +288,7 @@ public class CommonRelationTest {
         re.addAll(sortMap.values());
         re.removeAll(sameSet);
 
-        if (re.size() != 0) {
+        if (!re.isEmpty()) {
             log.info("re={}", re);
             Assert.fail();
         }
