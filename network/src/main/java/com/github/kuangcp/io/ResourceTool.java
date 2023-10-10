@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * @author kuangchengping@sinohealth.cn
+ * @author <a href="https://github.com/kuangcp">Github</a>
  * 2023-08-25 19:37
  */
 public class ResourceTool {

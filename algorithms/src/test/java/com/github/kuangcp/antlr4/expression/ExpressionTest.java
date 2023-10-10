@@ -10,7 +10,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.Test;
 
 /**
- * @author kuangchengping@sinohealth.cn
+ * @author <a href="https://github.com/kuangcp">Github</a>
  * 2023-08-31 21:23
  */
 @Slf4j

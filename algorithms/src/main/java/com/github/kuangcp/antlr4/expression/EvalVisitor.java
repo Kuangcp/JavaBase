@@ -5,7 +5,7 @@ import expression.ExprParser;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author kuangchengping@sinohealth.cn
+ * @author <a href="https://github.com/kuangcp">Github</a>
  * 2023-09-01 13:46
  */
 @Slf4j
