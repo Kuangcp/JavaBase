@@ -1,8 +1,9 @@
 package com.github.kuangcp.hibernate.annotation;
 
-import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 
 @Service("personService")
 public class PersonServiceImpl implements PersonService {
@@ -12,7 +13,6 @@ public class PersonServiceImpl implements PersonService {
 
   @Transactional(readOnly = false)
   public void savePerson(Person person) {
-    // TODO Auto-generated method stub
     this.personDao.savePerson(person);
   }
 

@@ -1,8 +1,9 @@
 package com.github.kuangcp.hibernate.annotation;
 
-import javax.annotation.Resource;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
+
+import javax.annotation.Resource;
 
 @Repository("personDao")
 public class PersonDaoImpl implements PersonDao {
@@ -12,7 +13,6 @@ public class PersonDaoImpl implements PersonDao {
 
   @Override
   public void savePerson(Person person) {
-    // TODO Auto-generated method stub
     this.hibernateTemplate.save(person);
   }
 }

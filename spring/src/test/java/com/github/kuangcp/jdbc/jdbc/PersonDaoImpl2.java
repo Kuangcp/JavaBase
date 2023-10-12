@@ -1,7 +1,8 @@
 package com.github.kuangcp.jdbc.jdbc;
 
-import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.List;
 
 public class PersonDaoImpl2 implements PersonDao {
 
@@ -16,14 +17,12 @@ public class PersonDaoImpl2 implements PersonDao {
   }
 
   public void savePerson() {
-    // TODO Auto-generated method stub
     this.getJdbcTemplate().execute(
         "insert into course(cid,cname) values(4,'aaa')");
   }
 
   @Override
   public List<Person> getPersons() {
-    // TODO Auto-generated method stub
     return null;
   }
 }

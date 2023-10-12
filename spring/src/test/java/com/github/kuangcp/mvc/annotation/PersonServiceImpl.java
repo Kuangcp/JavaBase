@@ -1,7 +1,8 @@
 package com.github.kuangcp.mvc.annotation;
 
-import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 @Service
 public class PersonServiceImpl implements PersonService {
@@ -11,7 +12,6 @@ public class PersonServiceImpl implements PersonService {
 
   @Override
   public void savePerson() {
-    // TODO Auto-generated method stub
     this.personDao.savePerson();
   }
 }

@@ -14,7 +14,6 @@ public class PersonServiceImpl implements PersonService {
 
   @Override
   public void savePerson() {
-    // TODO Auto-generated method stub
     this.personDao.savePerson();
   }
 }

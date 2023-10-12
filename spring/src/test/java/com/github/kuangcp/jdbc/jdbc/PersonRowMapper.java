@@ -1,14 +1,14 @@
 package com.github.kuangcp.jdbc.jdbc;
 
+import org.springframework.jdbc.core.RowMapper;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.springframework.jdbc.core.RowMapper;
 
 public class PersonRowMapper implements RowMapper {
 
   @Override
   public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-    // TODO Auto-generated method stub
     Person person = new Person();
     person.setPid(rs.getLong("cid"));
     person.setPname(rs.getString("cname"));
