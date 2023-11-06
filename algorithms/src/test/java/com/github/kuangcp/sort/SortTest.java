@@ -12,6 +12,7 @@ import org.junit.Test;
 @Slf4j
 public class SortTest {
 
+  // https://github.com/Kuangcp/GoBase/tree/master/algorithm/sort
   // test sort algorithms was correct
   @Test
   public void testSortCorrect() {
