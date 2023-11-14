@@ -8,7 +8,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 /**
- * @author kuangchengping@sinohealth.cn
+ * @author <a href="https://github.com/kuangcp">Github</a>
  * 2023-10-26 13:49
  */
 public class NumberMaxDiffIndexTest {

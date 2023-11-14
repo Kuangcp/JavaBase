@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- * @author kuangchengping@sinohealth.cn
+ * @author <a href="https://github.com/kuangcp">Github</a>
  * 2023-10-26 13:45
  */
 public class NumberMaxDiffIndex {

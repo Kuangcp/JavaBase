@@ -1,7 +1,6 @@
 package com.github.kuangcp.reflects;
 
 import com.github.kuangcp.time.GetRunTime;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.cglib.reflect.FastClass;
 import net.sf.cglib.reflect.FastMethod;
@@ -11,6 +10,7 @@ import java.lang.reflect.Method;
 
 /**
  * 反射的性能问题 http://www.cnblogs.com/zhishan/p/3195771.html
+ * https://cloud.tencent.com/developer/article/2180451
  * cglib(已缓存) 耗时 50%-70% 于缓存, 10% 于 原始方式
  * TODO 操作字节码方式取代反射
  * TODO jmh
@@ -20,14 +20,8 @@ import java.lang.reflect.Method;
 @Slf4j
 public class ReflectPerformanceTest {
 
-    private static final int LOOP_SIZE = 50_000_000;
+    private static final int LOOP_SIZE = 5000_000;
     private static final GetRunTime time = new GetRunTime();
-
-    @Data
-    class TargetObject {
-
-        private int num;
-    }
 
     // primitive method invoke
     @Test
@@ -82,6 +76,7 @@ public class ReflectPerformanceTest {
         long sum = 0;
         TargetObject targetObject = new TargetObject();
 
+        // cglib 3.2.4
         FastClass testClazz = FastClass.create(TargetObject.class);
         FastMethod method = testClazz.getMethod("setNum", new Class[]{int.class});
 
