@@ -1,8 +1,9 @@
 package com.github.kuangcp.set;
 
-import java.util.HashSet;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+
+import java.util.HashSet;
 
 /**
  * created by https://gitee.com/gin9

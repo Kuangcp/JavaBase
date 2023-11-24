@@ -1,15 +1,14 @@
 package com.github.kuangcp.map;
 
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import com.github.kuangcp.mock.MockMap;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author kuangcp on 18-8-29-下午12:04

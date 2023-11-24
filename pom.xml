@@ -22,7 +22,6 @@
     <modules>
         <module>algorithms</module>
         <module>class</module>
-        <module>collection</module>
         <module>concurrency</module>
         <module>flink</module>
         <module>generic</module>

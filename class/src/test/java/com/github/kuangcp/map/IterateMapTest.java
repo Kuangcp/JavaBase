@@ -1,12 +1,11 @@
 package com.github.kuangcp.map;
 
 import com.github.kuangcp.mock.MockMap;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 
 import java.util.Iterator;
 import java.util.Map;
-
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
 
 /**
  * Created by https://github.com/kuangcp on 17-8-21  下午2:48

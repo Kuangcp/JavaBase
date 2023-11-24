@@ -1,18 +1,18 @@
 package com.github.kuangcp.map;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author kuangcp on 2019-04-16 10:22 AM
@@ -95,5 +95,14 @@ public class HashMapTest {
         }
 
         map.forEach((k, v) -> log.info("k={} v={}", k, v));
+    }
+
+    @Test
+    public void testStackOverFlow() throws Exception {
+        HashMap<String, Object> testMap = new HashMap<String, Object>();
+        testMap.put("me", testMap);
+        HashMap<Object, Object> testMap2 = new HashMap<Object, Object>();
+        testMap2.put(testMap, null); // <---- causes a stack overflow.
+
     }
 }

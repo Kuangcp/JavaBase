@@ -28,8 +28,13 @@
 
         <dependency>
             <groupId>com.github.kuangcp</groupId>
-            <artifactId>kcp-core</artifactId>
+            <artifactId>kcp-tool</artifactId>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>com.github.kuangcp</groupId>-->
+<!--            <artifactId>kcp-core</artifactId>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.apache.commons</groupId>

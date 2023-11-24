@@ -1,11 +1,12 @@
 package com.github.kuangcp.set;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsEqual.equalTo;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.TreeSet;
-import org.junit.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
 /**
  * @author https://github.com/kuangcp
  * @date 2019-05-24 09:22
