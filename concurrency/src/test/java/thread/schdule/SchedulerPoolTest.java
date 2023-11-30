@@ -38,8 +38,6 @@ public class SchedulerPoolTest {
 
     @Test
     public void testSimple() throws Exception {
-        String traceId = MDC.get("tid");
-
         ScheduledExecutorService pool = new ScheduledThreadPoolExecutor(1,
                 new BasicThreadFactory.Builder().namingPattern("schedule-pool-%d").daemon(true).build()) {
             @Override

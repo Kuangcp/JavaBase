@@ -47,6 +47,9 @@ public class ExpressionTest {
         }
     }
 
+    /**
+     * 解析后，对token自定义处理
+     */
     @Test
     public void testTokenHandle() throws Exception {
         ExprLexer lexer = new ExprLexer(CharStreams.fromString("9/3*(6+7)\n"));
