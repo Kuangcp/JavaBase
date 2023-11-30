@@ -12,44 +12,44 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ThreadStatusTransfer {
 
-  private static boolean flag = true;
+    private static boolean flag = true;
 
-  private static final Object lock = new Object();
+    private static final Object lock = new Object();
 
-  static class Wait implements Runnable {
+    static class Wait implements Runnable {
 
-    @Override
-    public void run() {
-      // 如果 synchronized 一个非 final 的变量, 容易发生 当该对象的引用地址更改后, 同步块里的代码可以被并发执行，因为锁的对象发生变化
-      synchronized (lock) {
-        while (flag) {
-          try {
-            log.info("flag is true: start wait");
-            lock.wait();
-          } catch (InterruptedException e) {
-            log.error(e.getMessage(), e);
-          }
+        @Override
+        public void run() {
+            // 如果 synchronized 一个非 final 的变量, 容易发生 当该对象的引用地址更改后, 同步块里的代码可以被并发执行，因为锁的对象发生变化
+            synchronized (lock) {
+                while (flag) {
+                    try {
+                        log.info("flag is true: start wait");
+                        lock.wait();
+                    } catch (InterruptedException e) {
+                        log.error(e.getMessage(), e);
+                    }
+                }
+                log.info("flag is false. running");
+            }
         }
-        log.info("flag is false. running");
-      }
     }
-  }
 
-  static class Notify implements Runnable {
+    static class Notify implements Runnable {
 
-    @Override
-    public void run() {
-      synchronized (lock) {
-        log.info("hold lock. notify");
-        lock.notify();
-        flag = false;
-      }
+        @Override
+        public void run() {
+            synchronized (lock) {
+                log.info("hold lock. notify");
+                lock.notify();
+                flag = false;
+            }
 
-      // 这一段就是重新获取锁, 会和wait进行竞争, 所以执行顺序不定
-      synchronized (lock) {
-        log.info("hold lock again");
-      }
+            // 这一段就是重新获取锁, 会和wait进行竞争, 所以执行顺序不定
+            synchronized (lock) {
+                log.info("hold lock again");
+            }
+        }
     }
-  }
 
 }

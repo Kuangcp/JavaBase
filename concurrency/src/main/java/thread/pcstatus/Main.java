@@ -8,17 +8,17 @@ package thread.pcstatus;
  */
 public class Main {
 
-  public static void main(String[] args) {
-    Share share = new Share();
-    Producer p = new Producer(share, 1);
-    Consumer c = new Consumer(share, 1);
+    public static void main(String[] args) {
+        Share share = new Share();
+        Producer p = new Producer(share, 1);
+        Consumer c = new Consumer(share, 1);
 
-    Producer p2 = new Producer(share, 2);
-    Consumer c2 = new Consumer(share, 2);
+        Producer p2 = new Producer(share, 2);
+        Consumer c2 = new Consumer(share, 2);
 
-    p.start();
-    p2.start();
-    c.start();
-    c2.start();
-  }
+        p.start();
+        p2.start();
+        c.start();
+        c2.start();
+    }
 }

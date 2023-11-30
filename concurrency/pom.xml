@@ -48,6 +48,12 @@
         <dependency>
             <groupId>com.hellokaton</groupId>
             <artifactId>blade-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>blade-log</artifactId>
+                    <groupId>com.hellokaton</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.groovy</groupId>

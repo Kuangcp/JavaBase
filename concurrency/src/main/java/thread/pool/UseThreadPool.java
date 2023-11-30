@@ -1,14 +1,16 @@
-package thread;
+package thread.pool;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * Created by https://github.com/kuangcp on 17-8-20  下午8:44
  * TODO 线程池
  * https://www.cnblogs.com/eesijian/p/5871448.html
  * Executors
+ * TODO: https://github.com/alibaba/transmittable-thread-local
  */
 public class UseThreadPool {
 
@@ -25,13 +27,16 @@ public class UseThreadPool {
         // 创建具有定时功能的线程池 指定基本线程池数量, 该线程池的队列是无限队列
         ScheduledExecutorService d = Executors.newScheduledThreadPool(1);
 
-        // 创建单线程的线程池,指定延迟
+        // 创建单线程的线程池,可指定延迟
         ScheduledExecutorService e = Executors.newSingleThreadScheduledExecutor();
 
-//    a.submit();      提交任务
-//    a.execute();     执行任务
-//    a.shutdown();    关闭线程池, 等待任务执行完成
-//    a.shutdownNow(); 关闭线程池, 立即关闭
+        // 创建调度作用线程池，可指定延迟
+        ScheduledThreadPoolExecutor f = new ScheduledThreadPoolExecutor(1);
+
+        //    a.submit();      提交任务
+        //    a.execute();     执行任务
+        //    a.shutdown();    关闭线程池, 等待任务执行完成
+        //    a.shutdownNow(); 关闭线程池, 立即关闭
 
     }
 }
