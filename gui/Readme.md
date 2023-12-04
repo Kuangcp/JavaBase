@@ -10,4 +10,4 @@ gradle calc -x test 打包计算器
 ## GTK
 > [java-gnome](http://java-gnome.sourceforge.net/README.html)
 
-
+[idea ui designer](https://www.youtube.com/watch?v=whF_Qm1epQ8)`javafx ui-designer`
