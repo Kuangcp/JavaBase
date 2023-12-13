@@ -3,9 +3,10 @@ package com.github.kuangcp.simple;
 import com.github.kuangcp.common.Human;
 import com.github.kuangcp.common.Junior;
 import com.github.kuangcp.common.Student;
-import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+
+import java.util.Date;
 
 /**
  * Created by https://github.com/kuangcp on 18-1-11  下午5:38
