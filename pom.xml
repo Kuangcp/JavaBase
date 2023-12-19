@@ -24,7 +24,6 @@
         <module>class</module>
         <module>concurrency</module>
         <module>flink</module>
-        <module>generic</module>
         <module>guava</module>
         <module>gui</module>
         <module>hadoop</module>
