@@ -24,6 +24,7 @@ public class PropertiesTest {
         String b = properties.getProperty("B");
         String decodedB = new String(b.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
 
+
         log.info("a={} b=[{}] [{}]", a, b, decodedB);
     }
 }

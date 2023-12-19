@@ -8,15 +8,13 @@
 
 ************************
 
-| 基础  | 进阶 | 应用 |
-|:----|:----|:----|
-| [Java8](/java8)        | [并发](/concurrency) | [Netty](/netty)|
-| [集合](/collection) | [网络](/network)     |  [Guava](/guava)|
-| [算法](/algorithms) | [设计模式](/pattern) | [Spring](/spring)
-| [字节码](/class)    | [测试](/test)    | [Kafka](/kafka)|
-| [泛型](/generic)    |  | [Hadoop](/hadoop) | 
+|         基础          | 进阶 |               应用                |
+|:-------------------:|:---:|:-------------------------------:|
+| [集合 字节码 反射](/class) | [并发](/concurrency) | [Netty](/netty) |
+|   [Java8](/java8)   |   [网络](/network)   |  [Guava](/guava)   |
+|  [算法](/algorithms)  | [设计模式](/pattern) | [Spring](/spring)  |
+|  [Java Gui](/gui)   |  [测试](/test)   | [业务问题](/question)  |
 
-[Java Gui](/gui) | [业务问题](/question)
 
 
 
