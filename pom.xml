@@ -28,7 +28,6 @@
         <module>guava</module>
         <module>gui</module>
         <module>hadoop</module>
-        <module>io</module>
         <module>java8</module>
         <module>kafka</module>
         <module>mybatis</module>

@@ -15,7 +15,6 @@
 | [算法](/algorithms) | [设计模式](/pattern) | [Spring](/spring)
 | [字节码](/class)    | [测试](/test)    | [Kafka](/kafka)|
 | [泛型](/generic)    |  | [Hadoop](/hadoop) | 
-| [IO](/io)          |  |  |
 
 [Java Gui](/gui) | [业务问题](/question)
 
