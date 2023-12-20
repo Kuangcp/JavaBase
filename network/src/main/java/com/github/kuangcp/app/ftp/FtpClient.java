@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTPFileFilter;
 import org.apache.commons.net.ftp.FTPReply;
 
 import java.io.*;
@@ -33,6 +34,11 @@ public class FtpClient {
         this.password = password;
     }
 
+
+    public void enterLocalPassiveMode(){
+        ftp.enterLocalPassiveMode();
+    }
+
     public void open() throws IOException {
         ftp = new FTPClient();
 
@@ -58,6 +64,13 @@ public class FtpClient {
         ftp.enterLocalPassiveMode();
 
         FTPFile[] files = ftp.listFiles(path);
+        return Arrays.stream(files)
+                .map(FTPFile::getName)
+                .collect(Collectors.toList());
+    }
+
+    public Collection<String> listFiles(String path, final FTPFileFilter filter) throws IOException {
+        FTPFile[] files = ftp.listFiles(path, filter);
         return Arrays.stream(files)
                 .map(FTPFile::getName)
                 .collect(Collectors.toList());
