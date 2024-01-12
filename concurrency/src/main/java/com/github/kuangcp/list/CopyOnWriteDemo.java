@@ -1,10 +1,7 @@
 package com.github.kuangcp.list;
 
-import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
 /**
  * Created by https://github.com/kuangcp on 17-8-15  上午9:41
@@ -46,27 +43,27 @@ import lombok.Data;
  */
 public class CopyOnWriteDemo {
 
-  public static void main(String[] s) {
-    CopyOnWriteArrayList<Element> elements = new CopyOnWriteArrayList<>();
-    ReentrantLock lock = new ReentrantLock();
-    ElementList<Element> list = new ElementList<>(elements, lock, "list > ");
+    public static void main(String[] s) {
+        CopyOnWriteArrayList<Element> elements = new CopyOnWriteArrayList<>();
+        ReentrantLock lock = new ReentrantLock();
+        ElementList<Element> list = new ElementList<>(elements, lock, "list > ");
 
-    // 两个独立的线程分别加锁并得到了副本，所以运行得到的结果是不同的
-    new Thread(() -> {
-      list.addElement(new Element("1"));
-      list.addElement(new Element("2"));
-      list.addElement(new Element("3"));
-      list.addElement(new Element("4"));
-      list.prep();
-      list.listElement("th1 : ");
-    }).start();
+        // 两个独立的线程分别加锁并得到了副本，所以运行得到的结果是不同的
+        new Thread(() -> {
+            list.addElement(new Element("1"));
+            list.addElement(new Element("2"));
+            list.addElement(new Element("3"));
+            list.addElement(new Element("4"));
+            list.prep();
+            list.listElement("th1 : ");
+        }).start();
 
-    new Thread(() -> {
-      list.addElement(new Element("5"));
-      list.prep();
-      list.listElement("th2 : ");
-    }).start();
+        new Thread(() -> {
+            list.addElement(new Element("5"));
+            list.prep();
+            list.listElement("th2 : ");
+        }).start();
 
-  }
+    }
 }
 
