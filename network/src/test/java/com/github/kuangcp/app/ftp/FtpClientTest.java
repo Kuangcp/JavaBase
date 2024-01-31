@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
- * @author kuangchengping@sinohealth.cn 
+ * @author kuangcp 
  * 2023-12-19 14:31
  */
 @Slf4j

@@ -15,7 +15,7 @@ import java.util.Collection;
 
 /**
  *
- * @author kuangchengping@sinohealth.cn 
+ * @author kuangcp 
  * 2023-12-19 14:41
  */
 public class FtpClientMockTest {

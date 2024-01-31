@@ -35,7 +35,7 @@ public class FtpClient {
     }
 
 
-    public void enterLocalPassiveMode(){
+    public void enterLocalPassiveMode() {
         ftp.enterLocalPassiveMode();
     }
 

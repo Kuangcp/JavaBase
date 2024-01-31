@@ -19,8 +19,8 @@ public class NeverStopThreadTest {
         log.info("prepare to stop");
         demo.stop();
 
-        thread.join();
-        // 无法停止的原因是 JMM的原因 值在自己的缓存里, 所以这里改动了 stop 但是 thread 里的 stop 没有更新
+        thread.join(5000);
+        // 无法立即停止的原因是 JMM的原因 值在自己的缓存里, 所以这里改动了 stop 但是 thread 里的 stop 没有更新
     }
 
     @Test

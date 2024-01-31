@@ -49,6 +49,9 @@ public class CountDownLatchTest {
                 log.info("run");
             });
         }
+        Executors.newSingleThreadExecutor().execute(() -> {
+
+        });
 
         Thread.currentThread().join();
     }
