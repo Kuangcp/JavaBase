@@ -27,7 +27,8 @@ public class FtpClientTest {
 
     @Before
     public void setup() throws IOException {
-        ftpClient = new FtpClient("localhost", 2121, "test", "test");
+//        ftpClient = new FtpClient("localhost", 2121, "test", "test");
+        ftpClient = new FtpClient("192.168.16.157", 21, "test_fetch", "sinohealth");
         ftpClient.open();
     }
 
@@ -64,6 +65,7 @@ public class FtpClientTest {
 
 
     private AtomicInteger c = new AtomicInteger();
+
     @Test
     public void testSearchRecursive() throws Exception {
         ftpClient.enterLocalPassiveMode();

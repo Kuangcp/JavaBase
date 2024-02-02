@@ -1,7 +1,7 @@
 package netty.timeServer;
 
 import lombok.extern.slf4j.Slf4j;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -15,8 +15,8 @@ public class TimeClientTest {
 
     private final TimeClient timeClient = new TimeClient();
 
-    //  @Test
-    @Test(threadPoolSize = 5, invocationCount = 20)
+    //    @Test(threadPoolSize = 5, invocationCount = 20)
+    @Test
     public void testClient() throws Exception {
         startClient();
         timeClient.sendMsg(Command.QUERY_TIME);

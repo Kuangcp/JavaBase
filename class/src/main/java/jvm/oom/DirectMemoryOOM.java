@@ -1,8 +1,11 @@
 package jvm.oom;
 
+import sun.misc.Unsafe;
+
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
-import sun.misc.Unsafe;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * -XX:NativeMemoryTracking=detail
@@ -19,33 +22,42 @@ import sun.misc.Unsafe;
  */
 public class DirectMemoryOOM {
 
-  private static final long memoryBlock = 1024 * 1024L;
+    private static final int mib = 1024 * 1024;
 
-  // -XX:MaxDirectMemorySize参数只对由DirectByteBuffer分配的内存有效，对Unsafe直接分配的内存无效
+    // 注意： -XX:MaxDirectMemorySize参数只对由DirectByteBuffer分配的内存有效，对Unsafe直接分配的内存无效
 
-  /**
-   * TODO 为什么 这里分配的是虚拟内存
-   */
-  static void byUnsafe() throws IllegalAccessException, InterruptedException {
-    Field field = Unsafe.class.getDeclaredFields()[0];
-    field.setAccessible(true);
+    /**
+     * TODO 为什么 这里分配的是虚拟内存
+     *
+     * C语言malloc申请的也是虚拟内存
+     */
+    static void byUnsafe() throws IllegalAccessException, InterruptedException {
+        Field field = Unsafe.class.getDeclaredFields()[0];
+        field.setAccessible(true);
 
-    Unsafe unsafe = (Unsafe) field.get(null);
-    while (true) {
-      Thread.sleep(50);
-      unsafe.allocateMemory(memoryBlock);
+        int delta = 0;
+        Unsafe unsafe = (Unsafe) field.get(null);
+        while (true) {
+            Thread.sleep(100);
+            delta += 2;
+            System.out.println("now " + delta);
+            // byte
+            unsafe.allocateMemory(2 * mib);
+        }
     }
-  }
 
-  /**
-   * TODO 为什么会进行回收 -XX:MaxDirectMemorySize
-   */
-  static void byBuffer() throws InterruptedException {
-    while (true) {
-      Thread.sleep(10);
-      ByteBuffer buf = ByteBuffer.allocateDirect(1024 * 1024);
-      buf.putLong(2L);
-      buf.flip();
+    static void byBuffer() throws InterruptedException {
+        int delta = 0;
+        List<ByteBuffer> buffers = new ArrayList<>();
+        while (true) {
+            Thread.sleep(100);
+            delta += 2;
+            System.out.println("now " + delta);
+            // byte
+            ByteBuffer buf = ByteBuffer.allocateDirect(2 * mib);
+            buf.putLong(2L);
+            buf.flip();
+            buffers.add(buf);
+        }
     }
-  }
 }

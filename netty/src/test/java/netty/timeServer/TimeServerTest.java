@@ -2,7 +2,7 @@ package netty.timeServer;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * @author kuangcp on 2019-04-23 10:58 AM
@@ -10,10 +10,10 @@ import org.testng.annotations.Test;
 @Slf4j
 public class TimeServerTest {
 
-  private final TimeServer timeServer = new TimeServer();
+    private final TimeServer timeServer = new TimeServer();
 
-  @Test
-  public void testServer() throws Exception {
-    timeServer.start();
-  }
+    @Test
+    public void testServer() throws Exception {
+        timeServer.start();
+    }
 }
