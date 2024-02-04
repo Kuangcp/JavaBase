@@ -27,9 +27,10 @@ public class DirectMemoryOOM {
     // 注意： -XX:MaxDirectMemorySize参数只对由DirectByteBuffer分配的内存有效，对Unsafe直接分配的内存无效
 
     /**
-     * TODO 为什么 这里分配的是虚拟内存
+     * C语言malloc申请的也是虚拟内存,没有设置值的话操作系统不会分配物理内存
+     * @see java.nio.DirectByteBuffer#DirectByteBuffer(int)
      *
-     * C语言malloc申请的也是虚拟内存
+     * https://tech.meituan.com/2019/02/14/talk-about-java-magic-class-unsafe.html
      */
     static void byUnsafe() throws IllegalAccessException, InterruptedException {
         Field field = Unsafe.class.getDeclaredFields()[0];
