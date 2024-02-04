@@ -14,9 +14,9 @@ import java.nio.file.Path;
  * 注意: 如果输出流尚未关闭 内存的数据尚未刷新到硬盘上, 会导致不一致的情况
  */
 @Slf4j
-class CopyFile {
+public class CopyFile {
 
-    // 字节流 字节流转换为字符流 缓冲字符流 ->
+    // 将字节流转换为字符流 按行缓冲处理字符流
     void copyFileWithSixChannel(String from, String dest) {
         InputStream inputStream = null;
         InputStreamReader inputStreamReader = null;
@@ -59,7 +59,7 @@ class CopyFile {
         }
     }
 
-    // 字节流
+    // 字节流 
     void copyFileByByte(String from, String dest) {
         FileInputStream inputStream = null;
         FileOutputStream outputStream = null;
@@ -69,9 +69,11 @@ class CopyFile {
             outputStream = new FileOutputStream(dest);
 
             // 字节缓冲 数组
-            byte[] buffer = new byte[1024];
-            while (inputStream.read(buffer) != -1) {
-                outputStream.write(buffer);
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                // 
+                outputStream.write(buffer, 0, bytesRead);
             }
         } catch (Exception e) {
             log.error("", e);

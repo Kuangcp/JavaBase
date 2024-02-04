@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -30,7 +30,7 @@ public class CopyFileTest {
     private final Path fromPath = Paths.get(from);
     private final Path destPath = Paths.get(dest);
 
-    private final String content = "hello world";
+    private final String content = "hello world\n123\n456";
 
     @Before
     public void createFile() throws IOException {
@@ -79,9 +79,8 @@ public class CopyFileTest {
     }
 
     private void validateResultFile() throws IOException {
-        Optional<String> fileContent = Files.lines(destPath).reduce(String::concat);
-        assert fileContent.isPresent();
-        log.debug("validate: content={}", fileContent.get());
-        assertThat(fileContent.get(), equalTo(content));
+        String fileContent = Files.lines(destPath).collect(Collectors.joining("\n"));
+        log.debug("validate: content={}", fileContent);
+        assertThat(fileContent, equalTo(content));
     }
 }
