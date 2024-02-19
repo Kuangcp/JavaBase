@@ -13,7 +13,7 @@ import java.nio.charset.Charset;
 
 /**
  *
- * @author kuangchengping@sinohealth.cn 
+ * @author Kuangcp 
  * 2024-02-01 10:43
  */
 public class ChannelFutureTest {
