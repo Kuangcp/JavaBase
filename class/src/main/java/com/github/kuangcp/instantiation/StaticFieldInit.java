@@ -9,14 +9,15 @@ package com.github.kuangcp.instantiation;
  */
 public class StaticFieldInit {
 
-  static int num = 1; // 这个值被覆盖
+    static int num = 1; // 这个值被覆盖
 
-  static {
-    num = 2;
-    count = 2; // 这个值被覆盖, 看起来似乎是先使用再声明
-    // 由于按顺序执行, 所以 count = 2 count = 1, 最终为1
-  }
+    static {
+        num = 2;
+        count = 2;
+        // 这个值被覆盖, 看起来似乎是先使用再声明
+        // 由于按顺序执行, 所以 count = 2 count = 1, 最终为1
+    }
 
-  static int count = 1;
+    static int count = 1;
 
 }
