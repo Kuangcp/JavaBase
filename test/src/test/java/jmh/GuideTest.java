@@ -7,10 +7,10 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
@@ -75,5 +75,12 @@ public class GuideTest {
         }
         System.out.println(re2.size());
 
+        Set<String> re3 = new HashSet<>();
+        for (int i = 0; i < 10000; i++) {
+            re3.add(StrUtil.randomAlphaAS(4));
+        }
+        System.out.println(re3.size());
     }
+
+
 }

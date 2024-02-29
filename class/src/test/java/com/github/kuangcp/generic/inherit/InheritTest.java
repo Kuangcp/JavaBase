@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @author kuangcp on 3/6/19-3:16 PM
@@ -52,5 +55,11 @@ public class InheritTest {
         Container<Human> temp = b;
         System.out.println(b.get(0));
         System.out.println(temp.get(0));
+    }
+
+    @Test
+    public void testPart() throws Exception {
+        Map<Boolean, List<Integer>> co = IntStream.range(0, 10).boxed().collect(Collectors.partitioningBy(v -> v % 2 == 0));
+        System.out.println(co);
     }
 }

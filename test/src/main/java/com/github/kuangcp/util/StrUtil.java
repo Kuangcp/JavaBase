@@ -2,6 +2,7 @@ package com.github.kuangcp.util;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -9,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
 /**
- * @author kuangchengping@sinohealth.cn
+ * @author Kuangcp
  * 2023-06-20 18:42
  */
 public class StrUtil {
@@ -49,6 +50,15 @@ public class StrUtil {
 
     public static String randomAlphaAL(int len) {
         ThreadLocalRandom random = ThreadLocalRandom.current();
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < len; i++) {
+            builder.append(ALPHA[random.nextInt(LIST.size())]);
+        }
+        return builder.toString();
+    }
+
+    public static String randomAlphaAS(int len) {
+        Random random = new SecureRandom();
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < len; i++) {
             builder.append(ALPHA[random.nextInt(LIST.size())]);
