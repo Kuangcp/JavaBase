@@ -1,13 +1,9 @@
 package jvm.oom;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
-import java.util.concurrent.TimeUnit;
-
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author kuangcp on 4/3/19-10:11 PM
@@ -15,15 +11,45 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HeapOOM {
 
-    void createArray() {
+    public void createArray() {
         List<byte[]> data = new ArrayList<>();
         while (true) {
-            data.add(new byte[1024 * 1024]);
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
                 log.error("", e);
             }
+            log.info("size={}", data.size());
+            data.add(new byte[1024 * 1024]);
+        }
+    }
+
+    public void createArrayRecovery() {
+        try {
+            List<byte[]> data = new ArrayList<>();
+            while (true) {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(500);
+                } catch (InterruptedException e) {
+                    log.error("", e);
+                }
+                log.info("size={}", data.size());
+                data.add(new byte[1024 * 1024]);
+            }
+            // 如果是 Exception 就无法捕获OOM Error 同样会中断执行
+            // 如果能Catch到OOMError，就可以维持线程的继续执行 Throwable Error 等都可以实现
+//        } catch (Exception e) {
+        } catch (Throwable e) {
+            log.error("", e);
+        }
+
+        while (true) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                log.error("", e);
+            }
+            log.info("do something");
         }
     }
 

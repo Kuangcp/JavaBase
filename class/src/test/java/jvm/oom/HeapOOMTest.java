@@ -14,25 +14,30 @@ import org.junit.Test;
 @Slf4j
 public class HeapOOMTest {
 
-  private HeapOOM heapOOM = new HeapOOM();
+    private HeapOOM heapOOM = new HeapOOM();
 
-  @Test
-  public void testCreateArray() {
-    heapOOM.createArray();
-  }
+    @Test
+    public void testCreateArray() {
+        heapOOM.createArray();
+    }
 
-  @Test
-  public void testCreateMap() {
-    heapOOM.createMap();
-  }
+    @Test
+    public void testCreateArrayRecovery() throws Exception {
+        heapOOM.createArrayRecovery();
+    }
 
-  @Test
-  public void testCreateWeakMap() {
-    heapOOM.createWeakMap();
-  }
+    @Test
+    public void testCreateMap() {
+        heapOOM.createMap();
+    }
 
-  @Test
-  public void testOtherThreadWithOOM() throws Exception {
-    heapOOM.otherThreadWithOOM();
-  }
+    @Test
+    public void testCreateWeakMap() {
+        heapOOM.createWeakMap();
+    }
+
+    @Test
+    public void testOtherThreadWithOOM() throws Exception {
+        heapOOM.otherThreadWithOOM();
+    }
 }
