@@ -7,7 +7,7 @@ import reactor.netty.http.client.HttpClient;
 
 /**
  *
- * @author kuangchengping@sinohealth.cn 
+ * @author Kuangcp 
  * 2024-02-28 20:29
  */
 public class Client {

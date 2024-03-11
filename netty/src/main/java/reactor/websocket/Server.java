@@ -8,7 +8,7 @@ import java.io.IOException;
 
 /**
  *
- * @author kuangchengping@sinohealth.cn 
+ * @author Kuangcp 
  * 2024-02-28 20:27
  */
 public class Server {
