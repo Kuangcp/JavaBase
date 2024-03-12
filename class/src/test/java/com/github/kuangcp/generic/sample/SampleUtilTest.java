@@ -1,4 +1,4 @@
-package com.github.kuangcp.generic.distribution;
+package com.github.kuangcp.generic.sample;
 
 import com.github.kuangcp.time.GetRunTime;
 import org.junit.After;

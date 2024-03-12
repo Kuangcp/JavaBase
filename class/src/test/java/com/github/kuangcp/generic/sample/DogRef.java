@@ -1,4 +1,4 @@
-package com.github.kuangcp.generic.distribution;
+package com.github.kuangcp.generic.sample;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

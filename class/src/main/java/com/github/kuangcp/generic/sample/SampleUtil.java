@@ -1,4 +1,4 @@
-package com.github.kuangcp.generic.distribution;
+package com.github.kuangcp.generic.sample;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
