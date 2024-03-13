@@ -408,6 +408,11 @@
                 <artifactId>jmockdata</artifactId>
                 <version>4.1.2</version>
             </dependency>
+            <dependency>
+                <groupId>org.roaringbitmap</groupId>
+                <artifactId>RoaringBitmap</artifactId>
+                <version>1.0.5</version>
+            </dependency>
 
             <dependency>
                 <groupId>io.github.resilience4j</groupId>

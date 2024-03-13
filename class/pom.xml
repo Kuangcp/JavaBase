@@ -31,6 +31,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.roaringbitmap</groupId>
+            <artifactId>RoaringBitmap</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.kuangcp</groupId>
             <artifactId>kcp-tool</artifactId>
         </dependency>
