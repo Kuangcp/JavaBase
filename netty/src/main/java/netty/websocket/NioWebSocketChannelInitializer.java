@@ -1,5 +1,6 @@
 package netty.websocket;
 
+import io.netty.channel.AdaptiveRecvByteBufAllocator;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -15,6 +16,10 @@ import static io.netty.handler.codec.http.HttpHeaders.Names.WEBSOCKET_PROTOCOL;
  * @author https://github.com/kuangcp on 2021-05-18 08:33
  */
 public class NioWebSocketChannelInitializer extends ChannelInitializer<SocketChannel> {
+
+    /**
+     * @see AdaptiveRecvByteBufAllocator.HandleImpl#record(int) 实现扩缩容读写ByteBuf
+     */
     @Override
     protected void initChannel(SocketChannel ch) {
         ChannelPipeline pipeline = ch.pipeline();
