@@ -6,6 +6,11 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author https://github.com/kuangcp on 2021-05-18 08:32
  */
@@ -13,6 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 public class Server {
 
     private void init() {
+        ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
+        pool.scheduleAtFixedRate(ChannelSupervise::watchState, 5, 3, TimeUnit.SECONDS);
+
         log.info("正在启动WebSocket服务器");
         NioEventLoopGroup boss = new NioEventLoopGroup();
         NioEventLoopGroup work = new NioEventLoopGroup();

@@ -42,6 +42,10 @@ public class ChannelSupervise {
     }
 
     private static void printState() {
-        log.info("channelSize={} global={}", CHANNEL_MAP.size(), GLOBAL_GROUP.size());
+        log.debug("channelSize={} global={}", CHANNEL_MAP.size(), GLOBAL_GROUP.size());
+    }
+
+    public static void watchState() {
+        log.info("online {}", CHANNEL_MAP.size());
     }
 }

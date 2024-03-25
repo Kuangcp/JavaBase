@@ -7,7 +7,7 @@ import reactor.netty.http.client.HttpClient;
 
 /**
  *
- * @author Kuangcp 
+ * @author Kuangcp
  * 2024-02-28 20:29
  */
 public class Client {
@@ -15,7 +15,7 @@ public class Client {
         HttpClient client = HttpClient.create();
 
         client.websocket()
-                .uri("ws://localhost:40032/ws")
+                .uri("ws://localhost:1233/ws/javax")
                 .handle((inbound, outbound) -> {
                     inbound.receive()
                             .asString()

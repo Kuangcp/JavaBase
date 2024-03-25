@@ -10,7 +10,7 @@
 </body>
 
 <script>
-    var ws = new WebSocket("ws://localhost:7094/ws?userId=120");
+    var ws = new WebSocket("ws://localhost:1233/ws/mvc?userId=120");
     ws.onopen = function () {
         ws.send("hello");
     };

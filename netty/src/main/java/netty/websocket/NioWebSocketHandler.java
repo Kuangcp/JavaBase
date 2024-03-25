@@ -120,7 +120,7 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<WebSocketFr
     private void fullHttpRequestHandler(ChannelHandlerContext ctx, FullHttpRequest request) {
         String uri = request.uri();
         Map<String, String> params = getParams(uri);
-        log.info("客户端请求参数：{}", params);
+//        log.info("客户端请求参数：{}", params);
 
         String userIdStr = params.get("userId");
         if (StringUtils.isNotBlank(userIdStr)) {
@@ -151,7 +151,7 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<WebSocketFr
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        log.info("客户端请求数据类型：{}", msg.getClass());
+//        log.info("客户端请求数据类型：{}", msg.getClass());
         if (msg instanceof FullHttpRequest) {
             fullHttpRequestHandler(ctx, (FullHttpRequest) msg);
         }

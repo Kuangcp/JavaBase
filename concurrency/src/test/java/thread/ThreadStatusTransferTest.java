@@ -1,6 +1,7 @@
 package thread;
 
 import java.util.concurrent.TimeUnit;
+
 import org.junit.Test;
 import thread.ThreadStatusTransfer.Notify;
 import thread.ThreadStatusTransfer.Wait;
@@ -10,14 +11,14 @@ import thread.ThreadStatusTransfer.Wait;
  */
 public class ThreadStatusTransferTest {
 
-  @Test
-  public void testMain() throws InterruptedException {
-    Thread waitThread = new Thread(new Wait(), "WaitThread");
-    waitThread.start();
+    @Test
+    public void testMain() throws InterruptedException {
+        Thread waitThread = new Thread(new Wait(), "WaitThread");
+        waitThread.start();
 
-    TimeUnit.SECONDS.sleep(1);
+        TimeUnit.SECONDS.sleep(100);
 
-    Thread notifyThread = new Thread(new Notify(), "NotifyThread");
-    notifyThread.start();
-  }
+        Thread notifyThread = new Thread(new Notify(), "NotifyThread");
+        notifyThread.start();
+    }
 }
