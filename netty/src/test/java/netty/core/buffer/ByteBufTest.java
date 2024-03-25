@@ -23,6 +23,7 @@ public class ByteBufTest {
     @Test
     public void testApiUse() throws Exception {
         // heap memory
+        // io.netty.util.internal.PlatformDependent.allocateUninitializedArray 注意如果是JDK9以上还能利用未初始化的小内存
         Unpooled.buffer(10);
         ByteBuffer.allocate(10);
 
