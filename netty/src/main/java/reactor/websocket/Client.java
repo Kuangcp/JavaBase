@@ -15,7 +15,7 @@ public class Client {
         HttpClient client = HttpClient.create();
 
         client.websocket()
-                .uri("ws://localhost:1233/ws/javax")
+                .uri("ws://localhost:40032/ws")
                 .handle((inbound, outbound) -> {
                     inbound.receive()
                             .asString()

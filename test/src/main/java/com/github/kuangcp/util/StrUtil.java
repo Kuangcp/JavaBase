@@ -1,5 +1,6 @@
 package com.github.kuangcp.util;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.security.SecureRandom;
@@ -22,7 +23,12 @@ public class StrUtil {
     private static final String[] ALPHA = new String[]{"A", "a", "B", "b", "C", "c", "D", "d", "E", "e", "F", "f",
             "G", "g", "H", "h", "I", "i", "J", "j", "K", "k", "L", "l", "M", "m", "N", "n", "O", "o", "P", "p", "Q", "q",
             "R", "r", "S", "s", "T", "t", "U", "u", "V", "v", "W", "w", "X", "x", "Y", "y", "Z", "z"};
+    public static final String ALPHA_STR = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
+    public static final int ALPHA_STR_LEN = ALPHA_STR.length();
 
+    public static final String ALPHA_NUM_STR = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
+    public static final int ALPHA_NUM_STR_LEN = ALPHA_NUM_STR.length();
+    public static final int ASCII_LEN = 127 - 32;
 
     public static String firstNotBlankStr(String... names) {
         return Stream.of(names).filter(StringUtils::isNotBlank).findFirst().orElse("");
@@ -53,6 +59,40 @@ public class StrUtil {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < len; i++) {
             builder.append(ALPHA[random.nextInt(LIST.size())]);
+        }
+        return builder.toString();
+    }
+
+    /**
+     * 性能高 重复率低
+     * 虽然远不及UUID的唯一性，但是性能很高，适用于瞬时唯一性要求不高的场景，例如traceId生成
+     */
+    public static String randomAlphaStrL(int len) {
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < len; i++) {
+            builder.append(ALPHA_STR.charAt(random.nextInt(ALPHA_STR_LEN)));
+        }
+        return builder.toString();
+    }
+
+    /**
+     * @see RandomStringUtils#randomAscii(int)
+     */
+    public static String randomAsciiL(int len) {
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < len; i++) {
+            builder.append((char) (random.nextInt(ASCII_LEN) + 32));
+        }
+        return builder.toString();
+    }
+
+    public static String randomAlphaNumStrL(int len) {
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < len; i++) {
+            builder.append(ALPHA_NUM_STR.charAt(random.nextInt(ALPHA_NUM_STR_LEN)));
         }
         return builder.toString();
     }
