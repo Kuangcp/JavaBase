@@ -25,8 +25,8 @@ import java.util.stream.Collectors;
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class StrUtilTest {
 
-    @Benchmark
-    public void rand() {
+    //    @Benchmark
+    public void randList() {
         StrUtil.randomAlpha(32);
     }
 
@@ -37,26 +37,43 @@ public class StrUtilTest {
     }
 
     // 省去对象创建，效率更好
-    @Benchmark
+//    @Benchmark
     public void randArrayLocal() {
         StrUtil.randomAlphaAL(32);
     }
 
     @Benchmark
-    public void randArrayStr() {
+    public void randStrLocal() {
         StrUtil.randomAlphaStrL(32);
     }
 
     @Benchmark
+    public void randCharLocal() {
+        StrUtil.randomAlphaCharCalL(32);
+    }
+
+    @Benchmark
+    public void randCharLocal2() {
+        StrUtil.randomAlphaCharL(32);
+    }
+
+    //    @Benchmark
     public void randAsciiLocal() {
         StrUtil.randomAsciiL(32);
     }
 
+    //    @Benchmark
+    public void randAsciiStrLocal() {
+        StrUtil.randomAsciiStrL(32);
+    }
+
     @Test
     public void testBenchmark() throws Exception {
+        String file = "/tmp/jmh-" + this.getClass().getSimpleName() + System.currentTimeMillis() + ".log";
         Options options = new OptionsBuilder()
                 .include(this.getClass().getSimpleName())
-                .output("/tmp/jmh-" + this.getClass().getSimpleName() + ".log").build();
+                .output(file).build();
+        System.out.println(file);
         new Runner(options).run();
     }
 
@@ -112,8 +129,39 @@ public class StrUtilTest {
     private static int disCount(Function<Integer, String> func) {
         Set<String> re3 = new HashSet<>();
         for (int i = 0; i < 10000; i++) {
-            re3.add(func.apply(4));
+            re3.add(func.apply(8));
         }
         return re3.size();
+    }
+
+    @Test
+    public void testAsc() throws Exception {
+        for (int i = 32; i < 127; i++) {
+            System.out.print((char) i);
+        }
+        System.out.println();
+
+        long start = System.currentTimeMillis();
+        int initialCapacity = 300000;
+        List<String> x1 = new ArrayList<>(initialCapacity);
+        for (int i = 0; i < initialCapacity; i++) {
+            char[] tmp = new char[6];
+            for (int j = 0; j < tmp.length; j++) {
+                tmp[j] = (char) ('a' + j);
+            }
+            x1.add(new String(tmp));
+        }
+        System.out.println(System.currentTimeMillis() - start);
+
+        start = System.currentTimeMillis();
+        List<String> x2 = new ArrayList<>(initialCapacity);
+        for (int i = 0; i < initialCapacity; i++) {
+            StringBuilder s = new StringBuilder();
+            for (int j = 0; j < 7; j++) {
+                s.append((char) ('a' + j));
+            }
+            x2.add(s.toString());
+        }
+        System.out.println(System.currentTimeMillis() - start);
     }
 }
