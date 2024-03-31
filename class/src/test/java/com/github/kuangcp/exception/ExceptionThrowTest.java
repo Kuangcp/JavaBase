@@ -3,6 +3,8 @@ package com.github.kuangcp.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -29,13 +31,20 @@ public class ExceptionThrowTest {
 
     @Test
     public void testLoss() throws Exception {
-        new Thread(()->{
-            for (int i = 0; i < 10; i++) {
-                System.out.println(5/i);
+        final Runnable error = () -> {
+            try {
+                System.out.println(5/0);
+            } catch (Exception e) {
+                String x = null;
+                System.out.println(x.length());
+                log.error("", e);
             }
-        }).start();
+        };
+        final ExecutorService pool = Executors.newFixedThreadPool(2);
+        pool.execute(error);
+        new Thread(error).start();
 
-        TimeUnit.SECONDS.sleep(3);
+        TimeUnit.SECONDS.sleep(2);
     }
 }
 
