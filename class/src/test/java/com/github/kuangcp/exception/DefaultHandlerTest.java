@@ -2,6 +2,10 @@ package com.github.kuangcp.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import org.junit.runner.Description;
+import org.junit.runner.notification.RunNotifier;
+import org.junit.runners.ParentRunner;
+import org.junit.runners.model.Statement;
 
 /**
  * https://www.baeldung.com/java-global-exception-handler
@@ -10,11 +14,11 @@ import org.junit.Test;
 @Slf4j
 public class DefaultHandlerTest {
 
+    /**
+     * @see ParentRunner#runLeaf Junit 中catch了异常，所以不会进入到默认逻辑
+     */
     @Test
     public void testDefaultHandler() throws Exception {
-        // TODO not work ?
-        log.info("start");
-//        TimeUnit.MINUTES.sleep(10);
         setUp();
         hitDefault();
     }
@@ -26,19 +30,21 @@ public class DefaultHandlerTest {
 //        hitDefault();
     }
 
-    private static void setUp(){
+    private static void setUp() {
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
             log.error("DEFAULT", e);
             System.out.println(e.getMessage().length());
         });
     }
+
     private static void hitDefault() {
-        System.out.println(">>> Thread "+Thread.currentThread().getName());
+        System.out.println(">>> Thread " + Thread.currentThread().getName());
         System.out.println(1 / 0);
         System.out.println("handle");
     }
+
     private static void hitDefault2() {
-        System.out.println(">>> hitDefault2 "+Thread.currentThread().getName());
+        System.out.println(">>> hitDefault2 " + Thread.currentThread().getName());
         try {
             System.out.println(1 / 0);
         } catch (Exception e) {
@@ -51,7 +57,7 @@ public class DefaultHandlerTest {
 
 
     private static void notHitDefault() {
-        System.out.println(">>> Thread "+Thread.currentThread().getName());
+        System.out.println(">>> Thread " + Thread.currentThread().getName());
         try {
             System.out.println(1 / 0);
         } catch (Exception e) {

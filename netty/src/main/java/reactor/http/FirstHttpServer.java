@@ -4,6 +4,7 @@ package reactor.http;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,13 +26,19 @@ import java.util.function.Supplier;
  * @author <a href="https://github.com/kuangcp">Github</a>
  * 2023-10-10 09:52
  */
+@Slf4j
 public class FirstHttpServer {
+
+    public static final int port = 32990;
 
     public static void main(String[] args) {
         DisposableServer server = HttpServer.create()
                 .route(routes -> routes
                         .get("/hello",
-                                (request, response) -> response.sendString(Mono.just("Hello World!")))
+                                (request, response) -> {
+                                    log.info("hello");
+                                    return response.sendString(Mono.just("Hello World!"));
+                                })
                         .post("/echo",
                                 (request, response) -> response.send(request.receive().retain()))
                         .get("/path/{param}",
@@ -53,7 +60,7 @@ public class FirstHttpServer {
                                 (wsInbound, wsOutbound) -> wsOutbound.send(wsInbound.receive().retain()))
                         .get("/sse", serveSse())
                 )
-                .port(32990)
+                .port(port)
                 .bindNow();
 
         server.onDispose().block();
