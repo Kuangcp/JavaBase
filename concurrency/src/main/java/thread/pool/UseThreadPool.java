@@ -9,8 +9,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  * Created by https://github.com/kuangcp on 17-8-20  下午8:44
  * TODO 线程池
  * https://www.cnblogs.com/eesijian/p/5871448.html
- * Executors
- * TODO: https://github.com/alibaba/transmittable-thread-local
  */
 public class UseThreadPool {
 
