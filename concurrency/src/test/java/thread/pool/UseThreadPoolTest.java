@@ -1,12 +1,12 @@
 package thread.pool;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.junit.Test;
-import org.slf4j.MDC;
 
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static thread.pool.UseThreadPool.*;
 
 /**
  *
@@ -15,53 +15,6 @@ import java.util.concurrent.*;
  */
 @Slf4j
 public class UseThreadPoolTest {
-    ExecutorService pool = Executors.newFixedThreadPool(1);
-    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    ScheduledExecutorService customScheduler = new ScheduledThreadPoolExecutor(1,
-            new BasicThreadFactory.Builder().namingPattern("schedule-pool-%d").daemon(true).build()) {
-        /**
-         * 通过 execute submit schedule 提交的 Runnable 任务： 手动传递上下文, 捕获异常
-         */
-        @Override
-        public ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit) {
-            if (command == null) {
-                throw new RuntimeException("schedule command NPE");
-            }
-            return super.schedule(() -> {
-                try {
-                    command.run();
-                } catch (Throwable e) {
-                    log.error("", e);
-                }
-            }, delay, unit);
-        }
-
-        /**
-         * 通过 execute submit schedule 提交的 Callable 任务 手动传递上下文, 捕获异常
-         * 由于 Callable 会返回Future，此时try catch 要throw 异常才能不影响原逻辑，好处是不用担心业务代码漏 get 从而吞异常，缺点是异常栈会打两次日志
-         */
-        @Override
-        public <V> ScheduledFuture<V> schedule(Callable<V> callable, long delay, TimeUnit unit) {
-            if (callable == null) {
-                throw new RuntimeException("schedule callable NPE");
-            }
-            return super.schedule(() -> {
-                try {
-                    return callable.call();
-                } catch (Throwable e) {
-                    log.error("", e);
-                    throw e;
-                }
-            }, delay, unit);
-        }
-
-        @Override
-        protected void afterExecute(Runnable r, Throwable t) {
-            // 获取不到抛出的异常
-            super.afterExecute(r, t);
-        }
-    };
-
     @Test
     public void testCompareExecuteAndSubmit() throws Exception {
         pool.execute(() -> {
@@ -132,7 +85,7 @@ public class UseThreadPoolTest {
             throw new RuntimeException("scheduler execute error");
         });
 
-        Thread.currentThread().join(5000);
+        Thread.currentThread().join(3000);
     }
 
     @Test
@@ -153,6 +106,22 @@ public class UseThreadPoolTest {
 
         log.info("={}", scheduleError.get());
         log.info("={}", submitError.get());
+        Thread.currentThread().join(3000);
+    }
+
+    @Test
+    public void testLoopScheduler() throws Exception {
+        AtomicInteger counter = new AtomicInteger();
+        ScheduledFuture<?> future = customScheduler.scheduleAtFixedRate(() -> {
+            System.out.println("xx");
+            int cnt = counter.incrementAndGet();
+            if (cnt > 5) {
+                throw new RuntimeException("xx");
+            }
+        }, 1, 1, TimeUnit.SECONDS);
+
+        log.info("FUTURE {}", future.get());
+
         Thread.currentThread().join(3000);
     }
 }
