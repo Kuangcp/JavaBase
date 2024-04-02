@@ -1,4 +1,4 @@
-package thread;
+package thread.jmx;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,7 +10,7 @@ import java.lang.management.ThreadMXBean;
  * @author kuangcp on 2019-04-19 10:08 AM
  */
 @Slf4j
-public class ShowCreateThreadForSimpleMain {
+public class ThreadInfoMxBean {
 
     public static void main(String[] args) {
         ThreadMXBean bean = ManagementFactory.getThreadMXBean();
