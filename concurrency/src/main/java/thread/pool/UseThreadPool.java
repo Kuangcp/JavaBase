@@ -118,8 +118,11 @@ public class UseThreadPool {
         // 创建单线程的线程池,可指定延迟
         ScheduledExecutorService e = Executors.newSingleThreadScheduledExecutor();
 
+        // 工作窃取线程池 Fork/Join JDK1.8
+        ExecutorService f = Executors.newWorkStealingPool();
+
         // 创建调度作用线程池，可指定延迟
-        ScheduledThreadPoolExecutor f = new ScheduledThreadPoolExecutor(1);
+        ScheduledThreadPoolExecutor g = new ScheduledThreadPoolExecutor(1);
 
         //    a.submit();      提交任务
         //    a.execute();     执行任务
