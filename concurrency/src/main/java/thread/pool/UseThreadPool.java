@@ -73,7 +73,7 @@ public class UseThreadPool {
         protected void afterExecute(Runnable r, Throwable t) {
             // 注意这里永远获取不到抛出的异常
             super.afterExecute(r, t);
-            log.warn("After: ", t);
+//            log.warn("After: ", t);
         }
     };
 
