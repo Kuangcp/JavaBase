@@ -13,7 +13,7 @@ import java.util.concurrent.*;
 @Slf4j
 public class UseThreadPool {
     public static ExecutorService pool = Executors.newFixedThreadPool(1);
-    public static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    public static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
 
     /**
      * @see ScheduledThreadPoolExecutor#delayedExecute 所以任务提交的实现
