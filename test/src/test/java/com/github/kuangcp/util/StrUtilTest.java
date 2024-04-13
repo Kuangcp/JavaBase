@@ -96,7 +96,7 @@ public class StrUtilTest {
     @Test
     public void testCompare() throws Exception {
         Map<String, Integer> win = new HashMap<>();
-        int loop = 1000;
+        int loop = 2000;
         for (int i = 0; i < loop; i++) {
             Map<String, Integer> tmp = new HashMap<>();
             tmp.put("a", disCount(StrUtil::randomAlpha));

@@ -17,24 +17,38 @@
 
 package com.github.kuangcp.app.ftp;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.PrintCommandListener;
-import org.apache.commons.net.ftp.*;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPClientConfig;
+import org.apache.commons.net.ftp.FTPConnectionClosedException;
+import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTPHTTPClient;
+import org.apache.commons.net.ftp.FTPReply;
+import org.apache.commons.net.ftp.FTPSClient;
 import org.apache.commons.net.io.CopyStreamEvent;
 import org.apache.commons.net.io.CopyStreamListener;
 import org.apache.commons.net.util.TrustManagerUtils;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
 /**
  * https://commons.apache.org/proper/commons-net/
- *
+ * <p>
  * This is an example program demonstrating how to use the FTPClient class. This program connects to an FTP server and retrieves the specified file. If the -s
  * flag is used, it stores the local file at the FTP server. Just so you can see what's happening, all reply strings are printed. If the -b flag is used, a
  * binary transfer is assumed (default is ASCII). See below for further options.
  */
+@Slf4j
 public final class FTPClientExample {
 
     public static final String USAGE = "Expected Parameters: [options] <hostname> <user> <password> [<remote file> [<local file>]]\n"
@@ -81,124 +95,32 @@ public final class FTPClientExample {
         };
     }
 
-    public static void main(final String[] args) throws UnknownHostException {
-        boolean storeFile = false, binaryTransfer = false, error = false, listFiles = false, listNames = false, hidden = false;
-        boolean localActive = false, useEpsvWithIPv4 = false, feat = false, printHash = false;
-        boolean mlst = false, mlsd = false, mdtm = false, saveUnparseable = false;
-        boolean size = false;
-        boolean lenient = false;
-        long keepAliveTimeoutSeconds = -1;
-        int controlKeepAliveReplyTimeoutMillis = -1;
-        int minParams = 5; // listings require 3 params
-        String protocol = null; // SSL protocol
-        String doCommand = null;
-        String trustmgr = null;
-        String proxyHost = null;
-        int proxyPort = 80;
-        String proxyUser = null;
-        String proxyPassword = null;
-        String user = null;
-        String password = null;
-        String encoding = null;
-        String serverTimeZoneId = null;
-        String displayTimeZoneId = null;
-        String serverType = null;
-        String defaultDateFormat = null;
-        String recentDateFormat = null;
+    boolean storeFile = false, binaryTransfer = false, error = false, listFiles = false, listNames = false, hidden = false;
+    boolean localActive = false, useEpsvWithIPv4 = false, feat = false, printHash = false;
+    boolean mlst = false, mlsd = false, mdtm = false, saveUnparseable = false;
+    boolean size = false;
+    boolean lenient = false;
+    long keepAliveTimeoutSeconds = -1;
+    int controlKeepAliveReplyTimeoutMillis = -1;
+    int minParams = 5; // listings require 3 params
+    String protocol = null; // SSL protocol
+    String doCommand = null;
+    String trustmgr = null;
+    String proxyHost = null;
+    int proxyPort = 80;
+    String proxyUser = null;
+    String proxyPassword = null;
+    String user = null;
+    String password = null;
+    String encoding = null;
+    String serverTimeZoneId = null;
+    String displayTimeZoneId = null;
+    String serverType = null;
+    String defaultDateFormat = null;
+    String recentDateFormat = null;
 
-        int base = 0;
-        for (base = 0; base < args.length; base++) {
-            if (args[base].equals("-s")) {
-                storeFile = true;
-            } else if (args[base].equals("-a")) {
-                localActive = true;
-            } else if (args[base].equals("-A")) {
-                user = "anonymous";
-                password = System.getProperty("user.name") + "@" + InetAddress.getLocalHost().getHostName();
-            } else if (args[base].equals("-b")) {
-                binaryTransfer = true;
-            } else if (args[base].equals("-c")) {
-                doCommand = args[++base];
-                minParams = 3;
-            } else if (args[base].equals("-d")) {
-                mlsd = true;
-                minParams = 3;
-            } else if (args[base].equals("-e")) {
-                useEpsvWithIPv4 = true;
-            } else if (args[base].equals("-E")) {
-                encoding = args[++base];
-            } else if (args[base].equals("-f")) {
-                feat = true;
-                minParams = 3;
-            } else if (args[base].equals("-h")) {
-                hidden = true;
-            } else if (args[base].equals("-i")) {
-                size = true;
-                minParams = 3;
-            } else if (args[base].equals("-k")) {
-                keepAliveTimeoutSeconds = Long.parseLong(args[++base]);
-            } else if (args[base].equals("-l")) {
-                listFiles = true;
-                minParams = 3;
-            } else if (args[base].equals("-m")) {
-                mdtm = true;
-                minParams = 3;
-            } else if (args[base].equals("-L")) {
-                lenient = true;
-            } else if (args[base].equals("-n")) {
-                listNames = true;
-                minParams = 3;
-            } else if (args[base].equals("-p")) {
-                protocol = args[++base];
-            } else if (args[base].equals("-S")) {
-                serverType = args[++base];
-            } else if (args[base].equals("-t")) {
-                mlst = true;
-                minParams = 3;
-            } else if (args[base].equals("-U")) {
-                saveUnparseable = true;
-            } else if (args[base].equals("-w")) {
-                controlKeepAliveReplyTimeoutMillis = Integer.parseInt(args[++base]);
-            } else if (args[base].equals("-T")) {
-                trustmgr = args[++base];
-            } else if (args[base].equals("-y")) {
-                defaultDateFormat = args[++base];
-            } else if (args[base].equals("-Y")) {
-                recentDateFormat = args[++base];
-            } else if (args[base].equals("-Z")) {
-                serverTimeZoneId = args[++base];
-            } else if (args[base].equals("-z")) {
-                displayTimeZoneId = args[++base];
-            } else if (args[base].equals("-PrH")) {
-                proxyHost = args[++base];
-                final String[] parts = proxyHost.split(":");
-                if (parts.length == 2) {
-                    proxyHost = parts[0];
-                    proxyPort = Integer.parseInt(parts[1]);
-                }
-            } else if (args[base].equals("-PrU")) {
-                proxyUser = args[++base];
-            } else if (args[base].equals("-PrP")) {
-                proxyPassword = args[++base];
-            } else if (args[base].equals("-#")) {
-                printHash = true;
-            } else {
-                break;
-            }
-        }
-
-        final int remain = args.length - base;
-        if (user != null) {
-            minParams -= 2;
-        }
-        if (remain < minParams) // server, user, pass, remote, local [protocol]
-        {
-            if (args.length > 0) {
-                System.err.println("Actual Parameters: " + Arrays.toString(args));
-            }
-            System.err.println(USAGE);
-            System.exit(1);
-        }
+    private void run(final String[] args) throws UnknownHostException {
+        int base = parseArgs(args);
 
         String server = args[base++];
         int port = 0;
@@ -219,7 +141,7 @@ public final class FTPClientExample {
 
         String local = null;
         if (args.length - base > 0) {
-            local = args[base++];
+            local = args[base];
         }
 
         final FTPClient ftp;
@@ -313,7 +235,7 @@ public final class FTPClientExample {
                 }
             }
             System.err.println("Could not connect to server.");
-            e.printStackTrace();
+            log.error("", e);
             System.exit(1);
         }
 
@@ -453,10 +375,10 @@ public final class FTPClientExample {
         } catch (final FTPConnectionClosedException e) {
             error = true;
             System.err.println("Server closed connection.");
-            e.printStackTrace();
+            log.error("", e);
         } catch (final IOException e) {
             error = true;
-            e.printStackTrace();
+            log.error("", e);
         } finally {
             if (ftp.isConnected()) {
                 try {
@@ -468,7 +390,141 @@ public final class FTPClientExample {
         }
 
         System.exit(error ? 1 : 0);
-    } // end main
+    }
+
+    private int parseArgs(String[] args) throws UnknownHostException {
+        int base;
+        label:
+        for (base = 0; base < args.length; base++) {
+            switch (args[base]) {
+                case "-s":
+                    storeFile = true;
+                    break;
+                case "-a":
+                    localActive = true;
+                    break;
+                case "-A":
+                    user = "anonymous";
+                    password = System.getProperty("user.name") + "@" + InetAddress.getLocalHost().getHostName();
+                    break;
+                case "-b":
+                    binaryTransfer = true;
+                    break;
+                case "-c":
+                    doCommand = args[++base];
+                    minParams = 3;
+                    break;
+                case "-d":
+                    mlsd = true;
+                    minParams = 3;
+                    break;
+                case "-e":
+                    useEpsvWithIPv4 = true;
+                    break;
+                case "-E":
+                    encoding = args[++base];
+                    break;
+                case "-f":
+                    feat = true;
+                    minParams = 3;
+                    break;
+                case "-h":
+                    hidden = true;
+                    break;
+                case "-i":
+                    size = true;
+                    minParams = 3;
+                    break;
+                case "-k":
+                    keepAliveTimeoutSeconds = Long.parseLong(args[++base]);
+                    break;
+                case "-l":
+                    listFiles = true;
+                    minParams = 3;
+                    break;
+                case "-m":
+                    mdtm = true;
+                    minParams = 3;
+                    break;
+                case "-L":
+                    lenient = true;
+                    break;
+                case "-n":
+                    listNames = true;
+                    minParams = 3;
+                    break;
+                case "-p":
+                    protocol = args[++base];
+                    break;
+                case "-S":
+                    serverType = args[++base];
+                    break;
+                case "-t":
+                    mlst = true;
+                    minParams = 3;
+                    break;
+                case "-U":
+                    saveUnparseable = true;
+                    break;
+                case "-w":
+                    controlKeepAliveReplyTimeoutMillis = Integer.parseInt(args[++base]);
+                    break;
+                case "-T":
+                    trustmgr = args[++base];
+                    break;
+                case "-y":
+                    defaultDateFormat = args[++base];
+                    break;
+                case "-Y":
+                    recentDateFormat = args[++base];
+                    break;
+                case "-Z":
+                    serverTimeZoneId = args[++base];
+                    break;
+                case "-z":
+                    displayTimeZoneId = args[++base];
+                    break;
+                case "-PrH":
+                    proxyHost = args[++base];
+                    final String[] parts = proxyHost.split(":");
+                    if (parts.length == 2) {
+                        proxyHost = parts[0];
+                        proxyPort = Integer.parseInt(parts[1]);
+                    }
+                    break;
+                case "-PrU":
+                    proxyUser = args[++base];
+                    break;
+                case "-PrP":
+                    proxyPassword = args[++base];
+                    break;
+                case "-#":
+                    printHash = true;
+                    break;
+                default:
+                    break label;
+            }
+        }
+
+        final int remain = args.length - base;
+        if (user != null) {
+            minParams -= 2;
+        }
+        // server, user, pass, remote, local [protocol]
+        if (remain < minParams) {
+            if (args.length > 0) {
+                System.err.println("Actual Parameters: " + Arrays.toString(args));
+            }
+            System.err.println(USAGE);
+            System.exit(1);
+        }
+        return base;
+    }
+
+    public static void main(final String[] args) throws UnknownHostException {
+        final FTPClientExample client = new FTPClientExample();
+        client.run(args);
+    }
 
     private static void showCslStats(final FTPClient ftp) {
 //        @SuppressWarnings("deprecation") // debug code

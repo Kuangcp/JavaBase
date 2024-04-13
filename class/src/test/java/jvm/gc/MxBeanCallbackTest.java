@@ -2,6 +2,7 @@ package jvm.gc;
 
 import org.junit.Test;
 
+import java.lang.management.ManagementFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -13,6 +14,9 @@ public class MxBeanCallbackTest {
     public void testInstallGCMonitoring() throws Exception {
 
         MxBeanCallback.installGCMonitoring();
+
+        ManagementFactory.getMemoryMXBean();
+
 
         System.out.println("xx");
         TimeUnit.MINUTES.sleep(3);

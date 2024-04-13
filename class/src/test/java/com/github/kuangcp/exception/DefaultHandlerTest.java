@@ -2,13 +2,14 @@ package com.github.kuangcp.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import org.junit.runner.Description;
-import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.ParentRunner;
-import org.junit.runners.model.Statement;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * https://www.baeldung.com/java-global-exception-handler
+ *
  * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2024-03-31 17:04
  */
 @Slf4j
@@ -23,18 +24,32 @@ public class DefaultHandlerTest {
         hitDefault();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         setUp();
-        notHitDefault();
-        hitDefault2();
+
+//        notHitDefault();
+//        hitDefault2();
 //        hitDefault();
+
+        Thread.sleep(10000);
+        pool();
+    }
+
+    private static void pool() throws InterruptedException {
+        final ExecutorService pool = Executors.newFixedThreadPool(1);
+        pool.execute(() -> {
+            log.info("run");
+        });
+        Thread.sleep(5000);
+        pool.execute(() -> {
+            log.info("pool");
+            throw new RuntimeException("wait");
+        });
     }
 
     private static void setUp() {
-        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-            log.error("DEFAULT", e);
-            System.out.println(e.getMessage().length());
-        });
+        // 注意只是感知到异常，并不能阻止线程的死亡
+        Thread.setDefaultUncaughtExceptionHandler(DefaultUncaughtExceptionHandler.getInstance());
     }
 
     private static void hitDefault() {
