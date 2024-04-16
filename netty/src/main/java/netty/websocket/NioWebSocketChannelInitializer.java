@@ -28,7 +28,9 @@ public class NioWebSocketChannelInitializer extends ChannelInitializer<SocketCha
         pipeline.addLast("aggregator", new HttpObjectAggregator(65536));//聚合器，使用websocket会用到
         pipeline.addLast("http-chunked", new ChunkedWriteHandler());//用于大数据的分区传输
         pipeline.addLast("handler", new NioWebSocketHandler());//自定义的业务handler
+
         // checkStartsWith 为true 支持路径带参数
+        // maxFrameSize 设置的是最大可申请的ByteBuf，实际上使用时是按需申请和回收内存
         pipeline.addLast("", new WebSocketServerProtocolHandler(Const.webSocketPath, WEBSOCKET_PROTOCOL, true, 65536, false, true));
     }
 }

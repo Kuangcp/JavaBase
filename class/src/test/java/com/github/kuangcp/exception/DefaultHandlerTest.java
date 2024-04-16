@@ -4,8 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runners.ParentRunner;
 
+import java.security.SecureRandom;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Supplier;
 
 /**
  * https://www.baeldung.com/java-global-exception-handler
@@ -31,8 +33,38 @@ public class DefaultHandlerTest {
 //        hitDefault2();
 //        hitDefault();
 
-        Thread.sleep(10000);
-        pool();
+        // 验证线程池
+//        Thread.sleep(10000);
+//        pool();
+        interrupt();
+    }
+
+    private static void interrupt() throws InterruptedException {
+        Thread thread = new Thread(() -> {
+//            while (true) {
+//                for (int i = 0; i < 100000; i++) {
+//                    Supplier<Integer> random = () -> new SecureRandom().nextInt(10000000) + 100;
+//                    Math.tanh(Math.log(Math.sqrt(random.get()) + random.get()));
+//                }
+//                System.out.println("RUN");
+//            }
+
+            try {
+                Thread.sleep(10000);
+            } catch (Exception e) {
+                log.error("", e);
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        thread.start();
+
+        Thread.sleep(3000);
+        log.info("INT");
+        thread.interrupt();
+//        thread.join();
+//        thread.wait();
+        log.info("END");
     }
 
     private static void pool() throws InterruptedException {

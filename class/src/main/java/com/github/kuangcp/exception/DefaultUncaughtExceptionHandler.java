@@ -25,6 +25,11 @@ public class DefaultUncaughtExceptionHandler implements Thread.UncaughtException
         return uncaughtExceptionCount.longValue();
     }
 
+    /**
+     * @param t the thread
+     * @param e the exception
+     * @see InterruptedException 包含该异常
+     */
     @Override
     public void uncaughtException(Thread t, Throwable e) {
         uncaughtExceptionCount.add(1);
