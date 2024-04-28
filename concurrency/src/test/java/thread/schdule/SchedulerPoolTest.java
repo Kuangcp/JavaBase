@@ -4,11 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.junit.Test;
+import org.junit.platform.commons.util.LruCache;
 import org.slf4j.MDC;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import static thread.pool.UseThreadPool.customScheduler;
 
@@ -40,7 +40,40 @@ public class SchedulerPoolTest {
     }
 
     @Test
-    public void testSimple() throws Exception {
+    public void testConDep() throws Exception {
+        ExecutorService origin = Executors.newFixedThreadPool(5);
+        ScheduledThreadPoolExecutor pool = new ScheduledThreadPoolExecutor(40);
+        for (int i = 0; i < 20; i++) {
+            int finalI = i;
+            origin.execute(() -> {
+                try {
+                    Thread.sleep(20);
+                    // A任务：操作DB
+                } catch (InterruptedException e) {
+                }
+                // FIXME 下游业务为了上游业务留下一定时间异步处理，对下述代码加了延时处理，但可能会导致下述代码块并发被放大
+                // 当上游业务处理耗时小于下游业务时，上游业务并发限制为5，假如A业务耗时20ms，B业务需要200ms
+                // 在1s内可以处理完250个A任务，与此同时就会创建出250个任务分布于1s的时间窗口内，假如核心线程数很大，并发会去到 250qps
+                // 上诉线程池的核心线程数是40，假如A和B都是操作的同个DB，对于DB来说并发会上到45。
+                // 当为了提高系统吞吐量提升 origin的核心线程数时，同样会影响到pool的并发情况，以及DB的负载
+
+                // 所以当发现A B任务都需要对同一个 需要受到并发保护的资源时，尽量整合业务代码到一个线程池内。或者说在已有的代码上调整并发发现了这个瓶颈后需要解耦
+                pool.schedule(() -> {
+                    log.info("start,{}", finalI);
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                    }
+                    // B任务：操作DB
+                    log.info("end {}", finalI);
+                }, 20, TimeUnit.SECONDS);
+            });
+        }
+        Thread.currentThread().join();
+    }
+
+    @Test
+    public void testContext() throws Exception {
         ScheduledExecutorService pool = new ScheduledThreadPoolExecutor(1,
                 new BasicThreadFactory.Builder().namingPattern("schedule-pool-%d").daemon(true).build()) {
             @Override
