@@ -47,6 +47,21 @@
         </dependency>
 
         <dependency>
+            <groupId>com.hellokaton</groupId>
+            <artifactId>blade-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>blade-log</artifactId>
+                    <groupId>com.hellokaton</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-all</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.kuangcp</groupId>
             <artifactId>kcp-core</artifactId>
         </dependency>
