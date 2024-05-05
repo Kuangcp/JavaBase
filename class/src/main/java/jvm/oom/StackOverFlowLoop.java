@@ -15,7 +15,7 @@ public class StackOverFlowLoop {
         try {
             main(args);
         } catch (Throwable e) {
-            // 此时因为try中触发了栈溢出，栈帧回溯，继续进入main方法，又逐步积累栈到栈溢出，再回溯，周而复始
+            // 此时因为try中触发了栈溢出，栈帧清空回溯，继续进入main方法，又逐步积累栈到栈溢出，再回溯，周而复始
             main(args);
         }
     }
