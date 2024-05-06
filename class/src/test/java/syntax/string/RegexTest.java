@@ -1,17 +1,18 @@
 package syntax.string;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import syntax.bit.BitOperatorsTest;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * @author Kuangcp
  * 2024-04-28 22:02
  */
+@Slf4j
 public class RegexTest {
 
     // 缓存性能是未缓存的 3-5 倍
@@ -121,5 +122,41 @@ public class RegexTest {
         System.out.println(hasBracket("a(sss)"));
         System.out.println(hasBracket("a（sss）"));
         System.out.println(hasBracket("a(sss（"));
+    }
+
+    final Pattern back = Pattern.compile("^(,?\\d+)+$");
+    final Pattern opt = Pattern.compile("^\\d+(,\\d+)*$");
+
+    private boolean isNumberBacktracking(String str) {
+        return back.matcher(str).find();
+    }
+
+    private boolean isNumber(String str) {
+        return opt.matcher(str).find();
+    }
+
+    @Test
+    public void testIsNumberWithThousand() throws Exception {
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < 10; i++) {
+            isNumberBacktracking("123,456,789,654,111,123,456,789,654,111,111p");
+        }
+        long end = System.currentTimeMillis();
+        log.info("{}", end - start);
+
+
+        start = System.currentTimeMillis();
+        for (int i = 0; i < 20; i++) {
+            isNumber("123,456,789,654,111,123,456,789,654,111,111p");
+        }
+        end = System.currentTimeMillis();
+        log.info("{}", end - start);
+    }
+
+    @Test
+    public void testPossessive() throws Exception {
+        final Pattern opt = Pattern.compile("ab{1,3}+c");
+        System.out.println(opt.matcher("abbc").find());
+//        System.out.println(opt.matcher("abb+c").find());
     }
 }
