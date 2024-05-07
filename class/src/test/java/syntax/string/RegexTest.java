@@ -156,7 +156,9 @@ public class RegexTest {
     @Test
     public void testPossessive() throws Exception {
         final Pattern opt = Pattern.compile("ab{1,3}+c");
+        System.out.println(opt.matcher("abc").find());
         System.out.println(opt.matcher("abbc").find());
-//        System.out.println(opt.matcher("abb+c").find());
+        System.out.println(opt.matcher("abbbc").find());
+        System.out.println(opt.matcher("abbbbc").find());
     }
 }
