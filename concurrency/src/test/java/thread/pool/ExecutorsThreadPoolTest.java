@@ -4,16 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import static thread.pool.UseThreadPool.*;
+import static thread.pool.ExecutorsThreadPool.*;
 
 /**
  * @author Kuangcp
  * 2024-04-01 11:33
  */
 @Slf4j
-public class UseThreadPoolTest {
+public class ExecutorsThreadPoolTest {
 
     @Test
     public void testCompareExecuteAndSubmit() throws Exception {

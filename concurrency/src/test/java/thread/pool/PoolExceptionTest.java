@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static thread.pool.UseThreadPool.*;
+import static thread.pool.ExecutorsThreadPool.*;
 
 /**
  * @author Kuangcp

@@ -4,13 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.junit.Test;
-import org.junit.platform.commons.util.LruCache;
 import org.slf4j.MDC;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static thread.pool.UseThreadPool.customScheduler;
+import static thread.pool.ExecutorsThreadPool.customScheduler;
 
 /**
  * @author <a href="https://github.com/kuangcp">Github</a>
