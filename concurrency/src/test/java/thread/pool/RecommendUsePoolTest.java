@@ -64,7 +64,7 @@ public class RecommendUsePoolTest {
     /**
      * 测试消费批量任务
      * 任务特点：高内存高CPU占用，特殊时段批量创建其他时间较空闲
-     * 目标：固定并发数情况下平缓消费
+     * 目标：固定并发数的前提下平缓消费，空闲时释放所有线程
      * <p>
      * 限制内存 -Xmx500m
      */
@@ -82,24 +82,19 @@ public class RecommendUsePoolTest {
             try {
                 log.info("check");
                 int batch = consumerCnt.incrementAndGet();
-                for (int i = 0; i < semaphore.get().availablePermits(); i++) {
+
+                // 如果小任务居多 大任务穿插出现，可以将expect适当调大 提高整体执行效率
+                int expect = semaphore.get().availablePermits();
+
+                for (int i = 0; i < expect; i++) {
                     String task = shardQueue.poll(100, TimeUnit.MILLISECONDS);
                     if (Objects.nonNull(task)) {
-                        // 并发不安全，也就是判断时条件满足，提交任务时条件不满足，会出现任务被丢弃的情况
-//                    int activeCount = RecommendUsePool.limitPool.getActiveCount();
-//                    int max = RecommendUsePool.limitPool.getMaximumPoolSize();
-//                    if (activeCount == max) {
-//                        log.warn("state {} {}", activeCount, max);
-//                        break;
-//                    }
-//                    log.info("state {} {}", activeCount, max);
-
                         semaphore.get().acquire();
 
-                        // TODO 此处换成MySQL或Redis 实现集群资源跑任务
-
+                        // TODO 此处换成MySQL或Redis 实现集群方式跑任务
                         RecommendUsePool.limitPool.execute(() -> {
                             try {
+                                // mock
                                 byte[] cache = new byte[100 * 1024 * 1024];
                                 TimeUnit.SECONDS.sleep(2 + ThreadLocalRandom.current().nextInt(7));
                                 cache[0] = 2;
@@ -116,6 +111,7 @@ public class RecommendUsePoolTest {
             } catch (Exception e) {
                 log.error("", e);
             }
+            // 实际可能是1min 或 30s 取任务执行耗时的中位数
         }, 3, 3, TimeUnit.SECONDS);
 
         Blade.create()

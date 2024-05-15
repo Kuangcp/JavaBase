@@ -21,7 +21,7 @@ public class MxBeanCallback {
     /**
      * http://www.fasterj.com/articles/gcnotifs.shtml
      */
-    public static void installGCMonitoring(){
+    public static void installGCMonitoring() {
         //get all the GarbageCollectorMXBeans - there's one for each heap generation
         //so probably two - the old generation and young generation
         List<GarbageCollectorMXBean> gcbeans = java.lang.management.ManagementFactory.getGarbageCollectorMXBeans();
@@ -50,7 +50,7 @@ public class MxBeanCallback {
                         } else if ("end of major GC".equals(gctype)) {
                             gctype = "Old Gen GC";
                         }
-                        log.info(gctype + ": - " + info.getGcInfo().getId()+ " " + info.getGcName() + " (from " + info.getGcCause()+") "+duration + " milliseconds; start-end times " + info.getGcInfo().getStartTime()+ "-" + info.getGcInfo().getEndTime());
+                        log.info(gctype + ": - " + info.getGcInfo().getId() + " " + info.getGcName() + " (from " + info.getGcCause() + ") " + duration + " milliseconds; start-end times " + info.getGcInfo().getStartTime() + "-" + info.getGcInfo().getEndTime());
                         //log.info("GcInfo CompositeType: " + info.getGcInfo().getCompositeType());
                         //log.info("GcInfo MemoryUsageAfterGc: " + info.getGcInfo().getMemoryUsageAfterGc());
                         //log.info("GcInfo MemoryUsageBeforeGc: " + info.getGcInfo().getMemoryUsageBeforeGc());
@@ -66,15 +66,15 @@ public class MxBeanCallback {
                             long memMax = memdetail.getMax();
                             long memUsed = memdetail.getUsed();
                             MemoryUsage before = membefore.get(name);
-                            long beforepercent = memCommitted==0?0:((before.getUsed()*1000L)/memCommitted);
-                            long percent = memCommitted==0?0:((memUsed*1000L)/memCommitted); //>100% when it gets expanded
+                            long beforepercent = memCommitted == 0 ? 0 : ((before.getUsed() * 1000L) / memCommitted);
+                            long percent = memCommitted == 0 ? 0 : ((memUsed * 1000L) / memCommitted); //>100% when it gets expanded
 
                             final String memType = memCommitted == memMax ? "(fully expanded)" : "(still expandable)";
-                            log.info("  "+name + memType +"used: "+(beforepercent/10)+"."+(beforepercent%10)+"%->"+(percent/10)+"."+(percent%10)+"%("+((memUsed/1048576)+1)+"MB) / ");
+                            log.info("  " + name + memType + "used: " + (beforepercent / 10) + "." + (beforepercent % 10) + "%->" + (percent / 10) + "." + (percent % 10) + "%(" + ((memUsed / 1048576) + 1) + "MB) / ");
                         }
                         totalGcDuration += info.getGcInfo().getDuration();
-                        long percent = totalGcDuration*1000L/info.getGcInfo().getEndTime();
-                        log.info("GC cumulated overhead "+(percent/10)+"."+(percent%10)+"%");
+                        long percent = totalGcDuration * 1000L / info.getGcInfo().getEndTime();
+                        log.info("GC cumulated overhead " + (percent / 10) + "." + (percent % 10) + "%");
                     }
                 }
             };

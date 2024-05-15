@@ -18,15 +18,18 @@ public class RecommendUsePool {
     /**
      * 测试拒绝策略
      */
-    public static ThreadPoolExecutor discardPool;
+    public static ThreadPoolExecutor discardPool = new ThreadPoolExecutor(2, 5, 1, TimeUnit.MINUTES,
+            new LinkedBlockingQueue<>(5), new TrackDiscardPolicy());
     /**
      * 测试自定义runnable
      */
-    public static ThreadPoolExecutor taskPool;
+    public static ThreadPoolExecutor taskPool = new ThreadPoolExecutor(2, 5, 1, TimeUnit.MINUTES,
+            new LinkedBlockingQueue<>(5), new TrackDiscardPolicy());
     /**
      * 限制最高并发 批量处理任务
      */
-    public static ThreadPoolExecutor limitPool;
+    public static ThreadPoolExecutor limitPool = new ThreadPoolExecutor(0, 20,
+            60L, TimeUnit.SECONDS, new SynchronousQueue<>());
 
     public static class TrackDiscardPolicy extends ThreadPoolExecutor.DiscardPolicy {
         private final AtomicInteger counter = new AtomicInteger();
@@ -58,16 +61,6 @@ public class RecommendUsePool {
         public void run() {
             this.task.run();
         }
-    }
-
-    static {
-        discardPool = new ThreadPoolExecutor(2, 5, 1, TimeUnit.MINUTES,
-                new LinkedBlockingQueue<>(5), new TrackDiscardPolicy());
-        taskPool = new ThreadPoolExecutor(2, 5, 1, TimeUnit.MINUTES,
-                new LinkedBlockingQueue<>(5), new TrackDiscardPolicy());
-
-        limitPool = new ThreadPoolExecutor(0, 20,
-                60L, TimeUnit.SECONDS, new SynchronousQueue<>());
     }
 
 
