@@ -3,6 +3,7 @@ package thread.pool;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -22,6 +23,10 @@ public class RecommendUsePool {
      * 测试自定义runnable
      */
     public static ThreadPoolExecutor taskPool;
+    /**
+     * 限制最高并发 批量处理任务
+     */
+    public static ThreadPoolExecutor limitPool;
 
     public static class TrackDiscardPolicy extends ThreadPoolExecutor.DiscardPolicy {
         private final AtomicInteger counter = new AtomicInteger();
@@ -41,8 +46,8 @@ public class RecommendUsePool {
 
     public static class Task implements Runnable {
 
-        private String id;
-        private Runnable task;
+        private final String id;
+        private final Runnable task;
 
         public Task(String id, Runnable task) {
             this.id = id;
@@ -60,6 +65,9 @@ public class RecommendUsePool {
                 new LinkedBlockingQueue<>(5), new TrackDiscardPolicy());
         taskPool = new ThreadPoolExecutor(2, 5, 1, TimeUnit.MINUTES,
                 new LinkedBlockingQueue<>(5), new TrackDiscardPolicy());
+
+        limitPool = new ThreadPoolExecutor(0, 20,
+                60L, TimeUnit.SECONDS, new SynchronousQueue<>());
     }
 
 

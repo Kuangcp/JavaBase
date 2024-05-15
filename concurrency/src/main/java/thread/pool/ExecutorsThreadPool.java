@@ -19,7 +19,7 @@ public class ExecutorsThreadPool {
     public static ScheduledExecutorService customScheduler = new CusSchedulePool(1, "schedule-pool-");
 
     private void baseType() {
-        // 创建有缓存功能的线程池
+        // 创建有缓存功能的线程池 无队列无最大限制 任务会立马创建线程执行，空闲线程1min后回收
         ExecutorService a = Executors.newCachedThreadPool();
 
         // 创建具有固定大小的线程池
