@@ -309,17 +309,19 @@ public class SchedulerPoolTest {
     @Test
     public void testHugeTask() throws Exception {
         log.info("start");
-        ScheduledExecutorService customScheduler = new CusSchedulePool(2, "sche-");
+        ScheduledExecutorService customScheduler = new CusSchedulePool(3, "sche-%d");
         for (int i = 0; i < 1000; i++) {
             int finalI = i;
+            TimeUnit.SECONDS.sleep(1);
+            long send = System.currentTimeMillis();
             customScheduler.schedule(() -> {
-                log.info("i={}", finalI);
+                log.info("i={} send={} delay={}ms", finalI, send, System.currentTimeMillis() - send);
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-            }, 20, TimeUnit.SECONDS);
+            }, 10, TimeUnit.SECONDS);
         }
         Thread.currentThread().join(60000);
     }
