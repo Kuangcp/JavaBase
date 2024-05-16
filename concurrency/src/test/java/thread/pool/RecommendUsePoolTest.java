@@ -8,7 +8,6 @@ import web.Application;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -91,7 +90,7 @@ public class RecommendUsePoolTest {
                     if (Objects.nonNull(task)) {
                         semaphore.get().acquire();
 
-                        // TODO 此处换成MySQL或Redis 实现集群方式跑任务
+                        // 此处换成MySQL或Redis 即可实现集群方式跑任务
                         RecommendUsePool.limitPool.execute(() -> {
                             try {
                                 // mock

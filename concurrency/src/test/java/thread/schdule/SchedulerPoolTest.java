@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.junit.Test;
 import org.slf4j.MDC;
+import thread.pool.CusSchedulePool;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -303,5 +304,23 @@ public class SchedulerPoolTest {
             }, 2, 1, TimeUnit.SECONDS);
         }
         Thread.currentThread().join(30000);
+    }
+
+    @Test
+    public void testHugeTask() throws Exception {
+        log.info("start");
+        ScheduledExecutorService customScheduler = new CusSchedulePool(2, "sche-");
+        for (int i = 0; i < 1000; i++) {
+            int finalI = i;
+            customScheduler.schedule(() -> {
+                log.info("i={}", finalI);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }, 20, TimeUnit.SECONDS);
+        }
+        Thread.currentThread().join(60000);
     }
 }
