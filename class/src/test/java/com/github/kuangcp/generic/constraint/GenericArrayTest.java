@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * 不能实例化 参数化类型的数组, 声明是可以的 正确的解决方式应该是 参数化集合
  * 不能实例化 泛型数组
+ *
  * @author https://github.com/kuangcp
  * 2019-05-25 21:02
  */
@@ -28,7 +29,7 @@ public class GenericArrayTest {
         List strings = list[0];
         strings.add(12);
 
-        // 因为前面绕过了泛型约束, 这里取值就会将Integer强转为String而抛异常
+        // 因为前面绕过了泛型约束, 这里取值就会将Integer强转为String而抛 ClassCastException 异常
         System.out.println(list[0].get(0));
     }
 
@@ -43,13 +44,17 @@ public class GenericArrayTest {
         }
     }
 
+    // https://www.iteye.com/blog/rednaxelafx-379703
+    @Test
+    public void testCovariantArray() throws Exception {
+        Object[] array = new Float[1];
+        array[0] = "a string"; // 问题出在这里,编译没问题，但是运行时抛出异常
+        array[0].toString();
+    }
+
     // 本质上是得到了 Object[] 强转为 T[]
     private <T> T[] create(T... element) {
         return (T[]) Arrays.asList(element).toArray();
     }
 
-//  private <T> T[] create2(T... element) {
-//    T[] data = new T[element.length];
-//    return Arrays.asList(element).toArray(data);
-//  }
 }
