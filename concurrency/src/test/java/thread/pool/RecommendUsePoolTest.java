@@ -2,6 +2,7 @@ package thread.pool;
 
 
 import com.hellokaton.blade.Blade;
+import com.hellokaton.blade.mvc.RouteContext;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import web.Application;
@@ -71,6 +72,7 @@ public class RecommendUsePoolTest {
     public void testBatchTaskPool() throws Exception {
         LinkedBlockingQueue<String> shardQueue = new LinkedBlockingQueue<>(100);
 
+        // mock SpringScheduler or xxl-job quartz
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         AtomicInteger counter = new AtomicInteger();
         AtomicInteger consumerCnt = new AtomicInteger();
@@ -83,53 +85,39 @@ public class RecommendUsePoolTest {
                 int batch = consumerCnt.incrementAndGet();
 
                 // 如果小任务居多 大任务穿插出现，可以将expect适当调大 提高整体执行效率
-                int expect = semaphore.get().availablePermits();
-
+                int expect = semaphore.get().availablePermits() + 1;
                 for (int i = 0; i < expect; i++) {
+                    // 此处换成MySQL或Redis 即可实现集群方式跑任务
                     String task = shardQueue.poll(100, TimeUnit.MILLISECONDS);
-                    if (Objects.nonNull(task)) {
-                        semaphore.get().acquire();
-
-                        // 此处换成MySQL或Redis 即可实现集群方式跑任务
-                        RecommendUsePool.limitPool.execute(() -> {
-                            try {
-                                // mock
-                                byte[] cache = new byte[100 * 1024 * 1024];
-                                TimeUnit.SECONDS.sleep(2 + ThreadLocalRandom.current().nextInt(7));
-                                cache[0] = 2;
-                                cache[45] = 5;
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            } finally {
-                                semaphore.get().release();
-                            }
-                            log.info("batch={} task={}", batch, task);
-                        });
+                    if (Objects.isNull(task)) {
+                        return;
                     }
+
+                    semaphore.get().acquire();
+                    RecommendUsePool.limitPool.execute(() -> {
+                        try {
+                            // mock
+                            byte[] cache = new byte[10 * 1024 * 1024];
+                            TimeUnit.SECONDS.sleep(4 + ThreadLocalRandom.current().nextInt(30));
+                        } catch (InterruptedException e) {
+                            log.error("", e);
+                            throw new RuntimeException(e);
+                        } finally {
+                            semaphore.get().release();
+                        }
+                        log.info("batch={} task={}", batch, task);
+                    });
                 }
             } catch (Exception e) {
                 log.error("", e);
             }
             // 实际可能是1min 或 30s 取任务执行耗时的中位数
-        }, 3, 3, TimeUnit.SECONDS);
+        }, 10, 10, TimeUnit.SECONDS);
 
         Blade.create()
                 .listen(33388)
                 // 创建任务
-                .get("/create", ctx -> {
-                    Optional<String> c = ctx.request().query("c");
-                    int count = c.map(Integer::parseInt).orElse(10);
-                    int batch = counter.incrementAndGet();
-                    for (int i = 0; i < count; i++) {
-                        try {
-                            shardQueue.put(batch + "-" + i);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-
-                    ctx.text("add " + count + " queue:" + shardQueue.size());
-                })
+                .get("/create", ctx -> addTask(ctx, counter, shardQueue))
                 // 调整并发值
                 .get("/con", ctx -> {
                     Semaphore cache = semaphore.get();
@@ -147,5 +135,78 @@ public class RecommendUsePoolTest {
                 .start(Application.class);
 
         Thread.currentThread().join();
+    }
+
+    /**
+     * 简化限流由最大线程数控制
+     */
+    @Test
+    public void testBatchTaskPool2() throws Exception {
+        LinkedBlockingQueue<String> shardQueue = new LinkedBlockingQueue<>(100);
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        AtomicInteger counter = new AtomicInteger();
+        AtomicInteger consumerCnt = new AtomicInteger();
+
+        scheduler.scheduleAtFixedRate(() -> {
+            try {
+                int batch = consumerCnt.incrementAndGet();
+
+                // 由于扫描的时候可能有线程的任务还有一会才结束，即线程池最坏情况是所有线程休息一个扫描时间片段，最佳情况是扫描片段内完成了相应任务
+                // 短的扫描间隔适合大量小任务时，提高执行效率
+                int expect = RecommendUsePool.limitCachePool.getMaximumPoolSize() - RecommendUsePool.limitCachePool.getActiveCount();
+                log.info("check {}", expect);
+                if (expect == 0) {
+                    return;
+                }
+
+                for (int i = 0; i < expect; i++) {
+                    String task = shardQueue.poll(100, TimeUnit.MILLISECONDS);
+                    if (Objects.isNull(task)) {
+                        return;
+                    }
+                    RecommendUsePool.limitCachePool.execute(() -> {
+                        try {
+                            byte[] cache = new byte[10 * 1024 * 1024];
+                            TimeUnit.SECONDS.sleep(4 + ThreadLocalRandom.current().nextInt(10));
+                        } catch (InterruptedException e) {
+                            log.error("", e);
+                            throw new RuntimeException(e);
+                        }
+                        log.info("batch={} task={}", batch, task);
+                    });
+                }
+            } catch (Exception e) {
+                log.error("", e);
+            }
+        }, 10, 10, TimeUnit.SECONDS);
+
+        Blade.create()
+                .listen(33388)
+                .get("/create", ctx -> addTask(ctx, counter, shardQueue))
+                .get("/con", ctx -> {
+                    Optional<String> c = ctx.request().query("c");
+                    c.map(Integer::parseInt).ifPresent(v -> {
+                        RecommendUsePool.limitCachePool.setMaximumPoolSize(v);
+                        ctx.text("Set " + v);
+                    });
+                })
+                .start(Application.class);
+
+        Thread.currentThread().join();
+    }
+
+    private static void addTask(RouteContext ctx, AtomicInteger counter, LinkedBlockingQueue<String> shardQueue) {
+        Optional<String> c = ctx.request().query("c");
+        int count = c.map(Integer::parseInt).orElse(10);
+        int batch = counter.incrementAndGet();
+        for (int i = 0; i < count; i++) {
+            try {
+                shardQueue.put(batch + "-" + i);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        ctx.text("add " + count + " queue:" + shardQueue.size());
     }
 }

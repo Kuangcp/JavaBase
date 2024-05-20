@@ -1,6 +1,7 @@
 package thread.pool;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
@@ -29,7 +30,14 @@ public class RecommendUsePool {
      * 限制最高并发 批量处理任务
      */
     public static ThreadPoolExecutor limitPool = new ThreadPoolExecutor(0, 20,
-            60L, TimeUnit.SECONDS, new SynchronousQueue<>());
+            60L, TimeUnit.SECONDS, new SynchronousQueue<>(),
+            new BasicThreadFactory.Builder().namingPattern("limit-%d").build(),
+            new ThreadPoolExecutor.AbortPolicy());
+
+    public static ThreadPoolExecutor limitCachePool = new ThreadPoolExecutor(0, 3,
+            60L, TimeUnit.SECONDS, new SynchronousQueue<>(),
+            new BasicThreadFactory.Builder().namingPattern("limit-%d").build(),
+            new ThreadPoolExecutor.AbortPolicy());
 
     public static class TrackDiscardPolicy extends ThreadPoolExecutor.DiscardPolicy {
         private final AtomicInteger counter = new AtomicInteger();
