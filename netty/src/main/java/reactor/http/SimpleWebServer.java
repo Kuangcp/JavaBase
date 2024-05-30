@@ -54,7 +54,9 @@ public class SimpleWebServer {
                     return response.sendString(Mono.just("Error"));
                 })
                 // 读取post body json参数，返回结果
-                .post("/act/task", (request, response) -> response.sendString(request.receive().aggregate().asString()
+                .post("/act/task", (request, response) -> response.sendString(request.receive()
+                        .aggregate().asString()
+                        // 注意使用的是map类似于Optional 无参不会调用，即body无内容时不会调用 handleTask
                         .map(SimpleWebServer::handleTask).doOnError(onError).flatMap(Mono::just)))
         // TODO form表单 https://projectreactor.io/docs/netty/release/reference/index.html#_reading_post_form_or_multipart_data
         ;
@@ -66,6 +68,11 @@ public class SimpleWebServer {
      */
     public static String handleTask(String param) {
         log.info("param={}", param);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            log.error("", e);
+        }
         return "Task";
     }
 
