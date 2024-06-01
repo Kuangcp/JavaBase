@@ -15,6 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 /**
+ * 实现最基础功能的Web服务器 处理Rest请求
+ *
  * @author Kuangcp
  * 2024-05-28 21:27
  */
