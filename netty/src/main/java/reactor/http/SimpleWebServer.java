@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 /**
@@ -19,6 +20,9 @@ import java.util.function.Consumer;
  */
 @Slf4j
 public class SimpleWebServer {
+
+    private static final AtomicInteger count = new AtomicInteger();
+
     public static void main(String[] args) {
         DisposableServer server = HttpServer.create()
                 .route(SimpleWebServer::buildRouter)
@@ -30,7 +34,6 @@ public class SimpleWebServer {
 
     private static void buildRouter(HttpServerRoutes routes) {
         Consumer<Throwable> onError = (Throwable ex) -> log.error("", ex);
-
 
         routes
                 .get("/ping",
@@ -63,16 +66,21 @@ public class SimpleWebServer {
     }
 
     /**
+     * 通过使用ab工具压测可以发现 Netty会启动最多CPU个数的线程来处理线程，16核CPU的主机在并发超过16后 RT时间会大致 并发/核数 倍率增长。例如48并发RT为3倍sleep
+     * 并发小于等于16时RT时间近似于sleep时间 但是调度会导致还是会可能有请求的RT是两倍sleep时间（例如两个并发请求放在一个线程上排队，第二个请求就要等第一个结束）。
+     *
      * @param param JSON字符串
      * @return 序列化后 JSON字符串
      */
     public static String handleTask(String param) {
-        log.info("param={}", param);
+        final int id = count.incrementAndGet();
+        log.info("[{}] param={}", id, param);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             log.error("", e);
         }
+        log.info("[{}] finish", id);
         return "Task";
     }
 
