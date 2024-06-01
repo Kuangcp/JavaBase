@@ -1,4 +1,4 @@
-package com.github.kuangcp.latch;
+package com.github.kuangcp.juc;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -32,27 +32,4 @@ public class CountDownLatchTest {
         latch.await(3, TimeUnit.SECONDS);
     }
 
-    @Test
-    public void testSemaphore() throws Exception {
-        final ExecutorService pool = Executors.newFixedThreadPool(10);
-        Semaphore semaphore = new Semaphore(3, true);
-        for (int i = 0; i < 30; i++) {
-            pool.execute(() -> {
-                try {
-                    semaphore.acquire();
-                    TimeUnit.SECONDS.sleep(1);
-                } catch (Exception e) {
-                    log.error("", e);
-                } finally {
-                    semaphore.release();
-                }
-                log.info("run");
-            });
-        }
-        Executors.newSingleThreadExecutor().execute(() -> {
-
-        });
-
-        Thread.currentThread().join();
-    }
 }

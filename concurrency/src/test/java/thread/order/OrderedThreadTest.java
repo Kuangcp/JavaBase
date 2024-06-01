@@ -1,8 +1,8 @@
 package thread.order;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.junit.Test;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by https://github.com/kuangcp on 18-1-18  下午1:54
@@ -15,7 +15,7 @@ import org.junit.Test;
  */
 public class OrderedThreadTest {
 
-    private static AtomicInteger count = new AtomicInteger(0);
+    private static final AtomicInteger count = new AtomicInteger(0);
 
     @Test
     public void testOrder() throws InterruptedException {

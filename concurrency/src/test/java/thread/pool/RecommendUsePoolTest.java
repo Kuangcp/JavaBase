@@ -21,7 +21,9 @@ import java.util.concurrent.atomic.AtomicReference;
 public class RecommendUsePoolTest {
 
     /**
-     * 最终会丢弃10个任务，5个任务分配给线程 5个在队列里
+     * 最终会丢弃10个任务（不知道哪10个），5个任务分配给线程 5个在队列里
+     *
+     * @see RecommendUsePoolTest#testTaskPool() 优化版
      */
     @Test
     public void testDiscard() throws Exception {
@@ -42,13 +44,13 @@ public class RecommendUsePoolTest {
     }
 
     /**
-     * 使用时提交 Runnable 的自定义实现，得以附带业务标识，从而实现感知拒绝，等待队列中的任务。
+     * 使用时提交 Runnable 的自定义实现，附带业务标识，从而实现感知拒绝的具体任务，等待队列中的具体任务。
      */
     @Test
     public void testTaskPool() throws Exception {
         for (int i = 0; i < 20; i++) {
             int finalI = i + 1;
-            RecommendUsePool.taskPool.execute(new RecommendUsePool.Task("task-" + finalI, () -> {
+            RecommendUsePool.discardPool.execute(new RecommendUsePool.Task("task-" + finalI, () -> {
                 try {
                     Thread.sleep(1000);
                     log.info("run task-{}", finalI);
@@ -63,10 +65,12 @@ public class RecommendUsePoolTest {
 
     /**
      * 测试消费批量任务
-     * 任务特点：高内存高CPU占用，特殊时段批量创建其他时间较空闲
+     * 任务特点：高内存高CPU占用，特殊时段批量创建 但其他时间较空闲
      * 目标：固定并发数的前提下平缓消费，空闲时释放所有线程
      * <p>
      * 限制内存 -Xmx500m
+     *
+     * @see RecommendUsePoolTest#testBatchTaskPool2() 优化版
      */
     @Test
     public void testBatchTaskPool() throws Exception {
@@ -208,5 +212,43 @@ public class RecommendUsePoolTest {
         }
 
         ctx.text("add " + count + " queue:" + shardQueue.size());
+    }
+
+    @Test
+    public void testKillCoreThread() throws Exception {
+        Thread.sleep(3000);
+        log.info("start");
+        final int total = 500;
+        final int taskTime = 1000;
+        final int submitTime = 20;
+
+        for (int i = 0; i < total; i++) {
+            if (i < 10) {
+                Thread.sleep(taskTime);
+            } else {
+                // 注意当此处提交任务的频率 当 taskTime/submitTime < core 时任务消费正常，当大于core就会开始使用到临时线程, 当大于max以及队列满时就会开始丢弃任务了
+                Thread.sleep(submitTime);
+            }
+            RecommendUsePool.coreCachePool.execute(new RecommendUsePool.Task("task-" + i, () -> {
+                try {
+                    Thread.sleep(taskTime);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }));
+        }
+
+        Thread.currentThread().join(10000);
+        // 此时已经销毁了所有的core线程（大于idle的8s），下面的任务会开启新的core
+        RecommendUsePool.coreCachePool.execute(() -> {
+            try {
+                Thread.sleep(10000);
+                log.info("Last task");
+            } catch (Exception e) {
+                log.error("", e);
+            }
+        });
+        Thread.currentThread().join(15000);
+        log.info("end");
     }
 }

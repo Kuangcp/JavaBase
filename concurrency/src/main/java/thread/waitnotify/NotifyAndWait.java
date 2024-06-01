@@ -1,9 +1,9 @@
 package thread.waitnotify;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Optional;
 import java.util.UUID;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author https://github.com/kuangcp on 2020-05-09 11:01
@@ -37,8 +37,8 @@ public class NotifyAndWait {
 
         synchronized (this) {
             this.notify();
-            // TODO 如果对象被多个线程持有锁
-//      this.notifyAll();
+            // 如果对象被多个线程等待锁，就需要唤醒全部的等待线程
+//            this.notifyAll();
         }
     }
 }
