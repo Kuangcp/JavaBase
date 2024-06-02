@@ -6,16 +6,18 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
+ * wait and notify
+ *
  * @author https://github.com/kuangcp on 2020-05-09 11:01
  */
 @Slf4j
-public class NotifyAndWait {
+public class CallBackHolder {
 
     private final String id;
     private final String lock;
     private String result;
 
-    public NotifyAndWait(String lock) {
+    public CallBackHolder(String lock) {
         this.id = UUID.randomUUID().toString();
         this.lock = lock;
     }

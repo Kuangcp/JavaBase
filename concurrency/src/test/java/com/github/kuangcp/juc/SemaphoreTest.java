@@ -16,13 +16,14 @@ public class SemaphoreTest {
 
     @Test
     public void testSemaphore() throws Exception {
-        final ExecutorService pool = Executors.newFixedThreadPool(10);
         Semaphore semaphore = new Semaphore(3, true);
+        final ExecutorService pool = Executors.newFixedThreadPool(10);
+
         for (int i = 0; i < 30; i++) {
             pool.execute(() -> {
                 try {
                     semaphore.acquire();
-                    TimeUnit.SECONDS.sleep(1);
+                    TimeUnit.SECONDS.sleep(2);
                 } catch (Exception e) {
                     log.error("", e);
                 } finally {
