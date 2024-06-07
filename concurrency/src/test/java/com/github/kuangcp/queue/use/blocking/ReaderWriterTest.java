@@ -3,6 +3,7 @@ package com.github.kuangcp.queue.use.blocking;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +23,7 @@ public class ReaderWriterTest {
 
     @Test
     public void testChannel() throws Exception {
-        ArrayBlockingQueue<List<String>> queue = new ArrayBlockingQueue<>(500);
+        ArrayBlockingQueue<List<String>> queue = new ArrayBlockingQueue<>(10);
         QueueChannel<List<String>> channel = new QueueChannel<>(queue);
 
         CountDownLatch latch = startWriter(channel);
@@ -33,8 +34,10 @@ public class ReaderWriterTest {
     private void startReader(QueueChannel<List<String>> channel) throws InterruptedException {
         for (int i = 0; i < 1000; i++) {
             TimeUnit.MILLISECONDS.sleep(100);
-            channel.getQueue().add(Arrays.asList("33-" + i, "vv"));
+            log.info("add");
+            channel.put(Arrays.asList("33-" + i, "vv"));
         }
+        channel.stop();
     }
 
     private CountDownLatch startWriter(QueueChannel<List<String>> channel) {
@@ -43,12 +46,22 @@ public class ReaderWriterTest {
         pool.execute(() -> {
             try {
                 log.info("start");
-                while (!channel.getStop().get()) {
-                    List<String> task = channel.getQueue().poll(1, TimeUnit.SECONDS);
+                List<List<String>> batch = new ArrayList<>(100);
+                while (channel.isRunning()) {
+                    List<String> task = channel.poll(1, TimeUnit.SECONDS);
                     if (Objects.isNull(task)) {
                         continue;
                     }
-                    log.info("task={}", task);
+                    batch.add(task);
+                    TimeUnit.MILLISECONDS.sleep(500);
+                    if (batch.size() >= 10) {
+                        log.info("task={}", batch.size());
+                        batch.clear();
+                    }
+                }
+                if (!batch.isEmpty()) {
+                    log.info("end task={}", batch.size());
+                    batch.clear();
                 }
             } catch (Exception e) {
                 log.error("", e);
