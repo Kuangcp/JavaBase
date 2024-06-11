@@ -1,8 +1,10 @@
-package com.github.kuangcp.nio;
+package com.github.kuangcp.nio.chattingroom;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -17,10 +19,21 @@ import java.util.Scanner;
 @Slf4j
 class NIOClient {
 
+    private String name;
+
     private volatile boolean stop = false;
 
     public static void main(String[] s) throws Exception {
-        new NIOClient().init();
+        NIOClient client = new NIOClient();
+        client.inputName();
+        client.init();
+    }
+
+    private void inputName() throws Exception {
+        log.info("input name");
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        name = br.readLine();
+        log.info("your name: {}", name);
     }
 
     private void init() throws IOException {
@@ -63,7 +76,7 @@ class NIOClient {
                     return;
                 }
 
-                channel.write(NIOServer.charset.encode(line));
+                channel.write(NIOServer.charset.encode(name + ": " + line));
             }
         } catch (IOException e) {
             log.error(e.getMessage(), e);
@@ -88,7 +101,7 @@ class NIOClient {
         if (content.length() == 0) {
             return;
         }
-        log.info("server: {}", content);
+        log.info("#server# {}", content);
         if (Objects.equals(content.toString(), "Shutdown")) {
             this.stop();
             return;

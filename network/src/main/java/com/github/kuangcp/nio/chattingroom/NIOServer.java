@@ -1,4 +1,4 @@
-package com.github.kuangcp.nio;
+package com.github.kuangcp.nio.chattingroom;
 
 import com.github.kuangcp.io.ResourceTool;
 import lombok.extern.slf4j.Slf4j;
@@ -114,8 +114,8 @@ class NIOServer {
                 return;
             }
 
-            log.info("receive msg: {}", content);
-            if ("stop".equalsIgnoreCase(content.toString())) {
+            log.info("#msg# {}", content);
+            if (content.toString().endsWith(": stop")) {
                 broadcastToClient(selector, "Shutdown");
                 stop();
                 log.info("stop the sever");
@@ -124,13 +124,10 @@ class NIOServer {
 
             sk.interestOps(SelectionKey.OP_READ);//设置成准备下次读取
         } catch (Exception e) {
+            log.error("", e);
             //从Selector中删除指定的SelectionKey
             sk.cancel();
             ResourceTool.close(sk.channel());
-        }
-
-        if (content.length() <= 0) {
-            return;
         }
 
         broadcastToClient(selector, content.toString());
