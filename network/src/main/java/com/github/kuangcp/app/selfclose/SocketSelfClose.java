@@ -1,4 +1,4 @@
-package com.github.kuangcp.selfclose;
+package com.github.kuangcp.app.selfclose;
 
 import java.io.PrintStream;
 import java.net.ServerSocket;
