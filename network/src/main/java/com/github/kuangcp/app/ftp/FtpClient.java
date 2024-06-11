@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 /**
  * https://www.baeldung.com/java-ftp-client
- *
+ * <p>
  * 2023-12-19 14:18
  */
 @Slf4j
@@ -44,6 +44,7 @@ public class FtpClient {
 
         ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
 
+        // 注意尽量复用连接 防止出现421错误
         ftp.connect(server, port);
         int reply = ftp.getReplyCode();
         if (!FTPReply.isPositiveCompletion(reply)) {
