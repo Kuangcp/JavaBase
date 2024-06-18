@@ -65,6 +65,8 @@ public class RecommendUsePool {
     static {
         // 默认不会回收idle超时的 core线程 ，只会回收 core到max部分的临时线程，设置该值以节省资源
         coreCachePool.allowCoreThreadTimeOut(true);
+        // 初始化不会启动core线程，有任务提交才会创建
+//        coreCachePool.prestartAllCoreThreads();
     }
 
     /**

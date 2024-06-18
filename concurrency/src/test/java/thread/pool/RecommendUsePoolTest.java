@@ -214,6 +214,13 @@ public class RecommendUsePoolTest {
         ctx.text("add " + count + " queue:" + shardQueue.size());
     }
 
+
+    @Test
+    public void testEmptyCoreThread() throws Exception {
+        RecommendUsePool.coreCachePool.getActiveCount();
+        Thread.currentThread().join();
+    }
+
     @Test
     public void testKillCoreThread() throws Exception {
         Thread.sleep(3000);
