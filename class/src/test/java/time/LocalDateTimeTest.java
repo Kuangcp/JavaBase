@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import static org.hamcrest.Matchers.lessThan;
@@ -49,7 +50,17 @@ public class LocalDateTimeTest {
     public void testDate() throws Exception {
         final Date date = new Date(585327600000L);
         System.out.println(date);
+    }
 
+    @Test
+    public void testFormat() throws Exception {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+        String str = format.format(LocalDateTime.now());
+        System.out.println(str);
+
+        LocalDateTime last = LocalDateTime.parse(str, format);
+        System.out.println(last);
+        System.out.println(format.format(last));
     }
 
 }

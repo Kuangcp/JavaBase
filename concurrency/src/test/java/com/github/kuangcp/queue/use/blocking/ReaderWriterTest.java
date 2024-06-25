@@ -3,6 +3,10 @@ package com.github.kuangcp.queue.use.blocking;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.IntSummaryStatistics;
@@ -28,21 +32,49 @@ public class ReaderWriterTest {
         ArrayBlockingQueue<List<String>> queue = new ArrayBlockingQueue<>(10);
         QueueChannel<List<String>> channel = new QueueChannel<>(queue);
 
-        CountDownLatch latch = startWriter(channel);
-        startReader(channel);
+        BufferedWriter writer = Files.newBufferedWriter(Paths.get("result.csv"));
+
+        CountDownLatch latch = this.startWriter(channel, writer);
+        this.startReader(channel);
         latch.await();
+        writer.flush();
+        writer.close();
+    }
+
+    @Test
+    public void testBatchRead() throws Exception {
+        ArrayBlockingQueue<List<String>> queue = new ArrayBlockingQueue<>(10);
+        QueueChannel<List<String>> channel = new QueueChannel<>(queue);
+
+        BufferedWriter writer = Files.newBufferedWriter(Paths.get("result.csv"));
+
+        CountDownLatch latch = this.startWriter(channel, writer);
+        this.startBatchReader(channel);
+        latch.await();
+        writer.flush();
+        writer.close();
+    }
+
+    private void startBatchReader(QueueChannel<List<String>> channel) throws InterruptedException {
+        for (int i = 0; i < 100; i++) {
+            TimeUnit.MILLISECONDS.sleep(10);
+            for (int j = 0; j < 1000; j++) {
+                channel.put(Arrays.asList(i + "-" + j, "vv"));
+            }
+        }
+        channel.stop();
     }
 
     private void startReader(QueueChannel<List<String>> channel) throws InterruptedException {
         for (int i = 0; i < 1000; i++) {
-            TimeUnit.MILLISECONDS.sleep(100);
-            log.info("add");
+            TimeUnit.MILLISECONDS.sleep(10);
+//            log.info("add");
             channel.put(Arrays.asList("33-" + i, "vv"));
         }
         channel.stop();
     }
 
-    private CountDownLatch startWriter(QueueChannel<List<String>> channel) {
+    private CountDownLatch startWriter(QueueChannel<List<String>> channel, BufferedWriter writer) throws IOException {
         ExecutorService pool = Executors.newFixedThreadPool(1);
         CountDownLatch latch = new CountDownLatch(1);
         pool.execute(() -> {
@@ -56,14 +88,24 @@ public class ReaderWriterTest {
                         continue;
                     }
                     batch.add(task);
-                    TimeUnit.MILLISECONDS.sleep(500);
+                    TimeUnit.MILLISECONDS.sleep(2);
                     if (batch.size() >= 10) {
+                        for (List<String> row : batch) {
+                            writer.write(String.join(",", row) + "\n");
+                        }
                         log.info("task={}", batch.size());
                         batch.clear();
                     }
                 }
+
+                // 很关键，如果读方批次读，读完stop了，消费方还没处理完队列时，得将队列中剩余的数据都读出来，否则就少数据了
+                channel.drainTo(batch);
+
                 if (!batch.isEmpty()) {
                     log.info("end task={}", batch.size());
+                    for (List<String> row : batch) {
+                        writer.write(String.join(",", row) + "\n");
+                    }
                     batch.clear();
                 }
             } catch (Exception e) {

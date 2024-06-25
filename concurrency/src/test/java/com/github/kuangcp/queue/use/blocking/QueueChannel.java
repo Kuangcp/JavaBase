@@ -1,5 +1,6 @@
 package com.github.kuangcp.queue.use.blocking;
 
+import java.util.Collection;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -28,6 +29,11 @@ public class QueueChannel<E> {
     public E poll(long timeout, TimeUnit unit) throws InterruptedException {
         return queue.poll(timeout, unit);
     }
+
+    public int drainTo(Collection<? super E> c) {
+        return queue.drainTo(c);
+    }
+
 
     public void put(E e) throws InterruptedException {
         queue.put(e);
