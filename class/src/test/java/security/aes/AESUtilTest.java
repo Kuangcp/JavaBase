@@ -1,6 +1,7 @@
 package security.aes;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,10 +10,15 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
 
-public class WxMsgAESUtilUtilUnitTest {
+import static org.hamcrest.MatcherAssert.assertThat;
+
+@Slf4j
+public class AESUtilTest {
 
 
     @Test
@@ -29,13 +35,15 @@ public class WxMsgAESUtilUtilUnitTest {
         final String base64 = AESUtil.generateIvByte();
 
         // 固定iv密钥
-        System.out.println(base64);
+        log.info("iv:{}", base64);
         IvParameterSpec ivParameterSpec = AESUtil.generateIv();
         String algorithm = "AES/CBC/PKCS5Padding";
 
         // when
         String cipherText = AESUtil.encrypt(algorithm, input, key, ivParameterSpec);
         String plainText = AESUtil.decrypt(algorithm, cipherText, key, ivParameterSpec);
+
+        log.info("cipher={} plain={}", cipherText, plainText);
 
         // then
         Assert.assertEquals(input, plainText);
@@ -47,8 +55,8 @@ public class WxMsgAESUtilUtilUnitTest {
         SecretKey key = AESUtil.generateKey(128);
         String algorithm = "AES/CBC/PKCS5Padding";
         IvParameterSpec ivParameterSpec = AESUtil.generateIv();
-        File inputFile = Paths.get("src/test/resources/origin.txt")
-                .toFile();
+        Path originPath = Paths.get("src/test/resources/origin.txt");
+        File inputFile = originPath.toFile();
         File encryptedFile = new File("baeldung.encrypted");
         File decryptedFile = new File("document.decrypted");
 
@@ -58,6 +66,11 @@ public class WxMsgAESUtilUtilUnitTest {
 
         // then
 //        assertThat(inputFile).hasSameTextualContentAs(decryptedFile);
+        byte[] handle = Files.readAllBytes(Paths.get("document.decrypted"));
+        byte[] origin = Files.readAllBytes(originPath);
+        assertThat("", handle.length == origin.length);
+        Assert.assertEquals(new String(handle), new String(origin));
+
         encryptedFile.deleteOnExit();
         decryptedFile.deleteOnExit();
     }
@@ -82,37 +95,39 @@ public class WxMsgAESUtilUtilUnitTest {
     public void givenPassword_whenEncrypt_thenSuccess() throws Exception {
         // given
         String plainText = "www.baeldung.com";
+
+        // 双方预先配置或通过通信达成共识的配置项
         String password = "baeldung";
         String salt = "12345678";
         final String base64 = AESUtil.generateIvByte();
 
         // 固定iv密钥
-        System.out.println(base64);
-        IvParameterSpec ivParameterSpec = AESUtil.generateIv(base64);
+        log.info("iv={}", base64);
         SecretKey key = AESUtil.getKeyFromPassword(password, salt);
 
         // when
-        String cipherText = AESUtil.encryptPasswordBased(plainText, key, ivParameterSpec);
-        String decryptedCipherText = AESUtil.decryptPasswordBased(cipherText, key, ivParameterSpec);
+        String cipherText = AESUtil.encryptPasswordBased(plainText, key, AESUtil.generateIv(base64));
+        String decryptedCipherText = AESUtil.decryptPasswordBased(cipherText, key, AESUtil.generateIv(base64));
+        log.info("cipher={} decrypted={}", cipherText, decryptedCipherText);
 
         // then
         Assert.assertEquals(plainText, decryptedCipherText);
     }
 
-    /**
-     */
     @Test
     public void testConfigWay() throws Exception {
         String plainText = "www.baeldung.com";
         String password = "baeldung";
         String salt = "12345678";
         final String iv = AESUtil.generateIvByte();
+        log.info("iv={}", iv);
         final String result = encryptPass(plainText, password, salt, iv);
         final String origin = decryptPass(result, password, salt, iv);
 
         Assert.assertEquals(origin, plainText);
 
     }
+
     public String encryptPass(String text, String passwd, String salt, String iv) throws Exception {
         return AESUtil.encryptPasswordBased(text, AESUtil.getKeyFromPassword(passwd, salt), AESUtil.generateIv(iv));
     }
