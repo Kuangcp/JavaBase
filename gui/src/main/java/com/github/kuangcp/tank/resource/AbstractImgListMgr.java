@@ -19,25 +19,21 @@ public abstract class AbstractImgListMgr {
     public int width;
     public int height;
 
-    public void loadImg() {
-        try {
-            String val = PropertiesMgr.imgProperties.getProperty(this.getConfigKey());
-            String[] imgPathArr = val.split(",");
+    public void loadImg() throws IOException {
+        String val = PropertiesMgr.imgProperties.getProperty(this.getConfigKey());
+        String[] imgPathArr = val.split(",");
 
-            if (imgPathArr.length < 1) {
-                log.warn("no image {}", this.getClass().getSimpleName());
-                return;
-            }
-
-            this.imgArr = new Image[imgPathArr.length];
-            for (int i = 0; i < imgPathArr.length; i++) {
-                this.imgArr[i] = ImageIO.read(getClass().getResourceAsStream(imgPathArr[i]));
-            }
-
-            curImg = this.imgArr[(int) (Math.random() * imgPathArr.length)];
-        } catch (IOException e) {
-            log.error("", e);
+        if (imgPathArr.length < 1) {
+            log.warn("no image {}", this.getClass().getSimpleName());
+            return;
         }
+
+        this.imgArr = new Image[imgPathArr.length];
+        for (int i = 0; i < imgPathArr.length; i++) {
+            this.imgArr[i] = ImageIO.read(getClass().getResourceAsStream(imgPathArr[i]));
+        }
+
+        curImg = this.imgArr[(int) (Math.random() * imgPathArr.length)];
     }
 
     public abstract String getConfigKey();

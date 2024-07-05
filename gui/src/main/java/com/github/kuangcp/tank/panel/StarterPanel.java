@@ -1,12 +1,11 @@
 package com.github.kuangcp.tank.panel;
 
-import lombok.extern.slf4j.Slf4j;
 import com.github.kuangcp.tank.resource.PropertiesMgr;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 /**
  * 绘制开始游戏的界面
@@ -17,11 +16,12 @@ public class StarterPanel extends JPanel {
     public Image firstInfoImg;
 
     public StarterPanel() {
+        String imgPath = null;
         try {
-            String imgPath = PropertiesMgr.imgProperties.getProperty(PropertiesMgr.Key.Img.START_BG);
+            imgPath = PropertiesMgr.imgProperties.getProperty(PropertiesMgr.Key.Img.START_BG);
             firstInfoImg = ImageIO.read(getClass().getResource(imgPath));
-        } catch (IOException e) {
-            log.error("", e);
+        } catch (Exception e) {
+            log.error("Image {}", imgPath, e);
         }
     }
 

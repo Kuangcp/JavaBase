@@ -7,8 +7,8 @@ import java.awt.Point;
  */
 class TranslateByOne implements ElementAction {
 
-  @Override
-  public void action(Point point) {
-    point.translate(1, 2);
-  }
+    @Override
+    public void action(Point point) {
+        point.translate(1, 2);
+    }
 }

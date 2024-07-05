@@ -10,8 +10,8 @@ import java.util.function.Consumer;
  */
 class TranslateByOne8 implements Consumer<Point> {
 
-  @Override
-  public void accept(Point point) {
-    point.translate(1, 1);
-  }
+    @Override
+    public void accept(Point point) {
+        point.translate(1, 1);
+    }
 }

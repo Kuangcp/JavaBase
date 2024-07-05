@@ -16,8 +16,11 @@ public class MainTankGame {
      */
     public static void main(String[] args) {
         MonitorExecutor.init();
-        ResourceMgr.loadResource();
-
-        EventQueue.invokeLater(new MainFrame());
+        try {
+            ResourceMgr.loadResource();
+            EventQueue.invokeLater(new MainFrame());
+        } catch (Exception e) {
+            log.error("", e);
+        }
     }
 }

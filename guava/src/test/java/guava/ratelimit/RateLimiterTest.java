@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-08-30 03:00
@@ -17,23 +18,25 @@ public class RateLimiterTest {
         final RateLimiter rateLimiter = RateLimiter.create(3, 5, TimeUnit.SECONDS);
         rateLimiter.acquire();
 
+        AtomicInteger count = new AtomicInteger(0);
         // SmoothRateLimiter
         Runnable action = () -> {
             for (int i = 0; i < 1000; i++) {
                 try {
                     TimeUnit.MILLISECONDS.sleep(100);
                     rateLimiter.acquire();
-                    log.info("run");
+                    int cnt = count.incrementAndGet();
+                    log.info("run {}", cnt);
                 } catch (InterruptedException e) {
                     log.error("", e);
                 }
             }
         };
         Thread first = new Thread(action);
-        first.setName("first");
+        first.setName("one");
         first.start();
         Thread second = new Thread(action);
-        second.setName("second");
+        second.setName("two");
         second.start();
 
         TimeUnit.HOURS.sleep(1);
