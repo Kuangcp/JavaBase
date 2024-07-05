@@ -33,4 +33,10 @@ public class OptionalTest {
         System.out.println(result);
         assert !result.isPresent();
     }
+
+    @Test(expected = RuntimeException.class)
+    public void testThrow() throws Exception {
+        Optional.ofNullable(null)
+                .orElseThrow(() -> new RuntimeException("null"));
+    }
 }
