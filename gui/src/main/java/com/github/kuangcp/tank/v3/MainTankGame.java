@@ -18,6 +18,7 @@ public class MainTankGame {
         MonitorExecutor.init();
         try {
             ResourceMgr.loadResource();
+            log.info("finish load resources");
             EventQueue.invokeLater(new MainFrame());
         } catch (Exception e) {
             log.error("", e);

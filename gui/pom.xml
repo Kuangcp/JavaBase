@@ -18,11 +18,60 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
     <dependencies>
-
         <dependency>
             <groupId>com.github.kuangcp</groupId>
             <artifactId>kcp-tool</artifactId>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>tank</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <mainClass>com.github.kuangcp.tank.v3.MainTankGame</mainClass>
+                <finalName>tank</finalName>
+            </properties>
+        </profile>
+        <profile>
+            <id>note</id>
+            <properties>
+                <mainClass>com.github.kuangcp.notepad.Note</mainClass>
+                <finalName>note</finalName>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <finalName>${finalName}-${project.version}</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>${mainClass}</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <appendAssemblyId>false</appendAssemblyId>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
