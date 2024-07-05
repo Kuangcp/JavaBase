@@ -1,7 +1,8 @@
 package thread.order;
 
-import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.Test;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by https://github.com/kuangcp on 18-1-18  下午1:54
@@ -14,37 +15,37 @@ import org.junit.Test;
  */
 public class OrderedThreadTest {
 
-  private static AtomicInteger count = new AtomicInteger(0);
+    private static final AtomicInteger count = new AtomicInteger(0);
 
-  @Test
-  public void testOrder() throws InterruptedException {
-    Thread thread1 = new Thread(new Task("A", 0, count));
-    Thread thread2 = new Thread(new Task("B", 1, count));
-    Thread thread3 = new Thread(new Task("C", 2, count));
+    @Test
+    public void testOrder() throws InterruptedException {
+        Thread thread1 = new Thread(new Task("A", 0, count));
+        Thread thread2 = new Thread(new Task("B", 1, count));
+        Thread thread3 = new Thread(new Task("C", 2, count));
 
-    thread1.start();
-    thread2.start();
-    thread3.start();
+        thread1.start();
+        thread2.start();
+        thread3.start();
 
-    // 避免Junit主线程直接退出
-    thread1.join();
-    thread2.join();
-    thread3.join();
-  }
+        // 避免Junit主线程直接退出
+        thread1.join();
+        thread2.join();
+        thread3.join();
+    }
 
-  @Test
-  public void testOrderWithVolatile() throws InterruptedException {
-    Thread thread1 = new Thread(new TaskWithVolatile("A", 0));
-    Thread thread2 = new Thread(new TaskWithVolatile("B", 1));
-    Thread thread3 = new Thread(new TaskWithVolatile("C", 2));
+    @Test
+    public void testOrderWithVolatile() throws InterruptedException {
+        Thread thread1 = new Thread(new TaskWithVolatile("A", 0));
+        Thread thread2 = new Thread(new TaskWithVolatile("B", 1));
+        Thread thread3 = new Thread(new TaskWithVolatile("C", 2));
 
-    thread1.start();
-    thread2.start();
-    thread3.start();
+        thread1.start();
+        thread2.start();
+        thread3.start();
 
-    // 避免Junit主线程直接退出
-    thread1.join();
-    thread2.join();
-    thread3.join();
-  }
+        // 避免Junit主线程直接退出
+        thread1.join();
+        thread2.join();
+        thread3.join();
+    }
 }

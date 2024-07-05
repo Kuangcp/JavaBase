@@ -1,15 +1,12 @@
 package com.github.kuangcp.reflects;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpServer;
+import com.hellokaton.blade.Blade;
 import net.sf.cglib.beans.BeanCopier;
 import org.junit.Test;
-import sun.net.httpserver.HttpServerImpl;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -47,23 +44,27 @@ public class RecordCopyTest {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         BeanUtil.fieldMap(BeanA.class);
         BeanUtil.fieldMap(BeanB.class);
 
-        HttpServer s = HttpServerImpl.create(new InetSocketAddress(8745), 1000);
-        s.createContext("/u", RecordCopyTest::utilHandle);
-        s.createContext("/b", RecordCopyTest::copyHandle);
-
-        s.start();
+        Blade.create()
+                .listen(8745)
+                .get("/", ctx -> ctx.text("Hello Blade"))
+                .get("/u", ctx -> {
+                    Optional<String> total = ctx.request().query("total");
+                    ctx.text(utilHandle(total.map(Integer::parseInt).orElse(1)));
+                })
+                .get("/b", ctx -> {
+                    Optional<String> total = ctx.request().query("total");
+                    ctx.text(copyHandle(total.map(Integer::parseInt).orElse(1)));
+                })
+                .start(RecordCopyTest.class, args);
     }
 
-    static void copyHandle(HttpExchange v) throws IOException {
+    static String copyHandle(int total) {
         long start = System.currentTimeMillis();
-        String query = v.getRequestURI().getPath();
-        int ix = query.lastIndexOf("/");
-        String total = query.substring(ix + 1);
-        for (int i = 0; i < Integer.parseInt(total); i++) {
+        for (int i = 0; i < total; i++) {
             BeanA a = new BeanA();
             a.setDocName("doc");
             BeanB b = new BeanB();
@@ -72,35 +73,26 @@ public class RecordCopyTest {
         long end = System.currentTimeMillis();
 
         long gv = end - start;
-        String res = gv + "";
-        v.sendResponseHeaders(200, res.length());
-        v.getResponseBody().write(res.getBytes());
-        v.getResponseBody().close();
+        return gv + "";
     }
 
-    static void utilHandle(HttpExchange v) throws IOException {
+    static String utilHandle(int total) {
         long start = System.currentTimeMillis();
-        String query = v.getRequestURI().getPath();
-        int ix = query.lastIndexOf("/");
-        String total = query.substring(ix + 1);
         BeanA a = new BeanA();
         a.setDocName("doc");
         a.setApplicantName("xxx");
         a.setApplyId(123456L);
         a.setDataExpire(new Date());
-        a.setDocAuthorization(Arrays.asList(2,4));
+        a.setDocAuthorization(Arrays.asList(2, 4));
 
-        for (int i = 0; i < Integer.parseInt(total); i++) {
+        for (int i = 0; i < total; i++) {
             BeanB b = new BeanB();
             BeanUtil.copyProperties(a, b, false);
         }
         long end = System.currentTimeMillis();
 
         long gv = end - start;
-        String res = gv + "";
-        v.sendResponseHeaders(200, res.length());
-        v.getResponseBody().write(res.getBytes());
-        v.getResponseBody().close();
+        return gv + "";
     }
 
 

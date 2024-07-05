@@ -1,11 +1,11 @@
 package com.github.kuangcp.inherit;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsEqual.equalTo;
-
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.core.IsNot;
 import org.junit.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 /**
  * RTTI C++ 中的概念, Java中没有, 但是 Thinking in java 里面用了这个概念, 实际上是有歧义的
@@ -18,40 +18,40 @@ import org.junit.Test;
  */
 public class SameFieldTest {
 
-  @Slf4j
-  public static class A {
+    @Slf4j
+    public static class A {
 
-    int size = 1;
+        int size = 1;
 
-    public int getSize() {
-      log.info("invoke");
-      return size;
+        public int getSize() {
+            log.info("invoke");
+            return size;
+        }
     }
-  }
 
-  @Slf4j
-  public static class B extends A {
+    @Slf4j
+    public static class B extends A {
 
-    int size = 3;
+        int size = 3;
 
-    public int getSize() {
-      log.info("invoke");
-      return size;
+        public int getSize() {
+            log.info("invoke");
+            return size;
+        }
     }
-  }
 
-  @Test
-  public void testSame() {
-    A a = new B();
-    B b = new B();
+    @Test
+    public void testSame() {
+        A a = new B();
+        B b = new B();
 
-    System.out.println(a.getClass());
-    System.out.println(b.getClass());
+        System.out.println(a.getClass());
+        System.out.println(b.getClass());
 
-    assertThat(a.size + b.size, equalTo(4));
+        assertThat(a.size + b.size, equalTo(4));
 
-    assertThat(a.size, IsNot.not(a.getSize()));
+        assertThat(a.size, IsNot.not(a.getSize()));
 
-    assertThat(a.getSize() + b.getSize(), equalTo(6));
-  }
+        assertThat(a.getSize() + b.getSize(), equalTo(6));
+    }
 }

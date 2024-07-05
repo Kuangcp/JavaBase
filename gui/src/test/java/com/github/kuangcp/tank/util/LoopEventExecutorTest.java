@@ -160,7 +160,6 @@ public class LoopEventExecutorTest {
 
     @Test
     public void testEnemyTank() throws Exception {
-//        final EnemyTank enemyTank = new EnemyTank(30, 30, 2, DirectType.RIGHT);
         final EnemyTank enemyTank = new EnemyTank(30, 30, 2);
         LoopEventExecutor.init();
         PlayStageMgr.init(new Hero(240, 50, 1), Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
@@ -170,9 +169,9 @@ public class LoopEventExecutorTest {
 
     @Test
     public void testSchedule() throws Exception {
-        final EnemyTank enemyTank = new EnemyTank(30, 30, 2, DirectType.RIGHT);
+        final EnemyTank enemyTank = new EnemyTank(30, 30, 2);
         final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
-        scheduledExecutorService.scheduleAtFixedRate(()->{
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
             System.out.println("run");
         }, 200, 1000, TimeUnit.MILLISECONDS);
 //        scheduledExecutorService.scheduleWithFixedDelay(enemyTank, 2000, 1000, TimeUnit.MILLISECONDS);

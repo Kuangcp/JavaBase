@@ -11,6 +11,8 @@ public class Application {
     public static void main(String[] args) {
         Blade.create()
                 .listen(32993)
-                .get("/", ctx -> ctx.text("Hello Blade")).start(Application.class, args);
+                .get("/", ctx -> ctx.text("Hello Blade"))
+
+                .start(Application.class, args);
     }
 }

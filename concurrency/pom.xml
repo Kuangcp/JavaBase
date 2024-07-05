@@ -53,7 +53,15 @@
                     <artifactId>blade-log</artifactId>
                     <groupId>com.hellokaton</groupId>
                 </exclusion>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-all</artifactId>
+                </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.groovy</groupId>

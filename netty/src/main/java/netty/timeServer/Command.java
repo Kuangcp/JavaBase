@@ -5,6 +5,12 @@ package netty.timeServer;
  */
 public interface Command {
 
-  String QUERY_TIME = "QUERY TIME ORDER";
-  String STOP_SERVER = "STOP";
+    String QUERY_TIME = "QUERY TIME ORDER";
+    String STOP_SERVER = "STOP";
+
+    String server_close = "s_close";
+    String server_close_ack = "ack_s_close";
+
+    String client_close = "c_close";
+    String client_close_ack = "ack_c_close";
 }

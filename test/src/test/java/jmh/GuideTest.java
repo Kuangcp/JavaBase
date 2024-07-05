@@ -7,10 +7,10 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class GuideTest {
 
 
-    //    @Benchmark
+    @Benchmark
     public void uuid() {
         UUID.randomUUID().toString();
     }
@@ -33,18 +33,6 @@ public class GuideTest {
     @Benchmark
     public void rand() {
         StrUtil.randomAlpha(32);
-    }
-
-    // arrayList 本身是对数组的封装，性能影响不大
-    @Benchmark
-    public void randArray() {
-        StrUtil.randomAlphaA(32);
-    }
-
-    // 省去对象创建，效率更好
-    @Benchmark
-    public void randArrayLocal() {
-        StrUtil.randomAlphaAL(32);
     }
 
     @Test
@@ -61,19 +49,4 @@ public class GuideTest {
         System.out.println(StrUtil.randomAlpha(32));
     }
 
-    @Test
-    public void testDiff() throws Exception {
-        Set<String> re = new HashSet<>();
-        for (int i = 0; i < 10000; i++) {
-            re.add(StrUtil.randomAlphaAL(4));
-        }
-        System.out.println(re.size());
-
-        Set<String> re2 = new HashSet<>();
-        for (int i = 0; i < 10000; i++) {
-            re2.add(StrUtil.randomAlphaA(4));
-        }
-        System.out.println(re2.size());
-
-    }
 }

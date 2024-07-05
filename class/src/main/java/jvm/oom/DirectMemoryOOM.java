@@ -9,13 +9,13 @@ import java.util.List;
 
 /**
  * -XX:NativeMemoryTracking=detail
- *
+ * <p>
  * 查看内存分布jcmd pid VM.native_memory detail
- *
+ * <p>
  * TODO Java11 sun包成为内置包, 需要找到替代方式获取直接内存
- *
+ * <p>
  * https://www.jianshu.com/p/2d8bc4d4c181
- *
+ * <p>
  * https://tech.meituan.com/2019/01/03/spring-boot-native-memory-leak.html
  *
  * @author kuangcp on 4/4/19-12:29 AM
@@ -28,8 +28,9 @@ public class DirectMemoryOOM {
 
     /**
      * C语言malloc申请的也是虚拟内存,没有设置值的话操作系统不会分配物理内存
-     * @see java.nio.DirectByteBuffer#DirectByteBuffer(int)
      *
+     * @see java.nio.DirectByteBuffer#DirectByteBuffer(int)
+     * <p>
      * https://tech.meituan.com/2019/02/14/talk-about-java-magic-class-unsafe.html
      */
     static void byUnsafe() throws IllegalAccessException, InterruptedException {

@@ -25,16 +25,46 @@
             <artifactId>cglib</artifactId>
             <version>3.2.4</version>
         </dependency>
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.roaringbitmap</groupId>
+            <artifactId>RoaringBitmap</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.github.kuangcp</groupId>
             <artifactId>kcp-tool</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.github.kuangcp</groupId>-->
-<!--            <artifactId>kcp-core</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.hellokaton</groupId>
+            <artifactId>blade-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>blade-log</artifactId>
+                    <groupId>com.hellokaton</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-all</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.kuangcp</groupId>
+            <artifactId>kcp-core</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>

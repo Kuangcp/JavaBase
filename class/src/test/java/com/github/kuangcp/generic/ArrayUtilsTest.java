@@ -13,29 +13,29 @@ import java.util.Objects;
 @Slf4j
 public class ArrayUtilsTest {
 
-  @Test
-  public void testCreateArray() {
-    String[] stringArray = ArrayUtils.create(String.class, 9);
+    @Test
+    public void testCreateArray() {
+        String[] stringArray = ArrayUtils.create(String.class, 9);
 
-    System.out.println(Arrays.toString(stringArray));
+        System.out.println(Arrays.toString(stringArray));
 
-    assert Arrays.stream(stringArray).allMatch(Objects::isNull);
-  }
+        assert Arrays.stream(stringArray).allMatch(Objects::isNull);
+    }
 
-  @Test
-  public void testSort() {
-    List<Integer> list = Arrays.asList(3, 2, 5);
-    List<Integer> result = ArrayUtils.sort(list);
+    @Test
+    public void testSort() {
+        List<Integer> list = Arrays.asList(3, 2, 5);
+        List<Integer> result = ArrayUtils.sort(list);
 
-    log.info("result={}", result);
-  }
+        log.info("result={}", result);
+    }
 
-  @Test
-  public void testSortToArray() {
-    List<Integer> list = Arrays.asList(3, 2, 5);
-    // ArrayUtils.sortToArray(list) 实际返回的是 (Comparable[])  但是这里需要强转为 Integer[] 这个转型失败了
-    Integer[] result = ArrayUtils.sortToArray(list);
+    @Test
+    public void testSortToArray() {
+        List<Integer> list = Arrays.asList(3, 2, 5);
+        // ArrayUtils.sortToArray(list) 实际返回的是 (Comparable[])  但是这里需要强转为 Integer[] 这个转型失败了
+        Integer[] result = ArrayUtils.sortToArray(list);
 
-    log.info("result={}", Arrays.toString(result));
-  }
+        log.info("result={}", Arrays.toString(result));
+    }
 }

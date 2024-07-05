@@ -36,7 +36,6 @@ public class TaskWithVolatile implements Runnable {
             }
 
             log.info("target={} order={} count={}", target, order, count);
-//      System.out.println(target + " " + order + " " + count);
             count += 1;
 
             try {

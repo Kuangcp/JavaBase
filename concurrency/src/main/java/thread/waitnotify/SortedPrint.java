@@ -8,33 +8,33 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SortedPrint implements Runnable {
 
-  private final String name;
-  private final Object prev;
-  private final Object self;
+    private final String name;
+    private final Object prev;
+    private final Object self;
 
-  @Override
-  public void run() {
-    int count = 10;
-    while (count > 0) {
-      synchronized (prev) {
-        synchronized (self) {
-          System.out.print(name);
-          count--;
+    @Override
+    public void run() {
+        int count = 10;
+        while (count > 0) {
+            synchronized (prev) {
+                synchronized (self) {
+                    System.out.print(name);
+                    count--;
 
-          self.notify();
+                    self.notify();
+                }
+                try {
+                    prev.wait();
+                } catch (InterruptedException e) {
+                    log.error("", e);
+                }
+            }
         }
-        try {
-          prev.wait();
-        } catch (InterruptedException e) {
-          log.error("", e);
-        }
-      }
     }
-  }
 
-  public SortedPrint(String name, Object prev, Object self) {
-    this.name = name;
-    this.prev = prev;
-    this.self = self;
-  }
+    public SortedPrint(String name, Object prev, Object self) {
+        this.name = name;
+        this.prev = prev;
+        this.self = self;
+    }
 }

@@ -16,7 +16,7 @@ public class Task implements Runnable {
 
     private String target;
     private int order;
-    private AtomicInteger count; //利用原子递增控制线程准入顺序。
+    private AtomicInteger count; //利用原子递增控制线程准入顺序。但是只限制了执行入口顺序，没有限制任务块原子性的顺序
 
     public Task(String target, int order, AtomicInteger count) {
         this.target = target;
@@ -32,10 +32,8 @@ public class Task implements Runnable {
                 continue;
             }
 
-            // 使用 log 会乱, 使用下面的逻辑也不能完全保障顺序
             this.count.incrementAndGet();
-//      log.info("target={} order={} count={}", target, order, count);
-            System.out.println(target + " " + order + " " + count);
+            log.info("target={} order={} count={}", target, order, count);
 
             try {
                 TimeUnit.SECONDS.sleep(1);

@@ -97,7 +97,7 @@ public class HashMapTest {
         map.forEach((k, v) -> log.info("k={} v={}", k, v));
     }
 
-    @Test
+    @Test(expected = StackOverflowError.class)
     public void testStackOverFlow() throws Exception {
         HashMap<String, Object> testMap = new HashMap<String, Object>();
         testMap.put("me", testMap);

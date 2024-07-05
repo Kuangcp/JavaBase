@@ -15,7 +15,7 @@
         <spring.version>5.1.20.RELEASE</spring.version>
         <resilience4j.version>1.7.0</resilience4j.version>
         <quasar.version>0.8.0</quasar.version>
-        <kcp-tool.version>1.0.7</kcp-tool.version>
+        <kcp-tool.version>1.0.9</kcp-tool.version>
     </properties>
 
 
@@ -135,7 +135,7 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>32.0.0-jre</version>
+                <version>33.1.0-jre</version>
             </dependency>
             <dependency>
                 <groupId>org.hamcrest</groupId>
@@ -181,7 +181,7 @@
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
-                <version>4.1.67.Final</version>
+                <version>4.1.107.Final</version>
             </dependency>
             <dependency>
                 <groupId>com.hellokaton</groupId>
@@ -247,6 +247,11 @@
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
                 <version>1.9.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>3.27.0-GA</version>
             </dependency>
 
             <dependency>
@@ -403,6 +408,11 @@
                 <artifactId>jmockdata</artifactId>
                 <version>4.1.2</version>
             </dependency>
+            <dependency>
+                <groupId>org.roaringbitmap</groupId>
+                <artifactId>RoaringBitmap</artifactId>
+                <version>1.0.5</version>
+            </dependency>
 
             <dependency>
                 <groupId>io.github.resilience4j</groupId>
@@ -439,7 +449,7 @@
             <dependency>
                 <groupId>io.projectreactor</groupId>
                 <artifactId>reactor-bom</artifactId>
-                <version>2022.0.11</version>
+                <version>2023.0.4</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

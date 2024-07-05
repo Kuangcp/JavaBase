@@ -1,7 +1,7 @@
 package thread.schdule;
 
 import lombok.extern.slf4j.Slf4j;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.util.Timer;
 import java.util.TimerTask;
