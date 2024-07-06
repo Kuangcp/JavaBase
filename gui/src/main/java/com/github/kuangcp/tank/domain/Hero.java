@@ -1,14 +1,14 @@
 package com.github.kuangcp.tank.domain;
 
 import com.github.kuangcp.tank.constant.DirectType;
+import com.github.kuangcp.tank.mgr.PlayStageMgr;
 import com.github.kuangcp.tank.resource.ColorMgr;
+import com.github.kuangcp.tank.util.Roll;
 import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
-import com.github.kuangcp.tank.v3.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 import java.util.Vector;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 public class Hero extends Tank {
@@ -45,6 +45,7 @@ public class Hero extends Tank {
         g.setColor(Color.YELLOW);
         if (this.isInvincible()) {
             g.setColor(Color.CYAN);
+            // 闪烁
             normalColor++;
             normalColor %= 28;
             if (normalColor % 14 < 3) {
@@ -66,8 +67,8 @@ public class Hero extends Tank {
     public void resurrect() {
         this.lastDieMs = System.currentTimeMillis();
 
-        // 1/10 概率原地复活
-        if (ThreadLocalRandom.current().nextInt(10) == 0) {
+        // 100‰ 概率原地复活
+        if (Roll.roll(100)) {
             return;
         }
 

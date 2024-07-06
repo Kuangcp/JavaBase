@@ -1,4 +1,4 @@
-package com.github.kuangcp.tank.v2;
+package com.github.kuangcp.tank.backup.v2;
 
 import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.domain.Bullet;
@@ -6,9 +6,9 @@ import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
-import com.github.kuangcp.tank.v3.PlayStageMgr;
-import com.github.kuangcp.tank.v3.RoundMapMgr;
-import com.github.kuangcp.tank.v3.StageBorder;
+import com.github.kuangcp.tank.mgr.PlayStageMgr;
+import com.github.kuangcp.tank.mgr.RoundMapMgr;
+import com.github.kuangcp.tank.domain.StageBorder;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;

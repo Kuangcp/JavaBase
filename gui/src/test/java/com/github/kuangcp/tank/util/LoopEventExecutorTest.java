@@ -1,11 +1,10 @@
 package com.github.kuangcp.tank.util;
 
-import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.util.executor.AbstractLoopEvent;
 import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
-import com.github.kuangcp.tank.v3.PlayStageMgr;
+import com.github.kuangcp.tank.mgr.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 

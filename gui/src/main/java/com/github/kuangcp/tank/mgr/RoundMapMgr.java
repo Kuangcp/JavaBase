@@ -1,7 +1,8 @@
-package com.github.kuangcp.tank.v3;
+package com.github.kuangcp.tank.mgr;
 
 import com.github.kuangcp.tank.domain.Brick;
 import com.github.kuangcp.tank.domain.Iron;
+import com.github.kuangcp.tank.domain.StageBorder;
 
 import java.util.List;
 

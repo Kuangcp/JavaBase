@@ -2,7 +2,7 @@ package com.github.kuangcp.tank.domain;
 
 import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.util.executor.AbstractLoopEvent;
-import com.github.kuangcp.tank.v3.PlayStageMgr;
+import com.github.kuangcp.tank.mgr.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;

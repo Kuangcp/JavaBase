@@ -1,10 +1,10 @@
-package com.github.kuangcp.tank.v2;
+package com.github.kuangcp.tank.backup.v2;
 
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.util.executor.MonitorExecutor;
-import com.github.kuangcp.tank.v3.PlayStageMgr;
-import com.github.kuangcp.tank.v3.RoundMapMgr;
-import com.github.kuangcp.tank.v3.StageBorder;
+import com.github.kuangcp.tank.mgr.PlayStageMgr;
+import com.github.kuangcp.tank.mgr.RoundMapMgr;
+import com.github.kuangcp.tank.domain.StageBorder;
 
 import javax.swing.*;
 import java.util.Collections;
@@ -25,6 +25,7 @@ public class TankGameV2 extends JFrame {
     //最外层JFrame的构造函数
     public TankGameV2() {
         MonitorExecutor.init();
+        RoundMapMgr.init();
         PlayStageMgr.init(new Hero(50, 20, 5), Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
 
         MainPanelV2 panel = new MainPanelV2();
@@ -32,6 +33,7 @@ public class TankGameV2 extends JFrame {
         this.addKeyListener(panel);
         final Thread panelThread = new Thread(panel);
         panelThread.start();
+
 
         final StageBorder border = RoundMapMgr.instance.border;
 

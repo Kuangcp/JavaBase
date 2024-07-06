@@ -31,7 +31,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <mainClass>com.github.kuangcp.tank.v3.MainTankGame</mainClass>
+                <mainClass>com.github.kuangcp.tank.MainTankGame</mainClass>
                 <finalName>tank</finalName>
             </properties>
         </profile>

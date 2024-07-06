@@ -21,15 +21,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * 用文件系统实现保存数据的功能，真繁琐
- * 这里使用了上课时老师教的那种方法，三重流，先字节流然后转换流然后字符流
- * 韩顺平用的是直接字符流 FileReader 和 BufferedReader 就完成了功能
- * 等学会数据库操作，再重新实现这个功能
- * 谨记！！
- * <p>
- * 用数据库实现了续上局及其存盘退出，比文件的操作简单多了。。。
- */
 @Slf4j
 public class Saved {
     private Hero hero;
@@ -291,17 +282,6 @@ public class Saved {
                 myself[i] = rs.getInt(i + 1);
             }
 
-//			for (int i=1;i<5;i++){
-//				ps=cn.prepareStatement("insert into demons values(?,?)");
-//				ps.setInt(1, i*30+30);
-//				ps.setInt(2, i*10+50);
-//				int j = ps.executeUpdate();
-//				if(j==1){
-//					System.out.println("成功");
-//				}else {
-//					System.out.println("失败");
-//				}
-//			}
         } catch (Exception e1) {
             e1.printStackTrace();
         } finally {
@@ -388,89 +368,4 @@ public class Saved {
 
     }
 }
-
-
-/**
- * （和src同级）相对路径下的 字节转字符文件 读取操作从同等级的包下读取文件
- * 从同等级的包下读取文件
- * 从同等级的包下读取文件
- */
-//	public void savedAll(){
-	/*public static void main(String []d){
-		InputStream input = null;
-		BufferedReader br = null;
-		InputStreamReader ids =null;
-		
-		BufferedWriter bw = null;
-		OutputStream out = null;
-		OutputStreamWriter os = null;
-		
-		try{
-			input = new FileInputStream("File/Cache.txt");
-			ids = new InputStreamReader(input);
-			br = new BufferedReader(ids);
-			
-			
-			out = new FileOutputStream("File/Cache.txt");
-//			out = new FileOutputStream("E:/Game.txt");
-			os = new OutputStreamWriter(out);
-			bw = new BufferedWriter(os);
-			
-			String s = "";
-			while((s=br.readLine())!=null){
-				System.out.print(s+"\r\n");
-//				bw.write(" 输出流0000000 ");
-			}
-//			bw.write(" 输出流738927589 ");
-//			bw.flush();//一定要清除缓存
-		}catch(Exception e){
-				
-		}finally {
-			try {
-					input.close();
-					ids.close();
-					br.close();
-				
-				out.close();
-				os.close();
-				bw.close();
-				System.out.println("全部关闭");
-				
-			} catch (Exception e2) {
-				e2.printStackTrace();
-				System.out.println("有异常");
-				// TODO: handle exception
-			}
-		}
-		
-		System.out.println("ko");
-	}*/
-
-/**从同等级的包下读取文件*/ //  ./src/RE/GameBegin.wav
-//使用了三种流
-	/*public static void main(String []d){
-		InputStream input = null;
-		BufferedReader br = null;
-		InputStreamReader ids =null;
-		try{
-		input = FileReader.class.getResourceAsStream("/File/Cache.txt");
-		ids = new InputStreamReader(input);
-		br = new BufferedReader(ids);
-		
-		String s = "";
-		while((s=br.readLine())!=null){
-			System.out.print(s+"\r\n");
-		}
-		}catch(Exception e){
-			
-		}finally {
-			try {
-				input.close();
-				ids.close();
-				br.close();
-			} catch (Exception e2) {
-				// TODO: handle exception
-			}
-		}
-	}*/
 

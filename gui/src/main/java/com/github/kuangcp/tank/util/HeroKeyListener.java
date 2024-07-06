@@ -5,7 +5,7 @@ import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.panel.TankGroundPanel;
 import com.github.kuangcp.tank.thread.ExitFlagRunnable;
-import com.github.kuangcp.tank.v3.PlayStageMgr;
+import com.github.kuangcp.tank.mgr.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
 /**

@@ -16,11 +16,11 @@ import com.github.kuangcp.tank.util.executor.AbstractDelayEvent;
 import com.github.kuangcp.tank.util.executor.DelayExecutor;
 import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import com.github.kuangcp.tank.util.executor.MonitorExecutor;
-import com.github.kuangcp.tank.v3.MainFrame;
-import com.github.kuangcp.tank.v3.PlayStageMgr;
-import com.github.kuangcp.tank.v3.RoundMapMgr;
-import com.github.kuangcp.tank.v3.SettingFrame;
-import com.github.kuangcp.tank.v3.StageBorder;
+import com.github.kuangcp.tank.frame.MainFrame;
+import com.github.kuangcp.tank.mgr.PlayStageMgr;
+import com.github.kuangcp.tank.mgr.RoundMapMgr;
+import com.github.kuangcp.tank.frame.SettingFrame;
+import com.github.kuangcp.tank.domain.StageBorder;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -329,8 +329,6 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     }
 
     /**
-     * 实现了墙
-     * <p>
      * 当按下键盘上的键时监听者的处理函数
      */
     @Override
@@ -341,22 +339,18 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         } else if (e.getKeyCode() == KeyEvent.VK_T && !invokeNewStage) {
             invokeNewStage = true;
             MainFrame.actionPanel.startNewStage();
-        } else if (e.getKeyCode() == KeyEvent.VK_C) {
-            PlayStageMgr.pause = false;
+            this.repaint();
+            return;
+        } else if (e.getKeyCode() == KeyEvent.VK_P) {
+            PlayStageMgr.pause = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_O) {
+            PlayStageMgr.pause = true;
+            SettingFrame.activeFocus();
         }
 
         if (PlayStageMgr.pause) {
             return;
         }
-
-        if (e.getKeyCode() == KeyEvent.VK_P) {
-            PlayStageMgr.pause = true;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_O) {
-            PlayStageMgr.pause = true;
-            SettingFrame.activeFocus();
-        }
-
         // 实际用户交互
         if (e.getKeyCode() == KeyEvent.VK_J) {
             HoldingKeyEventMgr.instance.setShot(true);

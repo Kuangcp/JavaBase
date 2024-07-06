@@ -1,4 +1,4 @@
-package com.github.kuangcp.tank.v3;
+package com.github.kuangcp.tank.mgr;
 
 import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.domain.Brick;

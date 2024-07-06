@@ -1,7 +1,7 @@
 package com.github.kuangcp.tank.resource;
 
 import com.github.kuangcp.tank.mgr.BombMgr;
-import com.github.kuangcp.tank.v3.RoundMapMgr;
+import com.github.kuangcp.tank.mgr.RoundMapMgr;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;

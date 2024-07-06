@@ -1,5 +1,6 @@
-package com.github.kuangcp.tank.v3;
+package com.github.kuangcp.tank.frame;
 
+import com.github.kuangcp.tank.mgr.PlayStageMgr;
 import com.github.kuangcp.tank.constant.ButtonCommand;
 import com.github.kuangcp.tank.constant.SettingCommand;
 import com.github.kuangcp.tank.domain.Bullet;

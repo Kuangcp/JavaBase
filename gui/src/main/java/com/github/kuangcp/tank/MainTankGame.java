@@ -1,5 +1,6 @@
-package com.github.kuangcp.tank.v3;
+package com.github.kuangcp.tank;
 
+import com.github.kuangcp.tank.frame.MainFrame;
 import com.github.kuangcp.tank.resource.ResourceMgr;
 import com.github.kuangcp.tank.util.executor.MonitorExecutor;
 import lombok.extern.slf4j.Slf4j;

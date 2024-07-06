@@ -5,8 +5,8 @@ package com.github.kuangcp.tank.panel;
 import com.github.kuangcp.tank.constant.ButtonCommand;
 import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.util.Audio;
-import com.github.kuangcp.tank.v3.MainFrame;
-import com.github.kuangcp.tank.v3.PlayStageMgr;
+import com.github.kuangcp.tank.frame.MainFrame;
+import com.github.kuangcp.tank.mgr.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
