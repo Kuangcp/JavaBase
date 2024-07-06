@@ -44,7 +44,7 @@ public class PlayStageMgr {
     /**
      * 无敌状态 时间
      */
-    static long invincibleMs = 5000L;
+    static long invincibleMs = 5_000L;
 
     // 场景 上下文
     public List<EnemyTank> enemyTanks;
