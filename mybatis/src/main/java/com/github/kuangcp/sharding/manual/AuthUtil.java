@@ -3,7 +3,7 @@ package com.github.kuangcp.sharding.manual;
 import org.springframework.stereotype.Component;
 
 /**
- * @author https://github.com/kuangcp on 2021-07-11 18:53
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-07-11 18:53
  */
 @Component
 public class AuthUtil {

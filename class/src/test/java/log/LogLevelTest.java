@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 /**
- * @author https://github.com/kuangcp on 2020-07-11 17:01
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2020-07-11 17:01
  */
 @Slf4j
 public class LogLevelTest {

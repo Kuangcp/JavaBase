@@ -6,7 +6,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Test;
 
 /**
- * @author https://github.com/kuangcp on 2019-12-29 23:45
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-12-29 23:45
  */
 public class GetMinTest {
 

@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * https://blog.csdn.net/hguisu/article/details/7866173
  *
- * @author https://github.com/kuangcp on 2019-08-04 15:57
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-08-04 15:57
  */
 @Slf4j
 public class BloomFilter {

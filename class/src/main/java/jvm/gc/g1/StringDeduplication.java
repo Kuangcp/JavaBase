@@ -3,7 +3,7 @@ package jvm.gc.g1;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author https://github.com/kuangcp on 2021-05-16 23:36
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-05-16 23:36
  * <p>
  * -Xms15m -Xmx15m -XX:+PrintGCDetails -XX:+UseG1GC -XX:+PrintStringTableStatistics -XX:+UseStringDeduplication -XX:+PrintStringDeduplicationStatistics
  */

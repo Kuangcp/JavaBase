@@ -1,5 +1,6 @@
 package com.github.kuangcp.tank.backup.v1;
 
+import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Tank;
@@ -13,7 +14,7 @@ import java.util.Objects;
 import java.util.Vector;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-11 23:15
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-11 23:15
  */
 @Slf4j
 @SuppressWarnings("serial")
@@ -46,22 +47,12 @@ class MainPanelV1 extends JPanel implements KeyListener {
                 g.setColor(Color.WHITE);
                 super.drawSelf(g);
             }
-
-            @Override
-            public void run() {
-
-            }
         }.drawSelf(g);
         new Tank(80, 20, 0) {
             @Override
             public void drawSelf(Graphics g) {
                 g.setColor(new Color(93, 217, 41));
                 super.drawSelf(g);
-            }
-
-            @Override
-            public void run() {
-
             }
         }.drawSelf(g);
         new Tank(110, 20, 0) {
@@ -70,11 +61,6 @@ class MainPanelV1 extends JPanel implements KeyListener {
                 g.setColor(new Color(34, 155, 234));
                 super.drawSelf(g);
             }
-
-            @Override
-            public void run() {
-
-            }
         }.drawSelf(g);
         new Tank(140, 20, 0) {
             @Override
@@ -82,22 +68,12 @@ class MainPanelV1 extends JPanel implements KeyListener {
                 g.setColor(new Color(155, 62, 202));
                 super.drawSelf(g);
             }
-
-            @Override
-            public void run() {
-
-            }
         }.drawSelf(g);
         new Tank(170, 20, 0) {
             @Override
             public void drawSelf(Graphics g) {
                 g.setColor(new Color(240, 57, 23));
                 super.drawSelf(g);
-            }
-
-            @Override
-            public void run() {
-
             }
         }.drawSelf(g);
 
@@ -126,27 +102,27 @@ class MainPanelV1 extends JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         //加了if条件后 实现了墙的限制（如果是游戏中的道具，该怎么办）
         if (e.getKeyCode() == KeyEvent.VK_A) {
-            hero.setDirect(2);
+            hero.setDirect(DirectType.LEFT);
             if ((hero.getX() - 10) > 0)
-                hero.moveLeft();
+                hero.move();
 
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
-            hero.setDirect(3);
+            hero.setDirect(DirectType.RIGHT);
             if ((hero.getX() + 15) < 405)
-                hero.moveRight();
+                hero.move();
         }
 
         if (e.getKeyCode() == KeyEvent.VK_W) {
-            hero.setDirect(0);
+            hero.setDirect(DirectType.UP);
             if ((hero.getY() - 13) > 0)
-                hero.moveUp();
+                hero.move();
 
         }
         if (e.getKeyCode() == KeyEvent.VK_S) {
-            hero.setDirect(1);
+            hero.setDirect(DirectType.DOWN);
             if ((hero.getY() - 15) < 275)
-                hero.moveDown();
+                hero.move();
 
         }
         //必须重新绘制窗口，不然上面的方法不能视觉上动起来

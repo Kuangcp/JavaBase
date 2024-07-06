@@ -3,7 +3,7 @@ package com.github.kuangcp.tank.resource;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-11 16:41
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-11 16:41
  */
 @Slf4j
 public class AvatarImgMgr extends AbstractImgListMgr {

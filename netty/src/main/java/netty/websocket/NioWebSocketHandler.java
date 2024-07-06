@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author https://github.com/kuangcp on 2021-05-18 08:33
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-05-18 08:33
  */
 @Slf4j
 public class NioWebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame> {

@@ -3,7 +3,7 @@ package com.github.kuangcp.tank.domain.robot;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-22 23:56
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-22 23:56
  */
 public class EnemyActionContext {
 

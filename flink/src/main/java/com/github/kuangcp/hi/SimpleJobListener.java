@@ -10,7 +10,7 @@ import org.apache.flink.runtime.jobgraph.JobStatus;
 /**
  * 如果该对象能注入到 下面类的属性上, 问题就简单一些了
  *
- * @author https://github.com/kuangcp on 2019-07-08 11:22
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-07-08 11:22
  * @see ExecutionGraph jobStatusListeners
  */
 @Deprecated

@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
- * @author https://github.com/kuangcp
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a>
  * @date 2019-05-20 11:15
  */
 @Slf4j

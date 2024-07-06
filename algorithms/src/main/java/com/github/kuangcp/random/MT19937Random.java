@@ -1,7 +1,7 @@
 package com.github.kuangcp.random;
 
 /**
- * @author https://github.com/kuangcp on 2020-03-19 18:09
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2020-03-19 18:09
  */
 public class MT19937Random {
 

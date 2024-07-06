@@ -3,7 +3,7 @@ package com.github.kuangcp.instantiation;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author https://github.com/kuangcp
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a>
  */
 @Slf4j
 class ComplexConstructor {

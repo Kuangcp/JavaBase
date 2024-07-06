@@ -3,14 +3,20 @@ package com.github.kuangcp.tank.domain;
 import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.mgr.PlayStageMgr;
 import com.github.kuangcp.tank.resource.ColorMgr;
+import com.github.kuangcp.tank.util.HoldingKeyEventMgr;
 import com.github.kuangcp.tank.util.Roll;
+import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 import java.util.Vector;
 
 @Slf4j
+@Getter
+@Setter
 public class Hero extends Tank {
 
     //子弹集合
@@ -34,7 +40,32 @@ public class Hero extends Tank {
 
     @Override
     public void run() {
+        final HoldingKeyEventMgr keyEvent = HoldingKeyEventMgr.instance;
 
+        while (this.isAlive()) {
+            if (keyEvent.hasPressMoveEvent()) {
+//                log.info("eventGroup={}", eventGroup);
+
+                final int lastDirect = this.getDirect();
+                final int direct = keyEvent.getDirect();
+
+                final boolean ablePass = PlayStageMgr.ablePassByHinder(this);
+                if ((ablePass || lastDirect != direct)) {
+                    this.setDirect(direct);
+                    if (PlayStageMgr.instance.willInBorder(this)
+                            && PlayStageMgr.instance.ableToMove(this)) {
+                        this.move();
+                    }
+                }
+            }
+
+            if (keyEvent.isShot()) {
+                this.shotEnemy();
+            }
+
+            // 动作的延迟 1000 / 77 fps
+            TankTool.yieldMsTime(33);
+        }
     }
 
     /**
@@ -111,49 +142,8 @@ public class Hero extends Tank {
         lastShotMs = nowMs;
     }
 
-    public void moveUp() {
-        this.y -= this.speed;
-    }
-
-    public void moveDown() {
-        this.y += this.speed;
-    }
-
-    public void moveLeft() {
-        this.x -= this.speed;
-    }
-
-    public void moveRight() {
-        this.x += this.speed;
-    }
-
-
-    public int getLife() {
-        return life;
-    }
-
-    public void setLife(int life) {
-        this.life = life;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
     public void addSpeed(int delta) {
         this.speed += delta;
-    }
-
-    public int getPrize() {
-        return prize;
-    }
-
-    public void setPrize(int prize) {
-        this.prize = prize;
     }
 
     public void addPrize(int delta) {

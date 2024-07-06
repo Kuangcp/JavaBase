@@ -21,7 +21,7 @@ import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-11 23:15
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-11 23:15
  */
 @Slf4j
 @SuppressWarnings("serial")
@@ -103,26 +103,24 @@ class MainPanelV2 extends JPanel implements KeyListener, Runnable {
         if (e.getKeyCode() == KeyEvent.VK_A) {
             hero.setDirect(2);
             if (PlayStageMgr.instance.willInBorder(hero))
-                hero.moveLeft();
+                hero.move();
 
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
             hero.setDirect(3);
             if (PlayStageMgr.instance.willInBorder(hero))
-                hero.moveRight();
+                hero.move();
         }
 
         if (e.getKeyCode() == KeyEvent.VK_W) {
             hero.setDirect(0);
             if (PlayStageMgr.instance.willInBorder(hero))
-                hero.moveUp();
-
+                hero.move();
         }
         if (e.getKeyCode() == KeyEvent.VK_S) {
             hero.setDirect(1);
             if (PlayStageMgr.instance.willInBorder(hero))
-                hero.moveDown();
-
+                hero.move();
         }
         //必须重新绘制窗口，不然上面的方法不能视觉上动起来
         this.repaint();

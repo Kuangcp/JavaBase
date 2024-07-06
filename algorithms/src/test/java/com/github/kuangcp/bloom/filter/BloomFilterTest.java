@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 /**
- * @author https://github.com/kuangcp on 2019-08-04 16:34
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-08-04 16:34
  */
 @Slf4j
 public class BloomFilterTest {

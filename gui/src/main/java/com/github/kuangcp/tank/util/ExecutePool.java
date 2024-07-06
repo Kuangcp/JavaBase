@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-11 17:32
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-11 17:32
  */
 public class ExecutePool {
 

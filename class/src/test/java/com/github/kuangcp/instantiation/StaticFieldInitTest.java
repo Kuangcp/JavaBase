@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * @author https://github.com/kuangcp
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a>
  * @date 2019-05-15 09:11
  */
 @Slf4j

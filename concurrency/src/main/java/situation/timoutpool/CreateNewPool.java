@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * 方案： 使用临时线程池
  * 缺陷 遇到突发请求流量时线程大增，有拖垮服务器的风险
  *
- * @author https://github.com/kuangcp on 2021-09-04 23:23
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-04 23:23
  */
 @Slf4j
 public class CreateNewPool implements TaskExecutor<Param, Result> {

@@ -13,7 +13,7 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 import static io.netty.handler.codec.http.HttpHeaders.Names.WEBSOCKET_PROTOCOL;
 
 /**
- * @author https://github.com/kuangcp on 2021-05-18 08:33
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-05-18 08:33
  */
 public class NioWebSocketChannelInitializer extends ChannelInitializer<SocketChannel> {
 

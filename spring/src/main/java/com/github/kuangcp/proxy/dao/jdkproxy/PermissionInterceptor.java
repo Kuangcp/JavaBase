@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 /**
  * 动态增强，织入权限控制
  *
- * @author https://github.com/kuangcp on 2019-09-29 01:33
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-09-29 01:33
  */
 @Slf4j
 @AllArgsConstructor

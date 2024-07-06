@@ -7,7 +7,7 @@ import lombok.*;
 import java.util.Date;
 
 /**
- * @author https://github.com/kuangcp on 2021-07-12 23:50
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-07-12 23:50
  */
 @Data
 @Builder

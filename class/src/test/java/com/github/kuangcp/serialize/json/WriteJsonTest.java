@@ -22,7 +22,7 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 /**
- * @author https://github.com/kuangcp on 2020-05-06 01:12
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2020-05-06 01:12
  */
 @BenchmarkMode(Mode.Throughput)
 @Warmup(iterations = 1)

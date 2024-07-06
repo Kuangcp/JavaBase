@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 /**
- * @author https://github.com/kuangcp
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a>
  */
 @Slf4j
 public class SimpleTransformerTest {

@@ -7,7 +7,7 @@ import org.junit.Test;
  * https://www.oracle.com/technetwork/java/javase/relnotes-139183.html
  * https://blog.csdn.net/zheng0518/article/details/52450537
  *
- * @author https://github.com/kuangcp on 2019-12-03 09:41
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-12-03 09:41
  */
 @Slf4j
 public class OmitExceptionStackTest {

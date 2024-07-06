@@ -3,7 +3,7 @@ package com.github.kuangcp.tank.domain;
 import lombok.Getter;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-21 23:35
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-21 23:35
  */
 @Getter
 public class StageBorder {
@@ -18,4 +18,13 @@ public class StageBorder {
         this.minY = minY;
         this.maxY = maxY;
     }
+
+    public int getTotalX() {
+        return minX + maxX;
+    }
+
+    public int getTotalY() {
+        return minY + maxY;
+    }
+
 }

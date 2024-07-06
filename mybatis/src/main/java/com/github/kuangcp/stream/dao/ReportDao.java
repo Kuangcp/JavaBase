@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author https://github.com/kuangcp on 2021-07-12 23:52
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-07-12 23:52
  */
 @Repository
 public interface ReportDao extends BaseMapper<Report> {

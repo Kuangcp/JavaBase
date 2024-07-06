@@ -1,6 +1,9 @@
 package com.github.kuangcp.tank.util;
 
+import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.panel.TankGroundPanel;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
@@ -8,9 +11,11 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-06 02:58
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-06 02:58
  * @see TankGroundPanel#keyPressed
  */
+@Getter
+@Setter
 public class HoldingKeyEventMgr {
 
     public static HoldingKeyEventMgr instance = new HoldingKeyEventMgr();
@@ -20,6 +25,7 @@ public class HoldingKeyEventMgr {
     private volatile boolean down;
     private volatile boolean left;
     private volatile boolean right;
+
     private volatile boolean shot;
 
     private volatile boolean ctrl;
@@ -28,17 +34,30 @@ public class HoldingKeyEventMgr {
     private final Map<Integer, Runnable> pressMap = new HashMap<>();
 
     public HoldingKeyEventMgr() {
+
         releaseMap.put(KeyEvent.VK_A, () -> this.left = false);
         releaseMap.put(KeyEvent.VK_D, () -> this.right = false);
         releaseMap.put(KeyEvent.VK_S, () -> this.down = false);
         releaseMap.put(KeyEvent.VK_W, () -> this.up = false);
-        releaseMap.put(KeyEvent.VK_J, () -> this.shot = false);
-        releaseMap.put(KeyEvent.VK_CONTROL, () -> this.ctrl = false);
 
         pressMap.put(KeyEvent.VK_A, () -> this.left = true);
         pressMap.put(KeyEvent.VK_D, () -> this.right = true);
         pressMap.put(KeyEvent.VK_S, () -> this.down = true);
         pressMap.put(KeyEvent.VK_W, () -> this.up = true);
+
+//        releaseMap.put(KeyEvent.VK_A, () -> this.direct = -1);
+//        releaseMap.put(KeyEvent.VK_D, () -> this.direct = -1);
+//        releaseMap.put(KeyEvent.VK_S, () -> this.direct = -1);
+//        releaseMap.put(KeyEvent.VK_W, () -> this.direct = -1);
+
+        releaseMap.put(KeyEvent.VK_J, () -> this.shot = false);
+        releaseMap.put(KeyEvent.VK_CONTROL, () -> this.ctrl = false);
+
+//        pressMap.put(KeyEvent.VK_A, () -> this.direct = DirectType.LEFT);
+//        pressMap.put(KeyEvent.VK_D, () -> this.direct = DirectType.RIGHT);
+//        pressMap.put(KeyEvent.VK_S, () -> this.direct = DirectType.DOWN);
+//        pressMap.put(KeyEvent.VK_W, () -> this.direct = DirectType.UP);
+
         pressMap.put(KeyEvent.VK_CONTROL, () -> this.ctrl = true);
     }
 
@@ -50,56 +69,23 @@ public class HoldingKeyEventMgr {
         Optional.ofNullable(releaseMap.get(re.getKeyCode())).ifPresent(Runnable::run);
     }
 
-    public boolean isUp() {
-        return up;
-    }
-
-    public void setUp(boolean up) {
-        this.up = up;
-    }
-
-    public boolean isDown() {
-        return down;
-    }
-
-    public void setDown(boolean down) {
-        this.down = down;
-    }
-
-    public boolean isLeft() {
-        return left;
-    }
-
-    public void setLeft(boolean left) {
-        this.left = left;
-    }
-
-    public boolean isRight() {
-        return right;
-    }
-
-    public void setRight(boolean right) {
-        this.right = right;
-    }
-
-    public boolean isShot() {
-        return shot;
-    }
-
-    public void setShot(boolean shot) {
-        this.shot = shot;
-    }
-
-    public boolean isCtrl() {
-        return ctrl;
-    }
-
-    public void setCtrl(boolean ctrl) {
-        this.ctrl = ctrl;
-    }
-
     public boolean hasPressMoveEvent() {
         return up || down || left || right;
+//        return direct != DirectType.NONE;
+    }
+
+    public int getDirect() {
+        if (up) {
+            return DirectType.UP;
+        } else if (right) {
+            return DirectType.RIGHT;
+        } else if (down) {
+            return DirectType.DOWN;
+        } else if (left) {
+            return DirectType.LEFT;
+        } else {
+            return DirectType.NONE;
+        }
     }
 
     @Override

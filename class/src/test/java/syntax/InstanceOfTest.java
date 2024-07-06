@@ -7,7 +7,7 @@ import java.util.Date;
 import org.junit.Test;
 
 /**
- * @author https://github.com/Kuangcp
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a>
  * @date 2019-05-10 08:18
  */
 public class InstanceOfTest {

@@ -1,7 +1,7 @@
 package com.github.kuangcp.bio.multicast;
 
 /**
- * @author https://github.com/kuangcp on 2021-05-08 08:13
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-05-08 08:13
  */
 public interface MulticastConstant {
 

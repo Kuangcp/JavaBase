@@ -4,7 +4,7 @@ import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-17 01:39
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-17 01:39
  */
 public abstract class AbstractDelayEvent implements DelayEvent {
 

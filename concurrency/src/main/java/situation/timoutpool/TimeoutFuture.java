@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-05 02:45
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-05 02:45
  */
 @Slf4j
 public class TimeoutFuture implements TaskExecutor<Param, Result> {

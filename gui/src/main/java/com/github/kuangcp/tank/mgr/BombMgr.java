@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-11 16:28
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-11 16:28
  */
 @Slf4j
 public class BombMgr extends AbstractImgListMgr {

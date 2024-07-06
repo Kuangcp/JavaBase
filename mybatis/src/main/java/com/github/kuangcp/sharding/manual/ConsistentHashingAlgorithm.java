@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 /**
- * @author https://github.com/kuangcp on 2021-07-11 19:13
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-07-11 19:13
  */
 public class ConsistentHashingAlgorithm {
     private MessageDigest md5;

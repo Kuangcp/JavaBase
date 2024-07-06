@@ -8,7 +8,7 @@ import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-16 01:44
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-16 01:44
  */
 @Slf4j
 public abstract class AbstractLoopEvent implements LoopEvent {

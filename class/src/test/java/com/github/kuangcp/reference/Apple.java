@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author https://github.com/kuangcp on 2020-09-24 12:47
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2020-09-24 12:47
  */
 @Data
 @Slf4j

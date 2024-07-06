@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 /**
- * @author https://github.com/kuangcp on 2020-09-12 19:48
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2020-09-12 19:48
  */
 @Slf4j
 public class ShowClassLoaderTest {

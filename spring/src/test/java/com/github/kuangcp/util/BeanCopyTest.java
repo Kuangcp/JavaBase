@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.springframework.beans.BeanUtils;
 
 /**
- * @author https://github.com/kuangcp on 2020-04-21 20:31
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2020-04-21 20:31
  */
 public class BeanCopyTest {
 

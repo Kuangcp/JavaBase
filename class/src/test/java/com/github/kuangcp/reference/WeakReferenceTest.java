@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * @author https://github.com/kuangcp on 2020-09-24 12:35
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2020-09-24 12:35
  * @see java.lang.ThreadLocal.ThreadLocalMap.Entry
  */
 @Slf4j

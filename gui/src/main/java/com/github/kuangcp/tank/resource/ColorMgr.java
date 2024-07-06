@@ -3,7 +3,7 @@ package com.github.kuangcp.tank.resource;
 import java.awt.*;
 
 /**
- * @author https://github.com/kuangcp on 2021-10-17 23:06
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-10-17 23:06
  */
 public class ColorMgr {
     public static final ColorMgr instance = new ColorMgr();

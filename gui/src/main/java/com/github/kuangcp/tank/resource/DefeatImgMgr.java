@@ -1,7 +1,7 @@
 package com.github.kuangcp.tank.resource;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-13 01:32
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-13 01:32
  */
 public class DefeatImgMgr extends AbstractImgListMgr {
 

@@ -2,7 +2,7 @@ package com.github.kuangcp.singleton;
 
 /**
  * TODO 验证
- * @author https://github.com/kuangcp
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a>
  * @date 2019-05-08 14:26
  */
 public class StaticLazyWithSyncBlock {

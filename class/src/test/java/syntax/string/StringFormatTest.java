@@ -5,7 +5,7 @@ import java.time.Duration;
 import org.junit.Test;
 
 /**
- * @author https://github.com/kuangcp on 2019-12-17 11:53
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-12-17 11:53
  */
 public class StringFormatTest {
 

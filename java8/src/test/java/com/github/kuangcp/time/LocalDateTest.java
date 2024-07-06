@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 /**
- * @author https://github.com/kuangcp on 2019-07-09 17:10
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-07-09 17:10
  */
 @Slf4j
 public class LocalDateTest {

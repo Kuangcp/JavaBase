@@ -8,7 +8,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 /**
- * @author https://github.com/kuangcp on 2019-11-19 21:38
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-11-19 21:38
  */
 
 

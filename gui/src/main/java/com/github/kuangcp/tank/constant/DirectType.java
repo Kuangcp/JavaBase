@@ -3,21 +3,25 @@ package com.github.kuangcp.tank.constant;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-06 03:08
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-06 03:08
  */
 public interface DirectType {
+
+    int NONE = -1;
 
     int UP = 0;
     int DOWN = 1;
     int LEFT = 2;
     int RIGHT = 3;
 
-    int MAX = RIGHT;
+    int MAX = 3;
 
     int[] UP_SELECT = new int[]{UP, LEFT, RIGHT};
     int[] DOWN_SELECT = new int[]{DOWN, LEFT, RIGHT};
     int[] LEFT_SELECT = new int[]{UP, DOWN, LEFT};
     int[] RIGHT_SELECT = new int[]{UP, DOWN, RIGHT};
+
+    int[] loop = new int[]{UP, RIGHT, DOWN, LEFT};
 
     static int[] turnSelection(int direct) {
         switch (direct) {
@@ -34,16 +38,19 @@ public interface DirectType {
         }
     }
 
-    static boolean isUp(int direct){
+    static boolean isUp(int direct) {
         return direct == UP;
     }
-    static boolean isDown(int direct){
+
+    static boolean isDown(int direct) {
         return direct == DOWN;
     }
-    static boolean isLeft(int direct){
+
+    static boolean isLeft(int direct) {
         return direct == LEFT;
     }
-    static boolean isRight(int direct){
+
+    static boolean isRight(int direct) {
         return direct == RIGHT;
     }
 

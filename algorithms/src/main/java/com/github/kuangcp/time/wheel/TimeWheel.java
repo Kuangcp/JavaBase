@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * <p>
  * 类似于 HashMap的设计结构 设计支持 30 天内延迟任务
  *
- * @author https://github.com/kuangcp on 2019-10-11 20:53
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-10-11 20:53
  */
 @Slf4j
 public class TimeWheel {

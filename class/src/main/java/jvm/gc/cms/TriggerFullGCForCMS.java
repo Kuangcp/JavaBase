@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author https://github.com/kuangcp on 2021-05-15 18:53
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-05-15 18:53
  * <p>
  * 问题：内存溢出后会死循环创建 dump 直到填满硬盘，CMSScavengeBeforeRemark 并不能在 CMSGC 的时候触发 FullGC
  * <p>

@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 
 /**
- * @author https://github.com/kuangcp on 2022-08-03 19:20
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2022-08-03 19:20
  */
 public class BreakerTest {
 

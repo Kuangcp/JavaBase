@@ -7,7 +7,7 @@ import java.awt.*;
 import java.io.IOException;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-13 01:17
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-13 01:17
  */
 @Slf4j
 public abstract class AbstractImgListMgr {

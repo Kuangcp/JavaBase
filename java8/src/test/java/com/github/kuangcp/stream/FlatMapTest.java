@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 
 /**
- * @author https://github.com/kuangcp on 2019-07-05 11:07
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-07-05 11:07
  */
 public class FlatMapTest {
 

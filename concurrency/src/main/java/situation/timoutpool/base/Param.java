@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-04 23:27
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-04 23:27
  */
 @Data
 @Builder

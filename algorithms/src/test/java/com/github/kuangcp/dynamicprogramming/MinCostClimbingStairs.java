@@ -6,7 +6,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Test;
 
 /**
- * @author https://github.com/kuangcp on 2020-09-03 12:39
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2020-09-03 12:39
  *
  * https://leetcode-cn.com/problems/min-cost-climbing-stairs/description/
  */

@@ -1,7 +1,7 @@
 package com.github.kuangcp.virusbroadcast.constant;
 
 /**
- * @author https://github.com/kuangcp on 2020-02-04 16:53
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2020-02-04 16:53
  */
 public interface PersonState {
 

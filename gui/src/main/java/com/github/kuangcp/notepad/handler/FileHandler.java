@@ -16,7 +16,7 @@ import javax.swing.JFileChooser;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author https://github.com/kuangcp on 2019-07-28 13:10
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-07-28 13:10
  */
 @Slf4j
 class FileHandler extends BaseHandler {

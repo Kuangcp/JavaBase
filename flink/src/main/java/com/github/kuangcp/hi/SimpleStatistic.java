@@ -16,7 +16,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 /**
  * Batch 的 调用是通过 REST API的, 只能在发起请求的地方依据返回值来判断是否执行完成和成功
  *
- * @author https://github.com/kuangcp
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a>
  * @since 2019-05-16 16:26
  */
 @Slf4j

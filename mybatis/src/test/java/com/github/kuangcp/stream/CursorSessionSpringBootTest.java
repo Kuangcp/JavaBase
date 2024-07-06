@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * @author https://github.com/kuangcp on 2021-07-12 23:29
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-07-12 23:29
  */
 @Slf4j
 public class CursorSessionSpringBootTest extends SpringBootTestStarter {

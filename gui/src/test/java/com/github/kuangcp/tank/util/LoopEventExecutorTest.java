@@ -20,7 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-16 01:28
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-16 01:28
  */
 @Slf4j
 public class LoopEventExecutorTest {

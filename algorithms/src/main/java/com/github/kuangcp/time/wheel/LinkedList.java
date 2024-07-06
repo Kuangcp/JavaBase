@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * @author https://github.com/kuangcp on 2019-10-28 13:10
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-10-28 13:10
  */
 class LinkedList<T extends Node> {
 

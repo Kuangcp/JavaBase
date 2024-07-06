@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 
 /**
- * @author https://github.com/kuangcp on 2020-02-14 12:43
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2020-02-14 12:43
  */
 @Getter
 public enum PersonStateEnum {

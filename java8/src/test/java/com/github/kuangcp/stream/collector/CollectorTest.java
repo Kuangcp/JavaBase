@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 /**
- * @author https://github.com/kuangcp on 2019-12-12 16:48
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-12-12 16:48
  */
 public class CollectorTest {
 

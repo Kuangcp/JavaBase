@@ -1,7 +1,7 @@
 package com.github.kuangcp.sharding.manual;
 
 /**
- * @author https://github.com/kuangcp on 2021-07-11 18:59
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-07-11 18:59
  */
 public interface ShardingAlgorithmType {
     int MOD = 1;

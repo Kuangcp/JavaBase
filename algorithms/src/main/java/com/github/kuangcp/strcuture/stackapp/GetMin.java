@@ -5,7 +5,7 @@ import java.util.Stack;
 import lombok.Data;
 
 /**
- * @author https://github.com/kuangcp on 2019-12-29 16:45
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-12-29 16:45
  */
 @Data
 public class GetMin {

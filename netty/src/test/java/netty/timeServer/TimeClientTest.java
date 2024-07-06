@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * @author https://github.com/kuangcp on 2020-08-22 14:28
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2020-08-22 14:28
  */
 @Slf4j
 public class TimeClientTest {

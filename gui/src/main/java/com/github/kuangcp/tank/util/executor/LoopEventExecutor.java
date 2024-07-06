@@ -8,7 +8,7 @@ import java.util.concurrent.DelayQueue;
 import java.util.concurrent.ExecutorService;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-16 01:20
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-16 01:20
  */
 @Slf4j
 public class LoopEventExecutor {

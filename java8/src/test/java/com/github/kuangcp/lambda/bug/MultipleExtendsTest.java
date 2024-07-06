@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 
 /**
- * @author https://github.com/kuangcp on 2019-11-28 19:43
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-11-28 19:43
  */
 public class MultipleExtendsTest {
 

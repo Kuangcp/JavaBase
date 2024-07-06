@@ -10,7 +10,7 @@ import org.openjdk.jmh.annotations.Threads;
 import org.openjdk.jmh.annotations.Warmup;
 
 /**
- * @author https://github.com/kuangcp on 2020-05-06 00:33
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2020-05-06 00:33
  */
 @BenchmarkMode(Mode.Throughput)
 @Warmup(iterations = 3)

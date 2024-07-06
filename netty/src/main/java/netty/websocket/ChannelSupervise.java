@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * @author https://github.com/kuangcp on 2021-05-18 08:34
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-05-18 08:34
  */
 @Slf4j
 public class ChannelSupervise {

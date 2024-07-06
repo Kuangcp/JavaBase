@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-21 10:05
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-21 10:05
  */
 @Slf4j
 public class PropertiesMgr {

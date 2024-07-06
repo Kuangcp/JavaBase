@@ -29,7 +29,6 @@ import java.awt.event.MouseMotionAdapter;
  * 11 有游戏的音效（操纵声音文件）
  */
 @Slf4j
-@SuppressWarnings("serial")
 public class MainFrame extends JFrame implements Runnable {
 
     public volatile TankGroundPanel groundPanel;//坦克的主画板

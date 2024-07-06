@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-11 23:24
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-11 23:24
  */
 @Slf4j
 public class PlayStageMgr {
@@ -40,7 +40,7 @@ public class PlayStageMgr {
     /**
      * 敌人的数量
      */
-    static int enemySize = 10;
+    public static int enemySize = 10;
     /**
      * 无敌状态 时间
      */

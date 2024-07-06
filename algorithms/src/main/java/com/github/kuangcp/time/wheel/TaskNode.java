@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * @author https://github.com/kuangcp on 2019-10-28 13:10
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-10-28 13:10
  */
 @Data
 @AllArgsConstructor

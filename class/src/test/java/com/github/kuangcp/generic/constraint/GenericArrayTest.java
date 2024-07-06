@@ -10,7 +10,7 @@ import java.util.List;
  * 不能实例化 参数化类型的数组, 声明是可以的 正确的解决方式应该是 参数化集合
  * 不能实例化 泛型数组
  *
- * @author https://github.com/kuangcp
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a>
  * 2019-05-25 21:02
  */
 public class GenericArrayTest {

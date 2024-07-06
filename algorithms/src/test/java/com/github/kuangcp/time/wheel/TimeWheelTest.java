@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * @author https://github.com/kuangcp on 2019-10-27 12:15
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-10-27 12:15
  */
 @Ignore
 @Slf4j

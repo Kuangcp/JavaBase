@@ -7,7 +7,7 @@ import org.apache.commons.codec.digest.MurmurHash2;
 /**
  * https://stackoverflow.com/questions/34595/what-is-a-good-hash-function
  *
- * @author https://github.com/kuangcp on 2019-08-04 16:02
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-08-04 16:02
  */
 public class HashFunctions {
 

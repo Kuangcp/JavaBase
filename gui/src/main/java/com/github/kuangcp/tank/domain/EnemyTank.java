@@ -230,23 +230,7 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
             return;
         }
 
-        switch (this.direct) {
-            case DirectType.UP:
-                y -= this.speed;
-                actionContext.addCount();
-                break;
-            case DirectType.DOWN:
-                y += this.speed;
-                actionContext.addCount();
-                break;
-            case DirectType.LEFT:
-                x -= this.speed;
-                actionContext.addCount();
-                break;
-            case DirectType.RIGHT:
-                x += this.speed;
-                actionContext.addCount();
-                break;
-        }
+        actionContext.addCount();
+        this.move();
     }
 }

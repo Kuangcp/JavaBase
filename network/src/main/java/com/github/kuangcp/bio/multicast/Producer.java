@@ -7,7 +7,7 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 
 /**
- * @author https://github.com/kuangcp on 2020-01-15 20:30
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2020-01-15 20:30
  */
 @Slf4j
 public class Producer {

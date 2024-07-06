@@ -26,7 +26,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * @author https://github.com/kuangcp on 2022-06-30 10:07
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2022-06-30 10:07
  */
 @Slf4j
 public class CommonRelationTest {

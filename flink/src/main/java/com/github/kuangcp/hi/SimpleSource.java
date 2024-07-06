@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 模拟数据库分页查询
  *
- * @author https://github.com/kuangcp 2019-06-16 15:12
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> 2019-06-16 15:12
  */
 @Slf4j
 class SimpleSource {

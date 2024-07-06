@@ -5,22 +5,21 @@ import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Iron;
+import com.github.kuangcp.tank.domain.StageBorder;
+import com.github.kuangcp.tank.frame.MainFrame;
+import com.github.kuangcp.tank.frame.SettingFrame;
 import com.github.kuangcp.tank.mgr.BombMgr;
+import com.github.kuangcp.tank.mgr.PlayStageMgr;
+import com.github.kuangcp.tank.mgr.RoundMapMgr;
 import com.github.kuangcp.tank.resource.AvatarImgMgr;
 import com.github.kuangcp.tank.resource.ColorMgr;
 import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.HoldingKeyEventMgr;
-import com.github.kuangcp.tank.util.HeroKeyListener;
 import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.util.executor.AbstractDelayEvent;
 import com.github.kuangcp.tank.util.executor.DelayExecutor;
 import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import com.github.kuangcp.tank.util.executor.MonitorExecutor;
-import com.github.kuangcp.tank.frame.MainFrame;
-import com.github.kuangcp.tank.mgr.PlayStageMgr;
-import com.github.kuangcp.tank.mgr.RoundMapMgr;
-import com.github.kuangcp.tank.frame.SettingFrame;
-import com.github.kuangcp.tank.domain.StageBorder;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -31,12 +30,10 @@ import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
-@SuppressWarnings("serial")
 @Slf4j
 public class TankGroundPanel extends JPanel implements java.awt.event.KeyListener, Runnable {
 
     public volatile Hero hero;
-    public HeroKeyListener heroKeyListener;
     public static boolean newStage = true;
     private volatile boolean invokeNewStage = false;
 
@@ -70,8 +67,9 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         PlayStageMgr.init(hero, enemyList, bricks, irons);
 
         //多键监听实现
-        heroKeyListener = new HeroKeyListener(HoldingKeyEventMgr.instance, hero, this);
-        ExecutePool.exclusiveLoopPool.execute(heroKeyListener);
+//        heroKeyListener = new HeroKeyListener(HoldingKeyEventMgr.instance, hero, this);
+//        ExecutePool.exclusiveLoopPool.execute(heroKeyListener);
+        ExecutePool.exclusiveLoopPool.execute(hero);
 
         // 创建 敌人的坦克
         EnemyTank ett = null;

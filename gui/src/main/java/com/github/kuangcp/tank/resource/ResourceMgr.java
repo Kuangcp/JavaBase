@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-13 01:35
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-13 01:35
  */
 @Slf4j
 public class ResourceMgr {

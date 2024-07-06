@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.util.concurrent.*;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-04 23:02
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-04 23:02
  */
 @Slf4j
 public class CountDownLatchTest {

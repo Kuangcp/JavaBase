@@ -1,7 +1,7 @@
 package com.github.kuangcp.read;
 
 /**
- * @author https://github.com/kuangcp on 2020-05-17 17:41
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2020-05-17 17:41
  */
 public class CommentTest {
 

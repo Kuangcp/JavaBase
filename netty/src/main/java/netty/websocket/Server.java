@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * 客户端使用 client.html
  * 压测可使用 https://github.com/Kuangcp/GoBase/tree/master/toolbox/web-socket
  *
- * @author https://github.com/kuangcp on 2021-05-18 08:32
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-05-18 08:32
  */
 @Slf4j
 public class Server {

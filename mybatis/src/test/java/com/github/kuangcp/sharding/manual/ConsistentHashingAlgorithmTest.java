@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
- * @author https://github.com/kuangcp on 2021-07-11 19:32
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-07-11 19:32
  */
 @Slf4j
 public class ConsistentHashingAlgorithmTest {

@@ -5,7 +5,7 @@ package jvm.oom;
  * <p>
  * OutOfMemoryError: unable to create new native thread
  *
- * @author https://github.com/kuangcp on 2019-12-25 20:05
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-12-25 20:05
  */
 public class ThreadOOM {
 

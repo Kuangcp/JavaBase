@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-05 03:05
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-05 03:05
  */
 class DefaultThreadFactory implements ThreadFactory {
 

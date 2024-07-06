@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
  * 代理部分公共逻辑
  * 思考将 Transaction 和 Permission 抽象一层就成为了 Aspect AOP 这套设计了
  *
- * @author https://github.com/kuangcp on 2019-09-29 01:20
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2019-09-29 01:20
  */
 @Slf4j
 public class InterceptorLogic {

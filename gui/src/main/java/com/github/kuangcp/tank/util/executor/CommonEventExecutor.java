@@ -6,7 +6,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-17 01:06
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-17 01:06
  */
 @Slf4j
 public class CommonEventExecutor {

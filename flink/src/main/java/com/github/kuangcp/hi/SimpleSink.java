@@ -12,7 +12,7 @@ import org.apache.flink.configuration.Configuration;
 /**
  * 模拟输出到文件
  *
- * @author https://github.com/kuangcp
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a>
  * @since 2019-05-30 20:36
  */
 @lombok.Data

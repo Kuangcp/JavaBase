@@ -7,7 +7,7 @@ import java.util.concurrent.DelayQueue;
 import java.util.concurrent.ExecutorService;
 
 /**
- * @author https://github.com/kuangcp on 2021-09-17 01:35
+ * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-17 01:35
  */
 public class DelayExecutor {
 
