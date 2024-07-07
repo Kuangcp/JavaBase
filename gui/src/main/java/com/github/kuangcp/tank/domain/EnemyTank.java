@@ -27,8 +27,8 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
 
     public final long id;
     public List<Bullet> bulletList = new CopyOnWriteArrayList<>();//子弹集合
-    private long lastShotMs = 0;
-    private long shotCDMs = 168;
+    private long lastShotTick = 0;
+    private final long shotCDMs = 200;
 
     public int INIT_MAX_LIVE_BULLET = 4;
     public int maxLiveBullet = INIT_MAX_LIVE_BULLET + 1; // 活跃子弹 最大数
@@ -139,12 +139,12 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
     }
 
     /**
-     * 发射子弹    函数
+     * 发射子弹
      */
     public void finalShotAction() {
         //判断坦克方向来 初始化子弹的起始发射位置
         final long nowMs = System.currentTimeMillis();
-        if (lastShotMs != 0 && nowMs - lastShotMs < shotCDMs) {
+        if (lastShotTick != 0 && nowMs - lastShotTick < shotCDMs) {
             return;
         }
         if (this.bulletList.size() >= maxLiveBullet || !this.isAlive()) {
@@ -152,27 +152,19 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
         }
         switch (this.getDirect()) {
             case DirectType.UP: {
-                Bullet s = new Bullet(this.getX() - 1, this.getY() - 15, 0);
-                bulletList.add(s);
-                LoopEventExecutor.addLoopEvent(s);
+                this.shot(this.getX() - 1, this.getY() - 15, DirectType.UP);
                 break;
             }
             case DirectType.DOWN: {
-                Bullet s = new Bullet(this.getX() - 2, this.getY() + 15, 1);
-                bulletList.add(s);
-                LoopEventExecutor.addLoopEvent(s);
+                this.shot(this.getX() - 2, this.getY() + 15, DirectType.DOWN);
                 break;
             }
             case DirectType.LEFT: {
-                Bullet s = new Bullet(this.getX() - 15 - 2, this.getY(), 2);
-                bulletList.add(s);
-                LoopEventExecutor.addLoopEvent(s);
+                this.shot(this.getX() - 15 - 2, this.getY(), DirectType.LEFT);
                 break;
             }
             case DirectType.RIGHT: {
-                Bullet s = new Bullet(this.getX() + 15 - 2, this.getY() - 1, 3);
-                bulletList.add(s);
-                LoopEventExecutor.addLoopEvent(s);
+                this.shot(this.getX() + 15 - 2, this.getY() - 1, DirectType.RIGHT);
                 break;
             }
         }
@@ -184,7 +176,13 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
         // 协程池
 //        ExecutePool.shotScheduler.getExecutor().execute(s);
 
-        lastShotMs = nowMs;
+        lastShotTick = nowMs;
+    }
+
+    private void shot(int x, int y, int direction) {
+        Bullet s = new Bullet(x, y, direction);
+        bulletList.add(s);
+        LoopEventExecutor.addLoopEvent(s);
     }
 
     @Override

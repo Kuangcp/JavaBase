@@ -7,55 +7,97 @@
 *               For more details please see http://phaser.io/shop/plugins/virtualjoystick
 */
 
-var game = new Phaser.Game(1190, 590, Phaser.AUTO, 'phaser-example');
+let borderW, borderH;
+let directX, directY;
+let aX, aY;
+let bX, bY;
+let cX, cY;
 
+// console.log(screen.height);
+// alert(screen.height + ' ' + screen.width)
+let phone = screen.width < 900;
+if (phone) {
+    borderW = screen.width;
+    borderH = screen.height;
+
+    directX = 170;
+    directY = 250;
+    directScale = 0.7;
+
+    skillScale = 0.8;
+    aX = 600;
+    aY = 270;
+    bX = 690;
+    bY = 170;
+    cX = 760;
+    cY = 270;
+} else {
+    borderW = 1190;
+    borderH = 590;
+
+    directX = 150;
+    directY = 430;
+    directScale = 0.85;
+
+    skillScale = 0.9;
+    aX = 660;
+    aY = 420;
+    bX = 800;
+    bY = 320;
+    cX = 920;
+    cY = 420;
+}
+
+var game = new Phaser.Game(borderW, borderH, Phaser.AUTO, 'phaser-example');
+
+var wsUsable =false;
 function connected() {
-    let ws = new WebSocket("ws://192.168.1.102:7094/ws?userId=120");
-    ws.onopen = function () {
-        console.log('connected');
-    };
-    ws.onmessage = function (evt) {
-        console.log(evt.data)
-    };
+    try {
+        wsUsable = false;
+        let ws = new WebSocket("ws://192.168.1.102:7094/ws?userId=120");
+        ws.onopen = function () {
+            console.log('connected');
+            // 等 open 函数回调后才可以调用 send，否则会报错 no longer object
+            wsUsable = true;
+        };
+        ws.onmessage = function (evt) {
+            console.log(evt.data)
+        };
+        ws.onclose = function (evt) {
+            console.log("error");
+        };
+        ws.onerror = function (evt) {
+            console.log("error");
+        };
 
-    ws.onclose = function (evt) {
-        console.log("error");
-    };
-
-    ws.onerror = function (evt) {
-        console.log("error");
-    };
-
-    return ws;
+        return ws;
+    } catch (e) {
+        console.log(e);
+        return null;
+    }
 }
 var ws = connected();
 
 function toggleFullScreen() {
     var docElm = document.documentElement;
     if (docElm.requestFullscreen) {
-      docElm.requestFullscreen();
+        docElm.requestFullscreen();
     } else if (docElm.msRequestFullscreen) {
-      docElm.msRequestFullscreen();
+        docElm.msRequestFullscreen();
     } else if (docElm.mozRequestFullScreen) {
-      docElm.mozRequestFullScreen();
+        docElm.mozRequestFullScreen();
     } else if (docElm.webkitRequestFullScreen) {
-      docElm.webkitRequestFullScreen();
+        docElm.webkitRequestFullScreen();
     }
-  }
-
-//   toggleFullScreen()
+}
 
 var PhaserGame = function () {
 
     this.background = null;
     this.player = null;
-    this.speed = 300;
-
-    this.weapon1;
-    this.weapon2;
-    this.weapon3;
 
     this.pad;
+    this.speed = 300;
 
     this.stick;
 
@@ -74,7 +116,6 @@ PhaserGame.prototype = {
     },
 
     preload: function () {
-
         this.load.atlas('arcade', 'assets/arcade-joystick.png', 'assets/arcade-joystick.json');
         this.load.image('background', 'assets/back.png');
         this.load.image('player', 'assets/dark.png');
@@ -97,30 +138,32 @@ PhaserGame.prototype = {
 
         this.pad = this.game.plugins.add(Phaser.VirtualJoystick);
 
-        this.stick = this.pad.addStick(150, 430, 100, 'arcade');
+        this.stick = this.pad.addStick(directX, directY, 100, 'arcade');
         this.stick.deadZone = 0;
-        this.stick.scale = 0.85;
+        this.stick.scale = directScale;
 
-        this.buttonA = this.pad.addButton(650, 420, 'arcade', 'button1-up', 'button1-down');
+        this.buttonA = this.pad.addButton(aX, aY, 'arcade', 'button1-up', 'button1-down');
         this.buttonA.onDown.add(this.fireBullet, this);
-        this.buttonA.scale = 0.9;
-        this.buttonA.repeatRate = 100;
+        this.buttonA.scale = skillScale;
+        this.buttonA.repeatRate = 1000;
         this.buttonA.addKey(Phaser.Keyboard.CONTROL);
 
-        this.buttonB = this.pad.addButton(790, 320, 'arcade', 'button2-up', 'button2-down');
+        this.buttonB = this.pad.addButton(bX, bY, 'arcade', 'button2-up', 'button2-down');
         this.buttonB.onDown.add(this.fireRocket, this);
-        this.buttonB.scale = 0.9;
-        this.buttonB.repeatRate = 500;
+        this.buttonB.scale = skillScale;
+        this.buttonB.repeatRate = 300;
         this.buttonB.addKey(Phaser.Keyboard.Z);
 
-        this.buttonC = this.pad.addButton(920, 420, 'arcade', 'button3-up', 'button3-down');
+        this.buttonC = this.pad.addButton(cX, cY, 'arcade', 'button3-up', 'button3-down');
         this.buttonC.onDown.add(this.fireSpreadShot, this);
-        this.buttonC.scale = 0.9;
+        this.buttonC.scale = skillScale;
+        this.buttonB.repeatRate = 300;
         this.buttonC.addKey(Phaser.Keyboard.SPACEBAR);
     },
 
     fireBullet: function () {
-        // toggleFullScreen()
+        toggleFullScreen();
+
         // ws = connected();
         // this.weapon1.fire(this.player);
 
@@ -135,10 +178,12 @@ PhaserGame.prototype = {
     fireSpreadShot: function () {
 
         // this.weapon3.fire(this.player);
-            let x = {
-                s: true
-            }
+        let x = {
+            s: true
+        }
+        if(wsUsable){
             ws.send(JSON.stringify(x))
+        }
     },
 
     update: function () {
@@ -168,8 +213,9 @@ PhaserGame.prototype = {
         else {
             // this.player.body.velocity.set(0);
         }
-
+        if (wsUsable) {
             ws.send(JSON.stringify(key))
+        }
     }
 
 };
