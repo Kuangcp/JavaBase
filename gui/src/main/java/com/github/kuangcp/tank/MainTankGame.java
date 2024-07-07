@@ -3,6 +3,7 @@ package com.github.kuangcp.tank;
 import com.github.kuangcp.tank.frame.MainFrame;
 import com.github.kuangcp.tank.resource.ResourceMgr;
 import com.github.kuangcp.tank.util.executor.MonitorExecutor;
+import com.github.kuangcp.tank.ws.WsServer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
@@ -20,6 +21,9 @@ public class MainTankGame {
         try {
             ResourceMgr.loadResource();
             log.info("finish load resources");
+
+            new Thread(() -> new WsServer().init()).start();
+
             EventQueue.invokeLater(new MainFrame());
         } catch (Exception e) {
             log.error("", e);

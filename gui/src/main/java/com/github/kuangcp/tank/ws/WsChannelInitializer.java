@@ -15,7 +15,7 @@ import static io.netty.handler.codec.http.HttpHeaders.Names.WEBSOCKET_PROTOCOL;
 /**
  * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-05-18 08:33
  */
-public class NioWebSocketChannelInitializer extends ChannelInitializer<SocketChannel> {
+public class WsChannelInitializer extends ChannelInitializer<SocketChannel> {
 
     /**
      * @see AdaptiveRecvByteBufAllocator.HandleImpl#record(int) 实现扩缩容读写ByteBuf
@@ -27,10 +27,10 @@ public class NioWebSocketChannelInitializer extends ChannelInitializer<SocketCha
         pipeline.addLast("http-codec", new HttpServerCodec());//设置解码器
         pipeline.addLast("aggregator", new HttpObjectAggregator(65536));//聚合器，使用websocket会用到
         pipeline.addLast("http-chunked", new ChunkedWriteHandler());//用于大数据的分区传输
-        pipeline.addLast("handler", new NioWebSocketHandler());//自定义的业务handler
+        pipeline.addLast("handler", new WsHandler());//自定义的业务handler
 
         // checkStartsWith 为true 支持路径带参数
         // maxFrameSize 设置的是最大可申请的ByteBuf，实际上使用时是按需申请和回收内存
-        pipeline.addLast("", new WebSocketServerProtocolHandler(Const.webSocketPath, WEBSOCKET_PROTOCOL, true, 65536, false, true));
+        pipeline.addLast("", new WebSocketServerProtocolHandler(WsConst.webSocketPath, WEBSOCKET_PROTOCOL, true, 65536, false, true));
     }
 }

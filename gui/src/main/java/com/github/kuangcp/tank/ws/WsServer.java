@@ -17,11 +17,11 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-05-18 08:32
  */
 @Slf4j
-public class Server {
+public class WsServer {
 
-    private void init() {
+    public void init() {
         ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
-        pool.scheduleAtFixedRate(ChannelSupervise::watchState, 5, 3, TimeUnit.SECONDS);
+        pool.scheduleAtFixedRate(WsChannelSupervise::watchState, 5, 3, TimeUnit.SECONDS);
 
         log.info("正在启动WebSocket服务器");
         NioEventLoopGroup boss = new NioEventLoopGroup();
@@ -30,7 +30,7 @@ public class Server {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(boss, work);
             bootstrap.channel(NioServerSocketChannel.class);
-            bootstrap.childHandler(new NioWebSocketChannelInitializer());
+            bootstrap.childHandler(new WsChannelInitializer());
             Channel channel = bootstrap.bind(7094).sync().channel();
             log.info("WebSocket服务器启动成功：{}", channel);
             channel.closeFuture().sync();
@@ -44,7 +44,7 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        new Server().init();
+        new WsServer().init();
     }
 }
 

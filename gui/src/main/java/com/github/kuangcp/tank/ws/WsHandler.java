@@ -28,48 +28,26 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-05-18 08:33
  */
 @Slf4j
-public class NioWebSocketHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
+public class WsHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
 
     private static final Map<Long, Channel> userMap = new ConcurrentHashMap<>();
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         log.debug("客户端加入连接：" + ctx.channel());
-        ChannelSupervise.addChannel(ctx.channel());
+        WsChannelSupervise.addChannel(ctx.channel());
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         log.debug("客户端断开连接：" + ctx.channel());
-        ChannelSupervise.removeChannel(ctx.channel());
+        WsChannelSupervise.removeChannel(ctx.channel());
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         ctx.flush();
     }
-
-//        private WebSocketServerHandshaker handShaker;
-//
-//    private void handleHttpRequest(ChannelHandlerContext ctx, FullHttpRequest req) {
-//        //要求Upgrade为websocket，过滤掉get/Post
-//        if (!req.decoderResult().isSuccess()
-//                || (!"websocket".equals(req.headers().get("Upgrade")))) {
-//            //若不是websocket方式，则创建BAD_REQUEST的req，返回给客户端
-//            sendHttpResponse(ctx, req, new DefaultFullHttpResponse(
-//                    HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST));
-//            return;
-//        }
-//
-//        WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
-//                "ws://localhost:7094/ws", null, false);
-//        handShaker = wsFactory.newHandshaker(req);
-//        if (handShaker == null) {
-//            WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
-//        } else {
-//            handShaker.handshake(ctx.channel(), req);
-//        }
-//    }
 
     /**
      * 拒绝不合法的请求，并返回错误信息
@@ -140,9 +118,9 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<WebSocketFr
         }
 
         // 判断请求路径是否跟配置中的一致
-        if (Const.webSocketPath.equals(getBasePath(uri))) {
+        if (WsConst.webSocketPath.equals(getBasePath(uri))) {
             // 因为有可能携带了参数，导致客户端一直无法返回握手包，因此在校验通过后，重置请求路径
-            request.setUri(Const.webSocketPath);
+            request.setUri(WsConst.webSocketPath);
         } else {
             ctx.close();
         }

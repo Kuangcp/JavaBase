@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentMap;
  * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-05-18 08:34
  */
 @Slf4j
-public class ChannelSupervise {
+public class WsChannelSupervise {
 
     private static final ChannelGroup GLOBAL_GROUP = new DefaultChannelGroup(
             GlobalEventExecutor.INSTANCE);
