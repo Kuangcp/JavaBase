@@ -182,6 +182,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         }
 
         /*画出头像*/
+        // fixme 像素偏移
         g.drawImage(AvatarImgMgr.instance.curImg, 380, 480,
                 AvatarImgMgr.instance.width, AvatarImgMgr.instance.height, this);
 

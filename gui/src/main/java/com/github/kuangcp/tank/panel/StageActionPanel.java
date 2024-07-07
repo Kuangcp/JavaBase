@@ -19,7 +19,6 @@ import java.util.Objects;
  * 用来放按钮的面板
  * 并且监控按钮事件
  */
-@SuppressWarnings("serial")
 @Slf4j
 public class StageActionPanel extends JPanel implements ActionListener {
 
@@ -29,42 +28,31 @@ public class StageActionPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
+        // TODO 删除无用代码
         if (ae.getActionCommand().equals(ButtonCommand.START)) {
             this.startNewStage();
-        }
-
-        if (ae.getActionCommand().equals(ButtonCommand.EXIT)) {
+        } else if (ae.getActionCommand().equals(ButtonCommand.EXIT)) {
             System.out.println("结束");
             System.exit(0);
-        }
-
-        if (ae.getActionCommand().equals(ButtonCommand.PAUSE)) {
+        } else if (ae.getActionCommand().equals(ButtonCommand.PAUSE)) {
             System.out.println("暂停");
             PlayStageMgr.pause = true;
             frame.requestFocus();
-        }
-
-        if (ae.getActionCommand().equals(ButtonCommand.RESUME)) {
+        } else if (ae.getActionCommand().equals(ButtonCommand.RESUME)) {
             System.out.println("继续");
             PlayStageMgr.pause = false;
             frame.requestFocus();
-        }
-
-        if (ae.getActionCommand().equals(ButtonCommand.ABORT)) {
+        } else if (ae.getActionCommand().equals(ButtonCommand.ABORT)) {
             //不能把下面的saveExit口令放到这里来或，会出现先后顺序的一些错误
             //口令与口令之间应该独立，不要有或，与这样的复杂逻辑结构
             System.out.println("退出游戏");
             System.exit(0);
-        }
-
-        if (ae.getActionCommand().equals("saveExit")) {
+        } else if (ae.getActionCommand().equals("saveExit")) {
             System.out.println("按下了 保存并退出 按钮");
             //退出
             System.out.println("已经退出游戏");
             System.exit(0);
-        }
-
-        if (ae.getActionCommand().equals("Continue")) {
+        } else if (ae.getActionCommand().equals("Continue")) {
             //重新开启一个画板
             System.out.println(ButtonCommand.START);
             frame.firstStart = false;

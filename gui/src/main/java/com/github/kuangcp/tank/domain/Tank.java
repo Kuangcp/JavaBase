@@ -27,6 +27,7 @@ public abstract class Tank extends AbstractLoopEvent implements VisualItem {
 
     int halfWidth = 10;
     int halfHeight = 15;
+    private final int wheelNum = 7;
 
     public void addLife(int delta) {
         this.life += delta;
@@ -115,15 +116,15 @@ public abstract class Tank extends AbstractLoopEvent implements VisualItem {
      */
     private void drawHorBorder(Graphics g, int topX, int topY) {
         final int quarterWidth = this.halfWidth / 2;
-        final int tap = this.halfHeight * 2 / 7;
+        final int tap = this.halfHeight * 2 / wheelNum;
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < wheelNum; i++) {
             g.fill3DRect(topX + tap * i + 1, topY, tap - 1, quarterWidth, false);
         }
 
         g.fill3DRect(topX + quarterWidth * 2, topY + quarterWidth, this.halfHeight * 2 - 4 * quarterWidth, this.halfWidth, false);
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < wheelNum; i++) {
             g.fill3DRect(topX + tap * i + 1, topY + this.halfHeight, tap - 1, quarterWidth, false);
         }
     }
@@ -134,13 +135,13 @@ public abstract class Tank extends AbstractLoopEvent implements VisualItem {
     private void drawVerBorder(Graphics g, int topX, int topY) {
         final int quarterWidth = this.halfWidth / 2;
         //1.左边的矩形
-        final int tap = this.halfHeight * 2 / 7;
-        for (int i = 0; i < 7; i++) {
+        final int tap = this.halfHeight * 2 / wheelNum;
+        for (int i = 0; i < wheelNum; i++) {
             g.fill3DRect(topX, topY + tap * i + 1, quarterWidth, tap - 1, false);
         }
 
         //2.画出右边矩形
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < wheelNum; i++) {
             g.fill3DRect(topX + quarterWidth * 3, topY + tap * i + 1, quarterWidth, tap - 1, false);
         }
 

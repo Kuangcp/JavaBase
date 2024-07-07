@@ -1,5 +1,7 @@
 package com.github.kuangcp.tank.util;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sound.sampled.AudioFormat;
@@ -13,25 +15,19 @@ import java.io.IOException;
 /**
  * 类初始化时 把路径传入 播放声音的类
  * 只能播放无损（无压缩的音乐文件）即WAV不能播放MP3
+ * TODO fix
  */
 @Slf4j
 public class Audio extends Thread {
 
-    private String filename;
+    private final String filename;
+    @Getter
+    @Setter
     private boolean live = true;
 
-    public boolean isLive() {
-        return live;
-    }
-
-    public void setLive(boolean live) {
-        this.live = live;
-    }
-
     //构造器
-    public Audio(String wavfile) {
-        filename = wavfile;
-
+    public Audio(String wavFile) {
+        filename = wavFile;
     }
 
     public void run() {
