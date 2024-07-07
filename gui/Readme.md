@@ -1,13 +1,17 @@
 # GUI
 
-gradle tank run -x test 直接运行
+## [Tank](/gui/src/main/java/com/github/kuangcp/tank)
 
-gradle tank -x test  打包坦克游戏
-gradle note -x test  打包记事本
-gradle virus -x test 打包病毒模拟
-gradle calc -x test 打包计算器
+> like `Tank 1990`
+
+mvn clean package -P tank
+
+![](/gui/src/doc/tank/main.png)
+
+![](/gui/src/doc/tank/phone.png)
 
 ## GTK
+
 > [java-gnome](http://java-gnome.sourceforge.net/README.html)
 
 [idea ui designer](https://www.youtube.com/watch?v=whF_Qm1epQ8)`javafx ui-designer`
