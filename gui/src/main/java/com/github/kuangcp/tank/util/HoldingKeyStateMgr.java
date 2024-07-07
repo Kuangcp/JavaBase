@@ -4,21 +4,25 @@ import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.panel.TankGroundPanel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
  * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-06 02:58
- * @see TankGroundPanel#keyPressed
+ * @see TankGroundPanel#keyPressed 触发
  */
 @Getter
 @Setter
-public class HoldingKeyEventMgr {
+@Slf4j
+public class HoldingKeyStateMgr {
 
-    public static HoldingKeyEventMgr instance = new HoldingKeyEventMgr();
+    private long lastEventTick = 0;
+    public static final HoldingKeyStateMgr instance = new HoldingKeyStateMgr();
 
     // 允许多键同时被触发
     private volatile boolean up;
@@ -33,7 +37,7 @@ public class HoldingKeyEventMgr {
     private final Map<Integer, Runnable> releaseMap = new HashMap<>();
     private final Map<Integer, Runnable> pressMap = new HashMap<>();
 
-    public HoldingKeyEventMgr() {
+    public HoldingKeyStateMgr() {
 
         releaseMap.put(KeyEvent.VK_A, () -> this.left = false);
         releaseMap.put(KeyEvent.VK_D, () -> this.right = false);
@@ -45,28 +49,63 @@ public class HoldingKeyEventMgr {
         pressMap.put(KeyEvent.VK_S, () -> this.down = true);
         pressMap.put(KeyEvent.VK_W, () -> this.up = true);
 
-//        releaseMap.put(KeyEvent.VK_A, () -> this.direct = -1);
-//        releaseMap.put(KeyEvent.VK_D, () -> this.direct = -1);
-//        releaseMap.put(KeyEvent.VK_S, () -> this.direct = -1);
-//        releaseMap.put(KeyEvent.VK_W, () -> this.direct = -1);
 
         releaseMap.put(KeyEvent.VK_J, () -> this.shot = false);
         releaseMap.put(KeyEvent.VK_CONTROL, () -> this.ctrl = false);
-
-//        pressMap.put(KeyEvent.VK_A, () -> this.direct = DirectType.LEFT);
-//        pressMap.put(KeyEvent.VK_D, () -> this.direct = DirectType.RIGHT);
-//        pressMap.put(KeyEvent.VK_S, () -> this.direct = DirectType.DOWN);
-//        pressMap.put(KeyEvent.VK_W, () -> this.direct = DirectType.UP);
 
         pressMap.put(KeyEvent.VK_CONTROL, () -> this.ctrl = true);
     }
 
     public void handleDirectPress(KeyEvent re) {
-        Optional.ofNullable(pressMap.get(re.getKeyCode())).ifPresent(Runnable::run);
+        handleDirectPress(re.getKeyCode());
     }
 
     public void handleRelease(KeyEvent re) {
-        Optional.ofNullable(releaseMap.get(re.getKeyCode())).ifPresent(Runnable::run);
+        handleRelease(re.getKeyCode());
+    }
+
+    public void handleDirectPress(Integer code) {
+        Optional.ofNullable(pressMap.get(code)).ifPresent(Runnable::run);
+    }
+
+    public void handleRelease(Integer code) {
+        Optional.ofNullable(releaseMap.get(code)).ifPresent(Runnable::run);
+    }
+
+    // 前端 ws 采样定时调用
+    public void handleJoy(Integer code) {
+        if (Objects.isNull(code)) {
+            return;
+        }
+        final long now = System.currentTimeMillis();
+//        if (lastEventTick != 0 && now - lastEventTick < 100) {
+//            return;
+//        }
+        lastEventTick = now;
+        this.left = false;
+        this.right = false;
+        this.up = false;
+        this.down = false;
+
+        if (code == DirectType.NONE) {
+            return;
+        }
+
+        switch (code) {
+            case DirectType.UP:
+                this.up = true;
+                break;
+            case DirectType.DOWN:
+                this.down = true;
+                break;
+            case DirectType.LEFT:
+                this.left = true;
+                break;
+            case DirectType.RIGHT:
+                this.right = true;
+                break;
+        }
+//        log.info("code={} left={} right={}", code, this.left, this.right);
     }
 
     public boolean hasPressMoveEvent() {

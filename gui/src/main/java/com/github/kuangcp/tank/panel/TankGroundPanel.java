@@ -14,7 +14,7 @@ import com.github.kuangcp.tank.mgr.RoundMapMgr;
 import com.github.kuangcp.tank.resource.AvatarImgMgr;
 import com.github.kuangcp.tank.resource.ColorMgr;
 import com.github.kuangcp.tank.util.ExecutePool;
-import com.github.kuangcp.tank.util.HoldingKeyEventMgr;
+import com.github.kuangcp.tank.util.HoldingKeyStateMgr;
 import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.util.executor.AbstractDelayEvent;
 import com.github.kuangcp.tank.util.executor.DelayExecutor;
@@ -332,7 +332,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     @Override
     public void keyPressed(KeyEvent e) {
         // 启动关闭流程
-        if (e.getKeyCode() == KeyEvent.VK_Q && HoldingKeyEventMgr.instance.isCtrl()) {
+        if (e.getKeyCode() == KeyEvent.VK_Q && HoldingKeyStateMgr.instance.isCtrl()) {
             System.exit(0);
         } else if (e.getKeyCode() == KeyEvent.VK_T && !invokeNewStage) {
             invokeNewStage = true;
@@ -351,16 +351,16 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         }
         // 实际用户交互
         if (e.getKeyCode() == KeyEvent.VK_J) {
-            HoldingKeyEventMgr.instance.setShot(true);
+            HoldingKeyStateMgr.instance.setShot(true);
         }
 
-        HoldingKeyEventMgr.instance.handleDirectPress(e);
+        HoldingKeyStateMgr.instance.handleDirectPress(e);
         this.repaint();
     }
 
     @Override
     public void keyReleased(KeyEvent re) {
-        HoldingKeyEventMgr.instance.handleRelease(re);
+        HoldingKeyStateMgr.instance.handleRelease(re);
 
         if (re.getKeyCode() == KeyEvent.VK_T && invokeNewStage) {
             invokeNewStage = false;

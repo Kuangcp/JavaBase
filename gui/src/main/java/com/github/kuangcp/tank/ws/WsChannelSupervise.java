@@ -46,6 +46,6 @@ public class WsChannelSupervise {
     }
 
     public static void watchState() {
-        log.info("online {}", CHANNEL_MAP.size());
+//        log.info("online {}", CHANNEL_MAP.size());
     }
 }

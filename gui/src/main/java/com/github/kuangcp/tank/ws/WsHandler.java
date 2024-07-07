@@ -1,6 +1,10 @@
 package com.github.kuangcp.tank.ws;
 
 
+import com.github.kuangcp.tank.mgr.PlayStageMgr;
+import com.github.kuangcp.tank.util.HoldingKeyStateMgr;
+import com.github.kuangcp.tank.util.Json;
+import com.github.kuangcp.tank.ws.msg.MsgPack;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -18,6 +22,7 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
@@ -34,7 +39,7 @@ public class WsHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        log.debug("客户端加入连接：" + ctx.channel());
+        log.info("客户端加入连接：{}", ctx.channel());
         WsChannelSupervise.addChannel(ctx.channel());
     }
 
@@ -126,7 +131,6 @@ public class WsHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
         }
     }
 
-
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame frame) {
         if (frame instanceof PingWebSocketFrame) {
@@ -165,7 +169,16 @@ public class WsHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
      * @param frame
      */
     private void textWebSocketFrameHandler(ChannelHandlerContext ctx, TextWebSocketFrame frame) {
-        ctx.channel().writeAndFlush(frame.retain());
+        final String text = frame.text();
+        final MsgPack pack = Json.fromJson(text, MsgPack.class);
+
+        HoldingKeyStateMgr.instance.handleJoy(pack.getDirect());
+        if (BooleanUtils.isTrue(pack.getShot())) {
+            PlayStageMgr.instance.hero.shotEnemy();
+        }
+
+//        ctx.channel().writeAndFlush(frame.retain());
+        ctx.channel().writeAndFlush("OK");
     }
 
     /**

@@ -3,7 +3,7 @@ package com.github.kuangcp.tank.domain;
 import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.mgr.PlayStageMgr;
 import com.github.kuangcp.tank.resource.ColorMgr;
-import com.github.kuangcp.tank.util.HoldingKeyEventMgr;
+import com.github.kuangcp.tank.util.HoldingKeyStateMgr;
 import com.github.kuangcp.tank.util.Roll;
 import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
@@ -21,7 +21,7 @@ public class Hero extends Tank {
 
     //子弹集合
     public Vector<Bullet> bulletList = new Vector<>();
-    private long lastShotMs = 0;
+    private long lastShotTick = 0;
     private long shotCDMs = 268;
 
     private final int originX, originY;
@@ -40,7 +40,7 @@ public class Hero extends Tank {
 
     @Override
     public void run() {
-        final HoldingKeyEventMgr keyEvent = HoldingKeyEventMgr.instance;
+        final HoldingKeyStateMgr keyEvent = HoldingKeyStateMgr.instance;
 
         while (this.isAlive()) {
             if (keyEvent.hasPressMoveEvent()) {
@@ -110,7 +110,7 @@ public class Hero extends Tank {
 
     public void shotEnemy() {
         final long nowMs = System.currentTimeMillis();
-        if (lastShotMs != 0 && nowMs - lastShotMs < shotCDMs) {
+        if (lastShotTick != 0 && nowMs - lastShotTick < shotCDMs) {
             return;
         }
         if (this.bulletList.size() >= this.maxLiveShot || !this.isAlive()) {
@@ -139,7 +139,7 @@ public class Hero extends Tank {
         //启动子弹线程
 //        shotExecutePool.execute(bullet);
         LoopEventExecutor.addLoopEvent(bullet);
-        lastShotMs = nowMs;
+        lastShotTick = nowMs;
     }
 
     public void addSpeed(int delta) {
@@ -155,7 +155,7 @@ public class Hero extends Tank {
     public String toString() {
         return "Hero{" +
                 "bulletList=" + bulletList +
-                ", lastShotMs=" + lastShotMs +
+                ", lastShotTick=" + lastShotTick +
                 ", shotCDMs=" + shotCDMs +
                 ", x=" + x +
                 ", y=" + y +
