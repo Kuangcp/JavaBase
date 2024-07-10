@@ -16,6 +16,7 @@ import java.awt.*;
 @Slf4j
 public class Bullet extends AbstractLoopEvent implements VisualItem {
 
+    public int tankId;
     public int sx;
     public int sy;
     public int direct;

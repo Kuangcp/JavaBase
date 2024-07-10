@@ -3,19 +3,15 @@ package com.github.kuangcp.tank.mgr;
 import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.domain.Bomb;
 import com.github.kuangcp.tank.domain.Bullet;
-import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Tank;
 import com.github.kuangcp.tank.resource.AbstractImgListMgr;
 import com.github.kuangcp.tank.resource.PropertiesMgr;
-
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-11 16:28
@@ -33,7 +29,7 @@ public class BombMgr extends AbstractImgListMgr {
     }
 
     //定义炸弹爆炸集合
-    public List<Bomb> bombs = Collections.synchronizedList(new ArrayList<>());
+    private final List<Bomb> bombs = new LinkedList<>();
 
     /**
      * 画出炸弹
@@ -44,11 +40,6 @@ public class BombMgr extends AbstractImgListMgr {
             Bomb b = bombs.get(i);
             if (b.life > 10) {
                 g.drawImage(BombMgr.instance.imgArr[0], b.bx, b.by, 30, 30, panel);
-//				if(rr){
-//					Audio B = new Audio("./src/RE/GameBegin.wav");
-//					B.start();
-//					rr = false;
-//				}
             } else if (b.life > 5) {
                 g.drawImage(BombMgr.instance.imgArr[1], b.bx, b.by, 30, 30, panel);
             } else {
@@ -110,25 +101,8 @@ public class BombMgr extends AbstractImgListMgr {
     }
 
     private void handleBombAndTank(Tank tank, int bx, int by) {
-        Hero hero = null;
-        if (tank instanceof Hero) {
-            hero = (Hero) tank;
-            // 无敌
-            if (hero.isInvincible()) {
-                return;
-            }
-        }
-
-        tank.addLife(-1);
-        if (tank.getLife() <= 0) {
-            tank.setAlive(false);
-        }
-
-        bombs.add(new Bomb(bx, by));
-
-        // 复活
-        if (Objects.nonNull(hero)) {
-            hero.resurrect();
+        if (tank.hitByBullet()) {
+            bombs.add(new Bomb(bx, by));
         }
     }
 }

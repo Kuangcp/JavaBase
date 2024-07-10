@@ -9,13 +9,19 @@ import com.github.kuangcp.tank.domain.Iron;
 import com.github.kuangcp.tank.domain.Tank;
 import com.github.kuangcp.tank.resource.DefeatImgMgr;
 import com.github.kuangcp.tank.resource.VictoryImgMgr;
+import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.TankTool;
+import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 import java.awt.image.ImageObserver;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-11 23:24
@@ -25,7 +31,7 @@ public class PlayStageMgr {
 
     public static PlayStageMgr instance = null;
 
-    public Hero hero;
+    public static Hero hero;
     public boolean startLogic = false;
     public boolean winCurRound = false;
     public int roundPrize = 0;
@@ -40,16 +46,32 @@ public class PlayStageMgr {
     /**
      * 敌人的数量
      */
+    @Getter
     public static int enemySize = 10;
     /**
      * 无敌状态 时间
      */
+    @Getter
     static long invincibleMs = 5_000L;
 
+    public static volatile boolean newStage = true;
+    public static volatile boolean invokeNewStage = false;
+
     // 场景 上下文
-    public List<EnemyTank> enemyTanks;
-    public List<Brick> bricks; // 砖
-    public List<Iron> irons; // 铁
+//    public List<EnemyTank> enemyTanks;
+//    public List<Brick> bricks; // 砖
+//    public List<Iron> irons; // 铁
+
+    public Map<Integer, Hero> heroMap = new ConcurrentHashMap<>();
+
+    //TODO 渲染在一个线程里，不用考虑并发安全
+    public static List<EnemyTank> enemyList;
+    public static List<Brick> bricks;
+    public static List<Iron> irons;
+
+    //所有按下键的code集合
+    public static int[][] enemyTankMap = new int[12][2];
+    public static int[] myself = new int[6];
 
     /**
      * 等待stage启动
@@ -77,13 +99,12 @@ public class PlayStageMgr {
 
     private PlayStageMgr(Hero hero, List<EnemyTank> enemyTanks, List<Brick> bricks, List<Iron> irons) {
         this.hero = hero;
-        this.enemyTanks = enemyTanks;
+        this.enemyList = enemyTanks;
         this.bricks = bricks;
         this.irons = irons;
     }
 
     public boolean hasWinCurrentRound() {
-        final Hero hero = instance.hero;
         if (Objects.isNull(hero)) {
             winCurRound = false;
         } else {
@@ -97,13 +118,119 @@ public class PlayStageMgr {
         this.stopStage();
     }
 
+
+    public void refresh(){
+
+    }
+
+    public static void startNewRound() {
+        enemyList = new CopyOnWriteArrayList<>();
+        bricks = new CopyOnWriteArrayList<>();
+        irons = new CopyOnWriteArrayList<>();
+
+        //创建英雄坦克
+        if (newStage) {
+            hero = new Hero(480, 500, 3);
+            hero.setLife(10);
+        } else {
+            hero = new Hero(myself[0], myself[1], 3);
+            hero.setLife(myself[2]);
+            hero.setPrize(myself[3]);
+        }
+
+        PlayStageMgr.init(hero, enemyList, bricks, irons);
+
+        //多键监听实现
+//        heroKeyListener = new HeroKeyListener(HoldingKeyEventMgr.instance, hero, this);
+//        ExecutePool.exclusiveLoopPool.execute(heroKeyListener);
+        ExecutePool.exclusiveLoopPool.execute(hero);
+
+        // 创建 敌人的坦克
+        EnemyTank ett = null;
+        if (newStage) {//正常启动并创建坦克线程
+            for (int i = 0; i < PlayStageMgr.getEnemySize(); i++) {
+                //在四个随机区域产生坦克
+                switch ((int) (Math.random() * 4)) {
+                    case 0:
+                        ett = new EnemyTank(20 + (int) (Math.random() * 30), 20 + (int) (Math.random() * 30), i % 4);
+                        break;
+                    case 1:
+                        ett = new EnemyTank(700 - (int) (Math.random() * 30), 20 + (int) (Math.random() * 30), i % 4);
+                        break;
+                    case 2:
+                        ett = new EnemyTank(20 + (int) (Math.random() * 30), 200 + (int) (Math.random() * 30), i % 4);
+                        break;
+                    case 3:
+                        ett = new EnemyTank(700 - (int) (Math.random() * 30), 200 + (int) (Math.random() * 30), i % 4);
+                        break;
+                }
+
+                if (Objects.isNull(ett)) {
+                    continue;
+                }
+                LoopEventExecutor.addLoopEvent(ett);
+                enemyList.add(ett);
+            }
+        } else {
+            /*进入读取文件步骤*/
+            for (int i = 0; i < enemyTankMap.length; i++) {
+                if (enemyTankMap[i][0] == 0) {
+                    break;
+                }
+                ett = new EnemyTank(enemyTankMap[i][0], enemyTankMap[i][1], i % 4);
+                LoopEventExecutor.addLoopEvent(ett);
+                enemyList.add(ett);
+            }
+        }
+
+        //左右下角
+        createB(bricks, 20, 310, 300, 540);
+        createB(bricks, 520, 310, 740, 540);
+
+        //头像附近
+        createB(bricks, 360, 460, 460, 480);
+        createB(bricks, 360, 480, 380, 540);
+        createB(bricks, 440, 460, 460, 540);
+
+        createI(irons, 330, 410, 480, 430);
+
+        PlayStageMgr.instance.markStartLogic();
+    }
+
+    /**
+     * 创建砖
+     */
+    public static void createB(List<Brick> bricks, int startX, int startY, int endX, int endY) {
+        Brick template = new Brick(0, 0);
+        for (int i = startX; i < endX; i += template.getWidth()) {
+            for (int j = startY; j < endY; j += template.getHeight()) {
+                Brick bs = new Brick(i, j);
+                bricks.add(bs);
+            }
+        }
+    }
+
+    /**
+     * 创建铁块
+     */
+    public static void createI(List<Iron> irons, int startX, int startY, int endX, int endY) {
+        Iron template = new Iron(0, 0);
+        for (int i = startX; i < endX; i += template.getWidth()) {
+            for (int j = startY; j < endY; j += template.getHeight()) {
+                Iron bs = new Iron(i, j);
+                irons.add(bs);
+            }
+        }
+    }
+
+
     public void stopStage() {
         roundPrize = hero.getPrize();
         instance.markStopLogic();
         log.info("clean round:{}", round);
         instance.hero.setAlive(false);
         // TODO clean
-        for (EnemyTank et : enemyTanks) {
+        for (EnemyTank et : enemyList) {
             et.setAbort(true);
             et.setAlive(false);
         }
@@ -136,7 +263,7 @@ public class PlayStageMgr {
 //    }
 
     public boolean ableToMove(Hero hero) {
-        return enemyTanks.stream().allMatch(v -> TankTool.ablePass(hero, v));
+        return enemyList.stream().allMatch(v -> TankTool.ablePass(hero, v));
     }
 
     public boolean willInBorder(Tank tank) {
@@ -164,20 +291,12 @@ public class PlayStageMgr {
                 || bullet.sy <= RoundMapMgr.instance.border.getMinY() || bullet.sy >= RoundMapMgr.instance.border.getMaxY();
     }
 
-    public static int getEnemySize() {
-        return enemySize;
-    }
-
     public static void setEnemySize(int enemySize) {
         PlayStageMgr.enemySize = enemySize;
     }
 
     public static void addEnemySize(int delta) {
         PlayStageMgr.enemySize += delta;
-    }
-
-    public static long getInvincibleMs() {
-        return invincibleMs;
     }
 
     public static boolean ablePassByHero(Tank t) {
@@ -212,8 +331,7 @@ public class PlayStageMgr {
 
     public int getLiveEnemy() {
         int result = 0;
-        for (int i = 0; i < this.enemyTanks.size(); i++) {
-            final EnemyTank enemyTank = enemyTanks.get(i);
+        for (final EnemyTank enemyTank : this.enemyList) {
             if (enemyTank.isAlive()) {
                 result++;
             }

@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 最起初的坦克类
@@ -16,6 +17,9 @@ import java.awt.*;
 @Getter
 @Slf4j
 public abstract class Tank extends AbstractLoopEvent implements VisualItem {
+    private static final AtomicInteger idCnt = new AtomicInteger(0);
+    int id;
+
     int x;          // 坦克中心的横坐标
     int y;          // 坦克中心的纵坐标
     int direct = DirectType.NONE;   // 初始方向
@@ -31,9 +35,13 @@ public abstract class Tank extends AbstractLoopEvent implements VisualItem {
 
     public void addLife(int delta) {
         this.life += delta;
+        if (this.life <= 0) {
+            this.alive = false;
+        }
     }
 
     public Tank(int x, int y, int speed) {
+        this.id = idCnt.incrementAndGet();
         this.x = x;
         this.y = y;
         this.speed = speed;
@@ -42,6 +50,14 @@ public abstract class Tank extends AbstractLoopEvent implements VisualItem {
     @Override
     public void run() {
 
+    }
+
+    /**
+     * @return draw bomb
+     */
+    public boolean hitByBullet() {
+        this.addLife(-1);
+        return true;
     }
 
     public void move() {

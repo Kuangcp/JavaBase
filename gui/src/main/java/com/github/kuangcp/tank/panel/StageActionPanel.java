@@ -56,7 +56,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
             //重新开启一个画板
             System.out.println(ButtonCommand.START);
             frame.firstStart = false;
-            TankGroundPanel.newStage = false;
+            PlayStageMgr.newStage = false;
             Bullet.setSpeed(8);
 //            frame.remove(frame.centerPanel);
 
@@ -88,7 +88,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
         }
 
         frame.firstStart = false;
-        TankGroundPanel.newStage = true;
+        PlayStageMgr.newStage = true;
         Bullet.setSpeed(8);
         frame.remove(frame.getContentPane());
 
@@ -100,7 +100,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
             }
             beginAudio = new Audio("./src/RE/GameBegin.wav");
 //        beginAudio.start();
-            frame.groundPanel.startNewRound();
+            PlayStageMgr.startNewRound();
         });
         actionThread.setName("actionThread");
         actionThread.start();//将画板线程开启

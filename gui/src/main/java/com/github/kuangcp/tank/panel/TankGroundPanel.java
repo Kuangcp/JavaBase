@@ -3,7 +3,6 @@ package com.github.kuangcp.tank.panel;
 import com.github.kuangcp.tank.domain.Brick;
 import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.domain.EnemyTank;
-import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Iron;
 import com.github.kuangcp.tank.domain.StageBorder;
 import com.github.kuangcp.tank.frame.MainFrame;
@@ -13,7 +12,6 @@ import com.github.kuangcp.tank.mgr.PlayStageMgr;
 import com.github.kuangcp.tank.mgr.RoundMapMgr;
 import com.github.kuangcp.tank.resource.AvatarImgMgr;
 import com.github.kuangcp.tank.resource.ColorMgr;
-import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.HoldingKeyStateMgr;
 import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.util.executor.AbstractDelayEvent;
@@ -26,102 +24,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class TankGroundPanel extends JPanel implements java.awt.event.KeyListener, Runnable {
-
-    public volatile Hero hero;
-    public static boolean newStage = true;
-    private volatile boolean invokeNewStage = false;
-
-    public List<EnemyTank> enemyList = new CopyOnWriteArrayList<>();
-    public List<Brick> bricks = new CopyOnWriteArrayList<>();
-    public List<Iron> irons = new CopyOnWriteArrayList<>();
-
-    //所有按下键的code集合
-    public static int[][] enemyTankMap = new int[12][2];
-    public static int[] myself = new int[6];
-
-    public TankGroundPanel() {
-
-    }
-
-    public void startNewRound() {
-        enemyList = new CopyOnWriteArrayList<>();
-        bricks = new CopyOnWriteArrayList<>();
-        irons = new CopyOnWriteArrayList<>();
-
-        //创建英雄坦克
-        if (newStage) {
-            hero = new Hero(480, 500, 3);
-            hero.setLife(10);
-        } else {
-            hero = new Hero(myself[0], myself[1], 3);
-            hero.setLife(myself[2]);
-            hero.setPrize(myself[3]);
-        }
-
-        PlayStageMgr.init(hero, enemyList, bricks, irons);
-
-        //多键监听实现
-//        heroKeyListener = new HeroKeyListener(HoldingKeyEventMgr.instance, hero, this);
-//        ExecutePool.exclusiveLoopPool.execute(heroKeyListener);
-        ExecutePool.exclusiveLoopPool.execute(hero);
-
-        // 创建 敌人的坦克
-        EnemyTank ett = null;
-        if (newStage) {//正常启动并创建坦克线程
-            for (int i = 0; i < PlayStageMgr.getEnemySize(); i++) {
-                //在四个随机区域产生坦克
-                switch ((int) (Math.random() * 4)) {
-                    case 0:
-                        ett = new EnemyTank(20 + (int) (Math.random() * 30), 20 + (int) (Math.random() * 30), i % 4);
-                        break;
-                    case 1:
-                        ett = new EnemyTank(700 - (int) (Math.random() * 30), 20 + (int) (Math.random() * 30), i % 4);
-                        break;
-                    case 2:
-                        ett = new EnemyTank(20 + (int) (Math.random() * 30), 200 + (int) (Math.random() * 30), i % 4);
-                        break;
-                    case 3:
-                        ett = new EnemyTank(700 - (int) (Math.random() * 30), 200 + (int) (Math.random() * 30), i % 4);
-                        break;
-                }
-
-                if (Objects.isNull(ett)) {
-                    continue;
-                }
-                LoopEventExecutor.addLoopEvent(ett);
-                enemyList.add(ett);
-            }
-        } else {
-            /*进入读取文件步骤*/
-            for (int i = 0; i < enemyTankMap.length; i++) {
-                if (enemyTankMap[i][0] == 0) {
-                    break;
-                }
-                ett = new EnemyTank(enemyTankMap[i][0], enemyTankMap[i][1], i % 4);
-                LoopEventExecutor.addLoopEvent(ett);
-                enemyList.add(ett);
-            }
-        }
-
-        //左右下角
-        createB(bricks, 20, 310, 300, 540);
-        createB(bricks, 520, 310, 740, 540);
-
-        //头像附近
-        createB(bricks, 360, 460, 460, 480);
-        createB(bricks, 360, 480, 380, 540);
-        createB(bricks, 440, 460, 460, 540);
-
-        createI(irons, 330, 410, 480, 430);
-
-        PlayStageMgr.instance.markStartLogic();
-    }
 
     private void drawBg(Graphics g) {
         g.setColor(ColorMgr.instance.bgColor);
@@ -134,9 +40,9 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
     private void drawHeroInfo(Graphics g) {
         g.setColor(Color.GREEN);
-        final String lifeInfo = "Life:" + hero.getLife()
+        final String lifeInfo = "Life:" + PlayStageMgr.hero.getLife()
                 + " Enemy: " + PlayStageMgr.instance.getLiveEnemy()
-                + " Prize: " + hero.getPrize();
+                + " Prize: " + PlayStageMgr.hero.getPrize();
         g.drawString(lifeInfo, RoundMapMgr.instance.border.getMinX(), 15);
     }
 
@@ -150,7 +56,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     public void paint(Graphics g) {
         super.paint(g);
 
-        if (PlayStageMgr.stageNoneStart() || Objects.isNull(hero)) {
+        if (PlayStageMgr.stageNoneStart()) {
             PlayStageMgr.drawStopIgnore(g, this);
             return;
         }
@@ -162,6 +68,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         /*画出障碍物__砖__ 铁__*/
 
         g.setColor(ColorMgr.instance.ironColor);
+        final List<Iron> irons = PlayStageMgr.irons;
         for (int i = 0; i < irons.size(); i++) {
             Iron ir = irons.get(i);
             if (ir.getAlive()) {
@@ -172,6 +79,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         }
 
         g.setColor(ColorMgr.instance.brickColor);
+        final List<Brick> bricks = PlayStageMgr.bricks;
         for (int i = 0; i < bricks.size(); i++) {
             Brick bs = bricks.get(i);
             if (bs.getAlive()) {
@@ -187,26 +95,17 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                 AvatarImgMgr.instance.width, AvatarImgMgr.instance.height, this);
 
         /*画出主坦克*/
-        if (hero.isAlive()) {
-            for (int i = 0; i < enemyList.size(); i++) {
-                EnemyTank demon;
-                try {
-                    demon = enemyList.get(i);
-                } catch (IndexOutOfBoundsException e) {
-                    log.error("", e);
-                    continue;
-                }
-
-                BombMgr.instance.checkBong(hero, demon.bulletList);
+        final List<EnemyTank> enemyList = PlayStageMgr.enemyList;
+        if (PlayStageMgr.hero.isAlive()) {
+            for (EnemyTank enemyTank : enemyList) {
+                BombMgr.instance.checkBong(PlayStageMgr.hero, enemyTank.bulletList);
             }
 
-            hero.drawSelf(g);
+            PlayStageMgr.hero.drawSelf(g);
         }
 
-        // 画出自己的子弹画子弹是可以封装成一个方法的
-        // 从ss 这个子弹集合中 取出每颗子弹，并画出来
-        for (int i = 0; i < hero.bulletList.size(); i++) {
-            Bullet myBullet = hero.bulletList.get(i);
+        for (int i = 0; i < PlayStageMgr.hero.bulletList.size(); i++) {
+            Bullet myBullet = PlayStageMgr.hero.bulletList.get(i);
             for (Brick brick : bricks) {
                 TankTool.judgeHint(myBullet, brick);
             }
@@ -215,30 +114,22 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
             }
             if (myBullet.sx < 440 && myBullet.sx > 380 && myBullet.sy < 540 && myBullet.sy > 480) {
                 myBullet.alive = false;
-                hero.setAlive(false);
+                PlayStageMgr.hero.setAlive(false);
             }
-            if (hero.bulletList.get(i) != null && hero.bulletList.get(i).alive) {
+            if (PlayStageMgr.hero.bulletList.get(i) != null && PlayStageMgr.hero.bulletList.get(i).alive) {
                 g.setColor(Color.YELLOW);
                 g.draw3DRect(myBullet.sx, myBullet.sy, 3, 3, false);
             }
 
             //子弹线程死了 就要把它从集合中删除
             if (!myBullet.alive) {
-                hero.bulletList.remove(myBullet);
+                PlayStageMgr.hero.bulletList.remove(myBullet);
             }
         }
 
         /*敌人子弹*/
         // FIXME ConcurrentModificationException
-        for (int j = 0; j < enemyList.size(); j++) {
-            EnemyTank et;
-            try {
-                et = enemyList.get(j);
-            } catch (IndexOutOfBoundsException e) {
-                log.error("", e);
-                continue;
-            }
-
+        for (EnemyTank et : enemyList) {
             for (int i = 0; i < et.bulletList.size(); i++) {
                 Bullet myBullet = et.bulletList.get(i);
                 for (Brick brick : bricks) {
@@ -249,7 +140,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
                 }
                 if (myBullet.sx < 440 && myBullet.sx > 380 && myBullet.sy < 540 && myBullet.sy > 480) {
                     myBullet.alive = false;
-                    hero.setAlive(false);
+                    PlayStageMgr.hero.setAlive(false);
                 }
                 if (et.bulletList.get(i) != null && et.bulletList.get(i).alive) {
                     g.setColor(Color.cyan);
@@ -270,25 +161,10 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
             for (int i = 0; i < 4; i++) {
                 EnemyTank d = new EnemyTank(20 + (int) (Math.random() * 400), 20 + (int) (Math.random() * 300), i % 4);
                 LoopEventExecutor.addLoopEvent(d);
-//                Thread fillThread = new Thread(d);
-//                fillThread.setName("fillEnemy" + d.id);
-//                fillThread.start();
                 enemyList.add(d);
             }
         }
 
-
-//		for(int i=0;i<ets.size();i++){
-//			Demons s = ets.get(i);
-//			if(s.getisLive()){
-//				for (int j=0;j<hero.ss.size();j++)
-//				     Tool.Bong(s, hero.ss.get(j), bombs);
-//			    this.drawTank(s.getX(), s.getY(), g, s.getDirect(), s.getType());
-//			    
-//			}else {
-//	        	ets.remove(s);
-//			}
-//		}
         for (int i = 0; i < enemyList.size(); i++) {
             EnemyTank demon;
             try {
@@ -300,7 +176,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
             //存活再画出来
             if (demon.isAlive()) {
-                BombMgr.instance.checkBong(demon, hero.bulletList);
+                BombMgr.instance.checkBong(demon, PlayStageMgr.hero.bulletList);
 
                 demon.drawSelf(g);
             } else {
@@ -322,7 +198,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
             }
         }
 
-        if (PlayStageMgr.instance.hasWinCurrentRound() || !hero.isAlive()) {
+        if (PlayStageMgr.instance.hasWinCurrentRound() || !PlayStageMgr.hero.isAlive()) {
             PlayStageMgr.instance.stopStage();
         }
     }
@@ -335,8 +211,8 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         // 启动关闭流程
         if (e.getKeyCode() == KeyEvent.VK_Q && HoldingKeyStateMgr.instance.isCtrl()) {
             System.exit(0);
-        } else if (e.getKeyCode() == KeyEvent.VK_T && !invokeNewStage) {
-            invokeNewStage = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_T && !PlayStageMgr.invokeNewStage) {
+            PlayStageMgr.invokeNewStage = true;
             MainFrame.actionPanel.startNewStage();
             this.repaint();
             return;
@@ -363,40 +239,14 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
     public void keyReleased(KeyEvent re) {
         HoldingKeyStateMgr.instance.handleRelease(re);
 
-        if (re.getKeyCode() == KeyEvent.VK_T && invokeNewStage) {
-            invokeNewStage = false;
+        if (re.getKeyCode() == KeyEvent.VK_T && PlayStageMgr.invokeNewStage) {
+            PlayStageMgr.invokeNewStage = false;
         }
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
 //        log.info("1={}", e);
-    }
-
-    /**
-     * 创建砖
-     */
-    public void createB(List<Brick> bricks, int startX, int startY, int endX, int endY) {
-        Brick template = new Brick(0, 0);
-        for (int i = startX; i < endX; i += template.getWidth()) {
-            for (int j = startY; j < endY; j += template.getHeight()) {
-                Brick bs = new Brick(i, j);
-                bricks.add(bs);
-            }
-        }
-    }
-
-    /**
-     * 创建铁块
-     */
-    public void createI(List<Iron> irons, int startX, int startY, int endX, int endY) {
-        Iron template = new Iron(0, 0);
-        for (int i = startX; i < endX; i += template.getWidth()) {
-            for (int j = startY; j < endY; j += template.getHeight()) {
-                Iron bs = new Iron(i, j);
-                irons.add(bs);
-            }
-        }
     }
 
     //画板做成线程  画布进行刷新

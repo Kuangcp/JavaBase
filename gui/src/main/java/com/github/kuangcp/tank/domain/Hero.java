@@ -95,7 +95,20 @@ public class Hero extends Tank {
         return false;
     }
 
+    @Override
+    public boolean hitByBullet() {
+        // 无敌
+        if (this.isInvincible()) {
+            return false;
+        }
+        this.resurrect();
+        return super.hitByBullet();
+    }
+
     public void resurrect() {
+        if (!this.alive) {
+            return;
+        }
         this.lastDieMs = System.currentTimeMillis();
 
         // 100‰ 概率原地复活
