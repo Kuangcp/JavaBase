@@ -31,7 +31,7 @@ import java.awt.event.MouseMotionAdapter;
 @Slf4j
 public class MainFrame extends JFrame implements Runnable {
 
-    public volatile TankGroundPanel groundPanel;//坦克的主画板
+    public volatile TankGroundPanel groundPanel;//主界面
     public static StageActionPanel actionPanel = null;//放按钮的画板
 
     public StarterPanel starterPanel;

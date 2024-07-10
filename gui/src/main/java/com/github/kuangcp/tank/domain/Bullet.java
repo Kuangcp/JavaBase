@@ -3,6 +3,8 @@ package com.github.kuangcp.tank.domain;
 import com.github.kuangcp.tank.util.TankTool;
 import com.github.kuangcp.tank.util.executor.AbstractLoopEvent;
 import com.github.kuangcp.tank.mgr.PlayStageMgr;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
@@ -20,24 +22,19 @@ public class Bullet extends AbstractLoopEvent implements VisualItem {
     public int sx;
     public int sy;
     public int direct;
+    @Setter
+    @Getter
     public static int speed = 3;//如果改动要记得按钮事件里也要改
     public boolean alive = true;//是否还活着
 
     public static final long fixedDelayTime = 50;
     public static final long delayStartTime = 50;
 
-    public static int getSpeed() {
-        return speed;
-    }
-
-    public static void setSpeed(int s) {
-        speed = s;
-    }
-
     public Bullet(int sx, int sy, int direct) {
         this.sx = sx;
         this.sy = sy;
         this.direct = direct;
+        this.alive = true;
 
         this.setFixedDelayTime(fixedDelayTime);
     }

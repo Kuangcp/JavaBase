@@ -25,7 +25,6 @@ public abstract class Tank extends AbstractLoopEvent implements VisualItem {
     int direct = DirectType.NONE;   // 初始方向
     int type = 0;     // 坦克的种类
     int speed;      // 前进的步长
-    boolean alive = true;// 是否存活
     boolean abort = false; // 重开一局等外部终止因素
     int life = 1;       //生命值
 
@@ -36,7 +35,7 @@ public abstract class Tank extends AbstractLoopEvent implements VisualItem {
     public void addLife(int delta) {
         this.life += delta;
         if (this.life <= 0) {
-            this.alive = false;
+            alive = false;
         }
     }
 
@@ -45,6 +44,7 @@ public abstract class Tank extends AbstractLoopEvent implements VisualItem {
         this.x = x;
         this.y = y;
         this.speed = speed;
+        this.alive = true;
     }
 
     @Override

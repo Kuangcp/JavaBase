@@ -1,5 +1,6 @@
 package com.github.kuangcp.tank.util.executor;
 
+import com.github.kuangcp.tank.domain.AnyLife;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -11,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-16 01:44
  */
 @Slf4j
-public abstract class AbstractLoopEvent implements LoopEvent {
+public abstract class AbstractLoopEvent extends AnyLife implements LoopEvent {
 
     private static final long defaultDelay = 20;
     /**

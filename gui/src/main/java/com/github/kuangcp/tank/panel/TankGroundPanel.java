@@ -5,6 +5,7 @@ import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Iron;
 import com.github.kuangcp.tank.domain.StageBorder;
+import com.github.kuangcp.tank.domain.Tank;
 import com.github.kuangcp.tank.frame.MainFrame;
 import com.github.kuangcp.tank.frame.SettingFrame;
 import com.github.kuangcp.tank.mgr.BombMgr;
@@ -14,9 +15,6 @@ import com.github.kuangcp.tank.resource.AvatarImgMgr;
 import com.github.kuangcp.tank.resource.ColorMgr;
 import com.github.kuangcp.tank.util.HoldingKeyStateMgr;
 import com.github.kuangcp.tank.util.TankTool;
-import com.github.kuangcp.tank.util.executor.AbstractDelayEvent;
-import com.github.kuangcp.tank.util.executor.DelayExecutor;
-import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import com.github.kuangcp.tank.util.executor.MonitorExecutor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,28 +63,19 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         this.drawHeroInfo(g);
         this.drawMonitorInfo(g);
 
-        /*画出障碍物__砖__ 铁__*/
+
+        PlayStageMgr.instance.refresh();
 
         g.setColor(ColorMgr.instance.ironColor);
         final List<Iron> irons = PlayStageMgr.irons;
-        for (int i = 0; i < irons.size(); i++) {
-            Iron ir = irons.get(i);
-            if (ir.getAlive()) {
-                g.fill3DRect(ir.getHx(), ir.getHy(), ir.getWidth(), ir.getHeight(), false);
-            } else {
-                irons.remove(ir);
-            }
+        for (Iron ir : irons) {
+            g.fill3DRect(ir.getHx(), ir.getHy(), ir.getWidth(), ir.getHeight(), false);
         }
 
         g.setColor(ColorMgr.instance.brickColor);
         final List<Brick> bricks = PlayStageMgr.bricks;
-        for (int i = 0; i < bricks.size(); i++) {
-            Brick bs = bricks.get(i);
-            if (bs.getAlive()) {
-                g.fill3DRect(bs.getHx(), bs.getHy(), bs.getWidth(), bs.getHeight(), false);
-            } else {
-                bricks.remove(bs);
-            }
+        for (Brick bs : bricks) {
+            g.fill3DRect(bs.getHx(), bs.getHy(), bs.getWidth(), bs.getHeight(), false);
         }
 
         /*画出头像*/
@@ -104,99 +93,22 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
             PlayStageMgr.hero.drawSelf(g);
         }
 
-        for (int i = 0; i < PlayStageMgr.hero.bulletList.size(); i++) {
-            Bullet myBullet = PlayStageMgr.hero.bulletList.get(i);
-            for (Brick brick : bricks) {
-                TankTool.judgeHint(myBullet, brick);
-            }
-            for (Iron iron : irons) {
-                TankTool.judgeHint(myBullet, iron);
-            }
-            if (myBullet.sx < 440 && myBullet.sx > 380 && myBullet.sy < 540 && myBullet.sy > 480) {
-                myBullet.alive = false;
-                PlayStageMgr.hero.setAlive(false);
-            }
-            if (PlayStageMgr.hero.bulletList.get(i) != null && PlayStageMgr.hero.bulletList.get(i).alive) {
-                g.setColor(Color.YELLOW);
-                g.draw3DRect(myBullet.sx, myBullet.sy, 3, 3, false);
-            }
-
-            //子弹线程死了 就要把它从集合中删除
-            if (!myBullet.alive) {
-                PlayStageMgr.hero.bulletList.remove(myBullet);
-            }
+        // hero bullet
+        for (Bullet bullet : PlayStageMgr.hero.bulletList) {
+            g.setColor(Color.YELLOW);
+            g.draw3DRect(bullet.sx, bullet.sy, 3, 3, false);
         }
 
-        /*敌人子弹*/
+        enemyList.stream().filter(Tank::isAlive).forEach(t -> t.drawSelf(g));
+
         // FIXME ConcurrentModificationException
         for (EnemyTank et : enemyList) {
-            for (int i = 0; i < et.bulletList.size(); i++) {
-                Bullet myBullet = et.bulletList.get(i);
-                for (Brick brick : bricks) {
-                    TankTool.judgeHint(myBullet, brick);
-                }
-                for (Iron iron : irons) {
-                    TankTool.judgeHint(myBullet, iron);
-                }
-                if (myBullet.sx < 440 && myBullet.sx > 380 && myBullet.sy < 540 && myBullet.sy > 480) {
-                    myBullet.alive = false;
-                    PlayStageMgr.hero.setAlive(false);
-                }
-                if (et.bulletList.get(i) != null && et.bulletList.get(i).alive) {
-                    g.setColor(Color.cyan);
-                    g.draw3DRect(myBullet.sx, myBullet.sy, 1, 1, false);
-
-                }
-                if (!myBullet.alive) {
-                    et.bulletList.remove(myBullet);
-                }
+            for (Bullet bullet : et.bulletList) {
+                g.setColor(Color.cyan);
+                g.draw3DRect(bullet.sx, bullet.sy, 1, 1, false);
             }
         }
-
         BombMgr.instance.drawBomb(g, this);
-
-        /*画出敌人坦克*/
-        //坦克少于5个就自动添加4个
-        if (enemyList.size() < 5) {
-            for (int i = 0; i < 4; i++) {
-                EnemyTank d = new EnemyTank(20 + (int) (Math.random() * 400), 20 + (int) (Math.random() * 300), i % 4);
-                LoopEventExecutor.addLoopEvent(d);
-                enemyList.add(d);
-            }
-        }
-
-        for (int i = 0; i < enemyList.size(); i++) {
-            EnemyTank demon;
-            try {
-                demon = enemyList.get(i);
-            } catch (IndexOutOfBoundsException e) {
-                log.error("", e);
-                continue;
-            }
-
-            //存活再画出来
-            if (demon.isAlive()) {
-                BombMgr.instance.checkBong(demon, PlayStageMgr.hero.bulletList);
-
-                demon.drawSelf(g);
-            } else {
-                // TODO 去掉 延迟删除逻辑
-//                enemyList.remove(demon);
-
-                // 延迟删除 敌人和子弹
-                if (demon.delayRemove) {
-                    continue;
-                }
-                demon.delayRemove = true;
-
-                DelayExecutor.addEvent(new AbstractDelayEvent(7_000) {
-                    @Override
-                    public void run() {
-                        enemyList.remove(demon);
-                    }
-                });
-            }
-        }
 
         if (PlayStageMgr.instance.hasWinCurrentRound() || !PlayStageMgr.hero.isAlive()) {
             PlayStageMgr.instance.stopStage();

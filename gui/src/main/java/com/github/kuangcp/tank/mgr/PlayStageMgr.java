@@ -5,12 +5,15 @@ import com.github.kuangcp.tank.domain.Brick;
 import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
+import com.github.kuangcp.tank.domain.Hinder;
 import com.github.kuangcp.tank.domain.Iron;
 import com.github.kuangcp.tank.domain.Tank;
 import com.github.kuangcp.tank.resource.DefeatImgMgr;
 import com.github.kuangcp.tank.resource.VictoryImgMgr;
 import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.TankTool;
+import com.github.kuangcp.tank.util.executor.AbstractDelayEvent;
+import com.github.kuangcp.tank.util.executor.DelayExecutor;
 import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -119,8 +122,80 @@ public class PlayStageMgr {
     }
 
 
-    public void refresh(){
+    public void refresh() {
+        bricks.removeIf(Hinder::isDead);
+        irons.removeIf(Iron::isDead);
 
+        // hero bullet
+        for (int i = 0; i < PlayStageMgr.hero.bulletList.size(); i++) {
+            Bullet myBullet = PlayStageMgr.hero.bulletList.get(i);
+            for (Brick brick : bricks) {
+                TankTool.judgeHint(myBullet, brick);
+            }
+            for (Iron iron : irons) {
+                TankTool.judgeHint(myBullet, iron);
+            }
+            if (myBullet.sx < 440 && myBullet.sx > 380 && myBullet.sy < 540 && myBullet.sy > 480) {
+                myBullet.alive = false;
+                PlayStageMgr.hero.setAlive(false);
+            }
+        }
+        PlayStageMgr.hero.bulletList.removeIf(Bullet::isDead);
+
+        /*敌人子弹*/
+        // FIXME ConcurrentModificationException
+        for (EnemyTank et : enemyList) {
+            for (int i = 0; i < et.bulletList.size(); i++) {
+                Bullet myBullet = et.bulletList.get(i);
+                for (Brick brick : bricks) {
+                    TankTool.judgeHint(myBullet, brick);
+                }
+                for (Iron iron : irons) {
+                    TankTool.judgeHint(myBullet, iron);
+                }
+                if (myBullet.sx < 440 && myBullet.sx > 380 && myBullet.sy < 540 && myBullet.sy > 480) {
+                    myBullet.alive = false;
+                    PlayStageMgr.hero.setAlive(false);
+                }
+            }
+            et.bulletList.removeIf(Bullet::isDead);
+        }
+
+        //坦克少于5个就自动添加4个
+        if (enemyList.size() < 5) {
+            for (int i = 0; i < 4; i++) {
+                EnemyTank d = new EnemyTank(20 + (int) (Math.random() * 400), 20 + (int) (Math.random() * 300), i % 4);
+                LoopEventExecutor.addLoopEvent(d);
+                enemyList.add(d);
+            }
+        }
+
+        for (int i = 0; i < enemyList.size(); i++) {
+            EnemyTank demon = enemyList.get(i);
+            if (demon.isAlive()) {
+                BombMgr.instance.checkBong(demon, PlayStageMgr.hero.bulletList);
+            } else {
+                // TODO 去掉 延迟删除逻辑 子弹统一管理 而不是tank子属性
+//                enemyList.remove(demon);
+
+                // 延迟删除 敌人和子弹
+                if (demon.delayRemove) {
+                    continue;
+                }
+                demon.delayRemove = true;
+
+                DelayExecutor.addEvent(new AbstractDelayEvent(7_000) {
+                    @Override
+                    public void run() {
+                        enemyList.remove(demon);
+                    }
+                });
+            }
+        }
+
+        if (PlayStageMgr.instance.hasWinCurrentRound() || !PlayStageMgr.hero.isAlive()) {
+            PlayStageMgr.instance.stopStage();
+        }
     }
 
     public static void startNewRound() {
