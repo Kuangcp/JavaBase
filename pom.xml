@@ -489,6 +489,13 @@
             </releases>
         </repository>
         <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/Kuangcp/netty-ws-starter</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
             <id>gitee</id>
             <name>kuangcp gitee</name>
             <url>https://gitee.com/gin9/MavenRepos/raw/master</url>
@@ -498,6 +505,5 @@
             <name>Public online Restlet repository</name>
             <url>https://maven.restlet.talend.com</url>
         </repository>
-
     </repositories>
 </project>
