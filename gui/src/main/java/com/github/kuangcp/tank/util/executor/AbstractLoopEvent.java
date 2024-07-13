@@ -1,12 +1,13 @@
 package com.github.kuangcp.tank.util.executor;
 
 import com.github.kuangcp.tank.domain.AnyLife;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-16 01:44
@@ -14,32 +15,26 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public abstract class AbstractLoopEvent extends AnyLife implements LoopEvent {
 
+    private static final AtomicLong counter = new AtomicLong();
     private static final long defaultDelay = 20;
+    // 构建任务的补充参数
     /**
-     * 时间id
+     * 事件id
      */
-    public String id;
+    public Long id;
     /**
      * 下次事件触发时机
      */
     long nextTickTime;
 
+    @Setter
     long fixedDelayTime = 40;
 
     Runnable stopHook;
 
     public AbstractLoopEvent() {
-        this.id = UUID.randomUUID().toString();
+        this.id = counter.incrementAndGet();
         this.nextTickTime = System.currentTimeMillis() + defaultDelay;
-    }
-
-    // 构建任务的补充参数
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setFixedDelayTime(long fixedDelayTime) {
-        this.fixedDelayTime = fixedDelayTime;
     }
 
     public void setDelayStart(long delayStart, TimeUnit timeUnit) {

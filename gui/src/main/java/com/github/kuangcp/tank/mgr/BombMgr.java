@@ -72,10 +72,10 @@ public class BombMgr extends AbstractImgListMgr {
         switch (tank.getDirect()) {
             case DirectType.UP:
             case DirectType.DOWN:
-                if (tank.getX() - 10 <= bullet.sx &&
-                        tank.getX() + 10 >= bullet.sx &&
-                        tank.getY() - 15 <= bullet.sy &&
-                        tank.getY() + 15 >= bullet.sy) {
+                if (tank.getX() - 10 <= bullet.x &&
+                        tank.getX() + 10 >= bullet.x &&
+                        tank.getY() - 15 <= bullet.y &&
+                        tank.getY() + 15 >= bullet.y) {
                     bullet.alive = false;
                     final int bx = tank.getX() - tank.getHalfWidth();
                     final int by = tank.getY() - tank.getHalfHeight();
@@ -85,10 +85,10 @@ public class BombMgr extends AbstractImgListMgr {
                 break;
             case DirectType.LEFT:
             case DirectType.RIGHT:
-                if (tank.getX() - 15 <= bullet.sx &&
-                        tank.getX() + 15 >= bullet.sx &&
-                        tank.getY() - 10 <= bullet.sy &&
-                        tank.getY() + 10 >= bullet.sy) {
+                if (tank.getX() - 15 <= bullet.x &&
+                        tank.getX() + 15 >= bullet.x &&
+                        tank.getY() - 10 <= bullet.y &&
+                        tank.getY() + 10 >= bullet.y) {
                     bullet.alive = false;
                     final int bx = tank.getX() - tank.getHalfHeight();
                     final int by = tank.getY() - tank.getHalfWidth();

@@ -67,11 +67,10 @@ public class LoopEventExecutorTest {
         public int direct = 0;
         public static int speed = 3;//如果改动要记得按钮事件里也要改
 
-        public EventTask(String id, long fixedDelay, long delayStart, TimeUnit timeUnit, int x, int y) {
+        public EventTask(long fixedDelay, long delayStart, TimeUnit timeUnit, int x, int y) {
             this.sx = x;
             this.sy = y;
 
-            this.setId(id);
             this.setFixedDelayTime(fixedDelay);
             this.setDelayStart(delayStart, timeUnit);
         }
@@ -141,7 +140,7 @@ public class LoopEventExecutorTest {
     @Test
     public void testShotBullet() throws Exception {
         BlockingQueue<EventTask> delayQueue = new DelayQueue<>();
-        final EventTask originTask = new EventTask("xx", 55, 55, TimeUnit.MILLISECONDS, 60, 120);
+        final EventTask originTask = new EventTask( 55, 55, TimeUnit.MILLISECONDS, 60, 120);
         originTask.registerHook(() -> {
             System.out.println("end");
         });

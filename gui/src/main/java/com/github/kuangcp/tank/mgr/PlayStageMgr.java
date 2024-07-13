@@ -50,7 +50,7 @@ public class PlayStageMgr {
      * 敌人的数量
      */
     @Getter
-    public static int enemySize = 10;
+    public static int enemySize = 0;
     /**
      * 无敌状态 时间
      */
@@ -135,7 +135,7 @@ public class PlayStageMgr {
             for (Iron iron : irons) {
                 TankTool.judgeHint(myBullet, iron);
             }
-            if (myBullet.sx < 440 && myBullet.sx > 380 && myBullet.sy < 540 && myBullet.sy > 480) {
+            if (myBullet.x < 440 && myBullet.x > 380 && myBullet.y < 540 && myBullet.y > 480) {
                 myBullet.alive = false;
                 PlayStageMgr.hero.setAlive(false);
             }
@@ -153,7 +153,7 @@ public class PlayStageMgr {
                 for (Iron iron : irons) {
                     TankTool.judgeHint(myBullet, iron);
                 }
-                if (myBullet.sx < 440 && myBullet.sx > 380 && myBullet.sy < 540 && myBullet.sy > 480) {
+                if (myBullet.x < 440 && myBullet.x > 380 && myBullet.y < 540 && myBullet.y > 480) {
                     myBullet.alive = false;
                     PlayStageMgr.hero.setAlive(false);
                 }
@@ -345,15 +345,15 @@ public class PlayStageMgr {
         if (Objects.isNull(tank)) {
             return false;
         }
-        switch (tank.getDirect()) {
+        switch (tank.direct) {
             case DirectType.UP:
-                return tank.getY() - tank.getHalfHeight() - tank.getSpeed() > RoundMapMgr.instance.border.getMinY();
+                return tank.y - tank.getHalfHeight() - tank.getSpeed() > RoundMapMgr.instance.border.getMinY();
             case DirectType.DOWN:
-                return tank.getY() + tank.getHalfHeight() + tank.getSpeed() < RoundMapMgr.instance.border.getMaxY();
+                return tank.y + tank.getHalfHeight() + tank.getSpeed() < RoundMapMgr.instance.border.getMaxY();
             case DirectType.LEFT:
-                return tank.getX() - tank.getHalfHeight() - tank.getSpeed() > RoundMapMgr.instance.border.getMinX();
+                return tank.x - tank.getHalfHeight() - tank.getSpeed() > RoundMapMgr.instance.border.getMinX();
             case DirectType.RIGHT:
-                return tank.getX() + tank.getHalfHeight() + tank.getSpeed() < RoundMapMgr.instance.border.getMaxX();
+                return tank.x + tank.getHalfHeight() + tank.getSpeed() < RoundMapMgr.instance.border.getMaxX();
         }
         return false;
     }
@@ -362,8 +362,8 @@ public class PlayStageMgr {
         if (Objects.isNull(bullet)) {
             return false;
         }
-        return bullet.sx <= RoundMapMgr.instance.border.getMinX() || bullet.sx >= RoundMapMgr.instance.border.getMaxX()
-                || bullet.sy <= RoundMapMgr.instance.border.getMinY() || bullet.sy >= RoundMapMgr.instance.border.getMaxY();
+        return bullet.x <= RoundMapMgr.instance.border.getMinX() || bullet.x >= RoundMapMgr.instance.border.getMaxX()
+                || bullet.y <= RoundMapMgr.instance.border.getMinY() || bullet.y >= RoundMapMgr.instance.border.getMaxY();
     }
 
     public static void setEnemySize(int enemySize) {

@@ -1,10 +1,9 @@
 package com.github.kuangcp.tank.frame;
 
-import com.github.kuangcp.tank.mgr.PlayStageMgr;
 import com.github.kuangcp.tank.constant.ButtonCommand;
 import com.github.kuangcp.tank.constant.SettingCommand;
-import com.github.kuangcp.tank.domain.Bullet;
 import com.github.kuangcp.tank.domain.Hero;
+import com.github.kuangcp.tank.mgr.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -83,7 +82,8 @@ public class SettingFrame extends JFrame implements ActionListener {
 
     public void refreshValLabel() {
         final Optional<Hero> heroOpt = Optional.ofNullable(PlayStageMgr.instance).map(v -> v.hero);
-        this.valArr[0].setText(Bullet.getSpeed() + "");
+//        this.valArr[0].setText(Bullet.getSpeed() + "");
+        this.valArr[0].setText("");
         this.valArr[1].setText(heroOpt.map(v -> v.getSpeed() + "").orElse(""));
         this.valArr[2].setText(heroOpt.map(v -> v.getLife() + "").orElse(""));
         this.valArr[3].setText(PlayStageMgr.enemySize + "");
@@ -99,12 +99,12 @@ public class SettingFrame extends JFrame implements ActionListener {
             SettingFrame.activeFocus();
         }
 
-        if (event.getActionCommand().equals(SettingCommand.SHOT_SPEED_INCREMENT)) {
-            Bullet.setSpeed(Bullet.getSpeed() + 1);
-        }
-        if (event.getActionCommand().equals(SettingCommand.SHOT_SPEED_DECREMENT)) {
-            Bullet.setSpeed(Bullet.getSpeed() - 1);
-        }
+//        if (event.getActionCommand().equals(SettingCommand.SHOT_SPEED_INCREMENT)) {
+//            Bullet.setSpeed(Bullet.getSpeed() + 1);
+//        }
+//        if (event.getActionCommand().equals(SettingCommand.SHOT_SPEED_DECREMENT)) {
+//            Bullet.setSpeed(Bullet.getSpeed() - 1);
+//        }
 
         if (event.getActionCommand().equals(SettingCommand.TANK_SPEED_INCREMENT)) {
             PlayStageMgr.instance.hero.addSpeed(1);

@@ -1,12 +1,14 @@
 package com.github.kuangcp.tank.domain;
 
 import com.github.kuangcp.tank.constant.DirectType;
-import com.github.kuangcp.tank.util.executor.AbstractLoopEvent;
+import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -16,28 +18,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Setter
 @Getter
 @Slf4j
-public abstract class Tank extends AbstractLoopEvent implements VisualItem {
+public abstract class Tank extends MoveLoopEvent implements VisualItem {
     private static final AtomicInteger idCnt = new AtomicInteger(0);
     int id;
 
-    int x;          // 坦克中心的横坐标
-    int y;          // 坦克中心的纵坐标
-    int direct = DirectType.NONE;   // 初始方向
     int type = 0;     // 坦克的种类
-    int speed;      // 前进的步长
     boolean abort = false; // 重开一局等外部终止因素
     int life = 1;       //生命值
 
     int halfWidth = 10;
     int halfHeight = 15;
     private final int wheelNum = 7;
+    public List<Bullet> bulletList = new LinkedList<>();
 
-    public void addLife(int delta) {
-        this.life += delta;
-        if (this.life <= 0) {
-            alive = false;
-        }
-    }
 
     public Tank(int x, int y, int speed) {
         this.id = idCnt.incrementAndGet();
@@ -47,9 +40,43 @@ public abstract class Tank extends AbstractLoopEvent implements VisualItem {
         this.alive = true;
     }
 
+    public void addLife(int delta) {
+        this.life += delta;
+        if (this.life <= 0) {
+            alive = false;
+        }
+    }
+
     @Override
     public void run() {
 
+    }
+
+    public void shotBullet() {
+        switch (this.direct) {
+            case DirectType.UP: {
+                this.shot(this.x - 1, this.y - 15, DirectType.UP);
+                break;
+            }
+            case DirectType.DOWN: {
+                this.shot(this.x - 2, this.y + 15, DirectType.DOWN);
+                break;
+            }
+            case DirectType.LEFT: {
+                this.shot(this.x - 15 - 2, this.y, DirectType.LEFT);
+                break;
+            }
+            case DirectType.RIGHT: {
+                this.shot(this.x + 15 - 2, this.y - 1, DirectType.RIGHT);
+                break;
+            }
+        }
+    }
+
+    private void shot(int x, int y, int direction) {
+        Bullet s = new Bullet(x, y, direction);
+        bulletList.add(s);
+        LoopEventExecutor.addLoopEvent(s);
     }
 
     /**
@@ -60,22 +87,6 @@ public abstract class Tank extends AbstractLoopEvent implements VisualItem {
         return true;
     }
 
-    public void move() {
-        switch (this.direct) {
-            case DirectType.UP:
-                y -= this.speed;
-                break;
-            case DirectType.DOWN:
-                y += this.speed;
-                break;
-            case DirectType.LEFT:
-                x -= this.speed;
-                break;
-            case DirectType.RIGHT:
-                x += this.speed;
-                break;
-        }
-    }
 
     /**
      * 画出坦克的函数 XY是坦克中心的坐标，不是画图参照点

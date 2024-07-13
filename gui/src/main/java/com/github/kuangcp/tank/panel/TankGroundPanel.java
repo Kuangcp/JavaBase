@@ -96,7 +96,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         // hero bullet
         for (Bullet bullet : PlayStageMgr.hero.bulletList) {
             g.setColor(Color.YELLOW);
-            g.draw3DRect(bullet.sx, bullet.sy, 3, 3, false);
+            g.draw3DRect(bullet.x, bullet.y, 3, 3, false);
         }
 
         enemyList.stream().filter(Tank::isAlive).forEach(t -> t.drawSelf(g));
@@ -105,7 +105,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         for (EnemyTank et : enemyList) {
             for (Bullet bullet : et.bulletList) {
                 g.setColor(Color.cyan);
-                g.draw3DRect(bullet.sx, bullet.sy, 1, 1, false);
+                g.draw3DRect(bullet.x, bullet.y, 1, 1, false);
             }
         }
         BombMgr.instance.drawBomb(g, this);

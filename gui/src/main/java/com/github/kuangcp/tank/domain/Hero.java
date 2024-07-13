@@ -6,27 +6,23 @@ import com.github.kuangcp.tank.resource.ColorMgr;
 import com.github.kuangcp.tank.util.HoldingKeyStateMgr;
 import com.github.kuangcp.tank.util.Roll;
 import com.github.kuangcp.tank.util.TankTool;
-import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
-import java.util.Vector;
+
 
 @Slf4j
 @Getter
 @Setter
 public class Hero extends Tank {
 
-    //子弹集合
-    public Vector<Bullet> bulletList = new Vector<>();
     private long lastShotTick = 0;
     private long shotCDMs = 268;
 
     private final int originX, originY;
 
-    public Bullet bullet = null;//子弹
     private int prize = 0;//击敌个数
     public int maxLiveShot = 7;//主坦克子弹线程存活的最大数
     private long lastDieMs = System.currentTimeMillis();
@@ -36,6 +32,7 @@ public class Hero extends Tank {
         super(x, y, speed);
         this.originX = x;
         this.originY = y;
+        this.direct = DirectType.UP;
     }
 
     @Override
@@ -46,12 +43,12 @@ public class Hero extends Tank {
             if (keyEvent.hasPressMoveEvent()) {
 //                log.info("eventGroup={}", eventGroup);
 
-                final int lastDirect = this.getDirect();
+                final int lastDirect = this.direct;
                 final int direct = keyEvent.getDirect();
 
                 final boolean ablePass = PlayStageMgr.ablePassByHinder(this);
                 if ((ablePass || lastDirect != direct)) {
-                    this.setDirect(direct);
+                    this.direct = direct;
                     if (PlayStageMgr.instance.willInBorder(this)
                             && PlayStageMgr.instance.ableToMove(this)) {
                         this.move();
@@ -130,28 +127,7 @@ public class Hero extends Tank {
             return;
         }
 
-        //判断坦克方向来 初始化子弹的起始发射位置
-        switch (this.getDirect()) {
-            case 0://0123 代表 上下左右
-                bullet = new Bullet(this.getX() - 1, this.getY() - 15, 0);
-                bulletList.add(bullet);
-                break;
-            case 1:
-                bullet = new Bullet(this.getX() - 2, this.getY() + 15, 1);
-                bulletList.add(bullet);
-                break;
-            case 2:
-                bullet = new Bullet(this.getX() - 15 - 2, this.getY(), 2);
-                bulletList.add(bullet);
-                break;
-            case 3:
-                bullet = new Bullet(this.getX() + 15 - 2, this.getY() - 1, 3);
-                bulletList.add(bullet);
-                break;
-        }
-        //启动子弹线程
-//        shotExecutePool.execute(bullet);
-        LoopEventExecutor.addLoopEvent(bullet);
+        this.shotBullet();
         lastShotTick = nowMs;
     }
 

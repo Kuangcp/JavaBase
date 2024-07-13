@@ -4,15 +4,13 @@ import com.github.kuangcp.tank.constant.DirectType;
 import com.github.kuangcp.tank.domain.robot.EnemyActionContext;
 import com.github.kuangcp.tank.domain.robot.RobotRate;
 import com.github.kuangcp.tank.domain.robot.RoundActionEnum;
-import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import com.github.kuangcp.tank.mgr.PlayStageMgr;
+import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -26,7 +24,6 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
     private static final AtomicLong counter = new AtomicLong();
 
     public final long id;
-    public List<Bullet> bulletList = new CopyOnWriteArrayList<>();//子弹集合
     private long lastShotTick = 0;
     private final long shotCDMs = 200;
 
@@ -150,24 +147,8 @@ public class EnemyTank extends Tank implements Runnable, RobotRate {
         if (this.bulletList.size() >= maxLiveBullet || !this.isAlive()) {
             return;
         }
-        switch (this.getDirect()) {
-            case DirectType.UP: {
-                this.shot(this.getX() - 1, this.getY() - 15, DirectType.UP);
-                break;
-            }
-            case DirectType.DOWN: {
-                this.shot(this.getX() - 2, this.getY() + 15, DirectType.DOWN);
-                break;
-            }
-            case DirectType.LEFT: {
-                this.shot(this.getX() - 15 - 2, this.getY(), DirectType.LEFT);
-                break;
-            }
-            case DirectType.RIGHT: {
-                this.shot(this.getX() + 15 - 2, this.getY() - 1, DirectType.RIGHT);
-                break;
-            }
-        }
+
+        this.shotBullet();
 
         // 常规线程池
 //        ExecutePool.shotPool.execute(s);

@@ -7,7 +7,7 @@ import lombok.Data;
  */
 @Data
 public abstract class AnyLife {
-    protected boolean alive;
+    public boolean alive;
 
     public boolean isDead() {
         return !alive;

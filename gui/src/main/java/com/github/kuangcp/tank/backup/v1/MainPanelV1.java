@@ -78,9 +78,9 @@ class MainPanelV1 extends JPanel implements KeyListener {
         }.drawSelf(g);
 
         //画出子弹
-        if (hero.bullet != null) {
-            g.draw3DRect(hero.bullet.sx, hero.bullet.sy, 1, 1, false);
-        }
+//        if (hero.bullet != null) {
+//            g.draw3DRect(hero.bullet.sx, hero.bullet.sy, 1, 1, false);
+//        }
 
         //画出敌人坦克
         for (EnemyTank s : ets) {

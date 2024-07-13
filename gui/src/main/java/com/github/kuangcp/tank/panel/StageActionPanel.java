@@ -3,10 +3,9 @@ package com.github.kuangcp.tank.panel;
 
 
 import com.github.kuangcp.tank.constant.ButtonCommand;
-import com.github.kuangcp.tank.domain.Bullet;
-import com.github.kuangcp.tank.util.Audio;
 import com.github.kuangcp.tank.frame.MainFrame;
 import com.github.kuangcp.tank.mgr.PlayStageMgr;
+import com.github.kuangcp.tank.util.Audio;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -57,7 +56,7 @@ public class StageActionPanel extends JPanel implements ActionListener {
             System.out.println(ButtonCommand.START);
             frame.firstStart = false;
             PlayStageMgr.newStage = false;
-            Bullet.setSpeed(8);
+//            Bullet.setSpeed(8);
 //            frame.remove(frame.centerPanel);
 
             EventQueue.invokeLater(frame);
@@ -89,7 +88,6 @@ public class StageActionPanel extends JPanel implements ActionListener {
 
         frame.firstStart = false;
         PlayStageMgr.newStage = true;
-        Bullet.setSpeed(8);
         frame.remove(frame.getContentPane());
 
 //        log.info("start new stage frame thread");
