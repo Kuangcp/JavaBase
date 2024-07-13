@@ -54,7 +54,7 @@ var wsUsable =false;
 function connected() {
     try {
         wsUsable = false;
-        let ws = new WebSocket("ws://192.168.1.103:7094/ws?uid=120");
+        let ws = new WebSocket("ws://192.168.1.104:7094/ws?uid=120");
         ws.onopen = function () {
             console.log('connected');
             // 等 open 函数回调后才可以调用 send，否则会报错 no longer object

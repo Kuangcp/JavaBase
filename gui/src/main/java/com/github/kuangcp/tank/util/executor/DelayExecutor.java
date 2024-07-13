@@ -1,5 +1,6 @@
 package com.github.kuangcp.tank.util.executor;
 
+import com.github.kuangcp.tank.domain.event.DelayEvent;
 import com.github.kuangcp.tank.util.ExecutePool;
 
 import java.util.concurrent.BlockingQueue;
@@ -11,7 +12,7 @@ import java.util.concurrent.ExecutorService;
  */
 public class DelayExecutor {
 
-    private static final BlockingQueue<AbstractDelayEvent> queue = new DelayQueue<>();
+    private static final BlockingQueue<DelayEvent> queue = new DelayQueue<>();
 
     /**
      * 循环事件线程池
@@ -22,7 +23,7 @@ public class DelayExecutor {
         delayEventPool.execute(() -> CommonEventExecutor.delayEventSpin(queue));
     }
 
-    public static void addEvent(AbstractDelayEvent event) {
+    public static void addEvent(DelayEvent event) {
         queue.add(event);
     }
 }

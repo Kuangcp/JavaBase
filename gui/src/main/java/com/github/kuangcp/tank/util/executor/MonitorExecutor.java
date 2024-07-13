@@ -1,5 +1,6 @@
 package com.github.kuangcp.tank.util.executor;
 
+import com.github.kuangcp.tank.domain.event.LoopEvent;
 import com.github.kuangcp.tank.util.ExecutePool;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,7 +15,7 @@ import java.util.concurrent.ExecutorService;
 public class MonitorExecutor {
 
     public static final Info info = new Info();
-    private static final BlockingQueue<AbstractLoopEvent> queue = new DelayQueue<>();
+    private static final BlockingQueue<LoopEvent> queue = new DelayQueue<>();
     private static final ExecutorService monitorEventPool = ExecutePool.buildFixedPool("monitorEvent", 1);
 
     public static void init() {
@@ -39,7 +40,7 @@ public class MonitorExecutor {
     }
 
     private static void registerEventMonitor() {
-        final AbstractLoopEvent loopEventMonitor = new AbstractLoopEvent() {
+        final LoopEvent loopEventMonitor = new LoopEvent() {
             @Override
             public void run() {
                 info.loopEventCount = LoopEventExecutor.queue.size();
@@ -50,7 +51,7 @@ public class MonitorExecutor {
         queue.add(loopEventMonitor);
     }
 
-    public static void addLoopEvent(AbstractLoopEvent loopEvent) {
+    public static void addLoopEvent(LoopEvent loopEvent) {
         queue.add(loopEvent);
     }
 }

@@ -1,5 +1,6 @@
 package com.github.kuangcp.tank.util.executor;
 
+import com.github.kuangcp.tank.domain.event.LoopEvent;
 import com.github.kuangcp.tank.util.ExecutePool;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 @Slf4j
 public class LoopEventExecutor {
 
-    static final BlockingQueue<AbstractLoopEvent> queue = new DelayQueue<>();
+    static final BlockingQueue<LoopEvent> queue = new DelayQueue<>();
 
     private static final int EVENT_POOL_SIZE = 8;
 
@@ -28,7 +29,7 @@ public class LoopEventExecutor {
         }
     }
 
-    public static void addLoopEvent(AbstractLoopEvent loopEvent) {
+    public static void addLoopEvent(LoopEvent loopEvent) {
 //        log.info("add: loopEvent={}", loopEvent);
         queue.add(loopEvent);
     }

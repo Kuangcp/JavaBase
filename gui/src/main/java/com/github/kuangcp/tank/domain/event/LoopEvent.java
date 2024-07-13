@@ -1,4 +1,4 @@
-package com.github.kuangcp.tank.util.executor;
+package com.github.kuangcp.tank.domain.event;
 
 import com.github.kuangcp.tank.domain.AnyLife;
 import lombok.Setter;
@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-16 01:44
  */
 @Slf4j
-public abstract class AbstractLoopEvent extends AnyLife implements LoopEvent {
+public abstract class LoopEvent extends AnyLife implements Runnable, Delayed {
 
     private static final AtomicLong counter = new AtomicLong();
     private static final long defaultDelay = 20;
@@ -25,14 +25,14 @@ public abstract class AbstractLoopEvent extends AnyLife implements LoopEvent {
     /**
      * 下次事件触发时机
      */
-    long nextTickTime;
+    public long nextTickTime;
 
     @Setter
-    long fixedDelayTime = 40;
+    public long fixedDelayTime = 40;
 
-    Runnable stopHook;
+    public Runnable stopHook;
 
-    public AbstractLoopEvent() {
+    public LoopEvent() {
         this.id = counter.incrementAndGet();
         this.nextTickTime = System.currentTimeMillis() + defaultDelay;
     }
@@ -42,12 +42,10 @@ public abstract class AbstractLoopEvent extends AnyLife implements LoopEvent {
     }
 
     // 业务动作
-    @Override
     public void addDelay(long delay) {
         this.nextTickTime += delay;
     }
 
-    @Override
     public boolean addFixedDelay() {
         if (fixedDelayTime <= 0) {
             return false;
@@ -56,17 +54,14 @@ public abstract class AbstractLoopEvent extends AnyLife implements LoopEvent {
         return isContinue();
     }
 
-    @Override
     public boolean isStop() {
         return this.nextTickTime <= 0;
     }
 
-    @Override
     public boolean isContinue() {
         return !isStop();
     }
 
-    @Override
     public void stop() {
 //        log.info("{} stop", this);
         this.nextTickTime = 0;

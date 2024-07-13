@@ -3,6 +3,7 @@ package com.github.kuangcp.tank.mgr;
 import com.github.kuangcp.tank.domain.Brick;
 import com.github.kuangcp.tank.domain.Iron;
 import com.github.kuangcp.tank.domain.StageBorder;
+import com.github.kuangcp.tank.resource.AvatarImgMgr;
 
 import java.util.List;
 
@@ -18,7 +19,13 @@ public class RoundMapMgr {
     public StageBorder border = null;
 
     public static void init() {
-        instance.border = new StageBorder(20, 740, 20, 540);
+        final RoundMapMgr roundMap = instance;
+        roundMap.border = new StageBorder(20, 740, 20, 540);
+        roundMap.border.setHomeX(380);
+        roundMap.border.setHomeY(480);
+        roundMap.border.setHomeW(AvatarImgMgr.instance.width);
+        roundMap.border.setHomeH(AvatarImgMgr.instance.height);
+
 //        instance.border = new StageBorder(20, 1600, 20, 900);
     }
 }

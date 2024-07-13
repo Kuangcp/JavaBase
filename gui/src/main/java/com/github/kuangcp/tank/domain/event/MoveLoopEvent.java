@@ -1,7 +1,6 @@
-package com.github.kuangcp.tank.domain;
+package com.github.kuangcp.tank.domain.event;
 
 import com.github.kuangcp.tank.constant.DirectType;
-import com.github.kuangcp.tank.util.executor.AbstractLoopEvent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,7 +10,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public abstract class MoveLoopEvent extends AbstractLoopEvent {
+public abstract class MoveLoopEvent extends LoopEvent {
     public int x;
     public int y;
     public int direct = DirectType.NONE;   // 初始方向

@@ -1,6 +1,8 @@
 package com.github.kuangcp.tank.domain;
 
+import com.github.kuangcp.tank.domain.event.MoveLoopEvent;
 import com.github.kuangcp.tank.mgr.PlayStageMgr;
+import com.github.kuangcp.tank.mgr.RoundMapMgr;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
@@ -33,25 +35,11 @@ public class Bullet extends MoveLoopEvent implements VisualItem {
         if (PlayStageMgr.pause) {
             return;
         }
-        switch (direct) {
-            //上下左右
-            case 0:
-                y -= speed;
-                break;
-            case 1:
-                y += speed;
-                break;
-            case 2:
-                x -= speed;
-                break;
-            case 3:
-                x += speed;
-                break;
-        }
 
-        final boolean hitHome = x < 440 && x > 380 && y < 540 && y > 480;
+        this.move();
+
         //判断子弹是否碰到边缘 或者命中基地
-        if (PlayStageMgr.instance.willInBorder(this) || hitHome) {
+        if (PlayStageMgr.instance.willInBorder(this) || RoundMapMgr.instance.border.hitHome(x, y)) {
             this.alive = false;
             this.stop();
         }

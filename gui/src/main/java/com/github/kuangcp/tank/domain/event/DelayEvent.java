@@ -1,4 +1,4 @@
-package com.github.kuangcp.tank.util.executor;
+package com.github.kuangcp.tank.domain.event;
 
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
@@ -6,14 +6,14 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2021-09-17 01:39
  */
-public abstract class AbstractDelayEvent implements DelayEvent {
+public abstract class DelayEvent implements Runnable, Delayed {
 
     /**
      * 下次事件触发时机
      */
-    long delayTime;
+    public long delayTime;
 
-    public AbstractDelayEvent(long delayTime) {
+    public DelayEvent(long delayTime) {
         this.delayTime = delayTime + System.currentTimeMillis();
     }
 

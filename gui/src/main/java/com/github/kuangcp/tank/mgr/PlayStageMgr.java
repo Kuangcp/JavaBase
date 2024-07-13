@@ -12,7 +12,7 @@ import com.github.kuangcp.tank.resource.DefeatImgMgr;
 import com.github.kuangcp.tank.resource.VictoryImgMgr;
 import com.github.kuangcp.tank.util.ExecutePool;
 import com.github.kuangcp.tank.util.TankTool;
-import com.github.kuangcp.tank.util.executor.AbstractDelayEvent;
+import com.github.kuangcp.tank.domain.event.DelayEvent;
 import com.github.kuangcp.tank.util.executor.DelayExecutor;
 import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import lombok.Getter;
@@ -67,8 +67,8 @@ public class PlayStageMgr {
 
     public Map<Integer, Hero> heroMap = new ConcurrentHashMap<>();
 
-    //TODO 渲染在一个线程里，不用考虑并发安全
     public static List<EnemyTank> enemyList;
+    // todo 转移
     public static List<Brick> bricks;
     public static List<Iron> irons;
 
@@ -184,7 +184,7 @@ public class PlayStageMgr {
                 }
                 demon.delayRemove = true;
 
-                DelayExecutor.addEvent(new AbstractDelayEvent(7_000) {
+                DelayExecutor.addEvent(new DelayEvent(7_000) {
                     @Override
                     public void run() {
                         enemyList.remove(demon);

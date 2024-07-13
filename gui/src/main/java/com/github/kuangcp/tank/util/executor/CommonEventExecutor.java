@@ -1,5 +1,7 @@
 package com.github.kuangcp.tank.util.executor;
 
+import com.github.kuangcp.tank.domain.event.DelayEvent;
+import com.github.kuangcp.tank.domain.event.LoopEvent;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.BlockingQueue;
@@ -14,10 +16,10 @@ public class CommonEventExecutor {
     /**
      * 事件循环任务
      */
-    public static void loopEventSpin(String type, BlockingQueue<AbstractLoopEvent> queue) {
+    public static void loopEventSpin(String type, BlockingQueue<LoopEvent> queue) {
         while (true) {
             try {
-                final AbstractLoopEvent event = queue.take();
+                final LoopEvent event = queue.take();
                 final long delay = event.getDelay(TimeUnit.MILLISECONDS);
                 // 事件延迟调度警告，且过滤掉初次运行任务
                 if (delay < -200 && delay > -1000_000) {
@@ -42,10 +44,10 @@ public class CommonEventExecutor {
     /**
      * 单次延迟任务
      */
-    public static void delayEventSpin(BlockingQueue<AbstractDelayEvent> queue) {
+    public static void delayEventSpin(BlockingQueue<DelayEvent> queue) {
         while (true) {
             try {
-                final AbstractDelayEvent event = queue.take();
+                final DelayEvent event = queue.take();
                 event.run();
             } catch (InterruptedException e) {
                 log.error("invoke delay event error", e);

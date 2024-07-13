@@ -1,7 +1,6 @@
 package com.github.kuangcp.tank.resource;
 
 import com.github.kuangcp.tank.mgr.BombMgr;
-import com.github.kuangcp.tank.mgr.RoundMapMgr;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -17,12 +16,9 @@ public class ResourceMgr {
 
         log.info("[init] start load resource");
 
-        // image
         BombMgr.instance.loadImg();
         DefeatImgMgr.instance.loadImg();
         AvatarImgMgr.instance.loadImg();
         VictoryImgMgr.instance.loadImg();
-
-        RoundMapMgr.init();
     }
 }

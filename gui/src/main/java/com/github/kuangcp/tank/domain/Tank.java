@@ -1,12 +1,14 @@
 package com.github.kuangcp.tank.domain;
 
 import com.github.kuangcp.tank.constant.DirectType;
+import com.github.kuangcp.tank.domain.event.MoveLoopEvent;
 import com.github.kuangcp.tank.util.executor.LoopEventExecutor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,8 +31,7 @@ public abstract class Tank extends MoveLoopEvent implements VisualItem {
     int halfWidth = 10;
     int halfHeight = 15;
     private final int wheelNum = 7;
-    public List<Bullet> bulletList = new LinkedList<>();
-
+    public List<Bullet> bulletList = Collections.synchronizedList(new LinkedList<>());
 
     public Tank(int x, int y, int speed) {
         this.id = idCnt.incrementAndGet();

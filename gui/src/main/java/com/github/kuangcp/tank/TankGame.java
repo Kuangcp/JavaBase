@@ -1,6 +1,7 @@
 package com.github.kuangcp.tank;
 
 import com.github.kuangcp.tank.frame.MainFrame;
+import com.github.kuangcp.tank.mgr.RoundMapMgr;
 import com.github.kuangcp.tank.resource.ResourceMgr;
 import com.github.kuangcp.tank.util.executor.MonitorExecutor;
 import com.github.kuangcp.tank.ws.WsBizHandler;
@@ -11,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.awt.*;
 
 @Slf4j
-public class MainTankGame {
+public class TankGame {
 
     /**
      * -Xmx300m -Xms300m -XX:+UseG1GC
@@ -22,6 +23,7 @@ public class MainTankGame {
         MonitorExecutor.init();
         try {
             ResourceMgr.loadResource();
+            RoundMapMgr.init();
             log.info("finish load resources");
 
             startWsServer();
