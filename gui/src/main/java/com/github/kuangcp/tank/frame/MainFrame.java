@@ -1,6 +1,5 @@
 package com.github.kuangcp.tank.frame;
 
-import com.github.kuangcp.tank.mgr.RoundMapMgr;
 import com.github.kuangcp.tank.panel.StageActionPanel;
 import com.github.kuangcp.tank.panel.StarterPanel;
 import com.github.kuangcp.tank.panel.TankGroundPanel;
@@ -48,7 +47,8 @@ public class MainFrame extends JFrame implements Runnable {
 
         this.setTitle("Tank");
         this.setLocation(680, 290);
-        this.setSize(RoundMapMgr.instance.border.getTotalX(), RoundMapMgr.instance.border.getTotalY());
+        // TODO 启动panel 依据 stage resize
+        this.setSize(760, 560);
 
         this.setUndecorated(true);
     }

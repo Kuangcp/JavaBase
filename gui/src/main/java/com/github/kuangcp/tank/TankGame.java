@@ -23,7 +23,6 @@ public class TankGame {
         MonitorExecutor.init();
         try {
             ResourceMgr.loadResource();
-            RoundMapMgr.init();
             log.info("finish load resources");
 
             startWsServer();

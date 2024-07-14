@@ -10,7 +10,6 @@ import com.github.kuangcp.tank.frame.MainFrame;
 import com.github.kuangcp.tank.frame.SettingFrame;
 import com.github.kuangcp.tank.mgr.BombMgr;
 import com.github.kuangcp.tank.mgr.PlayStageMgr;
-import com.github.kuangcp.tank.mgr.RoundMapMgr;
 import com.github.kuangcp.tank.resource.AvatarImgMgr;
 import com.github.kuangcp.tank.resource.ColorMgr;
 import com.github.kuangcp.tank.util.HoldingKeyStateMgr;
@@ -29,7 +28,7 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
 
     private void drawBg(Graphics g) {
         g.setColor(ColorMgr.instance.bgColor);
-        final StageBorder border = RoundMapMgr.instance.border;
+        final StageBorder border = PlayStageMgr.instance.border;
         g.fillRect(0, 0, border.getMinX() + border.getMaxX(), border.getMinY() + border.getMaxY());
         g.setColor(Color.green);
         g.drawRect(border.getMinX(), border.getMinY(),
@@ -41,13 +40,13 @@ public class TankGroundPanel extends JPanel implements java.awt.event.KeyListene
         final String lifeInfo = "Life:" + PlayStageMgr.hero.getLife()
                 + " Enemy: " + PlayStageMgr.instance.getLiveEnemy()
                 + " Prize: " + PlayStageMgr.hero.getPrize();
-        g.drawString(lifeInfo, RoundMapMgr.instance.border.getMinX(), 15);
+        g.drawString(lifeInfo, PlayStageMgr.instance.border.getMinX(), 15);
     }
 
     private void drawMonitorInfo(Graphics g) {
         g.setColor(Color.LIGHT_GRAY);
         g.drawString(MonitorExecutor.info.toString(),
-                RoundMapMgr.instance.border.getMinX(), RoundMapMgr.instance.border.getTotalY() - 3);
+                PlayStageMgr.instance.border.getMinX(), PlayStageMgr.instance.border.getTotalY() - 3);
     }
 
     @Override

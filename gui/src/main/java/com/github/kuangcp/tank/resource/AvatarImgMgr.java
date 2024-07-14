@@ -2,7 +2,7 @@ package com.github.kuangcp.tank.resource;
 
 import com.github.kuangcp.tank.domain.StageBorder;
 import com.github.kuangcp.tank.domain.VisualImgItem;
-import com.github.kuangcp.tank.mgr.RoundMapMgr;
+import com.github.kuangcp.tank.mgr.PlayStageMgr;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
@@ -27,7 +27,7 @@ public class AvatarImgMgr extends AbstractImgListMgr implements VisualImgItem {
 
     @Override
     public void drawSelf(Graphics g, ImageObserver observer) {
-        final StageBorder border = RoundMapMgr.instance.border;
+        final StageBorder border = PlayStageMgr.instance.border;
         g.drawImage(instance.curImg, border.getHomeX(), border.getHomeY(), instance.width, instance.height, observer);
     }
 }

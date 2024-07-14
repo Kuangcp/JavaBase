@@ -6,7 +6,6 @@ import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.StageBorder;
 import com.github.kuangcp.tank.mgr.PlayStageMgr;
-import com.github.kuangcp.tank.mgr.RoundMapMgr;
 import com.github.kuangcp.tank.util.TankTool;
 import lombok.extern.slf4j.Slf4j;
 
@@ -59,7 +58,7 @@ class MainPanelV2 extends JPanel implements KeyListener, Runnable {
     public void paint(Graphics g) {
         super.paint(g);
 
-        final StageBorder border = RoundMapMgr.instance.border;
+        final StageBorder border = new StageBorder(20, 740, 20, 540);
         g.fillRect(0, 0, border.getMaxX() + border.getMinX(), border.getMaxY() + border.getMinY());
 
         //调用函数绘画出主坦克

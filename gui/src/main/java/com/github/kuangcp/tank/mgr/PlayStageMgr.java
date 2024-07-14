@@ -7,7 +7,9 @@ import com.github.kuangcp.tank.domain.EnemyTank;
 import com.github.kuangcp.tank.domain.Hero;
 import com.github.kuangcp.tank.domain.Hinder;
 import com.github.kuangcp.tank.domain.Iron;
+import com.github.kuangcp.tank.domain.StageBorder;
 import com.github.kuangcp.tank.domain.Tank;
+import com.github.kuangcp.tank.resource.AvatarImgMgr;
 import com.github.kuangcp.tank.resource.DefeatImgMgr;
 import com.github.kuangcp.tank.resource.VictoryImgMgr;
 import com.github.kuangcp.tank.util.ExecutePool;
@@ -60,17 +62,15 @@ public class PlayStageMgr {
     public static volatile boolean newStage = true;
     public static volatile boolean invokeNewStage = false;
 
-    // 场景 上下文
-//    public List<EnemyTank> enemyTanks;
-//    public List<Brick> bricks; // 砖
-//    public List<Iron> irons; // 铁
-
     public Map<Integer, Hero> heroMap = new ConcurrentHashMap<>();
 
     public static List<EnemyTank> enemyList;
     // todo 转移
     public static List<Brick> bricks;
     public static List<Iron> irons;
+
+    public StageBorder border = null;
+
 
     //所有按下键的code集合
     public static int[][] enemyTankMap = new int[12][2];
@@ -98,6 +98,12 @@ public class PlayStageMgr {
      */
     public static void init(Hero hero, List<EnemyTank> enemyTanks, List<Brick> bricks, List<Iron> irons) {
         instance = new PlayStageMgr(hero, enemyTanks, bricks, irons);
+
+        instance.border = new StageBorder(20, 740, 20, 540);
+        instance.border.setHomeX(380);
+        instance.border.setHomeY(480);
+        instance.border.setHomeW(AvatarImgMgr.instance.width);
+        instance.border.setHomeH(AvatarImgMgr.instance.height);
     }
 
     private PlayStageMgr(Hero hero, List<EnemyTank> enemyTanks, List<Brick> bricks, List<Iron> irons) {
@@ -347,13 +353,13 @@ public class PlayStageMgr {
         }
         switch (tank.direct) {
             case DirectType.UP:
-                return tank.y - tank.getHalfHeight() - tank.getSpeed() > RoundMapMgr.instance.border.getMinY();
+                return tank.y - tank.getHalfHeight() - tank.getSpeed() > border.getMinY();
             case DirectType.DOWN:
-                return tank.y + tank.getHalfHeight() + tank.getSpeed() < RoundMapMgr.instance.border.getMaxY();
+                return tank.y + tank.getHalfHeight() + tank.getSpeed() < border.getMaxY();
             case DirectType.LEFT:
-                return tank.x - tank.getHalfHeight() - tank.getSpeed() > RoundMapMgr.instance.border.getMinX();
+                return tank.x - tank.getHalfHeight() - tank.getSpeed() > border.getMinX();
             case DirectType.RIGHT:
-                return tank.x + tank.getHalfHeight() + tank.getSpeed() < RoundMapMgr.instance.border.getMaxX();
+                return tank.x + tank.getHalfHeight() + tank.getSpeed() < border.getMaxX();
         }
         return false;
     }
@@ -362,8 +368,8 @@ public class PlayStageMgr {
         if (Objects.isNull(bullet)) {
             return false;
         }
-        return bullet.x <= RoundMapMgr.instance.border.getMinX() || bullet.x >= RoundMapMgr.instance.border.getMaxX()
-                || bullet.y <= RoundMapMgr.instance.border.getMinY() || bullet.y >= RoundMapMgr.instance.border.getMaxY();
+        return bullet.x <= border.getMinX() || bullet.x >= border.getMaxX()
+                || bullet.y <= border.getMinY() || bullet.y >= border.getMaxY();
     }
 
     public static void setEnemySize(int enemySize) {
