@@ -1,7 +1,6 @@
 package com.github.kuangcp.tank;
 
 import com.github.kuangcp.tank.frame.MainFrame;
-import com.github.kuangcp.tank.mgr.RoundMapMgr;
 import com.github.kuangcp.tank.resource.ResourceMgr;
 import com.github.kuangcp.tank.util.executor.MonitorExecutor;
 import com.github.kuangcp.tank.ws.WsBizHandler;
