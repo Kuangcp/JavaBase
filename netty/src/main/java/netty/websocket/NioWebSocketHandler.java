@@ -81,6 +81,7 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<WebSocketFr
 
     /**
      * 将路径参数转换成Map对象，如果路径参数出现重复参数名，将以最后的参数值为准
+     *
      * @param uri 传入的携带参数的路径
      */
     public static Map<String, String> getParams(String uri) {
@@ -117,12 +118,16 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<WebSocketFr
     /**
      * 唯一的一次http请求，用于升级至websocket 需要正确响应
      */
-    private void fullHttpRequestHandler(ChannelHandlerContext ctx, FullHttpRequest request) {
+    private void httpHandShark(ChannelHandlerContext ctx, FullHttpRequest request) {
         String uri = request.uri();
         Map<String, String> params = getParams(uri);
 //        log.info("客户端请求参数：{}", params);
 
+        HttpHeaders headers = request.trailingHeaders();
         String userIdStr = params.get("userId");
+        if (StringUtils.isBlank(userIdStr)) {
+            userIdStr = headers.get("userId");
+        }
         if (StringUtils.isNotBlank(userIdStr)) {
             long userId = Long.parseLong(userIdStr);
             userMap.put(userId, ctx.channel());
@@ -133,7 +138,7 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<WebSocketFr
             // 因为有可能携带了参数，导致客户端一直无法返回握手包，因此在校验通过后，重置请求路径
             request.setUri(Const.webSocketPath);
         } else {
-            ctx.close();
+            throw new WebSocketHandshakeException("invalid hand shark");
         }
     }
 
@@ -153,7 +158,7 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<WebSocketFr
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 //        log.info("客户端请求数据类型：{}", msg.getClass());
         if (msg instanceof FullHttpRequest) {
-            fullHttpRequestHandler(ctx, (FullHttpRequest) msg);
+            httpHandShark(ctx, (FullHttpRequest) msg);
         }
         super.channelRead(ctx, msg);
     }
@@ -161,6 +166,7 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<WebSocketFr
 
     /**
      * 客户端发送断开请求处理
+     *
      * @param ctx
      * @param frame
      */
@@ -170,6 +176,7 @@ public class NioWebSocketHandler extends SimpleChannelInboundHandler<WebSocketFr
 
     /**
      * 创建连接之后，客户端发送的消息都会在这里处理
+     *
      * @param ctx
      * @param frame
      */
