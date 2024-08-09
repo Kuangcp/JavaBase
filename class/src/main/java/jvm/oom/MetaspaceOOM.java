@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -72,6 +73,21 @@ public class MetaspaceOOM {
                 mapper.readValue(json, Bucket.class);
             }
         }
+    }
+
+    public static void anonymousClass() {
+        log.info("run");
+        for (int i = 0; i < 10000000; i++) {
+            invokeOnce();
+        }
+    }
+
+    public static void invokeOnce() {
+        HashMap<String, String> map = new HashMap<String, String>() {{
+            put("A", "B");
+        }};
+        String val = map.get("A");
+        val = "xxx";
     }
 
 }
