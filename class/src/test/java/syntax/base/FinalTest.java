@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
- *
  * @author Kuangcp
  * 2024-03-12 13:44
  */
@@ -21,6 +20,7 @@ public class FinalTest {
     static Predicate<String> uu = v -> Objects.equals(v, "uu");
 
     // 只有这种情况会编译错误
+    // TODO 为什么
 //    private static final String x5 = "x" + Optional.ofNullable(System.getenv("")).filter(v -> Objects.equals(v, "uu")).orElse("vvv");
 
     private static final String x6 = "x" + Optional.ofNullable(System.getenv("")).filter(uu).orElse("vvv");

@@ -104,6 +104,22 @@
             <artifactId>resilience4j-timelimiter</artifactId>
         </dependency>
 
+
+        <dependency>
+            <artifactId>commons-math3</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <version>3.1.1</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <artifactId>commons-math3</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <version>3.6.1</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>
