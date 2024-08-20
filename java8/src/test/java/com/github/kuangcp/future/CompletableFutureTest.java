@@ -36,7 +36,7 @@ public class CompletableFutureTest {
     }
 
     /**
-     * @see java.util.concurrent.CompletableFuture.asyncPool
+     * @see java.util.concurrent.CompletableFuture.asyncPool 默认线程池
      */
     @Test
     public void testAsyncPoolSize() throws Exception {
@@ -96,6 +96,32 @@ public class CompletableFutureTest {
         assertThat(result, equalTo(9));
 
         executorService.shutdown();
+    }
+
+    @Test
+    public void testSyncException() throws Exception {
+        try {
+            CompletableFuture<String> first = CompletableFuture.supplyAsync(() -> {
+                if (System.currentTimeMillis() % 1000 < 500) {
+                    throw new RuntimeException("invalid");
+                }
+                return "first";
+            });
+
+            CompletableFuture<String> second = CompletableFuture.supplyAsync(() -> {
+                if (System.currentTimeMillis() % 1000 < 300) {
+                    throw new RuntimeException("invalid");
+                }
+                return "second";
+            });
+
+            CompletableFuture.allOf(first, second);
+
+            // 异步代码块中发生异常后会包装为 ExecutionException 在 get()时抛出
+            log.info("end: {} {} ", first.get(), second.get());
+        } catch (Exception e) {
+            log.error("", e);
+        }
     }
 
     private int func1(int value) {
