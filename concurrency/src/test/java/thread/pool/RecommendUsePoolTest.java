@@ -4,9 +4,12 @@ package thread.pool;
 import com.hellokaton.blade.Blade;
 import com.hellokaton.blade.mvc.RouteContext;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.junit.Test;
 import web.Application;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.*;
@@ -257,5 +260,52 @@ public class RecommendUsePoolTest {
         });
         Thread.currentThread().join(15000);
         log.info("end");
+    }
+
+
+    /**
+     * @see CompletableFutureTest
+     */
+    @Test
+    public void testTmpNewAsyncPool() throws Exception {
+        TimeUnit.SECONDS.sleep(10);
+        int taskNum = 50;
+        ExecutorService mainPool = Executors.newFixedThreadPool(1);
+
+        mainPool.execute(() -> {
+            ThreadPoolExecutor coreCachePool = new ThreadPoolExecutor(4, 4,
+                    8L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(taskNum),
+                    new BasicThreadFactory.Builder().namingPattern("tmp-%d").build(),
+                    new RecommendUsePool.TrackDiscardPolicy());
+            List<CompletableFuture<Void>> wait = new ArrayList<>();
+
+            try {
+                for (int i = 0; i < taskNum; i++) {
+                    int finalI = i;
+                    CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                        log.info("sleep start {}", finalI);
+                        try {
+                            TimeUnit.SECONDS.sleep(1);
+                        } catch (InterruptedException e) {
+                            log.error("", e);
+                        }
+                        log.info("end {}", finalI);
+                    }, coreCachePool);
+                    wait.add(future);
+                }
+
+                CompletableFuture[] all = wait.stream().toArray(CompletableFuture[]::new);
+                CompletableFuture.allOf(all).join();
+            } catch (Exception e) {
+                log.error("", e);
+            } finally {
+                log.info("shutdown");
+                coreCachePool.shutdown();
+            }
+            log.info("Finish All");
+        });
+
+        log.info("start");
+        Thread.currentThread().join();
     }
 }
