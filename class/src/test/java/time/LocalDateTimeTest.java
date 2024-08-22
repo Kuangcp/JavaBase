@@ -4,9 +4,11 @@ package time;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 
 import static org.hamcrest.Matchers.lessThan;
@@ -61,6 +63,16 @@ public class LocalDateTimeTest {
         LocalDateTime last = LocalDateTime.parse(str, format);
         System.out.println(last);
         System.out.println(format.format(last));
+
+        format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        System.out.println(format.format(LocalDate.now()));
+    }
+
+    @Test(expected = DateTimeParseException.class)
+    public void testParseError() throws Exception {
+        // 字符串内不含时间，解析失败
+        LocalDateTime yyyyMMdd = LocalDateTime.parse("20230804", DateTimeFormatter.ofPattern("yyyyMMdd"));
+        System.out.println(yyyyMMdd);
     }
 
 }
