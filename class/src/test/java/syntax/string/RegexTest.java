@@ -5,8 +5,12 @@ import org.junit.Test;
 import syntax.bit.BitOperatorsTest;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Kuangcp
@@ -160,5 +164,20 @@ public class RegexTest {
         System.out.println(opt.matcher("abbc").find());
         System.out.println(opt.matcher("abbbc").find());
         System.out.println(opt.matcher("abbbbc").find());
+    }
+
+    @Test
+    public void testGroup() throws Exception {
+        Pattern idxGroup = Pattern.compile("(\\d{4})-(\\d{2})");
+        Matcher matcher = idxGroup.matcher("2012-12");
+        System.out.println(matcher.matches());
+        assertThat(matcher.group(1), equalTo("2012"));
+        assertThat(matcher.group(2), equalTo("12"));
+
+        Pattern nameGroup = Pattern.compile("(?<year>\\d{4})-(?<month>\\d{2})");
+        matcher = nameGroup.matcher("2012-12");
+        System.out.println(matcher.matches());
+        assertThat(matcher.group("year"), equalTo("2012"));
+        assertThat(matcher.group("month"), equalTo("12"));
     }
 }
