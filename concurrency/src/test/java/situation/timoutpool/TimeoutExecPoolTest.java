@@ -23,7 +23,7 @@ class TimeoutExecPoolTest {
         List<String> params = IntStream.range(0, 300).mapToObj(v -> UUID.randomUUID().toString().substring(0, 5) + v).collect(Collectors.toList());
 //        log.info("start param={}", params);
         log.info("start");
-        List<Long> result = timeoutPool.execute(params, this::logic);
+        List<Long> result = timeoutPool.execute(params, this::bizTask);
 //        log.info("end: result={}", result);
         log.info("end");
 //        Thread.currentThread().join();
@@ -31,18 +31,21 @@ class TimeoutExecPoolTest {
 
     /**
      * 可行方案： 使用 ExecutorCompletionService 和 CompletableFuture 组合限制执行时间，汇聚执行结果，取消后续任务
+     * <p>
+     * runPool 并行执行一批任务， CompletableFuture 单线程等待和合并全部任务的执行结果，如果超时了获取不到已完成的任务结果
      */
     @Test
     public void testCompleteService() {
         log.info("start");
-        CompletionService<Long> cs = new ExecutorCompletionService<>(Executors.newFixedThreadPool(3));
+        ExecutorService runPool = Executors.newFixedThreadPool(3);
+        CompletionService<Long> cs = new ExecutorCompletionService<>(runPool);
 
         int max = 10;
         List<String> params = IntStream.range(0, max)
                 .mapToObj(v -> UUID.randomUUID().toString() + v)
                 .collect(Collectors.toList());
-        List<Future<Long>> futures = params.stream().map(v -> cs.submit(() -> this.logic(v))).collect(Collectors.toList());
 
+        List<Future<Long>> futures = params.stream().map(v -> cs.submit(() -> this.bizTask(v))).collect(Collectors.toList());
         CompletableFuture<List<Long>> future = CompletableFuture.supplyAsync(() -> {
             List<Long> results = new ArrayList<>();
             for (int i = 0; i < max; i++) {
@@ -58,16 +61,18 @@ class TimeoutExecPoolTest {
                 } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
                 }
-                log.info("{}", result);
+                log.info("finish {}", result);
                 results.add(result);
             }
+            log.info("all task finish");
             return results;
         });
         try {
-            List<Long> results = future.get(80000, TimeUnit.MILLISECONDS);
+            List<Long> results = future.get(800, TimeUnit.MILLISECONDS);
             log.info("{}", results);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             log.error("timeout", e);
+
             for (Future<Long> longFuture : futures) {
                 longFuture.cancel(true);
             }
@@ -76,6 +81,8 @@ class TimeoutExecPoolTest {
 
     /**
      * 保留部分任务执行数据 中断后续任务
+     * <p>
+     * runPool 并行执行一批任务， CompletableFuture 单线程等待和合并全部任务的执行结果，如果超时了获取已完成的这部分任务的结果
      */
     @Test
     public void testCompleteServicePart() {
@@ -84,9 +91,9 @@ class TimeoutExecPoolTest {
 
         int max = 10;
         List<String> params = IntStream.range(0, max)
-                .mapToObj(v -> UUID.randomUUID().toString() + v)
+                .mapToObj(v -> UUID.randomUUID() + "-" + v)
                 .collect(Collectors.toList());
-        List<Future<Long>> futures = params.stream().map(v -> cs.submit(() -> this.logic(v))).collect(Collectors.toList());
+        List<Future<Long>> futures = params.stream().map(v -> cs.submit(() -> this.bizTask(v))).collect(Collectors.toList());
 
         Vector<Long> vs = new Vector<>();
         CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
@@ -104,12 +111,13 @@ class TimeoutExecPoolTest {
                 } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
                 }
-                log.info("{}", result);
+                log.info("finish {}", result);
             }
+            log.info("all task finish");
         });
         log.info("wait result");
         try {
-            future.get(800, TimeUnit.MILLISECONDS);
+            future.get(2100, TimeUnit.MILLISECONDS);
             log.info("{}", vs);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             log.error("timeout", e);
@@ -120,7 +128,7 @@ class TimeoutExecPoolTest {
         }
     }
 
-    private Long logic(String param) {
+    private Long bizTask(String param) {
         if (Objects.isNull(param)) {
             return 0L;
         }

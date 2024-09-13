@@ -3,6 +3,7 @@ package com.github.kuangcp.future;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -115,7 +116,8 @@ public class CompletableFutureTest {
                 return "second";
             });
 
-            CompletableFuture.allOf(first, second);
+            CompletableFuture<Void> all = CompletableFuture.allOf(first, second);
+            all.get();
 
             // 异步代码块中发生异常后会包装为 ExecutionException 在 get()时抛出
             log.info("end: {} {} ", first.get(), second.get());
@@ -133,4 +135,21 @@ public class CompletableFutureTest {
     }
 
     // TODO 理解 lettuce 中 Future 的使用
+
+
+    /**
+     * TODO 可控耗时自旋
+     */
+    @Test
+    public void testSpinWait() throws Exception {
+        CompletableFuture<Boolean> first = CompletableFuture.supplyAsync(this::enableRun);
+//        first.thenCombine();
+    }
+
+    private final LocalTime now = LocalTime.now();
+
+    private boolean enableRun() {
+        LocalTime now1 = LocalTime.now();
+        return now1.isAfter(now.plusMinutes(1));
+    }
 }
