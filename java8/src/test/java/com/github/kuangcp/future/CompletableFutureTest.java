@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -142,7 +143,25 @@ public class CompletableFutureTest {
      */
     @Test
     public void testSpinWait() throws Exception {
-        CompletableFuture<Boolean> first = CompletableFuture.supplyAsync(this::enableRun);
+        log.info("start");
+        CompletableFuture<Void> first = CompletableFuture.runAsync(() -> {
+            boolean enable = this.enableRun();
+            while (!enable) {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(100);
+                } catch (InterruptedException ignored) {
+                }
+                enable = enableRun();
+            }
+        });
+
+
+        try {
+            first.get(5, TimeUnit.SECONDS);
+        } catch (TimeoutException e) {
+            log.error("timeout", e);
+        }
+        log.info("finish");
 //        first.thenCombine();
     }
 
@@ -150,6 +169,6 @@ public class CompletableFutureTest {
 
     private boolean enableRun() {
         LocalTime now1 = LocalTime.now();
-        return now1.isAfter(now.plusMinutes(1));
+        return now1.isAfter(now.plusSeconds(3));
     }
 }
