@@ -2,6 +2,7 @@ package com.github.kuangcp.queue.disruptor.first;
 
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.WorkHandler;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
  * 2024-09-24 16:08
  */
 @Slf4j
+@Getter
 public class OrderEventHandler implements EventHandler<OrderEvent>, WorkHandler<OrderEvent> {
 
     private final String id;
