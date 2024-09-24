@@ -104,7 +104,7 @@ public class FirstTest {
 
 
     /**
-     * 多生产者 多消费者
+     * 多生产者 多消费者（长耗时）
      */
     @Test
     public void testProductConsumerSlow() throws Exception {
@@ -118,17 +118,18 @@ public class FirstTest {
         );
         // 有多少个消费者就会创建多少线程去执行消费，此时会创建三个线程
         disruptor
-                .handleEventsWithWorkerPool(new OrderEventSlowHandler("a"), new OrderEventSlowHandler("b"))
+                .handleEventsWithWorkerPool(new OrderEventSlowHandler("a1"), new OrderEventSlowHandler("a2"), new OrderEventSlowHandler("a3"))
                 .then(new OrderEventSlowHandler("c"));
         disruptor.start();
         RingBuffer<OrderEvent> ringBuffer = disruptor.getRingBuffer();
         OrderEventProducer eventProducer = new OrderEventProducer(ringBuffer);
         // 创建一个线程池，模拟多个生产者
         ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 30; i++) {
             fixedThreadPool.execute(() -> eventProducer.onData(UUID.randomUUID().toString()));
         }
 
+        // 注意当所有消息都被消费后，消费者线程会进入无休止的CAS，导致CPU占用率高企
         Thread.currentThread().join();
     }
 }
