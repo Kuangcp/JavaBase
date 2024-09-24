@@ -156,6 +156,20 @@ public class BitOperatorsTest {
         Assert.assertNotEquals(oneStr, originMsg);
     }
 
+    @Test
+    public void testOverFlow() throws Exception {
+        // int最大值为 2^31 -1 以下值刚好溢出1位到了符号位，又因为负数采用的是反码所以字面值就会变成int的最小值
+        System.out.println(2048 * 1024 * 1024);
+        show(2048 * 1024 * 1024);
+
+        // 同样的，对溢出的值 -1 又将符号位退回0，值就变为最大值了
+        System.out.println(2048 * 1024 * 1024 - 1);
+        show(2048 * 1024 * 1024 - 1);
+
+        System.out.println(2048 * 1024 * 1024L);
+        System.out.println(2048 * 1024 * 1024L - 1);
+    }
+
     private byte[] transfer(byte[] data) {
         byte[] key = {3, 56, 12, 22, 35, 87, 123, 83, 111, 34, 23, 56, 34, 56};
         int maxKey = key.length;
