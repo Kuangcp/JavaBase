@@ -18,17 +18,10 @@ public class InterruptBizDemo {
     private static final BlockingQueue<String> queue = new LinkedBlockingQueue<>();
     private static final AtomicBoolean run = new AtomicBoolean(true);
 
-    public static void main(String[] args) throws InterruptedException {
-        log.info("start");
-
-        singleThreadMode();
-//        consumerScheduler();
-    }
-
     /**
      * 保活
      */
-    private static void consumerScheduler() throws InterruptedException {
+    static void consumerScheduler() throws InterruptedException {
         Thread producer = new Thread(() -> {
             AtomicInteger count = new AtomicInteger();
             while (true) {
@@ -78,7 +71,7 @@ public class InterruptBizDemo {
         }
     }
 
-    private static void singleThreadMode() throws InterruptedException {
+    static void singleThreadMode() throws InterruptedException {
         Thread normal = new Thread(() -> log.info("normal"));
         normal.setName("normal");
         normal.start();
