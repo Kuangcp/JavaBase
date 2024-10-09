@@ -12,42 +12,63 @@ import org.junit.Test;
 @Slf4j
 public class SortTest {
 
-  // https://github.com/Kuangcp/GoBase/tree/master/algorithm/sort
-  // test sort algorithms was correct
-  @Test
-  public void testSortCorrect() {
-    SortHelper.AMOUNT = 170;
-    SortHelper.SCOPE = 999;
-    SortHelper.show = true;
+    // https://github.com/Kuangcp/GoBase/tree/master/algorithm/sort
+    // test sort algorithms was correct
+    @Test
+    public void testSortCorrect() {
+        SortHelper.AMOUNT = 170;
+        SortHelper.SCOPE = 999;
+        SortHelper.show = true;
 
-    SortHelper.init();
+        SortHelper.init();
 
-    SortHelper.algorithms.forEach(sort -> {
-      log.info("sort: name={}", sort.getName());
-      int[] data = SortHelper.data;
+        SortHelper.algorithms.forEach((key, value) -> {
+            log.info("sort: name={}", key);
+            int[] data = SortHelper.data;
 
-      SortHelper.showData(data);
-      int[] result = sort.sort(data);
-      SortHelper.showData(result);
+            SortHelper.showData(data);
+            int[] result = value.sort(data);
+            SortHelper.showData(result);
 
-      SortHelper.validate(result);
-      System.out.println();
-    });
-  }
+            SortHelper.validate(result);
+            System.out.println();
+        });
+    }
 
-  @Test
-  public void testSortPerformance() {
-    SortHelper.AMOUNT = 2000;
-    SortHelper.SCOPE = 10;
+    @Test
+    public void testSingleSortCorrect() {
+        SortHelper.AMOUNT = 170;
+        SortHelper.SCOPE = 999;
+        SortHelper.show = true;
+        Sorter sort = Insert::sort;
 
-    SortHelper.init();
+        SortHelper.init();
+        int[] data = SortHelper.data;
 
-    SortHelper.algorithms.forEach(sort -> {
-      GetRunTime runTime = new GetRunTime().startCount();
-      int[] result = sort.sort(SortHelper.data);
-      runTime.endCountOneLine(sort.getName());
+        SortHelper.showData(data);
+        int[] result = sort.sort(data);
+        SortHelper.showData(result);
 
-      SortHelper.validate(result);
-    });
-  }
+        SortHelper.validate(result);
+        System.out.println();
+    }
+
+    @Test
+    public void testSortPerformance() {
+        SortHelper.AMOUNT = 30000;
+        SortHelper.SCOPE = 1000000;
+
+        SortHelper.init();
+
+        for (int i = 0; i < 10; i++) {
+            SortHelper.algorithms.forEach((key, value) -> {
+                GetRunTime runTime = new GetRunTime().startCount();
+                int[] result = value.sort(SortHelper.data);
+                runTime.endCountOneLine(key);
+
+//            SortHelper.validate(result);
+            });
+            System.out.println();
+        }
+    }
 }

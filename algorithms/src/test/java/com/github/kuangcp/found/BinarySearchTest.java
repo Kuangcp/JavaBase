@@ -25,7 +25,7 @@ public class BinarySearchTest {
             dat[i] = (int) (Math.random() * dataRange + dataBaseValue);
         }
 
-        Insert.INSTANCE.sort(dat);
+        Insert.sort(dat);
 
         for (int i = 0; i < dat.length; i++) {  //将数组遍历一下
             System.out.print(dat[i] + " ");
@@ -37,9 +37,9 @@ public class BinarySearchTest {
         int randomValue = (int) (Math.random() * dataRange + dataBaseValue);
         int result = s.find(dat, randomValue);
         if (result != -1) {
-            log.debug("你要找的数据是第 {} 个数字 {}", result, randomValue);
+            log.info("你要找的数据是第 {} 个数字 {}", result, randomValue);
         } else {
-            log.debug("该数据不存在，查找失败！value={}", randomValue);
+            log.info("该数据不存在，查找失败！value={}", randomValue);
         }
     }
 }
