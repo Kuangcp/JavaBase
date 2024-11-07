@@ -5,10 +5,6 @@ import com.github.kuangcp.serialize.Person;
 import com.github.kuangcp.serialize.json.speed.FastJsonTool;
 import com.github.kuangcp.serialize.json.speed.GsonTool;
 import com.github.kuangcp.serialize.json.speed.JacksonTool;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import org.junit.Test;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -21,6 +17,11 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 /**
  * @author <a href="https://github.com/kuangcp">Kuangcp</a> on 2020-05-06 01:12
  */
@@ -31,30 +32,30 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class WriteJsonTest {
 
-  private static final int DATA_SIZE = 30;
-  private static final List<Person> personList = IntStream.range(1, DATA_SIZE)
-      .mapToObj(i -> new Person("name" + i)).collect(Collectors.toList());
+    private static final int DATA_SIZE = 30;
+    private static final List<Person> personList = IntStream.range(1, DATA_SIZE)
+            .mapToObj(i -> new Person("name" + i)).collect(Collectors.toList());
 
-  @Benchmark
-  public void jacksonWrite() throws JsonProcessingException {
-    new JacksonTool().toJSON(personList);
-  }
+    @Benchmark
+    public void jacksonWrite() throws JsonProcessingException {
+        new JacksonTool().toJSON(personList);
+    }
 
-  @Benchmark
-  public void fastJsonWrite() throws JsonProcessingException {
-    new FastJsonTool().toJSON(personList);
-  }
+    @Benchmark
+    public void fastJsonWrite() throws JsonProcessingException {
+        new FastJsonTool().toJSON(personList);
+    }
 
-  @Benchmark
-  public void gsonWrite() throws JsonProcessingException {
-    new GsonTool().toJSON(personList);
-  }
+    @Benchmark
+    public void gsonWrite() throws JsonProcessingException {
+        new GsonTool().toJSON(personList);
+    }
 
-  @Test
-  public void testCompareRead() throws Exception {
-    Options options = new OptionsBuilder()
-        .include(WriteJsonTest.class.getSimpleName())
-        .output("/tmp/" + WriteJsonTest.class.getSimpleName() + ".log").build();
-    new Runner(options).run();
-  }
+    @Test
+    public void testCompareRead() throws Exception {
+        Options options = new OptionsBuilder()
+                .include(WriteJsonTest.class.getSimpleName())
+                .output("/tmp/" + WriteJsonTest.class.getSimpleName() + ".log").build();
+        new Runner(options).run();
+    }
 }

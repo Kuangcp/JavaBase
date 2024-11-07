@@ -1,7 +1,8 @@
 package com.github.kuangcp.serialize;
 
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * Created by https://github.com/kuangcp on 17-10-24  下午2:26
@@ -11,20 +12,23 @@ import lombok.Data;
 @Data
 public class Person implements Serializable {
 
-  private String name;
-  private String address;
-  private String phone;
+    private String name;
+    private String address;
+    private String phone;
 
-  public Person(String name) {
-    this.name = name;
-  }
+    public Person() {
+    }
 
-  @Override
-  public String toString() {
-    return "Person{" +
-        "name='" + name + '\'' +
-        ", address='" + address + '\'' +
-        ", phone='" + phone + '\'' +
-        '}';
-  }
+    public Person(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
 }
