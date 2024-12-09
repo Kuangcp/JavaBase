@@ -7,10 +7,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * 测试 栈的默认 LIFO 策略
+ * 初步测试，没有LIFO特性，普通排队等待，队列中大量任务等待时，后续的小任务都要等很久，偶现又很快
  *
  * @author Kuangcp
  * 2024-12-05 13:43
@@ -163,15 +167,71 @@ public class ForkJoinUsePoolLIFOTest {
         sche.scheduleAtFixedRate(() -> {
             int parallelism = pool.getParallelism();
             long queuedTaskCount = pool.getQueuedSubmissionCount();
-            log.info("con={} wait={}", parallelism, queuedTaskCount);
+//            log.info("con={} wait={}", parallelism, queuedTaskCount);
         }, 1, 1, TimeUnit.SECONDS);
 
         Thread.currentThread().join();
     }
 
-
+    /**
+     * 模拟使用并行流时，高并发小请求 伴随定时的大请求，小请求很快就响应，但是大请求积压时间越来越长，提交线程有时也会消费任务。
+     * <p>
+     * 应该能解释当系统打开页面，批量发起请求时，排队中的就会积压等待，但是为什么部分请求耗时不受影响。
+     * <p>
+     * https://blog.csdn.net/weixin_38308374/article/details/112735120
+     *
+     * @see ForEachOps.ForEachTask#compute() rightSplit.trySplit()可以对数据源的数据进行拆分，将数据一分为二 如果剩余的数据量不足以进行再次拆分，则直接使用当前线程处理
+     */
     @Test
-    public void testSSSS() throws Exception {
-        System.out.println("xxxxx");
+    public void testLIFO5() throws Exception {
+        ScheduledExecutorService sche = Executors.newScheduledThreadPool(4);
+        sche.scheduleAtFixedRate(() -> {
+            int parallelism = ForkJoinPool.commonPool().getParallelism();
+            long queuedTaskCount = ForkJoinPool.commonPool().getQueuedSubmissionCount();
+            log.info("con={} wait={}", parallelism, queuedTaskCount);
+        }, 1, 1, TimeUnit.SECONDS);
+
+        // 模拟线程池提交重请求
+        sche.scheduleAtFixedRate(() -> {
+            long start = System.currentTimeMillis();
+
+            IntStream.range(1, 10).parallel().mapToObj(v -> {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(2000);
+                } catch (Exception e) {
+                    log.error("", e);
+                }
+                long val = System.currentTimeMillis();
+                long all = val - start;
+                if (all > 110) {
+                    log.error("X long wait {}", all);
+                }
+                return val;
+            }).collect(Collectors.toList());
+        }, 5, 6, TimeUnit.SECONDS);
+
+        // 模拟小请求
+        for (int i = 0; i < 1000; i++) {
+            TimeUnit.MILLISECONDS.sleep(300);
+            new Thread(() -> {
+                long start = System.currentTimeMillis();
+                IntStream.range(1, 10).parallel().mapToObj(v -> {
+                    try {
+                        int xr = ThreadLocalRandom.current().nextInt(100);
+                        TimeUnit.MILLISECONDS.sleep(200 + xr);
+                    } catch (Exception e) {
+                        log.error("", e);
+                    }
+                    long val = System.currentTimeMillis();
+                    long all = val - start;
+                    if (all > 110) {
+                        log.error("long wait {}", all);
+                    }
+                    return val;
+                }).collect(Collectors.toList());
+            }).start();
+        }
+
+        Thread.currentThread().join();
     }
 }
