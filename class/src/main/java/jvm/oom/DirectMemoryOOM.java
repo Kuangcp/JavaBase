@@ -24,7 +24,7 @@ public class DirectMemoryOOM {
 
     private static final int mib = 1024 * 1024;
 
-    // 注意： -XX:MaxDirectMemorySize参数只对由DirectByteBuffer分配的内存有效，对Unsafe直接分配的内存无效
+    // 注意： -XX:MaxDirectMemorySize参数只对由DirectByteBuffer分配的内存有效限制，对Unsafe直接分配的内存无效
 
     /**
      * C语言malloc申请的也是虚拟内存,没有设置值的话操作系统不会分配物理内存
@@ -42,9 +42,10 @@ public class DirectMemoryOOM {
         while (true) {
             Thread.sleep(100);
             delta += 2;
-            System.out.println("now " + delta);
+
             // byte
             unsafe.allocateMemory(2 * mib);
+            System.out.println("now " + delta);
         }
     }
 
@@ -54,9 +55,9 @@ public class DirectMemoryOOM {
         while (true) {
             Thread.sleep(100);
             delta += 2;
-            System.out.println("now " + delta);
             // byte
             ByteBuffer buf = ByteBuffer.allocateDirect(2 * mib);
+            System.out.println("now " + delta);
             buf.putLong(2L);
             buf.flip();
             buffers.add(buf);
