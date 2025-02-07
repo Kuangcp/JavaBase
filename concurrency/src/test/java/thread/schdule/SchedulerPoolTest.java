@@ -232,6 +232,23 @@ public class SchedulerPoolTest {
         Thread.currentThread().join(10000);
     }
 
+    /**
+     * scheduleWithFixedDelay 和 scheduleAtFixedRate 如果任务抛出了未处理的异常，会中断后续的调度计划
+     */
+    @Test
+    public void testBrokeFixedTask() throws Exception {
+        AtomicInteger cnt = new AtomicInteger();
+        customScheduler.scheduleWithFixedDelay(() -> {
+            int index = cnt.incrementAndGet();
+            log.info("index={}", index);
+            if (index > 4) {
+                throw new RuntimeException("Broke");
+            }
+
+        }, 2, 1, TimeUnit.SECONDS);
+        Thread.sleep(1000000);
+    }
+
     @Test
     public void testScheduleDrop() throws Exception {
         for (int i = 0; i < 10; i++) {
