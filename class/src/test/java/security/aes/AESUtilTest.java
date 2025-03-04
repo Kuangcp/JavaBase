@@ -131,6 +131,9 @@ public class AESUtilTest {
         Assert.assertEquals(origin, plainText);
     }
 
+    /**
+     * 只保留一个密钥，iv使用0值，安全性降低，但是更方便
+     */
     @Test
     public void testSimple() throws Exception {
         try {
