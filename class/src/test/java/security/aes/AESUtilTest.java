@@ -31,7 +31,7 @@ public class AESUtilTest {
         new SecureRandom().nextBytes(var2);
         new SecretKeySpec(var2, "AES");
 
-        SecretKey key = AESUtil.generateKey(128);
+        SecretKey key = AESUtil.randomKey(128);
         final String base64 = AESUtil.generateIvByte();
 
         // 固定iv密钥
@@ -49,10 +49,11 @@ public class AESUtilTest {
         Assert.assertEquals(input, plainText);
     }
 
+
     @Test
     public void testGivenFile_whenEncrypt_thenSuccess() throws Exception {
         // given
-        SecretKey key = AESUtil.generateKey(128);
+        SecretKey key = AESUtil.randomKey(128);
         String algorithm = "AES/CBC/PKCS5Padding";
         IvParameterSpec ivParameterSpec = AESUtil.generateIv();
         Path originPath = Paths.get("src/test/resources/origin.txt");
@@ -79,7 +80,7 @@ public class AESUtilTest {
     public void givenObject_whenEncrypt_thenSuccess() throws Exception {
         // given
         Student student = new Student("Baeldung", 20);
-        SecretKey key = AESUtil.generateKey(128);
+        SecretKey key = AESUtil.randomKey(128);
         IvParameterSpec ivParameterSpec = AESUtil.generateIv();
         String algorithm = "AES/CBC/PKCS5Padding";
 
@@ -116,23 +117,35 @@ public class AESUtilTest {
 
     @Test
     public void testConfigWay() throws Exception {
-        String plainText = "www.baeldung.com";
+        String plainText = "" + System.currentTimeMillis();
         String password = "baeldung";
         String salt = "12345678";
-        final String iv = AESUtil.generateIvByte();
-        log.info("iv={}", iv);
-        final String result = encryptPass(plainText, password, salt, iv);
-        final String origin = decryptPass(result, password, salt, iv);
+//        final String iv = AESUtil.generateIvByte();
+        String iv = "D+OER4Pzbc+CtaXeVKlTEQ==";
+        log.info("iv [{}] salt [{}]", iv, salt);
+        // 即使固定了iv 初始化向量，在跨系统传输仍需要双方约定三个 变量比较麻烦
+        final String result = AESUtil.encryptPass(plainText, password, salt, iv);
+        final String origin = AESUtil.decryptPass(result, password, salt, iv);
+        log.info("{} {}", result, origin);
 
         Assert.assertEquals(origin, plainText);
-
     }
 
-    public String encryptPass(String text, String passwd, String salt, String iv) throws Exception {
-        return AESUtil.encryptPasswordBased(text, AESUtil.getKeyFromPassword(passwd, salt), AESUtil.generateIv(iv));
+    @Test
+    public void testSimple() throws Exception {
+        try {
+            String key = "b423eb489f47dbe933f7e761946ec216";
+            SecretKeySpec secretKey = AESUtil.generateKey(key);
+
+            String plainText = "Hello, AES Encryption!";
+            String encryptedText = AESUtil.encrypt(plainText, secretKey);
+            System.out.println("加密后的密文 (Base64): " + encryptedText);
+
+            String decryptedText = AESUtil.decrypt(encryptedText, secretKey);
+            System.out.println("解密后的明文: " + decryptedText);
+        } catch (Exception e) {
+            log.error("", e);
+        }
     }
 
-    public String decryptPass(String text, String passwd, String salt, String iv) throws Exception {
-        return AESUtil.decryptPasswordBased(text, AESUtil.getKeyFromPassword(passwd, salt), AESUtil.generateIv(iv));
-    }
 }
