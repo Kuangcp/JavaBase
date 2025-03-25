@@ -22,8 +22,8 @@ public class StreamGenericTest {
                 .map(v -> (Integer) v)
                 // 即使是硬编码转换类型 同样会只推断为Object类型
                 .map(v -> Integer.parseInt(v.toString()))
-                // 甚至换成任意对象值，都不符合Optional.map方法的签名(泛型推断)，永远推断为Object
-                .map(v -> new HashMap<>())
+                // 甚至换成任意对象值，都不符合Optional.map方法的签名(泛型推断)，result 永远推断为Object
+//                .map(v -> new HashMap<>())
                 .orElse(null);
 
         // 只能在lambda表达式结束后做强转
