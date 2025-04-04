@@ -39,18 +39,34 @@ public class CreateStreamTest {
         assertTrue(isFinite(Stream.of(1, 2, 3, 4).limit(1)));
     }
 
+    /**
+     * @see java.util.stream.SliceOps#makeInt(java.util.stream.AbstractPipeline.AbstractPipeline, long, long)
+     */
     @Test
     public void testLimitBlocked() throws Exception {
+
         // 从一个集合中随机选取一部分数据出来。 limit的目标值大于集合大小时，就会阻塞
         List<String> ids = Arrays.asList("1", "2", "3");
+
+        // 有限集合产生的流不会阻塞
+//        List<String> xl = ids.stream().limit(5).collect(Collectors.toList());
+//        log.info("xl={}", xl);
+
+
+        Stream.iterate(0, n -> n + 2).distinct().limit(10).forEach(System.out::println);
+//        Random.RandomIntsSpliterator.tryAdvance
+
         int size = ids.size();
         List<String> pick = new Random()
                 .ints(0, size)
+//                .peek(v -> System.out.println(v))
                 .distinct()
                 .limit(5)
                 .mapToObj(ids::get)
                 .collect(Collectors.toList());
         log.info("pick={}", pick);
+
+
     }
 
     <T> boolean isFinite(Stream<T> stream) {

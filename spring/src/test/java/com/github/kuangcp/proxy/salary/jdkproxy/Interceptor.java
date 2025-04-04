@@ -5,5 +5,5 @@ package com.github.kuangcp.proxy.salary.jdkproxy;
  */
 public interface Interceptor {
 
-  void interceptor();
+    void interceptor();
 }
