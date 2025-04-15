@@ -1,5 +1,7 @@
 package security.aes;
 
+import com.github.kuangcp.util.ShowBinary;
+
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
@@ -19,6 +21,43 @@ import java.security.spec.KeySpec;
 import java.util.Base64;
 
 public class AESUtil {
+
+
+    public static byte[] encrypt(String hexKey, byte[] data) throws Exception {
+        return encrypt(ShowBinary.hexToByte(hexKey), data);
+    }
+
+    public static byte[] decrypt(String hexKey, byte[] data) throws Exception {
+        return decrypt(ShowBinary.hexToByte(hexKey), data);
+    }
+
+    /**
+     * 加密
+     *
+     * @param key  密钥
+     * @param data 加密数据
+     * @return 密文
+     */
+    public static byte[] encrypt(byte[] key, byte[] data) throws Exception {
+        SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+        return cipher.doFinal(data);
+    }
+
+    /**
+     * 解密
+     *
+     * @param key  密钥
+     * @param data 密文
+     * @return 解密后的数据
+     */
+    public static byte[] decrypt(byte[] key, byte[] data) throws Exception {
+        SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+        return cipher.doFinal(data);
+    }
 
     public static String encrypt(String algorithm, String input, SecretKey key, IvParameterSpec iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,

@@ -1,10 +1,12 @@
 package security.aes;
 
 
+import com.github.kuangcp.util.ShowBinary;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.crypto.KeyGenerator;
 import javax.crypto.SealedObject;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
@@ -14,11 +16,64 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
+import java.util.Base64;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @Slf4j
 public class AESUtilTest {
+
+
+    @Test
+    public void testFlow() throws Exception {
+        // 生成随机密钥
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        // 128 192 256
+        keyGenerator.init(128, new SecureRandom());
+        SecretKey secretKey = keyGenerator.generateKey();
+
+        byte[] key = secretKey.getEncoded();
+        System.out.println("AES 密钥：" + Base64.getEncoder().encodeToString(key));
+        System.out.println("AES 密钥：" + ShowBinary.byteToHex(key));
+
+        String content = "KeyGenerator keyGenerator = KeyGenerator.getInstance(\"AES\");";
+        System.out.println("原文：" + content);
+
+        byte[] ret = AESUtil.encrypt(key, content.getBytes());
+        System.out.println("密文：" + Base64.getEncoder().encodeToString(ret));
+        System.out.println("密文：" + ShowBinary.byteToHex(ret));
+
+        byte[] raw = AESUtil.decrypt(key, ret);
+        System.out.println("原文：" + new String(raw));
+        Assert.assertEquals(content, new String(raw));
+    }
+
+    @Test
+    public void testHexKeyFlow() throws Exception {
+        // 生成随机密钥
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        // 128 192 256
+        keyGenerator.init(192, new SecureRandom());
+        SecretKey secretKey = keyGenerator.generateKey();
+        byte[] key = secretKey.getEncoded();
+
+//        System.out.println("Origin: " + key.length);
+        String hexKey = ShowBinary.byteToHex(key);
+
+        System.out.println("AES 密钥：" + hexKey);
+
+        String content = "KeyGenerator keyGenerator = KeyGenerator.getInstance(\"AES\");";
+        System.out.println("原文：" + content);
+
+        System.out.println("------");
+        byte[] ret = AESUtil.encrypt(hexKey, content.getBytes());
+//        System.out.println("密文：" + Base64.getEncoder().encodeToString(ret));
+        System.out.println("密文：" + ShowBinary.byteToHex(ret));
+
+        byte[] raw = AESUtil.decrypt(hexKey, ret);
+        System.out.println("原文：" + new String(raw));
+        Assert.assertEquals(content, new String(raw));
+    }
 
 
     @Test
