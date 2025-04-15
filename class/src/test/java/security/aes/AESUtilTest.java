@@ -5,6 +5,7 @@ import com.github.kuangcp.util.ShowBinary;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.RepeatedTest;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SealedObject;
@@ -49,6 +50,7 @@ public class AESUtilTest {
     }
 
     @Test
+    @RepeatedTest(6)
     public void testHexKeyFlow() throws Exception {
         // 生成随机密钥
         KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
