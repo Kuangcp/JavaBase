@@ -4,14 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.NotSerializableException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -33,13 +26,31 @@ public class SerializeTest {
         ObjectOutputStream output = new ObjectOutputStream(byteOutput);
         output.writeObject(person);
 
-        log.info("content={}", byteOutput.toString());
+        log.info("content={}", byteOutput);
 
         ByteArrayInputStream byteInput = new ByteArrayInputStream(byteOutput.toByteArray());
 
         ObjectInputStream input = new ObjectInputStream(byteInput);
         Person result = (Person) input.readObject();
         assertThat(result.getName(), equalTo("name"));
+    }
+
+    /**
+     * [为什么serialVersionUID不能随便改](https://hollischuang.github.io/toBeTopJavaer/#/basics/java-basic/serialVersionUID-modify?id=%e5%a6%82%e6%9e%9cserialversionuid%e5%8f%98%e4%ba%86%e4%bc%9a%e6%80%8e%e6%a0%b7)
+     */
+    @Test
+    public void testChangeNo() {
+        try {
+            // Person serialVersionUID 设置为1
+            writeFile();
+
+            // Person serialVersionUID 设置为2 再执行
+//            readFile();
+            // 报错： java.io.InvalidClassException: com.github.kuangcp.serialize.Person; local class incompatible: stream classdesc serialVersionUID = 1, local class serialVersionUID = 2
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            Assert.fail();
+        }
     }
 
     /**
