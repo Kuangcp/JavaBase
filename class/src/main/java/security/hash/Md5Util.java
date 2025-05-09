@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.Optional;
 
@@ -44,9 +46,9 @@ public class Md5Util {
     }
 
     /**
-     * 逐块计算MD5值，
+     * 逐块计算MD5值，缓存区是512整数倍即可
      */
-    public static Optional<String> calculateFileMd5(String urlString) {
+    public static Optional<String> urlMd5(String urlString) {
         if (StringUtils.isBlank(urlString)) {
             return Optional.empty();
         }
@@ -77,6 +79,36 @@ public class Md5Util {
             log.error("计算文件md5异常,url={}", urlString, e);
         }
 
+        return Optional.empty();
+    }
+
+    /**
+     * 本地文件完整计算MD5
+     */
+    public static Optional<String> fileMd5(String path) {
+        try {
+            byte[] data = Files.readAllBytes(Paths.get(path));
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            byte[] hash = digest.digest(data);
+            return Optional.of(bytesToHex(hash));
+        } catch (Exception e) {
+            log.error("", e);
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * 字符串计算MD5
+     */
+    public static Optional<String> stringMd5(String raw) {
+        try {
+            byte[] data = raw.getBytes();
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            byte[] hash = digest.digest(data);
+            return Optional.of(bytesToHex(hash));
+        } catch (Exception e) {
+            log.error("", e);
+        }
         return Optional.empty();
     }
 }
