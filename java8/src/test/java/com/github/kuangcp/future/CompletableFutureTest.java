@@ -38,6 +38,8 @@ public class CompletableFutureTest {
     }
 
     /**
+     * 提交一批任务，并行执行，等待结果
+     *
      * @see java.util.concurrent.CompletableFuture.asyncPool 默认线程池
      */
     @Test
@@ -58,9 +60,7 @@ public class CompletableFutureTest {
         }
         for (Future<Void> future : wait) {
             future.get();
-            if (future.isDone()) {
-                log.info("complete");
-            }
+            log.info("complete");
         }
     }
 
