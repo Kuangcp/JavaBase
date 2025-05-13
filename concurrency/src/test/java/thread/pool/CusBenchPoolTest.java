@@ -25,7 +25,7 @@ public class CusBenchPoolTest {
 
         CusSchedulePool sche = new CusSchedulePool(1);
         sche.scheduleAtFixedRate(() -> {
-            log.info("Run {}", pool.statisticsTask());
+            log.info("Run {}", pool.statisticsTask().format());
         }, 2, 3, TimeUnit.SECONDS);
 
         int total = 1000;

@@ -1,5 +1,6 @@
 package thread.pool;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -47,6 +48,31 @@ public class CusBenchPool extends ThreadPoolExecutor {
         }
     }
 
+    @Data
+    @AllArgsConstructor
+    public static class ReportVO {
+        private int core;
+        private long cnt;
+        private long total;
+        private long min;
+        private long max;
+        private long avg;
+        private long p30;
+        private long p50;
+        private long p90;
+        private long p99;
+
+        public String toString() {
+            return "cnt: " + cnt + " total:" + total + " avg:" + avg + " min:" + min + " max:" + max
+                    + " P: " + p30 + ", " + p50 + ", " + p90 + ", " + p99;
+        }
+
+        public String format() {
+            return String.format("core:%2d cnt:%4d total:%8d avg:%5d min:%5d max:%5d P: %5d,%5d,%5d,%5d",
+                    core, cnt, total, avg, min, max, p30, p50, p90, p99);
+        }
+    }
+
     public CusBenchPool(int corePoolSize, int maximumPoolSize, long keepAliveTime,
                         TimeUnit unit, BlockingQueue<Runnable> workQueue) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
@@ -79,8 +105,7 @@ public class CusBenchPool extends ThreadPoolExecutor {
         return res.toString();
     }
 
-    public String statisticsTask() {
-        StringBuilder res = new StringBuilder();
+    public ReportVO statisticsTask() {
         long total = 0;
         long cnt = 0;
         List<Long> all = new ArrayList<>();
@@ -100,7 +125,6 @@ public class CusBenchPool extends ThreadPoolExecutor {
         Long P90 = sorted.get((int) (size * 0.9));
         Long P99 = sorted.get((int) (size * 0.99));
 
-        return "cnt: " + cnt + " total:" + total + " avg:" + total / cnt
-                + " P30 " + P30 + " P50 " + P50 + " P90 " + P90 + " P99 " + P99;
+        return new ReportVO(getCorePoolSize(), cnt, total, sorted.get(0), sorted.get(size - 1), total / cnt, P30, P50, P90, P99);
     }
 }
