@@ -46,7 +46,7 @@ public class DirectMemoryGlibcGrow {
         Runnable run = () -> {
             try {
                 for (int i = 0; i < 1000; i++) {
-                    TimeUnit.SECONDS.sleep(3);
+                    TimeUnit.MILLISECONDS.sleep(2000 + ThreadLocalRandom.current().nextInt(1000));
                     fragment();
                     System.out.println("loop " + i);
                 }
