@@ -27,7 +27,7 @@ public class DirectMemoryOOM {
     // 注意： -XX:MaxDirectMemorySize参数只对由DirectByteBuffer分配的内存有效限制，对Unsafe直接分配的内存无效
 
     /**
-     * C语言malloc申请的也是虚拟内存,没有设置值的话操作系统不会分配物理内存
+     * C语言malloc申请的是虚拟内存,没有设置值的话操作系统不会分配物理内存
      *
      * @see java.nio.DirectByteBuffer#DirectByteBuffer(int)
      * <p>
