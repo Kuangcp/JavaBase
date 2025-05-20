@@ -29,7 +29,8 @@ public class DirectMemoryGlibcGrow {
         List<ByteBuffer> buffers = new ArrayList<>();
         // Allocate large buffers and release them to see memory impact
         for (int i = 0; i < 50; i++) {
-            int delta = ThreadLocalRandom.current().nextInt(100) + 33;
+//            int delta = ThreadLocalRandom.current().nextInt(40) + 33;
+            int delta = 37;
             System.out.print(delta + ", ");
             buffers.add(ByteBuffer.allocateDirect(delta * 1024 * 1024)); // 100 MB each
 
@@ -46,7 +47,7 @@ public class DirectMemoryGlibcGrow {
         Runnable run = () -> {
             try {
                 for (int i = 0; i < 1000; i++) {
-                    TimeUnit.MILLISECONDS.sleep(2000 + ThreadLocalRandom.current().nextInt(1000));
+                    TimeUnit.MILLISECONDS.sleep(1000 + ThreadLocalRandom.current().nextInt(1000));
                     fragment();
                     System.out.println("loop " + i);
                 }
@@ -54,6 +55,7 @@ public class DirectMemoryGlibcGrow {
                 log.error("", e);
             }
         };
+        xo.submit(run);
         xo.submit(run);
         xo.submit(run);
 
