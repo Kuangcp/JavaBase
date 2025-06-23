@@ -5,8 +5,8 @@ package com.github.kuangcp.validation;
  */
 public interface ActiveState {
 
-  int ACTIVE = 1;
+    int ACTIVE = 1;
 
-  int NONE = 0;
+    int NONE = 0;
 
 }
