@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 class TestParam {
 
-  @Contain(value = ActiveState.class, message = ErrorMsgConstant.STATE_ERROR)
-  private Integer state;
+    @Contain(value = ActiveState.class, message = ErrorMsgConstant.STATE_ERROR)
+    private Integer state;
 
-  @Contain(value = StrState.class, message = ErrorMsgConstant.STR_STATE_ERROR)
-  private String str;
+    @Contain(value = StrState.class, message = ErrorMsgConstant.STR_STATE_ERROR)
+    private String str;
 }

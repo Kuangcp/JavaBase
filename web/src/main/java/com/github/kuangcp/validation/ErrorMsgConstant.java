@@ -5,7 +5,7 @@ package com.github.kuangcp.validation;
  */
 public interface ErrorMsgConstant {
 
-  String STATE_ERROR = "状态不合法";
+    String STATE_ERROR = "状态不合法";
 
-  String STR_STATE_ERROR = "string状态不合法";
+    String STR_STATE_ERROR = "string状态不合法";
 }
