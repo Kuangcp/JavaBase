@@ -55,7 +55,7 @@ public class AESUtilTest {
         // 生成随机密钥
         KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
         // 128 192 256
-        keyGenerator.init(192, new SecureRandom());
+        keyGenerator.init(128, new SecureRandom());
         SecretKey secretKey = keyGenerator.generateKey();
         byte[] key = secretKey.getEncoded();
 
