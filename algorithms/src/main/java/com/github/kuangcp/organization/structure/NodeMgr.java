@@ -1,6 +1,9 @@
 package com.github.kuangcp.organization.structure;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,16 +30,49 @@ public class NodeMgr implements NodeAction {
   // TODO 列出整个树
   public String tree(String parentId) {
     Node node = getNode(parentId);
-
-    if (!Objects.isNull(node.getParent())) {
+    if (node == null || (node.getParent() != null)) {
       return ERROR;
     }
-    return "";
+    StringBuilder sb = new StringBuilder();
+    buildTreeString(node, "", "", sb);
+    return sb.toString();
   }
 
   // TODO 列出子节点
   public String treeByNode(String parentId) {
-    return "";
+    Node node = getNode(parentId);
+    if (node == null) {
+      return ERROR;
+    }
+    StringBuilder sb = new StringBuilder();
+    buildTreeString(node, "", "", sb);
+    return sb.toString();
+  }
+
+  private void buildTreeString(Node node, String prefix, String childrenPrefix, StringBuilder sb) {
+    sb.append(prefix);
+    sb.append(node.getName());
+    sb.append('\n');
+
+    Map<String, Node> children = getChildSet(node.getId());
+    if (children.isEmpty()) {
+      return;
+    }
+
+    // Convert to list and sort by sort field
+    List<Node> sortedChildren = new ArrayList<>(children.values());
+    sortedChildren.sort(Comparator.comparingInt(Node::getSort));
+
+    for (int i = 0; i < sortedChildren.size(); i++) {
+      Node child = sortedChildren.get(i);
+      boolean isLast = i == sortedChildren.size() - 1;
+      buildTreeString(
+          child,
+          childrenPrefix + (isLast ? "└─ " : "├─ "),
+          childrenPrefix + (isLast ? "   " : "│  "),
+          sb
+      );
+    }
   }
 
   private Node getNode(String nodeId) {

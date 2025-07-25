@@ -78,4 +78,57 @@ public class MythArrayStackTest {
     stack.clear();
     assertThat(stack.isEmpty(), equalTo(true));
   }
+
+  @Test
+  public void testPushAndPop() {
+    MythArrayStack<Integer> stack = new MythArrayStack<>(3);
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+    
+    assertThat(stack.size(), equalTo(3));
+    assertThat(stack.pop(), equalTo(Integer.valueOf(3)));
+    assertThat(stack.pop(), equalTo(Integer.valueOf(2)));
+    assertThat(stack.pop(), equalTo(Integer.valueOf(1)));
+    assertThat(stack.isEmpty(), equalTo(true));
+  }
+
+  @Test
+  public void testAutoExpand() {
+    MythArrayStack<Integer> stack = new MythArrayStack<>(2);
+    // 测试扩容
+    for (int i = 0; i < 5; i++) {
+      stack.push(i);
+    }
+    assertThat(stack.size(), equalTo(5));
+    
+    // 验证数据正确性
+    for (int i = 4; i >= 0; i--) {
+      assertThat(stack.pop(), equalTo(Integer.valueOf(i)));
+    }
+  }
+
+  @Test
+  public void testPeekString() {
+    MythArrayStack<String> stack = new MythArrayStack<>();
+    stack.push("test");
+    assertThat(stack.peek(), equalTo("test"));
+    assertThat(stack.size(), equalTo(1)); // peek不应该移除元素
+  }
+
+  @Test(expected = IndexOutOfBoundsException.class)
+  public void testPopEmpty() {
+    MythArrayStack<Integer> stack = new MythArrayStack<>();
+    stack.pop(); // 应该抛出异常
+  }
+
+  @Test
+  public void testClearStack() {
+    MythArrayStack<Integer> stack = new MythArrayStack<>();
+    stack.push(1);
+    stack.push(2);
+    stack.clear();
+    assertThat(stack.isEmpty(), equalTo(true));
+    assertThat(stack.size(), equalTo(0));
+  }
 }

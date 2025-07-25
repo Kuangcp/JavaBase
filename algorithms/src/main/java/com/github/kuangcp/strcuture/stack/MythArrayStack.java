@@ -24,8 +24,12 @@ public class MythArrayStack<T> implements MythBaseStack<T> {
   @Override
   public void push(T data) {
     if (isFull()) {
-      // TODO 扩容
-      return;
+      // 扩容为原来的2倍
+      int newSize = maxSize * 2;
+      Object[] newArray = new Object[newSize];
+      System.arraycopy(elementData, 0, newArray, 0, maxSize);
+      elementData = newArray;
+      maxSize = newSize;
     }
     top++;
     this.elementData[top] = data;
