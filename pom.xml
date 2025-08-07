@@ -262,6 +262,12 @@
                 <artifactId>jackson-dataformat-smile</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
+            <!--            java8 localDate 等类型-->
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjrt</artifactId>

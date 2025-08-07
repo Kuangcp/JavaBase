@@ -4,6 +4,8 @@ logs/
 jmh/
 jmh_*
 
+git-report/
+
 # maven #
 target/
 

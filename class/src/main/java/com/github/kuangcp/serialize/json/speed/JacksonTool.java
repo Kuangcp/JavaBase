@@ -2,7 +2,9 @@ package com.github.kuangcp.serialize.json.speed;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.kuangcp.serialize.Person;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -13,20 +15,24 @@ import java.util.List;
  */
 public class JacksonTool implements JsonTool<Person> {
 
-  public static final ObjectMapper mapper = new ObjectMapper();
+    public static final ObjectMapper mapper = new ObjectMapper();
 
-  @Override
-  public Person fromJSON(String json, Class<Person> target) throws IOException {
-    return mapper.readValue(json, target);
-  }
+    static {
+        mapper.registerModule(new JavaTimeModule());
+    }
 
-  @Override
-  public String toJSON(List<Person> dataList) throws JsonProcessingException {
-    return mapper.writeValueAsString(dataList);
-  }
+    @Override
+    public Person fromJSON(String json, Class<Person> target) throws IOException {
+        return mapper.readValue(json, target);
+    }
 
-  @Override
-  public String getName() {
-    return "Jackson";
-  }
+    @Override
+    public String toJSON(List<Person> dataList) throws JsonProcessingException {
+        return mapper.writeValueAsString(dataList);
+    }
+
+    @Override
+    public String getName() {
+        return "Jackson";
+    }
 }
