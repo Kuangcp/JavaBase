@@ -172,11 +172,4 @@ public class CompletableFutureTest {
         LocalTime now1 = LocalTime.now();
         return now1.isAfter(now.plusSeconds(10));
     }
-
-    @Test
-    public void testNow() throws Exception {
-        // 1726284853554
-        // 1685014528
-        System.out.println(System.currentTimeMillis());
-    }
 }
