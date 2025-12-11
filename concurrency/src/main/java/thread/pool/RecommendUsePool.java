@@ -83,7 +83,7 @@ public class RecommendUsePool {
         public static ThreadPoolExecutor smoothIOPool = new ThreadPoolExecutor(40, 100,
                 120L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(500),
                 new BasicThreadFactory.Builder().namingPattern("nio-%d").build(),
-                new ThreadPoolExecutor.AbortPolicy());
+                new TrackDiscardPolicy());
 
         static {
             smoothIOPool.allowCoreThreadTimeOut(true);
@@ -129,5 +129,20 @@ public class RecommendUsePool {
         }
     }
 
+    public static String stat(ThreadPoolExecutor threadPool) {
+        return "| 运行中 | 待运行 | 总任务 | 核心 | 活跃 | 最大 |\n| " +
+                String.format("%4s", threadPool.getActiveCount() > 0 ? "🚨" + threadPool.getActiveCount() : threadPool.getActiveCount()) +
+                " | " +
+                String.format("%4s", !threadPool.getQueue().isEmpty() ? "🚨" + threadPool.getQueue().size() : threadPool.getQueue().size()) +
+                " | " +
+                String.format("%4d", threadPool.getTaskCount()) +
+                " | " +
+                String.format("%4d", threadPool.getCorePoolSize()) +
+                " | " +
+                String.format("%4d", threadPool.getPoolSize()) +
+                " | " +
+                String.format("%4d", threadPool.getMaximumPoolSize()) +
+                " |\n";
+    }
 
 }

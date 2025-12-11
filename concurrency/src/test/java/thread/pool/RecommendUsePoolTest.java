@@ -308,4 +308,57 @@ public class RecommendUsePoolTest {
         log.info("start");
         Thread.currentThread().join();
     }
+
+    /**
+     * 测试直到任务丢弃的过程
+     */
+    @Test
+    public void testSmoothPoolFull() throws Exception {
+        ScheduledExecutorService customScheduler = new CusSchedulePool(1, "sch-");
+        customScheduler.scheduleAtFixedRate(() -> {
+            System.out.println(RecommendUsePool.stat(RecommendUsePool.IO.smoothIOPool));
+        }, 1000, 1000, TimeUnit.MILLISECONDS);
+
+        for (int i = 0; i < 1000; i++) {
+            int finalI = i;
+            RecommendUsePool.IO.smoothIOPool.execute(() -> {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(10_000);
+                } catch (InterruptedException e) {
+
+                }
+//                System.out.print(finalI + " ");
+            });
+            TimeUnit.MILLISECONDS.sleep(20);
+        }
+
+
+        Thread.currentThread().join();
+    }
+
+    /**
+     * 核心线程满到回收到0的过程
+     */
+    @Test
+    public void testSmoothPoolIdle() throws Exception {
+        ScheduledExecutorService customScheduler = new CusSchedulePool(1, "sch-");
+        customScheduler.scheduleAtFixedRate(() -> {
+            System.out.println(RecommendUsePool.stat(RecommendUsePool.IO.smoothIOPool));
+        }, 1000, 1000, TimeUnit.MILLISECONDS);
+
+        for (int i = 0; i < 100; i++) {
+            int finalI = i;
+            RecommendUsePool.IO.smoothIOPool.execute(() -> {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(10_000);
+                } catch (InterruptedException e) {
+
+                }
+                System.out.print(finalI + " ");
+            });
+            TimeUnit.MILLISECONDS.sleep(20);
+        }
+
+        Thread.currentThread().join();
+    }
 }
