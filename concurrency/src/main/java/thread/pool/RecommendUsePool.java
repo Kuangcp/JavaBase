@@ -24,9 +24,8 @@ public class RecommendUsePool {
             new LinkedBlockingQueue<>(5), new TrackDiscardPolicy());
 
     /**
-     * 限制最高并发 批量处理任务
-     * <p>
-     * max 非业务值 仅仅为安全值
+     * max为业务实际值即最大并发数 无队列 超出的任务就丢弃
+     * 需额外做限流逻辑
      */
     public static ThreadPoolExecutor limitPool = new ThreadPoolExecutor(0, 20,
             60L, TimeUnit.SECONDS, new SynchronousQueue<>(),
@@ -34,7 +33,8 @@ public class RecommendUsePool {
             new ThreadPoolExecutor.AbortPolicy());
 
     /**
-     * max为业务实际值即最大并发数
+     * max为业务实际值即最大并发数 无队列 超出的任务就丢弃
+     * 需额外加限流逻辑
      */
     public static ThreadPoolExecutor limitCachePool = new ThreadPoolExecutor(0, 3,
             60L, TimeUnit.SECONDS, new SynchronousQueue<>(),
@@ -42,31 +42,52 @@ public class RecommendUsePool {
             new ThreadPoolExecutor.AbortPolicy());
 
     /**
-     * IO密集型线程池 快速消费任务和快速回收线程
-     * <p>
-     * 待执行的任务一旦达到max就会被丢弃，因为队列是零空间的阻塞实现
+     * IO型线程池
      */
-    public static ThreadPoolExecutor cachePool = new ThreadPoolExecutor(0, 100,
-            30L, TimeUnit.SECONDS, new SynchronousQueue<>(),
-            new BasicThreadFactory.Builder().namingPattern("nio-%d").build(),
-            new ThreadPoolExecutor.AbortPolicy());
+    public static class IO {
+        /**
+         * IO密集型线程池 快速消费任务和快速回收线程
+         * <p>
+         * 待执行的任务一旦达到max就会被丢弃，因为队列是零空间的阻塞实现
+         * 任务提交过程： 核心线程从0增长到100，丢弃任务
+         * 当任务逐步消费后，空闲的核心线程逐步回收
+         */
+        public static ThreadPoolExecutor ioPool = new ThreadPoolExecutor(0, 100,
+                30L, TimeUnit.SECONDS, new SynchronousQueue<>(),
+                new BasicThreadFactory.Builder().namingPattern("nio-%d").build(),
+                new ThreadPoolExecutor.AbortPolicy());
 
-    /**
-     * IO密集型线程池 快速消费快速回收具有超量任务缓冲的能力
-     * <p>
-     * 任务总数量小于core时 提交后都会立刻有线程响应，超过core部分会进入队列等待，队列满了就会创建新线程直到达到max 然后丢弃后续的任务
-     * Executors.newCachedThreadPool 实现是无限线程数，具有风险。
-     */
-    public static ThreadPoolExecutor coreCachePool = new ThreadPoolExecutor(20, 50,
-            8L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(50),
-            new BasicThreadFactory.Builder().namingPattern("react-%d").build(),
-            new TrackDiscardPolicy());
+        /**
+         * 弹性IO密集型线程池 快速消费快速回收 具有队列
+         * <p>
+         * 任务提交过程： 核心线程从0增长到20，然后进队列（平稳消费），当队列满了开始增长核心线程到40个，直到全满丢弃任务
+         * 相较 Executors.newCachedThreadPool 的实现是无限线程数，具有风险。
+         */
+        public static ThreadPoolExecutor coreCachePool = new ThreadPoolExecutor(20, 50,
+                8L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(50),
+                new BasicThreadFactory.Builder().namingPattern("react-%d").build(),
+                new TrackDiscardPolicy());
 
-    static {
-        // 默认不会回收idle超时的 core线程 ，只会回收 core到max部分的临时线程，设置该值以节省资源
-        coreCachePool.allowCoreThreadTimeOut(true);
-        // 初始化不会启动core线程，有任务提交才会创建
-//        coreCachePool.prestartAllCoreThreads();
+        static {
+            // 默认不会回收idle超时的 core线程 ，只会回收 core到max部分的临时线程，设置该值以节省资源
+            coreCachePool.allowCoreThreadTimeOut(true);
+            // 初始化默认不会启动core线程，有任务提交才会创建，如果设置这个就会预启动全部core线程
+//            coreCachePool.prestartCoreThread();
+        }
+
+        /**
+         * 弹性 IO密集型线程池 平稳的消费任务和回收线程。
+         * 任务提交过程： 核心线程从0增长到40，然后进队列（平稳消费），当队列满了开始增长核心线程到100个，直到全满丢弃任务
+         * 当任务逐步消费后，空闲的核心线程逐步回收
+         */
+        public static ThreadPoolExecutor smoothIOPool = new ThreadPoolExecutor(40, 100,
+                120L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(500),
+                new BasicThreadFactory.Builder().namingPattern("nio-%d").build(),
+                new ThreadPoolExecutor.AbortPolicy());
+
+        static {
+            smoothIOPool.allowCoreThreadTimeOut(true);
+        }
     }
 
     /**

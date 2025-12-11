@@ -220,7 +220,7 @@ public class RecommendUsePoolTest {
 
     @Test
     public void testEmptyCoreThread() throws Exception {
-        RecommendUsePool.coreCachePool.getActiveCount();
+        System.out.println(RecommendUsePool.IO.coreCachePool.getActiveCount());
         Thread.currentThread().join();
     }
 
@@ -239,7 +239,7 @@ public class RecommendUsePoolTest {
                 // 注意当此处提交任务的频率 当 taskTime/submitTime < core 时任务消费正常，当大于core就会开始使用到临时线程, 当大于max以及队列满时就会开始丢弃任务了
                 Thread.sleep(submitTime);
             }
-            RecommendUsePool.coreCachePool.execute(new RecommendUsePool.Task("task-" + i, () -> {
+            RecommendUsePool.IO.coreCachePool.execute(new RecommendUsePool.Task("task-" + i, () -> {
                 try {
                     Thread.sleep(taskTime);
                 } catch (InterruptedException e) {
@@ -250,7 +250,7 @@ public class RecommendUsePoolTest {
 
         Thread.currentThread().join(10000);
         // 此时已经销毁了所有的core线程（大于idle的8s），下面的任务会开启新的core
-        RecommendUsePool.coreCachePool.execute(() -> {
+        RecommendUsePool.IO.coreCachePool.execute(() -> {
             try {
                 Thread.sleep(10000);
                 log.info("Last task");
@@ -264,7 +264,7 @@ public class RecommendUsePoolTest {
 
 
     /**
-     * @see CompletableFutureTest
+     * @see com.github.kuangcp.future.CompletableFutureTest
      */
     @Test
     public void testTmpNewAsyncPool() throws Exception {

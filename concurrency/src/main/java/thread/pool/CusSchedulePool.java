@@ -7,6 +7,8 @@ import org.slf4j.MDC;
 import java.util.concurrent.*;
 
 /**
+ * 任务封装 监控时效
+ *
  * @author Kuangcp
  * 2024-05-15 09:34
  */
