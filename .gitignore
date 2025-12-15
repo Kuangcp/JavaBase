@@ -31,3 +31,6 @@ build/
 gradle/
 gradlew*
 
+
+.cursorindexingignore
+.specstory/

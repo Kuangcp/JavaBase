@@ -14,7 +14,8 @@ public class PoolErrorTest {
     @Test
     public void testNoMethod() throws Exception {
         ExecutorsThreadPool.pool.execute(() -> {
-            //TODO 3.1.1 3.6.1 版本差异 低版本没有该方法，报NoSuchMethodError, 但是日志中没有错误栈，导致问题难定位
+            // 3.1.1 3.6.1 版本差异 低版本没有该方法，报NoSuchMethodError, 但是日志中没有错误栈，导致问题难定位
+            // 所以需要提交到线程池的任务都需要catch Throwable级别 防止异常被吞
             try {
                 Pair<String, String> a = Pair.create("", "");
                 log.info("finish");
