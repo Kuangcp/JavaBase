@@ -1,7 +1,5 @@
 package security.aes;
 
-import com.github.kuangcp.util.ShowBinary;
-
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
@@ -11,7 +9,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -23,41 +20,7 @@ import java.util.Base64;
 public class AESUtil {
 
 
-    public static byte[] encrypt(String hexKey, byte[] data) throws Exception {
-        return encrypt(ShowBinary.hexToByte(hexKey), data);
-    }
-
-    public static byte[] decrypt(String hexKey, byte[] data) throws Exception {
-        return decrypt(ShowBinary.hexToByte(hexKey), data);
-    }
-
-    /**
-     * 加密
-     *
-     * @param key  密钥
-     * @param data 加密数据
-     * @return 密文
-     */
-    public static byte[] encrypt(byte[] key, byte[] data) throws Exception {
-        SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
-        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
-        return cipher.doFinal(data);
-    }
-
-    /**
-     * 解密
-     *
-     * @param key  密钥
-     * @param data 密文
-     * @return 解密后的数据
-     */
-    public static byte[] decrypt(byte[] key, byte[] data) throws Exception {
-        SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
-        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-        cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
-        return cipher.doFinal(data);
-    }
+    // 繁琐用法
 
     public static String encrypt(String algorithm, String input, SecretKey key, IvParameterSpec iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
@@ -204,37 +167,4 @@ public class AESUtil {
     }
 
 
-    // 密钥长度（AES支持128、192、256位）
-    private static final int KEY_SIZE = 256;
-
-    // 固定IV 0值
-    private static final byte[] FIXED_IV = new byte[16]; // AES块大小为16字节
-
-    // 将字符串密钥转换为SecretKeySpec
-
-    /**
-     * @param key 字符串长度对应 KEY_SIZE 长度/8
-     */
-    public static SecretKeySpec generateKey(String key) throws Exception {
-        byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
-        byte[] keyArray = new byte[KEY_SIZE / 8];
-        System.arraycopy(keyBytes, 0, keyArray, 0, Math.min(keyBytes.length, keyArray.length));
-        return new SecretKeySpec(keyArray, "AES");
-    }
-
-    // 加密方法
-    public static String encrypt(String plainText, SecretKeySpec key) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, key, new javax.crypto.spec.IvParameterSpec(FIXED_IV));
-        byte[] encryptedBytes = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
-        return Base64.getEncoder().encodeToString(encryptedBytes);
-    }
-
-    // 解密方法
-    public static String decrypt(String encryptedText, SecretKeySpec key) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.DECRYPT_MODE, key, new javax.crypto.spec.IvParameterSpec(FIXED_IV));
-        byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedText));
-        return new String(decryptedBytes, StandardCharsets.UTF_8);
-    }
 }

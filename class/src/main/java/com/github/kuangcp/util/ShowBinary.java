@@ -46,10 +46,6 @@ public class ShowBinary {
             int val = Integer.parseInt(hex.substring(index, index + 2), 16);
             ans[i] = (byte) val;
         }
-//        for (byte b : ans) {
-//            System.out.print(b + " ");
-//        }
-//        System.out.println(hex.length() + " " + ans.length);
         return ans;
     }
 }
