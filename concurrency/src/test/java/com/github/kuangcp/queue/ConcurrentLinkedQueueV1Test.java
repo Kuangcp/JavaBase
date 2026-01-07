@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,20 +22,52 @@ import java.util.stream.Stream;
 @Slf4j
 public class ConcurrentLinkedQueueV1Test {
 
-    private final ConcurrentLinkedQueue<String> msgQueue = new ConcurrentLinkedQueue<>();
-    private final AtomicBoolean delay = new AtomicBoolean();
-    private final AtomicLong lastSend = new AtomicLong();
     private final ThreadLocal<Long> cnt = new ThreadLocal<>();
     private final ThreadLocal<Long> id = new ThreadLocal<>();
 
+    private final ConcurrentLinkedQueue<String> msgQueue = new ConcurrentLinkedQueue<>();
     // 窗口的最大容量
     private final static int boomThreshold = 200;
+    private final AtomicLong lastAlertTime = new AtomicLong(0);
     // 时间窗口流攒批
-    private final Duration window = Duration.ofSeconds(7);
+    private static final Duration BATCH_INTERVAL = Duration.ofSeconds(10);
+    private static final Duration MIN_INTERVAL = Duration.ofSeconds(10);
+
+    /**
+     * 定时批量发送任务的Future，用于取消任务
+     */
+    private volatile ScheduledFuture<?> scheduledTask;
 
     static final ScheduledExecutorService scheduler = new ScheduledThreadPoolExecutor(1,
             new BasicThreadFactory.Builder().namingPattern("batch")
                     .daemon(true).build());
+
+    public void init() {
+        // 启动定时批量处理任务
+        scheduledTask = scheduler.scheduleAtFixedRate(
+                this::batchSend,
+                BATCH_INTERVAL.toMillis(),
+                BATCH_INTERVAL.toMillis(),
+                TimeUnit.MILLISECONDS
+        );
+    }
+
+    public void destroy() {
+        if (scheduledTask != null) {
+            scheduledTask.cancel(false);
+        }
+        // 关闭前发送剩余消息
+        batchSend();
+        scheduler.shutdown();
+        try {
+            if (!scheduler.awaitTermination(5, TimeUnit.SECONDS)) {
+                scheduler.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            scheduler.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+    }
 
     private void verify(String block) {
         String[] all = block.split(",");
@@ -56,38 +87,45 @@ public class ConcurrentLinkedQueueV1Test {
         log.info("{}", buf);
     }
 
-    private void handle(String msg) {
-        long now = System.currentTimeMillis();
-        long last = lastSend.get();
-        Duration delta = Duration.ofMillis(now - last);
+    private void consumer(String msg) {
+        // 但是这里会占用生产者 线程资源
+//        long now = System.currentTimeMillis();
+//        long last = lastAlertTime.get();
+//        long elapsed = now - last;
 
-        if (msgQueue.size() > boomThreshold) {
-//            log.warn("BOOM");
+        // 如果距离上次发送超过最小间隔，立即发送
+//        if (elapsed >= MIN_INTERVAL.toMillis()) {
+//            if (lastAlertTime.compareAndSet(last, now)) {
+//                batchSend();
+//                return;
+//            }
+//        }
+
+        // 否则加入队列等待批量处理
+        // 先检查队列大小，避免内存溢出
+        if (msgQueue.size() >= boomThreshold) {
             return;
         }
+
         msgQueue.offer(msg);
-        if (delay.get()) {
+    }
+
+    private void batchSend() {
+        if (msgQueue.isEmpty()) {
             return;
         }
 
-        delay.set(true);
-        scheduler.schedule(() -> {
-            // 批量取出队列中的所有消息
-            List<String> messages = new ArrayList<>();
-            String tmp;
-            while ((tmp = msgQueue.poll()) != null) {
-                messages.add(tmp);
-            }
-            if (!messages.isEmpty()) {
-                String msgBlock = String.join(",", messages);
-                lastSend.set(System.currentTimeMillis());
-//                log.info("msgBlock={}", msgBlock);
-                verify(msgBlock);
-            }
-
-
-            delay.set(false);
-        }, window.minus(delta).toMillis(), TimeUnit.MILLISECONDS);
+        // 批量取出队列中的所有消息
+        List<String> messages = new ArrayList<>();
+        String tmp;
+        while ((tmp = msgQueue.poll()) != null) {
+            messages.add(tmp);
+        }
+        if (!messages.isEmpty()) {
+            String msgBlock = String.join(",", messages);
+            lastAlertTime.set(System.currentTimeMillis());
+            verify(msgBlock);
+        }
     }
 
     private void submitTask(int i) {
@@ -98,7 +136,7 @@ public class ConcurrentLinkedQueueV1Test {
                 TimeUnit.MILLISECONDS.sleep(100 + ThreadLocalRandom.current().nextInt(800));
                 Long val = cnt.get();
                 long start = System.currentTimeMillis();
-                handle(id.get() + "_" + val);
+                consumer(id.get() + "_" + val);
                 long ms = System.currentTimeMillis() - start;
                 if (ms > 1) {
                     log.info("ms={}", ms);
@@ -115,6 +153,7 @@ public class ConcurrentLinkedQueueV1Test {
      */
     @Test
     public void testWaitBatch() throws Exception {
+        init();
         int num = 30;
         ExecutorService producer = Executors.newFixedThreadPool(num);
         for (int i = 0; i < num; i++) {
