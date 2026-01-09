@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author kuangcp
  */
 @Slf4j
+@Deprecated
 public class TaskWithVolatile implements Runnable {
 
     private String target;
@@ -39,6 +40,7 @@ public class TaskWithVolatile implements Runnable {
             count += 1;
 
             try {
+                // 本质是利用耗时一致 控制排序，不是实际意义的先后依赖
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 log.error("", e);

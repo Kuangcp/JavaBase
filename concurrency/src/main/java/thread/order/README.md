@@ -5,3 +5,7 @@
 
 ## 第二种
 使用volatile关键字, 达到需求
+
+## 第三种
+LockSupport 阻塞和唤醒
+

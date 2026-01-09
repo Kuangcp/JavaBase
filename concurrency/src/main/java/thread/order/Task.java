@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author kuangcp
  */
 @Slf4j
+@Deprecated
 public class Task implements Runnable {
 
     private String target;
@@ -36,6 +37,7 @@ public class Task implements Runnable {
             log.info("target={} order={} count={}", target, order, count);
 
             try {
+                // 本质是利用耗时一致 控制排序，不是实际意义的先后依赖
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
                 log.error("", e);

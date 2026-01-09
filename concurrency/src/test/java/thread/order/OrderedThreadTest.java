@@ -1,8 +1,10 @@
 package thread.order;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * Created by https://github.com/kuangcp on 18-1-18  下午1:54
@@ -13,6 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author kuangcp
  */
+@Slf4j
 public class OrderedThreadTest {
 
     private static final AtomicInteger count = new AtomicInteger(0);
@@ -28,9 +31,7 @@ public class OrderedThreadTest {
         thread3.start();
 
         // 避免Junit主线程直接退出
-        thread1.join();
-        thread2.join();
-        thread3.join();
+        Thread.currentThread().join();
     }
 
     @Test
@@ -44,8 +45,50 @@ public class OrderedThreadTest {
         thread3.start();
 
         // 避免Junit主线程直接退出
-        thread1.join();
-        thread2.join();
-        thread3.join();
+        Thread.currentThread().join();
+    }
+
+    private static Thread t1, t2, t3;
+
+    @Test
+    public void testOrderWithLock() throws Exception {
+        int num = 10;
+        t1 = new Thread(() -> {
+            for (int i = 0; i < num; i++) {
+                LockSupport.park();
+                System.out.print("A");
+                LockSupport.unpark(t2);
+            }
+        });
+
+        t2 = new Thread(() -> {
+            for (int i = 0; i < num; i++) {
+                LockSupport.park();
+                System.out.print("B");
+                LockSupport.unpark(t3);
+            }
+        });
+
+        t3 = new Thread(() -> {
+            for (int i = 0; i < num; i++) {
+                LockSupport.park();
+                System.out.print("C ");
+                LockSupport.unpark(t1);
+            }
+        });
+
+        t1.start();
+        t2.start();
+        t3.start();
+
+        // 主线程稍微等待一下，确保其他线程已经启动并且进入park状态。
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            log.error("", e);
+        }
+
+        // 启动整个流程
+        LockSupport.unpark(t1);
     }
 }
